@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         tv = findViewById(R.id.tv_acc);
         tv.setText("yes");
 
-        Button btnMap = (Button) findViewById(R.id.btn_map);
+        Button btnMap = findViewById(R.id.btn_map);
         btnMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         FlicManager.setAppCredentials("ddbfde99-d965-41df-8b9d-810bb0c26fe7", "f6e6938e-4d36-46e6-8fe1-d38436bdef83", "Brain Endurance Training Mobile App");
 
 
-        Button btnFlic = (Button) findViewById(R.id.btn_flic);
+        Button btnFlic = findViewById(R.id.btn_flic);
         btnFlic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,11 +76,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });
 
-        Button btnTask = (Button) findViewById(R.id.btn_task);
+        Button btnTask = findViewById(R.id.btn_task);
         btnTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, TaskActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button btnSign = findViewById(R.id.btn_signup);
+        btnSign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SignupActivity.class);
                 startActivity(intent);
             }
         });

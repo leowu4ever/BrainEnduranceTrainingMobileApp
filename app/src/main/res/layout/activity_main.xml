@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Accelerometer Reading"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Motion Data"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Geo Data"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView
@@ -73,6 +73,7 @@
             android:layout_marginTop="50dp"
             android:text="Open Google Map"
             android:textAllCaps="false"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <Button
@@ -88,6 +89,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Choose Tasks"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Log In"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Profile"
             android:textAllCaps="false"
             android:textStyle="bold" />
 
