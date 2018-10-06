@@ -50,7 +50,8 @@
             android:required="false" />
 
         <activity android:name=".TaskActivity" />
-        <activity android:name=".SignupActivity"></activity>
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>
