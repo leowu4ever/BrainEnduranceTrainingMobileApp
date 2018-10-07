@@ -6,6 +6,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -15,12 +16,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.SphericalUtil;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -48,6 +56,37 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private int timeStamp = 0;
 
+    // map --------------
+
+    private static final int DEFAULT_ZOOM = 15;
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    // Keys for storing activity state.
+    private static final String KEY_CAMERA_POSITION = "camera_position";
+    private static final String KEY_LOCATION = "location";
+    // Used for selecting the current place.
+    private static final int M_MAX_ENTRIES = 5;
+    // A default location (Sydney, Australia) and default zoom to use when location permission is
+    // not granted.
+    private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
+    private CameraPosition mCameraPosition;
+    // The entry points to the Places API.
+    private GeoDataClient mGeoDataClient;
+    private PlaceDetectionClient mPlaceDetectionClient;
+    // The entry point to the Fused Location Provider.
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private boolean mLocationPermissionGranted;
+    // The geographical location where the device is currently located. That is, the last-known
+    // location retrieved by the Fused Location Provider.
+    private Location mLastKnownLocation;
+    private String[] mLikelyPlaceNames;
+    private String[] mLikelyPlaceAddresses;
+    private String[] mLikelyPlaceAttributions;
+    private LatLng[] mLikelyPlaceLatLngs;
+
+
+    // map --------------
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -74,9 +113,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void initAcc() {
-        sm = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         // use accelerometer
-        if(sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
+        if (sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
             s = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
             sm.registerListener(this, s, SensorManager.SENSOR_DELAY_FASTEST);
             Log.d("acc", "found ");
@@ -118,9 +157,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng medway = new LatLng(51.3, 0.54);
-        mMap.addMarker(new MarkerOptions().position(medway).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(medway));
+        LatLng l1 = new LatLng(51.28075, 1.080165); //CT1 2XS 51.280795, 1.080165
+        LatLng l2 = new LatLng(51.298521, 1.07161);         // uok 51.298521, 1.071619
+
+        mMap.addMarker(new MarkerOptions().position(l1).title("Marker in Medway"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(l1));
+
+
+        // draw lines
+        Polyline polyline1 = googleMap.addPolyline(new PolylineOptions().clickable(true)
+                .add(l1, l2));
+
+        mMap.addMarker(new MarkerOptions().position(l2).title("Marker in Medway"));
+        Double distance = SphericalUtil.computeDistanceBetween(l1, l2);
+        TextView tvDis = findViewById(R.id.tv_dis);
+        tvDis.setText(distance + "m");
     }
 
     public void initGraph() {
@@ -146,7 +197,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         graphZ.addSeries(seriesZ);
 
     }
-
 
     public void initBtns() {
         Button btnFlic = findViewById(R.id.btn_flic);
@@ -194,4 +244,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });
     }
+
+
 }

@@ -50,7 +50,7 @@
                 android:text="Speed:" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/tv_dis"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
