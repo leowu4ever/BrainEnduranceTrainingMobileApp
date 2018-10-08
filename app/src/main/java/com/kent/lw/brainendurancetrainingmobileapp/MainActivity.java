@@ -15,6 +15,7 @@ import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -72,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private MediaPlayer mp;
     private SoundPool sp;
     private int sound;
+    private Handler handler;
+    private int timeRemaining = 10000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +91,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         initGraph();
         initMap();
         initSoundPool();
+
+        handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (timeRemaining > 0) {
+                    sp.play(sound, 1, 1, 0, 0, 2);
+                    handler.postDelayed(this, 1000);
+                    timeRemaining = timeRemaining - 1000;
+                }
+            }
+        };
+        handler.postDelayed(runnable, 1000);
+
     }
 
     private void initSoundPool() {
@@ -315,7 +332,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 // mediaplayer
                 //play();
 
-                sp.play(sound, 1, 1, 0, -1, 2);
+                sp.play(sound, 1, 1, 0, 0, 2);
             }
         });
     }
