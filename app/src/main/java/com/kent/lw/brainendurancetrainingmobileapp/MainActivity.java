@@ -9,6 +9,11 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -61,10 +66,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private static final int DEFAULT_ZOOM = 20;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
 
-
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private boolean mLocationPermissionGranted;
 
+    private MediaPlayer mp;
+    private SoundPool sp;
+    private int sound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +87,22 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         initBtns();
         initGraph();
         initMap();
+        initSoundPool();
+    }
 
+    private void initSoundPool() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+
+            sp = new SoundPool.Builder().setMaxStreams(6).setAudioAttributes(audioAttributes).build();
+        } else {
+            sp = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
+        }
+
+        sound = sp.load(this, R.raw.sound, 1);
     }
 
     private void getLocationPermission() {
@@ -285,7 +307,37 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 startActivity(intent);
             }
         });
+
+        Button btnSound = findViewById(R.id.btn_sound);
+        btnSound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // mediaplayer
+                //play();
+
+                sp.play(sound, 1, 1, 0, -1, 2);
+            }
+        });
     }
 
+    public void play() {
+        if (mp == null) {
+            mp = MediaPlayer.create(this, R.raw.sound);
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    stopMP();
+                }
+            });
+        }
+        mp.start();
+    }
+
+    public void stopMP() {
+        if (mp != null) {
+            mp.release();
+            mp = null;
+        }
+    }
 
 }
