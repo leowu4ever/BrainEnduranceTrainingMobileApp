@@ -1,14 +1,18 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,17 +21,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.PlaceDetectionClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.maps.android.SphericalUtil;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -40,7 +43,6 @@ import io.flic.lib.FlicManagerInitializedCallback;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener, OnMapReadyCallback {
 
-    private final Handler mHandler = new Handler();
     private SensorManager sm;
     private Sensor s;
     private TextView tv;
@@ -56,35 +58,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private int timeStamp = 0;
 
-    // map --------------
-
-    private static final int DEFAULT_ZOOM = 15;
+    private static final int DEFAULT_ZOOM = 10;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    // Keys for storing activity state.
-    private static final String KEY_CAMERA_POSITION = "camera_position";
-    private static final String KEY_LOCATION = "location";
-    // Used for selecting the current place.
-    private static final int M_MAX_ENTRIES = 5;
-    // A default location (Sydney, Australia) and default zoom to use when location permission is
-    // not granted.
-    private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
-    private CameraPosition mCameraPosition;
-    // The entry points to the Places API.
-    private GeoDataClient mGeoDataClient;
-    private PlaceDetectionClient mPlaceDetectionClient;
-    // The entry point to the Fused Location Provider.
+
+
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private boolean mLocationPermissionGranted;
-    // The geographical location where the device is currently located. That is, the last-known
-    // location retrieved by the Fused Location Provider.
-    private Location mLastKnownLocation;
-    private String[] mLikelyPlaceNames;
-    private String[] mLikelyPlaceAddresses;
-    private String[] mLikelyPlaceAttributions;
-    private LatLng[] mLikelyPlaceLatLngs;
-
-
-    // map --------------
 
 
     @Override
@@ -92,6 +71,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getLocationPermission();
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         initAcc();
         initFlic();
@@ -101,11 +83,60 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+    private void getLocationPermission() {
+
+        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                mLocationPermissionGranted = true;
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        permissions,
+                        PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            }
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    permissions,
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+    }
+
+    private void getDeviceLocation() {
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        try {
+            if (mLocationPermissionGranted) {
+                Task location = mFusedLocationProviderClient.getLastLocation();
+                location.addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            Location currentLocation = (Location) task.getResult();
+                            moveCam(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
+                        } else {
+
+                        }
+                    }
+                });
+            }
+        } catch (SecurityException e) {
+
+        }
+    }
+
+    private void moveCam(LatLng latLng, float zoom) {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+    }
+
     public void initMap() {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
     }
 
     public void initFlic() {
@@ -132,9 +163,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         // update graph here
         timeStamp++;
-        seriesX.appendData(new DataPoint(timeStamp, event.values[0]), false, 100000);
-        seriesY.appendData(new DataPoint(timeStamp, event.values[1]), false, 100000);
-        seriesZ.appendData(new DataPoint(timeStamp, event.values[2]), false, 100000);
+//        seriesX.appendData(new DataPoint(timeStamp, event.values[0]), false, 100000);
+//        seriesY.appendData(new DataPoint(timeStamp, event.values[1]), false, 100000);
+//        seriesZ.appendData(new DataPoint(timeStamp, event.values[2]), false, 100000);
 
     }
 
@@ -163,15 +194,26 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mMap.addMarker(new MarkerOptions().position(l1).title("Marker in Medway"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(l1));
 
-
         // draw lines
-        Polyline polyline1 = googleMap.addPolyline(new PolylineOptions().clickable(true)
-                .add(l1, l2));
+        googleMap.addPolyline(new PolylineOptions().clickable(true).add(l1, l2));
 
         mMap.addMarker(new MarkerOptions().position(l2).title("Marker in Medway"));
         Double distance = SphericalUtil.computeDistanceBetween(l1, l2);
         TextView tvDis = findViewById(R.id.tv_dis);
         tvDis.setText(distance + "m");
+
+        if (mLocationPermissionGranted) {
+            getDeviceLocation();
+
+            if (ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                return;
+            }
+            mMap.setMyLocationEnabled(true);
+        }
     }
 
     public void initGraph() {
