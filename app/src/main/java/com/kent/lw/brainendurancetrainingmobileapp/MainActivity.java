@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private int timeStamp = 0;
 
-    private static final int DEFAULT_ZOOM = 10;
+    private static final int DEFAULT_ZOOM = 20;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
 
 
