@@ -116,7 +116,7 @@
             android:text="Random stimulus interval" />
 
         <SeekBar
-            android:id="@+id/seekBar3"
+            android:id="@+id/sb_random_stimulus_interval"
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -4,11 +4,18 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -22,26 +29,76 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.Random;
+
 public class TrainingActivity extends AppCompatActivity implements OnMapReadyCallback {
 
 
+    // map
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    //task parameters
+    private int randomStimulusInterval = 1;
     private static final int DEFAULT_ZOOM = 18;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private boolean mLocationPermissionGranted;
+    // handler
+    private Handler handler;
+    private int timeRemaining = 1;
+    private MediaPlayer mp;
+    private SoundPool sp;
+    private int sound;
+    private Random random;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training);
 
+        Intent intent = getIntent();
+        randomStimulusInterval = intent.getExtras().getInt("RANDOM_STIMULUS_INTERVAL");
+        //Log.d("rsi", randomStimulusInterval + "");
 
         getLocationPermission();
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
         initMap();
+        initButton();
+        initSoundPool();
 
+        random = new Random();
+        handler = new Handler();
+
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (timeRemaining > 0) {
+                    int wait = random.nextInt(randomStimulusInterval) + 1;
+                    handler.postDelayed(this, 1000 * wait);
+                    // can do volume and priority for background noise
+                    sp.play(sound, 1, 1, 0, 0, 2);
+                    Log.d("wait", wait + "");
+                }
+            }
+        };
+        handler.postDelayed(runnable, 0);
+    }
+
+    private void initSoundPool() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+
+            sp = new SoundPool.Builder().setMaxStreams(6).setAudioAttributes(audioAttributes).build();
+        } else {
+            sp = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
+        }
+
+        sound = sp.load(this, R.raw.sound, 1);
+    }
+
+    private void initButton() {
         Button btnFinish = findViewById(R.id.btn_finish);
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +111,7 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
 
     public void initMap() {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
