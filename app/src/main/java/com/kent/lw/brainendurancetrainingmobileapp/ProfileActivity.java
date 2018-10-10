@@ -5,6 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import io.flic.lib.FlicAppNotInstalledException;
+import io.flic.lib.FlicManager;
+import io.flic.lib.FlicManagerInitializedCallback;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -14,6 +19,12 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
 
+        initFlic();
+        initButton();
+
+    }
+
+    private void initButton() {
         Button btnRecord = findViewById(R.id.btn_record);
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,5 +43,25 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        Button btnFlic = findViewById(R.id.btn_flic);
+        btnFlic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    FlicManager.getInstance(ProfileActivity.this, new FlicManagerInitializedCallback() {
+                        @Override
+                        public void onInitialized(FlicManager manager) {
+                            manager.initiateGrabButton(ProfileActivity.this);
+                        }
+                    });
+                } catch (FlicAppNotInstalledException err) {
+                    Toast.makeText(ProfileActivity.this, "Flic App is not installed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public void initFlic() {
+        FlicManager.setAppCredentials("ddbfde99-d965-41df-8b9d-810bb0c26fe7", "f6e6938e-4d36-46e6-8fe1-d38436bdef83", "Brain Endurance Training Mobile App");
     }
 }

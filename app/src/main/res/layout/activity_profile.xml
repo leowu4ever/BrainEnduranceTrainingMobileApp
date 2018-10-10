@@ -46,7 +46,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn_flic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Connect with Flic controller"
