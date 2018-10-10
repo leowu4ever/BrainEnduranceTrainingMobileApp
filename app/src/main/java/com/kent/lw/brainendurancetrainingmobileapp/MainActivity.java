@@ -2,7 +2,6 @@ package com.kent.lw.brainendurancetrainingmobileapp;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -297,33 +296,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });
 
-        Button btnTask = findViewById(R.id.btn_task);
-        btnTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TaskActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        Button btnSign = findViewById(R.id.btn_signup);
-        btnSign.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SignupActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-        Button btnProfile = findViewById(R.id.btn_profile);
-        btnProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
 
         Button btnSound = findViewById(R.id.btn_sound);
         btnSound.setOnClickListener(new View.OnClickListener() {
