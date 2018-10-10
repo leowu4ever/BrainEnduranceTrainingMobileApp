@@ -10,7 +10,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:layout_margin="5dp"
+        android:layout_margin="0dp"
         tools:context=".MapsActivity" />
 
     <LinearLayout
