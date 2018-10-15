@@ -1,8 +1,13 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
@@ -18,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -31,8 +37,11 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.Random;
 
-public class TrainingActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class TrainingActivity extends AppCompatActivity implements OnMapReadyCallback, SensorEventListener {
 
+    // acc
+    private SensorManager sm;
+    private Sensor s;
 
     // map
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
@@ -42,6 +51,7 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private boolean mLocationPermissionGranted;
+
     // handler
     private Handler handler;
     private int timeRemaining = 1;
@@ -49,6 +59,11 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
     private SoundPool sp;
     private int sound;
     private Random random;
+    private long durationMili;
+    private long min;
+    private long sec;
+
+    private TextView tvSpeed, tvDistance, tvDuration;
 
 
     @Override
@@ -65,6 +80,12 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
         initButton();
         initSoundPool();
 
+        tvSpeed = findViewById(R.id.tv_speed);
+        tvDistance = findViewById(R.id.tv_distance);
+        tvDuration = findViewById(R.id.tv_duration);
+        initAcc();
+
+
         random = new Random();
         handler = new Handler();
 
@@ -77,11 +98,41 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
                     // can do volume and priority for background noise
                     sp.play(sound, 1, 1, 0, 0, 2);
                     Log.d("wait", wait + "");
+
+
                 }
             }
         };
         handler.postDelayed(runnable, 0);
+
+        final Runnable durationRunnable = new Runnable() {
+            @Override
+            public void run() {
+                durationMili = durationMili + 1000;
+                min = (durationMili / 1000) / 60;
+                sec = (durationMili / 1000) % 60;
+                tvDuration.setText(min + "m " + sec + "s");
+                handler.postDelayed(this, 1000);
+
+            }
+        };
+        handler.postDelayed(durationRunnable, 1000);
+
     }
+
+    public void initAcc() {
+        sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        // use accelerometer
+        if (sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
+            s = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            sm.registerListener(this, s, SensorManager.SENSOR_DELAY_FASTEST);
+            Log.d("acc", "found ");
+
+        } else {
+            Log.d("acc", "not found");
+        }
+    }
+
 
     private void initSoundPool() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -116,6 +167,23 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        tvSpeed.setText("(X" + event.values[0] + ")(Y" + event.values[1] + ")(Z" + event.values[2] + ")");
+
+        // update graph here
+        //timeStamp++;
+//        seriesX.appendData(new DataPoint(timeStamp, event.values[0]), false, 100000);
+//        seriesY.appendData(new DataPoint(timeStamp, event.values[1]), false, 100000);
+//        seriesZ.appendData(new DataPoint(timeStamp, event.values[2]), false, 100000);
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
 
