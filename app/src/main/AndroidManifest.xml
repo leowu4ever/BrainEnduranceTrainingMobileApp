@@ -15,6 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -28,6 +30,8 @@
         <activity android:name=".TaskActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".TrainingActivity" />
+        <activity android:name=".ResultActivity" />
+
         <activity android:name=".SignupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +42,15 @@
         <activity
             android:name=".RecordActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".ResultActivity"></activity>
+
+        <receiver
+            android:name=".FlicReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="io.flic.FLICLIB_EVENT" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

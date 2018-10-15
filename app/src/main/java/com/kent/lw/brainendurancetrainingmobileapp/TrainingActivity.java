@@ -62,6 +62,7 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
     private long durationMili;
     private long min;
     private long sec;
+    private long hour;
 
     private TextView tvSpeed, tvDistance, tvDuration;
 
@@ -109,9 +110,10 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
             @Override
             public void run() {
                 durationMili = durationMili + 1000;
+                hour = (durationMili) / 1000 / 3600;
                 min = (durationMili / 1000) / 60;
                 sec = (durationMili / 1000) % 60;
-                tvDuration.setText(min + "m " + sec + "s");
+                tvDuration.setText(hour + "h" + min + "m " + sec + "s");
                 handler.postDelayed(this, 1000);
 
             }

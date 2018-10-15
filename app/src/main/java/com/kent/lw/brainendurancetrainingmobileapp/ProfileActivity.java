@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import io.flic.lib.FlicAppNotInstalledException;
+import io.flic.lib.FlicBroadcastReceiverFlags;
+import io.flic.lib.FlicButton;
 import io.flic.lib.FlicManager;
 import io.flic.lib.FlicManagerInitializedCallback;
 
@@ -44,6 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         Button btnFlic = findViewById(R.id.btn_flic);
+
         btnFlic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,9 +62,29 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //FlicReceiver flicReceiver = new FlicReceiver();
     }
 
     public void initFlic() {
         FlicManager.setAppCredentials("ddbfde99-d965-41df-8b9d-810bb0c26fe7", "f6e6938e-4d36-46e6-8fe1-d38436bdef83", "Brain Endurance Training Mobile App");
     }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        FlicManager.getInstance(this, new FlicManagerInitializedCallback() {
+            @Override
+            public void onInitialized(FlicManager manager) {
+                FlicButton button = manager.completeGrabButton(requestCode, resultCode, data);
+                if (button != null) {
+                    button.registerListenForBroadcast(FlicBroadcastReceiverFlags.UP_OR_DOWN | FlicBroadcastReceiverFlags.REMOVED);
+                    Toast.makeText(ProfileActivity.this, "Grabbed a button", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ProfileActivity.this, "Did not grab any button", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+
 }
