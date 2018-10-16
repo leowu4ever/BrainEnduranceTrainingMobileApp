@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -63,9 +64,13 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
     private long min;
     private long sec;
     private long hour;
+    private final double MAG_THRESHOLD = 5.0;
+    private final int STEP_COUNT_INTERVAL = 2000;
+    private final int STRIDE_LENGTH = 1;
+    private double x, y, z, xLast, yLast, zLast, mag;
+    private int stepsLast, steps, stepsDiff, stepsTemp;
 
     private TextView tvSpeed, tvDistance, tvDuration;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,14 +125,40 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
         };
         handler.postDelayed(durationRunnable, 1000);
 
+        final Runnable speedRunnable = new Runnable() {
+            @Override
+            public void run() {
+
+                stepsTemp = steps;
+
+                stepsDiff = stepsTemp - stepsLast;
+                stepsLast = stepsTemp;
+
+                float speed = (stepsDiff * STRIDE_LENGTH) / 5;
+                tvSpeed.setText(speed + "m/s");
+
+
+                if (speed < 3) {
+                    //sp.play(sound, 5, 5, 0, 1, 2);
+
+                    Toast.makeText(TrainingActivity.this, "Speed up", Toast.LENGTH_SHORT).show();
+
+                }
+
+                handler.postDelayed(this, STEP_COUNT_INTERVAL);
+            }
+        };
+        handler.post(speedRunnable);
+
     }
+
 
     public void initAcc() {
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         // use accelerometer
-        if (sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
-            s = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            sm.registerListener(this, s, SensorManager.SENSOR_DELAY_FASTEST);
+        if (sm.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION) != null) {
+            s = sm.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+            sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
             Log.d("acc", "found ");
 
         } else {
@@ -174,14 +205,28 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        tvSpeed.setText("(X" + event.values[0] + ")(Y" + event.values[1] + ")(Z" + event.values[2] + ")");
+
+        x = event.values[0];
+        y = event.values[1];
+        z = event.values[2];
+
+        mag = Math.sqrt(x * x + y * y + z * z);
+
+        if (mag >= MAG_THRESHOLD) {
+            steps++;
+        }
+
+        tvDistance.setText(steps * STRIDE_LENGTH + "m");
+
+
+        //tvSpeed.setText("(X" + x + ")(Y" + y + ")(Z" + z + ")");
+
 
         // update graph here
         //timeStamp++;
 //        seriesX.appendData(new DataPoint(timeStamp, event.values[0]), false, 100000);
 //        seriesY.appendData(new DataPoint(timeStamp, event.values[1]), false, 100000);
 //        seriesZ.appendData(new DataPoint(timeStamp, event.values[2]), false, 100000);
-
     }
 
     @Override
