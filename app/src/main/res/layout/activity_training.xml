@@ -46,6 +46,15 @@
             android:text="30m/min"
             android:textSize="24sp" />
 
+        <TextView
+            android:id="@+id/tv_speed_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:text="30m/min"
+            android:textSize="24sp" />
+
     </LinearLayout>
 
     <LinearLayout

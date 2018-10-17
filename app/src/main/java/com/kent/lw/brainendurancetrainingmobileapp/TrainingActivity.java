@@ -33,8 +33,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.maps.android.SphericalUtil;
 
 import java.util.Random;
 
@@ -64,15 +66,19 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
     private long min;
     private long sec;
     private long hour;
-    private final double MAG_THRESHOLD = 5.0;
+    private final double MAG_THRESHOLD = 7.0;
     private final int STEP_COUNT_INTERVAL = 2000;
     private final int STRIDE_LENGTH = 1;
     private double x, y, z, xLast, yLast, zLast, mag;
     private int stepsLast, steps, stepsDiff, stepsTemp;
+    private final int MAP_UPDATE_INTERVAL = 1000;
+    private TextView tvSpeed, tvStep, tvDistance, tvDuration;
+    private Runnable stimulusRunnable, durationRunnable, speedRunnable, mapRunnable;
+    private LatLng curLocation, lastLocation;
 
-    private TextView tvSpeed, tvDistance, tvDuration;
+    private boolean mapInited = false;
 
-    private Runnable stimulusRunnable, durationRunnable, speedRunnable;
+    private double distance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +95,7 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
         initSoundPool();
 
         tvSpeed = findViewById(R.id.tv_speed);
+        tvStep = findViewById(R.id.tv_speed_step);
         tvDistance = findViewById(R.id.tv_distance);
         tvDuration = findViewById(R.id.tv_duration);
         initAcc();
@@ -96,6 +103,10 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
 
         random = new Random();
         handler = new Handler();
+
+        curLocation = new LatLng(0, 0);
+        lastLocation = new LatLng(0, 0);
+
 
         stimulusRunnable = new Runnable() {
             @Override
@@ -129,25 +140,43 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
             public void run() {
 
                 stepsTemp = steps;
-
                 stepsDiff = stepsTemp - stepsLast;
                 stepsLast = stepsTemp;
 
-                float speed = (stepsDiff * STRIDE_LENGTH) / 5;
-                tvSpeed.setText(speed + "m/s");
+                float speed = (stepsDiff * STRIDE_LENGTH) / (STEP_COUNT_INTERVAL / 1000);
+                tvStep.setText(speed + "m/s");
 
 
-                if (speed < 3) {
-                    sp.play(speedupSound, 1, 1, 0, 0, 1);
-
-                    Toast.makeText(TrainingActivity.this, "Speed up", Toast.LENGTH_SHORT).show();
-
-                }
 
                 handler.postDelayed(this, STEP_COUNT_INTERVAL);
             }
         };
         handler.post(speedRunnable);
+
+
+        mapRunnable = new Runnable() {
+            @Override
+            public void run() {
+                getDeviceLocation();
+                mMap.addPolyline(new PolylineOptions().clickable(true).add(lastLocation, curLocation));
+                distance = distance + SphericalUtil.computeDistanceBetween(lastLocation, curLocation);
+
+                lastLocation = curLocation;
+
+                tvDistance.setText(Math.floor(distance) + "m");
+                double speed = distance / durationMili * 1000;
+                tvSpeed.setText(String.format("%.0f", speed) + "m/s");
+                if (speed < 3) {
+                    sp.play(speedupSound, 1, 1, 0, 0, 1);
+                    Toast.makeText(TrainingActivity.this, "Speed up", Toast.LENGTH_SHORT).show();
+                }
+
+
+                handler.postDelayed(this, MAP_UPDATE_INTERVAL);
+            }
+        };
+
+        handler.postDelayed(mapRunnable, 0);
 
     }
 
@@ -156,9 +185,9 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
     public void initAcc() {
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         // use accelerometer
-        if (sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null) {
-            s = sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-            sm.registerListener(this, s, SensorManager.SENSOR_DELAY_FASTEST);
+        if (sm.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION) != null) {
+            s = sm.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+            sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
             Log.d("acc", "found");
 
         } else {
@@ -211,23 +240,18 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
     @Override
     public void onSensorChanged(SensorEvent event) {
 
+//
+        x = event.values[0];
+        y = event.values[1];
+        z = event.values[2];
+//
+        mag = Math.sqrt(x * x + y * y + z * z);
 
-        Log.d("STEP", event.values[0] + " ");
-        tvSpeed.setText(event.values[0] + " steps");
-//        x = event.values[0];
-//        y = event.values[1];
-//        z = event.values[2];
-//
-//        mag = Math.sqrt(x * x + y * y + z * z);
-//
-//        if (mag >= MAG_THRESHOLD) {
-//            steps++;
-//        }
+        if (mag >= MAG_THRESHOLD) {
+            steps++;
+        }
 //
 //        tvDistance.setText(steps * STRIDE_LENGTH + "m");
-
-
-
 
         // update graph here
         //timeStamp++;
@@ -246,15 +270,13 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng l1 = new LatLng(51.28075, 1.080165); //CT1 2XS 51.280795, 1.080165
-        LatLng l2 = new LatLng(51.298521, 1.07161);         // uok 51.298521, 1.071619
+        //LatLng l1 = new LatLng(51.28075, 1.080165); //CT1 2XS 51.280795, 1.080165
 
         //mMap.addMarker(new MarkerOptions().position(l1).title("Marker in Medway"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(l1));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(l1));
 
         // draw lines
         //googleMap.addPolyline(new PolylineOptions().clickable(true).add(l1, l2));
-
         //mMap.addMarker(new MarkerOptions().position(l2).title("Marker in Medway"));
         //Double distance = SphericalUtil.computeDistanceBetween(l1, l2);
         //TextView tvDis = findViewById(R.id.tv_dis);
@@ -262,12 +284,10 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
 
         if (mLocationPermissionGranted) {
             getDeviceLocation();
-
             if (ActivityCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
                 return;
             }
             mMap.setMyLocationEnabled(true);
@@ -284,6 +304,14 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
+
+                            curLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+
+                            if (!mapInited) {
+                                lastLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                                mapInited = true;
+                            }
+
                             moveCam(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
                         } else {
 
@@ -295,6 +323,7 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
 
         }
     }
+
 
     private void moveCam(LatLng latLng, float zoom) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
