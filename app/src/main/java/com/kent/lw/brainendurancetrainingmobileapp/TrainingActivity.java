@@ -128,7 +128,7 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
                 hour = (durationMili) / 1000 / 3600;
                 min = (durationMili / 1000) / 60;
                 sec = (durationMili / 1000) % 60;
-                tvDuration.setText(hour + "h" + min + "m " + sec + "s");
+                tvDuration.setText("Duration: " + hour + "h " + min + "m " + sec + "s");
                 handler.postDelayed(this, 1000);
 
             }
@@ -144,7 +144,7 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
                 stepsLast = stepsTemp;
 
                 float speed = (stepsDiff * STRIDE_LENGTH) / (STEP_COUNT_INTERVAL / 1000);
-                tvStep.setText(speed + "m/s");
+                tvStep.setText("step speed: " + speed + "m/s");
 
 
 
@@ -163,9 +163,9 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
 
                 lastLocation = curLocation;
 
-                tvDistance.setText(Math.floor(distance) + "m");
+                tvDistance.setText("Distance: " + String.format("%.2f", distance) + "m");
                 double speed = distance / durationMili * 1000;
-                tvSpeed.setText(String.format("%.0f", speed) + "m/s");
+                tvSpeed.setText("GPS speed: " + String.format("%.2f", speed) + "m/s");
                 if (speed < 3) {
                     sp.play(speedupSound, 1, 1, 0, 0, 1);
                     Toast.makeText(TrainingActivity.this, "Speed up", Toast.LENGTH_SHORT).show();
