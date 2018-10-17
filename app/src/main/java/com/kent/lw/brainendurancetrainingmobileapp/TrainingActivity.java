@@ -58,7 +58,7 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
     private int timeRemaining = 1;
     private MediaPlayer mp;
     private SoundPool sp;
-    private int sound;
+    private int beepSound, speedupSound;
     private Random random;
     private long durationMili;
     private long min;
@@ -71,6 +71,8 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
     private int stepsLast, steps, stepsDiff, stepsTemp;
 
     private TextView tvSpeed, tvDistance, tvDuration;
+
+    private Runnable stimulusRunnable, durationRunnable, speedRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,23 +97,20 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
         random = new Random();
         handler = new Handler();
 
-        final Runnable runnable = new Runnable() {
+        stimulusRunnable = new Runnable() {
             @Override
             public void run() {
                 if (timeRemaining > 0) {
                     int wait = random.nextInt(randomStimulusInterval) + 1;
                     handler.postDelayed(this, 1000 * wait);
                     // can do volume and priority for background noise
-                    sp.play(sound, 1, 1, 0, 0, 2);
-                    Log.d("wait", wait + "");
-
-
+                    sp.play(beepSound, 0.1f, 0.1f, 0, 0, 1);
                 }
             }
         };
-        handler.postDelayed(runnable, 0);
+        handler.postDelayed(stimulusRunnable, 0);
 
-        final Runnable durationRunnable = new Runnable() {
+        durationRunnable = new Runnable() {
             @Override
             public void run() {
                 durationMili = durationMili + 1000;
@@ -125,7 +124,7 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
         };
         handler.postDelayed(durationRunnable, 1000);
 
-        final Runnable speedRunnable = new Runnable() {
+        speedRunnable = new Runnable() {
             @Override
             public void run() {
 
@@ -139,7 +138,7 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
 
 
                 if (speed < 3) {
-                    //sp.play(sound, 5, 5, 0, 1, 2);
+                    sp.play(speedupSound, 1, 1, 0, 0, 1);
 
                     Toast.makeText(TrainingActivity.this, "Speed up", Toast.LENGTH_SHORT).show();
 
@@ -153,19 +152,25 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
 
+
     public void initAcc() {
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         // use accelerometer
-        if (sm.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION) != null) {
-            s = sm.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-            sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
-            Log.d("acc", "found ");
+        if (sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null) {
+            s = sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+            sm.registerListener(this, s, SensorManager.SENSOR_DELAY_FASTEST);
+            Log.d("acc", "found");
 
         } else {
             Log.d("acc", "not found");
         }
     }
 
+
+    @Override
+    protected void onDestroy() {
+        handler.removeMessages(0);
+    }
 
     private void initSoundPool() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -178,8 +183,8 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
         } else {
             sp = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
         }
-
-        sound = sp.load(this, R.raw.sound, 1);
+        beepSound = sp.load(this, R.raw.beep, 1);
+        speedupSound = sp.load(this, R.raw.speedup, 1);
     }
 
     private void initButton() {
@@ -206,20 +211,22 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
     @Override
     public void onSensorChanged(SensorEvent event) {
 
-        x = event.values[0];
-        y = event.values[1];
-        z = event.values[2];
 
-        mag = Math.sqrt(x * x + y * y + z * z);
+        Log.d("STEP", event.values[0] + " ");
+        tvSpeed.setText(event.values[0] + " steps");
+//        x = event.values[0];
+//        y = event.values[1];
+//        z = event.values[2];
+//
+//        mag = Math.sqrt(x * x + y * y + z * z);
+//
+//        if (mag >= MAG_THRESHOLD) {
+//            steps++;
+//        }
+//
+//        tvDistance.setText(steps * STRIDE_LENGTH + "m");
 
-        if (mag >= MAG_THRESHOLD) {
-            steps++;
-        }
 
-        tvDistance.setText(steps * STRIDE_LENGTH + "m");
-
-
-        //tvSpeed.setText("(X" + x + ")(Y" + y + ")(Z" + z + ")");
 
 
         // update graph here

@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             sp = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
         }
 
-        sound = sp.load(this, R.raw.sound, 1);
+        sound = sp.load(this, R.raw.beep, 1);
     }
 
     private void getLocationPermission() {
@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     public void play() {
         if (mp == null) {
-            mp = MediaPlayer.create(this, R.raw.sound);
+            mp = MediaPlayer.create(this, R.raw.beep);
             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
