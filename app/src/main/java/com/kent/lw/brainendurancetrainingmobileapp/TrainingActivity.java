@@ -68,10 +68,10 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
     private long hour;
     private final double MAG_THRESHOLD = 7.0;
     private final int STEP_COUNT_INTERVAL = 2000;
-    private final int STRIDE_LENGTH = 1;
+    private final double STRIDE_LENGTH = 0.5;
     private double x, y, z, xLast, yLast, zLast, mag;
     private int stepsLast, steps, stepsDiff, stepsTemp;
-    private final int MAP_UPDATE_INTERVAL = 1000;
+    private final int MAP_UPDATE_INTERVAL = 3000;
     private TextView tvSpeed, tvStep, tvDistance, tvDuration;
     private Runnable stimulusRunnable, durationRunnable, speedRunnable, mapRunnable;
     private LatLng curLocation, lastLocation;
@@ -143,7 +143,7 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
                 stepsDiff = stepsTemp - stepsLast;
                 stepsLast = stepsTemp;
 
-                float speed = (stepsDiff * STRIDE_LENGTH) / (STEP_COUNT_INTERVAL / 1000);
+                double speed = (stepsDiff * STRIDE_LENGTH) / (STEP_COUNT_INTERVAL / 1000);
                 tvStep.setText("step speed: " + speed + "m/s");
 
 
