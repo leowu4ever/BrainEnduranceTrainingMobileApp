@@ -116,7 +116,7 @@
         android:background="@color/colorPrimary"
         android:elevation="0dp"
         android:text="Start Training"
-        android:textAllCaps="false"
+        android:textAllCaps="true"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textStyle="bold" />
 
