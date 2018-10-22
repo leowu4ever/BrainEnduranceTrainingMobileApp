@@ -41,5 +41,12 @@ public class TrainingFragment extends Fragment {
                 trainingCommunicator.finishTraining();
             }
         });
+
+        btnPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                trainingCommunicator.pauseTraining();
+            }
+        });
     }
 }
