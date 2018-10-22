@@ -30,7 +30,9 @@
 
     <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -198,6 +200,11 @@
         </LinearLayout>
     </HorizontalScrollView>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
     <Button
         android:id="@+id/btn_back"
         android:layout_width="wrap_content"
@@ -206,6 +213,7 @@
         android:background="@color/colorPrimary"
         android:text="Back"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:layout_margin="10dp"
         android:textStyle="bold" />
 
 
