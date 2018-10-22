@@ -18,7 +18,9 @@ public class TaskFragment extends Fragment {
     private Button btnStart;
     private Spinner spinnerTask, spinnerDif;
 
-    private taskCommunicator taskCommunicator;
+    private TaskCommunicator taskCommunicator;
+
+    private String taskSelected, difSelected;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,18 +32,26 @@ public class TaskFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        taskCommunicator = (taskCommunicator) getActivity();
+        taskCommunicator = (TaskCommunicator) getActivity();
 
         btnStart = getActivity().findViewById(R.id.btn_start);
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                taskCommunicator.startTraining();
+
+                taskSelected = spinnerTask.getSelectedItem().toString();
+                difSelected = spinnerDif.getSelectedItem().toString();
+                taskCommunicator.startTraining(taskSelected, difSelected);
+
             }
         });
 
         spinnerTask = getActivity().findViewById(R.id.spinner_task);
         spinnerDif = getActivity().findViewById(R.id.spinner_dif);
+
+        spinnerDif = getActivity().findViewById(R.id.spinner_task);
+
+
 
 
     }

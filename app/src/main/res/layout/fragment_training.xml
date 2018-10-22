@@ -15,11 +15,11 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView22"
+            android:id="@+id/tv_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="09:10"
+            android:text="0H 0M OS"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textSize="36sp"
@@ -54,10 +54,10 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView43"
+                android:id="@+id/tv_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="2.6km"
+                android:text="0KM"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="24sp"
@@ -84,10 +84,10 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView41"
+                android:id="@+id/tv_speed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="50m/min"
+                android:text="0M/MIN"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="24sp"

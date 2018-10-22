@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 /**
@@ -17,8 +18,12 @@ public class TrainingFragment extends Fragment {
 
     private Button btnPause;
     private Button btnFinish;
+    private TextView tvDuration;
+    private TextView tvDistance;
+    private TextView tvSpeed;
 
-    private trainingCommunicator trainingCommunicator;
+
+    private TrainingCommunicator trainingCommunicator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,7 +35,7 @@ public class TrainingFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        trainingCommunicator = (trainingCommunicator) getActivity();
+        trainingCommunicator = (TrainingCommunicator) getActivity();
 
         btnPause = getActivity().findViewById(R.id.btn_pause);
 
@@ -48,5 +53,21 @@ public class TrainingFragment extends Fragment {
                 trainingCommunicator.pauseTraining();
             }
         });
+
+        tvDuration = getActivity().findViewById(R.id.tv_duration);
+        tvDistance = getActivity().findViewById(R.id.tv_distance);
+        tvSpeed = getActivity().findViewById(R.id.tv_speed);
+    }
+
+    public void setTvDuration(String durationString) {
+        tvDuration.setText(durationString);
+    }
+
+    public void setTvDistance(String distanceString) {
+        tvDistance.setText(distanceString);
+    }
+
+    public void setTvSpeed(String speedString) {
+        tvSpeed.setText(speedString);
     }
 }

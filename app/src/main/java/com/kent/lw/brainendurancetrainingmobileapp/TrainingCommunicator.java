@@ -1,6 +1,6 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
-public interface trainingCommunicator {
+public interface TrainingCommunicator {
 
     void pauseTraining();
 
