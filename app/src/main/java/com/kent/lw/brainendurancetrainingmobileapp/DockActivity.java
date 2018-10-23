@@ -9,6 +9,10 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -30,8 +34,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.maps.android.SphericalUtil;
 
 public class DockActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, OnMapReadyCallback, SensorEventListener {
 
@@ -53,9 +59,9 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     private final String HARD = "Hard";
     private final int A_PVT_DURATION = 10 * 60 * 1000;
     private final int W_AVT_DURATION = 60 * 60 * 1000;
-    private final int A_PVT_INTERVAL_EASY = 4;
-    private final int A_PVT_INTERVAL_MEDIUM = 8;
-    private final int A_PVT_INTERVAL_HARD = 11;
+    private final int A_PVT_INTERVAL_EASY = 4 * 1000;
+    private final int A_PVT_INTERVAL_MEDIUM = 8 * 1000;
+    private final int A_PVT_INTERVAL_HARD = 11 * 1000;
     private final int W_AVT_INTERVAL = 2 * 1000;
     private final int W_AVT_NUMBER_OF_SHORTER_ESAY = 40;    // NEED TO BE CHECKED
     private final int W_AVT_NUMBER_OF_SHORTER_MEDIUM = 40;  // NEED TO BE CHECKED
@@ -81,8 +87,16 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
 
     // duration
     private long durationMili, hour, min, sec;
-
-
+    private final int MAP_UPDATE_INTERVAL = 3000;
+    // stimulus
+    private int timeRemaining = 1;
+    private int stimulusInterval;
+    private int trainingDuration;
+    // soundpool
+    private SoundPool sp;
+    private int beepSound, speedupSound;
+    // distance
+    private double distance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +148,9 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
 
         // runnable
         handler = new Handler();
+
+        initSoundPool();
+
     }
 
     @Override
@@ -153,23 +170,92 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
 
         resetTrainingData();
 
-        // get parameters
+        // get parameters // passing as parameters
 
-        durationRunnable = new Runnable() {
+        switch (taskSelected) {
+            case A_PVT:
+
+                trainingDuration = A_PVT_DURATION;
+
+                // duration
+                durationRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        durationMili = durationMili + 1000;
+                        hour = (durationMili) / 1000 / 3600;
+                        min = (durationMili / 1000) / 60;
+                        sec = (durationMili / 1000) % 60;
+                        String durationString = hour + "h " + min + "m " + sec + "s";
+                        trainingFragment.setTvDuration(durationString);
+
+
+                        handler.postDelayed(this, 1000);
+                    }
+                };
+                handler.postDelayed(durationRunnable, 1000);
+
+                // stimulus
+                switch (difSelected) {
+                    case EASY:
+                        stimulusInterval = A_PVT_INTERVAL_EASY;
+                        break;
+
+                    case MEDIUM:
+                        stimulusInterval = A_PVT_INTERVAL_MEDIUM;
+                        break;
+
+                    case HARD:
+                        stimulusInterval = A_PVT_INTERVAL_HARD;
+                        break;
+                }
+
+                stimulusRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (timeRemaining > 0) {
+                            handler.postDelayed(this, stimulusInterval);
+                            // can do volume and priority for background noise
+                            sp.play(beepSound, 1f, 1f, 0, 0, 1);
+                        }
+                    }
+                };
+                handler.postDelayed(stimulusRunnable, 0);
+                break;
+
+
+            case W_AVT:
+                stimulusInterval = W_AVT_INTERVAL;
+                trainingDuration = W_AVT_DURATION;
+        }
+
+        mapRunnable = new Runnable() {
             @Override
             public void run() {
-                durationMili = durationMili + 1000;
-                hour = (durationMili) / 1000 / 3600;
-                min = (durationMili / 1000) / 60;
-                sec = (durationMili / 1000) % 60;
-                String durationString = hour + "h " + min + "m " + sec + "s";
-                trainingFragment.setTvDuration(durationString);
+                getDeviceLocation();
+                mMap.addPolyline(new PolylineOptions().clickable(true).add(lastLocation, curLocation));
+
+                distance = distance + SphericalUtil.computeDistanceBetween(lastLocation, curLocation);
+                lastLocation = curLocation;
+                Log.d("last location ", lastLocation.toString());
+                Log.d("cur location ", curLocation.toString());
 
 
-                handler.postDelayed(this, 1000);
+                String distanceString = String.format("%.2f", distance) + "m";
+                trainingFragment.setTvDistance(distanceString);
+
+
+                double speed = distance / durationMili * 1000;
+                String speedString = String.format("%.2f", speed) + "m/s";
+                trainingFragment.setTvSpeed(speedString);
+
+                if (speed < 3) {
+                    sp.play(speedupSound, 1, 1, 0, 0, 1);
+                }
+                handler.postDelayed(this, MAP_UPDATE_INTERVAL);
             }
         };
-        handler.postDelayed(durationRunnable, 1000);
+
+        handler.postDelayed(mapRunnable, 0);
     }
 
     @Override
@@ -192,6 +278,9 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
 
         // resume handler
         handler.removeCallbacks(durationRunnable);
+        handler.removeCallbacks(stimulusRunnable);
+        handler.removeCallbacks(mapRunnable);
+
     }
 
     @Override
@@ -213,12 +302,18 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
 
         finishDialog.show();
         handler.removeCallbacks(durationRunnable);
+        handler.removeCallbacks(stimulusRunnable);
+        handler.removeCallbacks(mapRunnable);
+
 
     }
 
     public void resumeTraining() {
 
         handler.postDelayed(durationRunnable, 1000);
+        handler.postDelayed(stimulusRunnable, 0);
+        handler.postDelayed(mapRunnable, 0);
+
     }
 
     public void showTaskFragment() {
@@ -260,7 +355,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        //mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         if (mLocationPermissionGranted) {
             getDeviceLocation();
@@ -344,4 +439,20 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         min = 0;
         sec = 0;
     }
+
+    private void initSoundPool() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+
+            sp = new SoundPool.Builder().setMaxStreams(6).setAudioAttributes(audioAttributes).build();
+        } else {
+            sp = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
+        }
+        beepSound = sp.load(this, R.raw.beep, 1);
+        speedupSound = sp.load(this, R.raw.speedup, 1);
+    }
+
 }

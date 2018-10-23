@@ -48,11 +48,5 @@ public class TaskFragment extends Fragment {
 
         spinnerTask = getActivity().findViewById(R.id.spinner_task);
         spinnerDif = getActivity().findViewById(R.id.spinner_dif);
-
-        spinnerDif = getActivity().findViewById(R.id.spinner_task);
-
-
-
-
     }
 }
