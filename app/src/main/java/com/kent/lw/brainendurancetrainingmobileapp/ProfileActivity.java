@@ -64,6 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         //FlicReceiver flicReceiver = new FlicReceiver();
+
     }
 
     public void initFlic() {
@@ -85,6 +86,4 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }

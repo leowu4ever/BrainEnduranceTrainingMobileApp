@@ -170,14 +170,10 @@ public class TrainingActivity extends AppCompatActivity implements OnMapReadyCal
                     sp.play(speedupSound, 1, 1, 0, 0, 1);
                     Toast.makeText(TrainingActivity.this, "Speed up", Toast.LENGTH_SHORT).show();
                 }
-
-
                 handler.postDelayed(this, MAP_UPDATE_INTERVAL);
             }
         };
-
         handler.postDelayed(mapRunnable, 0);
-
     }
 
 

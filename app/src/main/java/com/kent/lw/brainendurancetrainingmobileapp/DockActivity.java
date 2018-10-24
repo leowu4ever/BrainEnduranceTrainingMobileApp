@@ -3,6 +3,7 @@ package com.kent.lw.brainendurancetrainingmobileapp;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -38,6 +40,17 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.maps.android.SphericalUtil;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import io.flic.lib.FlicAppNotInstalledException;
+import io.flic.lib.FlicBroadcastReceiverFlags;
+import io.flic.lib.FlicButton;
+import io.flic.lib.FlicManager;
+import io.flic.lib.FlicManagerInitializedCallback;
 
 public class DockActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, OnMapReadyCallback, SensorEventListener {
 
@@ -98,6 +111,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     // distance
     private double distance;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,7 +150,6 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
             }
         });
 
-
         // -- map --
         curLocation = new LatLng(0, 0);
         lastLocation = new LatLng(0, 0);
@@ -149,8 +162,28 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         // runnable
         handler = new Handler();
 
+        // soundpool
         initSoundPool();
 
+        // flic
+        initFlic();
+
+        btnFlic = findViewById(R.id.btn_flic);
+        btnFlic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    FlicManager.getInstance(DockActivity.this, new FlicManagerInitializedCallback() {
+                        @Override
+                        public void onInitialized(FlicManager manager) {
+                            manager.initiateGrabButton(DockActivity.this);
+                        }
+                    });
+                } catch (FlicAppNotInstalledException err) {
+                    Toast.makeText(DockActivity.this, "Flic App is not installed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -158,7 +191,8 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         // replace task fragment with training fragment
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-        transaction.replace(R.id.container, trainingFragment, "TRAINING_FRAGMENT");
+        transaction.remove(taskFragment);
+        transaction.add(R.id.container, trainingFragment, "TRAINING_FRAGMENT");
         transaction.commit();
 
         // start training
@@ -177,23 +211,6 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
 
                 trainingDuration = A_PVT_DURATION;
 
-                // duration
-                durationRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        durationMili = durationMili + 1000;
-                        hour = (durationMili) / 1000 / 3600;
-                        min = (durationMili / 1000) / 60;
-                        sec = (durationMili / 1000) % 60;
-                        String durationString = hour + "h " + min + "m " + sec + "s";
-                        trainingFragment.setTvDuration(durationString);
-
-
-                        handler.postDelayed(this, 1000);
-                    }
-                };
-                handler.postDelayed(durationRunnable, 1000);
-
                 // stimulus
                 switch (difSelected) {
                     case EASY:
@@ -208,26 +225,56 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
                         stimulusInterval = A_PVT_INTERVAL_HARD;
                         break;
                 }
-
-                stimulusRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        if (timeRemaining > 0) {
-                            handler.postDelayed(this, stimulusInterval);
-                            // can do volume and priority for background noise
-                            sp.play(beepSound, 1f, 1f, 0, 0, 1);
-                        }
-                    }
-                };
-                handler.postDelayed(stimulusRunnable, 0);
                 break;
-
 
             case W_AVT:
                 stimulusInterval = W_AVT_INTERVAL;
                 trainingDuration = W_AVT_DURATION;
+                break;
         }
 
+        // duration
+        durationRunnable = new Runnable() {
+            @Override
+            public void run() {
+                String durationString = hour + "h " + min + "m " + sec + "s";
+                trainingFragment.setTvDuration(durationString);
+
+                trainingDuration = trainingDuration - 1000;
+                hour = (trainingDuration) / 1000 / 3600;
+                min = (trainingDuration / 1000) / 60;
+                sec = (trainingDuration / 1000) % 60;
+
+
+                handler.postDelayed(this, 1000);
+            }
+        };
+        handler.postDelayed(durationRunnable, 0);
+
+        // simtimulus
+        stimulusRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (timeRemaining > 0) {
+                    handler.postDelayed(this, stimulusInterval);
+                    // can do volume and priority for background noise
+                    sp.play(beepSound, 1f, 1f, 0, 0, 1);
+                    Log.d("STIMULUS_TIME", Calendar.getInstance().getTime() + "");
+
+                    long currentDateTime = System.currentTimeMillis();
+                    Date currentDate = new Date(currentDateTime);
+                    DateFormat df = new SimpleDateFormat("dd:MM:yy:HH:mm:ss");
+
+                    Log.d("STIMULUS_MILI", System.currentTimeMillis() + "");
+                    Log.d("STIMULUS_CONVERTED    ", df.format(currentDate));
+
+
+                }
+            }
+        };
+        handler.postDelayed(stimulusRunnable, 0);
+
+        // map
         mapRunnable = new Runnable() {
             @Override
             public void run() {
@@ -280,12 +327,10 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
         handler.removeCallbacks(mapRunnable);
-
     }
 
     @Override
     public void finishTraining() {
-
 
         finishDialog.setContentView(R.layout.dialog_finish);
         finishDialog.setCancelable(false);
@@ -304,8 +349,6 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
         handler.removeCallbacks(mapRunnable);
-
-
     }
 
     public void resumeTraining() {
@@ -319,7 +362,8 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     public void showTaskFragment() {
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-        transaction.replace(R.id.container, taskFragment, "TASK_FRAGMENT");
+        transaction.remove(trainingFragment);
+        transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
         transaction.commit();
     }
 
@@ -374,7 +418,8 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         try {
             if (mLocationPermissionGranted) {
                 Task location = mFusedLocationProviderClient.getLastLocation();
-                location.addOnCompleteListener(new OnCompleteListener() {
+
+                location.addOnCompleteListener(this, new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
@@ -387,7 +432,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
                                 mapInited = true;
                             }
 
-                            moveCam(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
+                            //moveCam(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
                         } else {
 
                         }
@@ -435,6 +480,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
 
     public void resetTrainingData() {
         durationMili = 0;
+        trainingDuration = 0;
         hour = 0;
         min = 0;
         sec = 0;
@@ -455,4 +501,25 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         speedupSound = sp.load(this, R.raw.speedup, 1);
     }
 
+
+    // flic
+    public void initFlic() {
+        FlicManager.setAppCredentials("ddbfde99-d965-41df-8b9d-810bb0c26fe7", "f6e6938e-4d36-46e6-8fe1-d38436bdef83", "Brain Endurance Training Mobile App");
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        FlicManager.getInstance(this, new FlicManagerInitializedCallback() {
+            @Override
+            public void onInitialized(FlicManager manager) {
+                FlicButton button = manager.completeGrabButton(requestCode, resultCode, data);
+                if (button != null) {
+                    button.registerListenForBroadcast(FlicBroadcastReceiverFlags.UP_OR_DOWN | FlicBroadcastReceiverFlags.REMOVED);
+                    Toast.makeText(DockActivity.this, "Grabbed a button", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(DockActivity.this, "Did not grab any button", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 }
