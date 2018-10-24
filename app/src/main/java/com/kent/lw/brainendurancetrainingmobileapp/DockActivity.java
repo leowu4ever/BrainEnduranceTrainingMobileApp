@@ -1,6 +1,5 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -30,13 +29,18 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.maps.android.SphericalUtil;
@@ -89,6 +93,9 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private LatLng curLocation, lastLocation;
     private boolean mapInited = false;
+    private LocationRequest mLocationRequest;
+
+
     // acc
     private SensorManager sm;
     private Sensor s;
@@ -110,6 +117,10 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     private int beepSound, speedupSound;
     // distance
     private double distance;
+
+    private LatLng testLast, testCur;
+    private boolean testInit;
+    private double testDis;
 
 
     @Override
@@ -151,9 +162,9 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         });
 
         // -- map --
+        getLocationPermission();
         curLocation = new LatLng(0, 0);
         lastLocation = new LatLng(0, 0);
-        getLocationPermission();
         initMap();
 
         // acc
@@ -279,7 +290,11 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
             @Override
             public void run() {
                 getDeviceLocation();
-                mMap.addPolyline(new PolylineOptions().clickable(true).add(lastLocation, curLocation));
+
+                Polyline polyline = mMap.addPolyline(new PolylineOptions().clickable(true).add(lastLocation, curLocation));
+                polyline.setEndCap(new RoundCap());
+                polyline.setWidth(15);
+                polyline.setColor(ContextCompat.getColor(DockActivity.this, R.color.colorPrimary));
 
                 distance = distance + SphericalUtil.computeDistanceBetween(lastLocation, curLocation);
                 lastLocation = curLocation;
@@ -287,12 +302,12 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
                 Log.d("cur location ", curLocation.toString());
 
 
-                String distanceString = String.format("%.2f", distance) + "m";
+                String distanceString = String.format("%.1f", distance) + "m";
                 trainingFragment.setTvDistance(distanceString);
 
 
                 double speed = distance / durationMili * 1000;
-                String speedString = String.format("%.2f", speed) + "m/s";
+                String speedString = String.format("%.1f", speed) + "m/s";
                 trainingFragment.setTvSpeed(speedString);
 
                 if (speed < 3) {
@@ -369,23 +384,30 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
 
     private void getLocationPermission() {
 
-        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                mLocationPermissionGranted = true;
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        permissions,
-                        PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-            }
+            mLocationPermissionGranted = true;
         } else {
             ActivityCompat.requestPermissions(this,
-                    permissions,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mLocationPermissionGranted = true;
+                }
+            }
+        }
+        updateLocationUI();
     }
 
     public void initMap() {
@@ -399,39 +421,44 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        //mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
-        if (mLocationPermissionGranted) {
-            getDeviceLocation();
-            if (ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
+        updateLocationUI();
+        createLocationRequest();
+        getDeviceLocation();
+    }
+
+    private void updateLocationUI() {
+
+        try {
+            if (mLocationPermissionGranted) {
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            } else {
+                mMap.setMyLocationEnabled(false);
+                mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                getLocationPermission();
             }
-            mMap.setMyLocationEnabled(true);
+        } catch (SecurityException e) {
+            Log.e("Exception: %s", e.getMessage());
         }
     }
 
     private void getDeviceLocation() {
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try {
             if (mLocationPermissionGranted) {
                 Task location = mFusedLocationProviderClient.getLastLocation();
-
                 location.addOnCompleteListener(this, new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
-
                             curLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
 
                             if (!mapInited) {
                                 lastLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                                 mapInited = true;
                             }
-
                             //moveCam(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
                         } else {
 
@@ -442,6 +469,44 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         } catch (SecurityException e) {
 
         }
+    }
+
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest,
+                new LocationCallback() {
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        if (locationResult == null) {
+                            return;
+                        }
+                        for (Location location : locationResult.getLocations()) {
+                            Log.d("LOCATION_COUNT", locationResult.getLocations().size() + "");
+                            Log.d("LOCATION_", location.toString());
+
+                            testCur = new LatLng(location.getLatitude(), location.getLongitude());
+
+                            if (!testInit) {
+                                testLast = new LatLng(location.getLatitude(), location.getLongitude());
+                                testInit = true;
+                            }
+
+                            Polyline polyline = mMap.addPolyline(new PolylineOptions().clickable(true).add(testLast, testCur));
+                            polyline.setEndCap(new RoundCap());
+                            polyline.setWidth(30);
+
+                            testDis = testDis + SphericalUtil.computeDistanceBetween(testLast, testCur);
+                            testLast = testCur;
+                            Log.d("Test dis ", testDis + "");
+
+                        }
+                    }
+                }, null /* Looper */);
+
     }
 
     private void moveCam(LatLng latLng, float zoom) {
