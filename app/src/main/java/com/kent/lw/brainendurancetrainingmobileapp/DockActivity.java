@@ -475,6 +475,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);
         mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setSmallestDisplacement(5);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest,
@@ -501,7 +502,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
 
                             testDis = testDis + SphericalUtil.computeDistanceBetween(testLast, testCur);
                             testLast = testCur;
-                            Log.d("Test dis ", testDis + "");
+                            Log.d("Testdis", testDis + "");
 
                         }
                     }
