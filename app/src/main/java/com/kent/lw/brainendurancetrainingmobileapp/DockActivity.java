@@ -42,7 +42,11 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.maps.android.SphericalUtil;
 
 import java.text.DateFormat;
@@ -122,6 +126,10 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     private boolean testInit;
     private double testDis;
 
+    // firebase
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,7 +203,28 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
                 }
             }
         });
+
+        Button btnFirebase = findViewById(R.id.btn_firebase);
+        btnFirebase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Firebase Test
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                mDatabase.child("TEdasdSTas/asdsad").setValue("1").addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("FIREBASE_TEST", "success");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("FIREBASE_TEST", "fail");
+                    }
+                });
+            }
+        });
     }
+
 
     @Override
     public void startTraining(String taskSelected, String difSelected) {
@@ -207,7 +236,6 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         transaction.commit();
 
         // start training
-
 
         // start  map
 

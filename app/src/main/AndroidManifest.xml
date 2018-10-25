@@ -27,22 +27,20 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".TrainingActivity" />
         <activity android:name=".ResultActivity" />
-        <activity android:name=".SignupActivity">
-
-        </activity>
-        <activity
-            android:name=".RecordActivity"
-            android:screenOrientation="landscape" />
-
-        <activity
-            android:name=".DockActivity"
-            android:label="@string/title_activity_dock">
-
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".RecordActivity"
+            android:screenOrientation="landscape" />
+
+        <activity android:name=".DockActivity">
+
+
 
         </activity>
 
