@@ -15,6 +15,12 @@
         android:textSize="30sp"
         android:textStyle="bold" />
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
