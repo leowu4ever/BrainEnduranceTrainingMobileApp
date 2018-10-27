@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#ffffff"
+    android:layout_margin="10dp"
     android:orientation="vertical"
     android:layout_gravity="bottom"
+    android:background="@drawable/fragment_shape"
     tools:context=".TaskFragment">
 
 
@@ -114,7 +115,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/button_rounded_corner"
         android:elevation="0dp"
         android:text="Start Training"
         android:textAllCaps="true"

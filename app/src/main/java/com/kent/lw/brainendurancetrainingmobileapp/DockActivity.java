@@ -37,22 +37,20 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.ButtCap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.maps.android.SphericalUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import io.flic.lib.FlicAppNotInstalledException;
 import io.flic.lib.FlicBroadcastReceiverFlags;
@@ -62,16 +60,9 @@ import io.flic.lib.FlicManagerInitializedCallback;
 
 public class DockActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, OnMapReadyCallback, SensorEventListener {
 
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private FragmentManager fragmentManager;
-    private FragmentTransaction transaction;
-    private TaskFragment taskFragment;
-    private TrainingFragment trainingFragment;
     private static final int DEFAULT_ZOOM = 15;
-    private Button btnResume, btnOK, btnBack;
     private ImageButton btnProfile, btnFlic;
-    private final double MAG_THRESHOLD = 7.0;
-    // --- need to be refactored
+
     // Task TAG
     private final String A_PVT = "A-PVT";
     private final String W_AVT = "W-AVT";
@@ -87,10 +78,17 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     private final int W_AVT_NUMBER_OF_SHORTER_ESAY = 40;    // NEED TO BE CHECKED
     private final int W_AVT_NUMBER_OF_SHORTER_MEDIUM = 40;  // NEED TO BE CHECKED
     private final int W_AVT_NUMBER_OF_SHORTER_HARD = 40;    // NEED TO BE CHECKED
-    // fragments
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private final double MAG_THRESHOLD = 7.0;
     private FrameLayout container;
+    // UI
+    private Button btnResume, btnOK, btnBack;
+    // fragments
+    private TaskFragment taskFragment;
+
     // ui
     private Dialog pauseDialog, finishDialog, profileDialog;
+
     // map
     private GoogleMap mMap;
     private boolean mLocationPermissionGranted;
@@ -98,38 +96,38 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     private LatLng curLocation, lastLocation;
     private boolean mapInited = false;
     private LocationRequest mLocationRequest;
-
+    private TrainingFragment trainingFragment;
+    private FragmentManager fragmentManager;
+    private FragmentTransaction transaction;
+    private boolean trainingStarted = false;
+    private List<Polyline> polylineList;
+    private int MIN_DISTANCE_UPDATE_THRESHOLD = 10;
 
     // acc
     private SensorManager sm;
     private Sensor s;
     private double x, y, z, xLast, yLast, zLast, mag;
     private int stepsLast, steps, stepsDiff, stepsTemp;
+    private int MAX_DISTANCE_UPDATE_THRESHOLD = 200;
+
     // runnable
     private Handler handler;
     private Runnable stimulusRunnable, durationRunnable, speedRunnable, mapRunnable;
-
     // duration
-    private long durationMili, hour, min, sec;
+    private long time, hour, min, sec;
     private final int MAP_UPDATE_INTERVAL = 3000;
+
     // stimulus
-    private int timeRemaining = 1;
-    private int stimulusInterval;
-    private int trainingDuration;
+    private int stimulusInterval, trainingDuration;
+
     // soundpool
     private SoundPool sp;
     private int beepSound, speedupSound;
+
     // distance
-    private double distance;
-
-    private LatLng testLast, testCur;
+    private double distance, speed;
+    private LatLng testLast, tempLocation;
     private boolean testInit;
-    private double testDis;
-
-    // firebase
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,6 +172,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         curLocation = new LatLng(0, 0);
         lastLocation = new LatLng(0, 0);
         initMap();
+        polylineList = new ArrayList<Polyline>();
 
         // acc
         initAcc();
@@ -204,28 +203,9 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
             }
         });
 
-        Button btnFirebase = findViewById(R.id.btn_firebase);
-        btnFirebase.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Firebase Test
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                mDatabase.child("TEdasdSTas/asdsad").setValue("1").addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("FIREBASE_TEST", "success");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("FIREBASE_TEST", "fail");
-                    }
-                });
-            }
-        });
     }
 
-
+    // fragment
     @Override
     public void startTraining(String taskSelected, String difSelected) {
         // replace task fragment with training fragment
@@ -280,6 +260,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
                 trainingFragment.setTvDuration(durationString);
 
                 trainingDuration = trainingDuration - 1000;
+                time = time + 1000;
                 hour = (trainingDuration) / 1000 / 3600;
                 min = (trainingDuration / 1000) / 60;
                 sec = (trainingDuration / 1000) % 60;
@@ -294,7 +275,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         stimulusRunnable = new Runnable() {
             @Override
             public void run() {
-                if (timeRemaining > 0) {
+                if (trainingDuration > 0) {
                     handler.postDelayed(this, stimulusInterval);
                     // can do volume and priority for background noise
                     sp.play(beepSound, 1f, 1f, 0, 0, 1);
@@ -306,46 +287,12 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
 
                     Log.d("STIMULUS_MILI", System.currentTimeMillis() + "");
                     Log.d("STIMULUS_CONVERTED    ", df.format(currentDate));
-
-
                 }
             }
         };
         handler.postDelayed(stimulusRunnable, 0);
 
-        // map
-        mapRunnable = new Runnable() {
-            @Override
-            public void run() {
-                getDeviceLocation();
-
-                Polyline polyline = mMap.addPolyline(new PolylineOptions().clickable(true).add(lastLocation, curLocation));
-                polyline.setEndCap(new RoundCap());
-                polyline.setWidth(15);
-                polyline.setColor(ContextCompat.getColor(DockActivity.this, R.color.colorPrimary));
-
-                distance = distance + SphericalUtil.computeDistanceBetween(lastLocation, curLocation);
-                lastLocation = curLocation;
-                Log.d("last location ", lastLocation.toString());
-                Log.d("cur location ", curLocation.toString());
-
-
-                String distanceString = String.format("%.1f", distance) + "m";
-                trainingFragment.setTvDistance(distanceString);
-
-
-                double speed = distance / durationMili * 1000;
-                String speedString = String.format("%.1f", speed) + "m/s";
-                trainingFragment.setTvSpeed(speedString);
-
-                if (speed < 3) {
-                    sp.play(speedupSound, 1, 1, 0, 0, 1);
-                }
-                handler.postDelayed(this, MAP_UPDATE_INTERVAL);
-            }
-        };
-
-        handler.postDelayed(mapRunnable, 0);
+        trainingStarted = true;
     }
 
     @Override
@@ -370,6 +317,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
         handler.removeCallbacks(mapRunnable);
+        trainingStarted = false;
     }
 
     @Override
@@ -392,6 +340,11 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
         handler.removeCallbacks(mapRunnable);
+        trainingStarted = false;
+        for (Polyline polyline : polylineList) {
+            polyline.remove();
+        }
+        polylineList.clear();
     }
 
     public void resumeTraining() {
@@ -399,6 +352,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         handler.postDelayed(durationRunnable, 1000);
         handler.postDelayed(stimulusRunnable, 0);
         handler.postDelayed(mapRunnable, 0);
+        trainingStarted = true;
 
     }
 
@@ -410,6 +364,8 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         transaction.commit();
     }
 
+
+    // map
     private void getLocationPermission() {
 
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
@@ -449,11 +405,9 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-
+        mMap.setPadding(10, 10, 10, 10);
         updateLocationUI();
         createLocationRequest();
-        getDeviceLocation();
     }
 
     private void updateLocationUI() {
@@ -462,6 +416,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
             if (mLocationPermissionGranted) {
                 mMap.setMyLocationEnabled(true);
                 mMap.getUiSettings().setMyLocationButtonEnabled(true);
+
             } else {
                 mMap.setMyLocationEnabled(false);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
@@ -500,48 +455,97 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     }
 
     protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
-        mLocationRequest.setSmallestDisplacement(5);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        initLocationRequestSettings();
 
-        mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest,
-                new LocationCallback() {
+        // init last location
+        try {
+            if (mLocationPermissionGranted) {
+                Task task = mFusedLocationProviderClient.getLastLocation();
+                task.addOnCompleteListener(this, new OnCompleteListener() {
                     @Override
-                    public void onLocationResult(LocationResult locationResult) {
-                        if (locationResult == null) {
-                            return;
-                        }
-                        for (Location location : locationResult.getLocations()) {
-                            Log.d("LOCATION_COUNT", locationResult.getLocations().size() + "");
-                            Log.d("LOCATION_", location.toString());
-
-                            testCur = new LatLng(location.getLatitude(), location.getLongitude());
-
-                            if (!testInit) {
-                                testLast = new LatLng(location.getLatitude(), location.getLongitude());
-                                testInit = true;
-                            }
-
-                            Polyline polyline = mMap.addPolyline(new PolylineOptions().clickable(true).add(testLast, testCur));
-                            polyline.setEndCap(new RoundCap());
-                            polyline.setWidth(30);
-
-                            testDis = testDis + SphericalUtil.computeDistanceBetween(testLast, testCur);
-                            testLast = testCur;
-                            Log.d("Testdis", testDis + "");
-
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful() && !mapInited) {
+                            lastLocation = convertToLatLng((Location) task.getResult());
+                            mapInited = true;
                         }
                     }
-                }, null /* Looper */);
+                });
+            }
+        } catch (SecurityException e) {
 
+        }
+
+        mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (trainingStarted) {
+
+                    // update map
+                    if (locationResult != null) {
+
+                        for (Location location : locationResult.getLocations()) {
+                            tempLocation = convertToLatLng(location);
+
+                            if (getDistance(lastLocation, tempLocation) < MAX_DISTANCE_UPDATE_THRESHOLD) {
+
+                                drawAPolyline(lastLocation, tempLocation);
+
+                                // update distance
+                                distance = distance + getDistance(lastLocation, tempLocation);
+                                String distanceString = String.format("%.1f", distance) + "m";
+                                trainingFragment.setTvDistance(distanceString);
+
+                                // update speed
+                                speed = (distance / time) * 1000;
+                                String speedString = String.format("%.1f", speed) + "m/s";
+                                trainingFragment.setTvSpeed(speedString);
+
+                                lastLocation = tempLocation;
+
+                                // finally do prompt
+                                if (speed < 3) {
+                                    sp.play(speedupSound, 1, 1, 0, 0, 1);
+                                }
+                            }
+                            }
+                    }
+
+                }
+            }
+        }, null /* Looper */);
+    }
+
+    private void initLocationRequestSettings() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(MAP_UPDATE_INTERVAL);
+        mLocationRequest.setFastestInterval(MAP_UPDATE_INTERVAL);
+        mLocationRequest.setSmallestDisplacement(MIN_DISTANCE_UPDATE_THRESHOLD);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    private void drawAPolyline(LatLng l1, LatLng l2) {
+        Polyline polyline = mMap.addPolyline(new PolylineOptions().add(l1, l2));
+        polyline.setEndCap(new ButtCap());
+        polyline.setWidth(10);
+        polyline.setColor(ContextCompat.getColor(DockActivity.this, R.color.colorPrimary));
+        polylineList.add(polyline);
+    }
+
+
+    private double getDistance(LatLng l1, LatLng l2) {
+        return SphericalUtil.computeDistanceBetween(l1, l2);
+    }
+
+    private LatLng convertToLatLng(Location location) {
+        return new LatLng(location.getLatitude(), location.getLongitude());
     }
 
     private void moveCam(LatLng latLng, float zoom) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
+
+    // acc
     public void initAcc() {
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         // use accelerometer
@@ -573,11 +577,13 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     }
 
     public void resetTrainingData() {
-        durationMili = 0;
         trainingDuration = 0;
+        time = 0;
         hour = 0;
         min = 0;
         sec = 0;
+        distance = 0;
+        speed = 0;
     }
 
     private void initSoundPool() {

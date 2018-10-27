@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#ffffff"
+    android:layout_margin="10dp"
     android:layout_gravity="bottom"
     android:orientation="vertical"
+    android:background="@drawable/fragment_shape"
     tools:context=".TrainingFragment">
 
     <LinearLayout
@@ -121,7 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@color/colorAccent"
+            android:background="@drawable/button_rounded_corner_negative"
             android:text="Pause"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
@@ -132,7 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button_rounded_corner"
             android:text="Finish"
             android:textColor="@color/common_google_signin_btn_text_dark_default"
             android:textStyle="bold" />
