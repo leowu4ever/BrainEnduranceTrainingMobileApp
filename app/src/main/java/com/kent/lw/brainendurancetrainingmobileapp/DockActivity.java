@@ -67,6 +67,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     private final String MEDIUM = "Medium";
     private final String HARD = "Hard";
     public static boolean trainingStarted = false;
+    private final int A_PVT_DURATION = 10 * 60 * 1000;
     private final int W_AVT_DURATION = 60 * 60 * 1000;
     private final int A_PVT_INTERVAL_EASY = 4 * 1000;
     private final int A_PVT_INTERVAL_MEDIUM = 8 * 1000;
@@ -96,7 +97,6 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     private TrainingFragment trainingFragment;
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
-    private final int A_PVT_DURATION = 1 * 60 * 1000;
     private List<Polyline> polylineList;
     private int MIN_DISTANCE_UPDATE_THRESHOLD = 10;
 
