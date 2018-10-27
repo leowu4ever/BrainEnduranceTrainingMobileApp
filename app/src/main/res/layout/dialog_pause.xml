@@ -3,6 +3,7 @@
     android:layout_width="300dp"
     android:layout_height="200dp"
     android:gravity="center"
+    android:background="@drawable/fragment_shape"
     android:orientation="vertical">
 
     <TextView
@@ -10,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
         android:layout_weight="0"
         android:text="Training Paused"
         android:textAllCaps="true"
@@ -21,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/button_rounded_corner"
         android:text="Resume"
         android:textColor="@color/common_google_signin_btn_text_dark_default" />
 

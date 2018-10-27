@@ -5,6 +5,8 @@ import java.util.List;
 
 public class TrainingData {
 
+    private String name, task, dif;
+
     private List<Double> accXList;
     private List<Double> accYList;
     private List<Double> accZList;
@@ -15,7 +17,6 @@ public class TrainingData {
     private List<Long> stiTimeList;
     private List<Long> resTimeList;
 
-    private String name, task, dif;
 
 
     public TrainingData() {
@@ -28,43 +29,67 @@ public class TrainingData {
 
         stiTimeList = new ArrayList<Long>();
         resTimeList = new ArrayList<Long>();
-
     }
 
     public void updateAccXList(Double accX) {
+        accXList.add(accX);
+    }
+
+    public void updateAccYList(Double accY) {
+        accYList.add(accY);
 
     }
 
-    public void updateAccYList(Double accX) {
-
+    public void updateAccZList(Double accZ) {
+        accZList.add(accZ);
     }
 
     public void updateLocLatList(Double lat) {
-
+        locLatList.add(lat);
     }
 
     public void updateLocLngList(Double lng) {
-
+        locLngList.add(lng);
     }
 
     public void updateStiTimeList(Long stiTime) {
-
+        stiTimeList.add(stiTime);
     }
 
     public void updateResTimeList(Long resTime) {
-
+        resTimeList.add(resTime);
     }
 
     public void updateName(String name) {
-
+        this.name = name;
     }
 
-    public void updateTask(String name) {
-
+    public void updateTask(String task) {
+        this.task = task;
     }
 
     public void updateDif(String dif) {
-
+        this.dif = dif;
     }
 
+    public void resetAllData() {
+        this.name = "";
+        this.task = "";
+        this.dif = "";
+        accXList.clear();
+        accYList.clear();
+        accZList.clear();
+
+        locLatList.clear();
+        locLngList.clear();
+
+        stiTimeList.clear();
+        resTimeList.clear();
+    }
+
+    public void upload() {
+        FirebaseHelper firebaseHelper = new FirebaseHelper();
+        firebaseHelper.uploadAllData(name, task, dif, accXList, accYList, accZList, locLatList, locLngList, stiTimeList, resTimeList);
+
+    }
 }

@@ -2,7 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="400dp"
     android:layout_height="600dp"
+    android:background="@drawable/fragment_shape"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Profile"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView"
@@ -20,6 +31,7 @@
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:text="Overall response time:" />
 
     <View
@@ -210,10 +222,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@color/colorPrimary"
+        android:layout_margin="10dp"
+        android:background="@drawable/button_rounded_corner"
         android:text="Back"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
-        android:layout_margin="10dp"
         android:textStyle="bold" />
 
 

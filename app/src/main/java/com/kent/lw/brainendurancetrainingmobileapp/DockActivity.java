@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -45,11 +47,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.maps.android.SphericalUtil;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import io.flic.lib.FlicAppNotInstalledException;
@@ -60,7 +58,6 @@ import io.flic.lib.FlicManagerInitializedCallback;
 
 public class DockActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, OnMapReadyCallback, SensorEventListener {
 
-    private static final int DEFAULT_ZOOM = 15;
     private ImageButton btnProfile, btnFlic;
 
     // Task TAG
@@ -69,7 +66,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     private final String EASY = "Easy";
     private final String MEDIUM = "Medium";
     private final String HARD = "Hard";
-    private final int A_PVT_DURATION = 10 * 60 * 1000;
+    public static boolean trainingStarted = false;
     private final int W_AVT_DURATION = 60 * 60 * 1000;
     private final int A_PVT_INTERVAL_EASY = 4 * 1000;
     private final int A_PVT_INTERVAL_MEDIUM = 8 * 1000;
@@ -99,7 +96,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     private TrainingFragment trainingFragment;
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
-    private boolean trainingStarted = false;
+    private final int A_PVT_DURATION = 1 * 60 * 1000;
     private List<Polyline> polylineList;
     private int MIN_DISTANCE_UPDATE_THRESHOLD = 10;
 
@@ -144,25 +141,23 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
         transaction.commit();
+        initDialog();
 
-        //dialog
-        pauseDialog = new Dialog(this);
-        finishDialog = new Dialog(this);
-        profileDialog = new Dialog(this);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                profileDialog.dismiss();
+            }
+        });
+
 
         btnProfile = findViewById(R.id.btn_profile);
 
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                profileDialog.setContentView(R.layout.dialog_profile);
-                btnBack = profileDialog.findViewById(R.id.btn_back);
-                btnBack.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        profileDialog.dismiss();
-                    }
-                });
+
                 profileDialog.show();
             }
         });
@@ -203,6 +198,48 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
             }
         });
 
+    }
+
+    private void initDialog() {
+        //dialog
+        pauseDialog = new Dialog(this);
+        finishDialog = new Dialog(this);
+        profileDialog = new Dialog(this);
+
+        pauseDialog.setContentView(R.layout.dialog_pause);
+        pauseDialog.setCancelable(false);
+        pauseDialog.setCanceledOnTouchOutside(false);
+        pauseDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        pauseDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
+
+        btnResume = pauseDialog.findViewById(R.id.btn_resume);
+        btnResume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pauseDialog.dismiss();
+                resumeTraining();
+            }
+        });
+
+        finishDialog.setContentView(R.layout.dialog_finish);
+        finishDialog.setCancelable(false);
+        finishDialog.setCanceledOnTouchOutside(false);
+        finishDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        finishDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
+
+
+        btnOK = finishDialog.findViewById(R.id.btn_ok);
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishDialog.dismiss();
+                showTaskFragment();
+            }
+        });
+
+        profileDialog.setContentView(R.layout.dialog_profile);
+        btnBack = profileDialog.findViewById(R.id.btn_back);
+        profileDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     // fragment
@@ -258,15 +295,17 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
             public void run() {
                 String durationString = hour + "h " + min + "m " + sec + "s";
                 trainingFragment.setTvDuration(durationString);
+                if (trainingDuration > 0) {
+                    trainingDuration = trainingDuration - 1000;
+                    time = time + 1000;
+                    hour = (trainingDuration) / 1000 / 3600;
+                    min = (trainingDuration / 1000) / 60;
+                    sec = (trainingDuration / 1000) % 60;
+                    handler.postDelayed(this, 1000);
+                } else {
+                    finishTraining();
+                }
 
-                trainingDuration = trainingDuration - 1000;
-                time = time + 1000;
-                hour = (trainingDuration) / 1000 / 3600;
-                min = (trainingDuration / 1000) / 60;
-                sec = (trainingDuration / 1000) % 60;
-
-
-                handler.postDelayed(this, 1000);
             }
         };
         handler.postDelayed(durationRunnable, 0);
@@ -276,17 +315,13 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
             @Override
             public void run() {
                 if (trainingDuration > 0) {
-                    handler.postDelayed(this, stimulusInterval);
                     // can do volume and priority for background noise
                     sp.play(beepSound, 1f, 1f, 0, 0, 1);
-                    Log.d("STIMULUS_TIME", Calendar.getInstance().getTime() + "");
-
-                    long currentDateTime = System.currentTimeMillis();
-                    Date currentDate = new Date(currentDateTime);
-                    DateFormat df = new SimpleDateFormat("dd:MM:yy:HH:mm:ss");
 
                     Log.d("STIMULUS_MILI", System.currentTimeMillis() + "");
-                    Log.d("STIMULUS_CONVERTED    ", df.format(currentDate));
+                    Log.d("STIMULUS_MILI_BUTTON_NA", System.nanoTime() + "");
+                    handler.postDelayed(this, stimulusInterval);
+
                 }
             }
         };
@@ -299,18 +334,6 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     public void pauseTraining() {
 
         // show dialog
-        pauseDialog.setContentView(R.layout.dialog_pause);
-        pauseDialog.setCancelable(false);
-        pauseDialog.setCanceledOnTouchOutside(false);
-
-        btnResume = pauseDialog.findViewById(R.id.btn_resume);
-        btnResume.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pauseDialog.dismiss();
-                resumeTraining();
-            }
-        });
         pauseDialog.show();
 
         // resume handler
@@ -323,28 +346,14 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     @Override
     public void finishTraining() {
 
-        finishDialog.setContentView(R.layout.dialog_finish);
-        finishDialog.setCancelable(false);
-        finishDialog.setCanceledOnTouchOutside(false);
-
-        btnOK = finishDialog.findViewById(R.id.btn_ok);
-        btnOK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finishDialog.dismiss();
-                showTaskFragment();
-            }
-        });
 
         finishDialog.show();
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
         handler.removeCallbacks(mapRunnable);
         trainingStarted = false;
-        for (Polyline polyline : polylineList) {
-            polyline.remove();
-        }
-        polylineList.clear();
+        removePolylines();
+
     }
 
     public void resumeTraining() {
@@ -427,33 +436,6 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         }
     }
 
-    private void getDeviceLocation() {
-        try {
-            if (mLocationPermissionGranted) {
-                Task location = mFusedLocationProviderClient.getLastLocation();
-                location.addOnCompleteListener(this, new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            Location currentLocation = (Location) task.getResult();
-                            curLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-
-                            if (!mapInited) {
-                                lastLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-                                mapInited = true;
-                            }
-                            //moveCam(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
-                        } else {
-
-                        }
-                    }
-                });
-            }
-        } catch (SecurityException e) {
-
-        }
-    }
-
     protected void createLocationRequest() {
         initLocationRequestSettings();
 
@@ -531,6 +513,12 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         polylineList.add(polyline);
     }
 
+    private void removePolylines() {
+        for (Polyline polyline : polylineList) {
+            polyline.remove();
+        }
+        polylineList.clear();
+    }
 
     private double getDistance(LatLng l1, LatLng l2) {
         return SphericalUtil.computeDistanceBetween(l1, l2);
