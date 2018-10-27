@@ -1,22 +1,23 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TrainingData {
 
-    private String name, task, dif;
+    public String name, task, dif;
 
-    private List<Double> accXList;
-    private List<Double> accYList;
-    private List<Double> accZList;
+    public List<Double> accXList;
+    public List<Double> accYList;
+    public List<Double> accZList;
 
-    private List<Double> locLatList;
-    private List<Double> locLngList;
+    public List<Double> locLatList;
+    public List<Double> locLngList;
 
-    private List<Long> stiTimeList;
-    private List<Long> resTimeList;
-
+    public List<Long> stiTimeList;
+    public List<Long> resTimeList;
 
 
     public TrainingData() {
@@ -29,6 +30,20 @@ public class TrainingData {
 
         stiTimeList = new ArrayList<Long>();
         resTimeList = new ArrayList<Long>();
+    }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateTask(String task) {
+
+        this.task = task;
+    }
+
+    public void updateDif(String dif) {
+
+        this.dif = dif;
     }
 
     public void updateAccXList(Double accX) {
@@ -45,37 +60,31 @@ public class TrainingData {
     }
 
     public void updateLocLatList(Double lat) {
+
         locLatList.add(lat);
     }
 
     public void updateLocLngList(Double lng) {
+
         locLngList.add(lng);
     }
 
     public void updateStiTimeList(Long stiTime) {
+
         stiTimeList.add(stiTime);
     }
 
     public void updateResTimeList(Long resTime) {
+
         resTimeList.add(resTime);
     }
 
-    public void updateName(String name) {
-        this.name = name;
-    }
 
-    public void updateTask(String task) {
-        this.task = task;
-    }
-
-    public void updateDif(String dif) {
-        this.dif = dif;
-    }
 
     public void resetAllData() {
-        this.name = "";
-        this.task = "";
-        this.dif = "";
+        name = "";
+        task = "";
+        dif = "";
         accXList.clear();
         accYList.clear();
         accZList.clear();
@@ -87,9 +96,58 @@ public class TrainingData {
         resTimeList.clear();
     }
 
+    public void printAllData() {
+        Log.d("TRAINING_DATA", "[Name]: " + name);
+        Log.d("TRAINING_DATA", "[Task]: " + task);
+        Log.d("TRAINING_DATA", "[Dif]: " + dif);
+
+        String temp = "";
+        for (Double accX : accXList) {
+            temp = temp + accX.toString() + "|";
+        }
+        Log.d("TRAINING_DATA", "[AccX] " + temp);
+
+        temp = "";
+        for (Double accY : accYList) {
+            temp = temp + accY.toString() + "|";
+        }
+        Log.d("TRAINING_DATA", "[AccY] " + temp);
+
+        temp = "";
+        for (Double accZ : accZList) {
+            temp = temp + accZ.toString() + "|";
+        }
+        Log.d("TRAINING_DATA", "[AccZ] " + temp);
+
+
+        temp = "";
+        for (Double lat : locLatList) {
+            temp = temp + lat.toString() + "|";
+        }
+        Log.d("TRAINING_DATA", "[Lat] " + temp);
+
+        temp = "";
+        for (Double lng : locLngList) {
+            temp = temp + lng.toString() + "|";
+        }
+        Log.d("TRAINING_DATA", "[Lng] " + temp);
+
+        temp = "";
+        for (Long sti : stiTimeList) {
+            temp = temp + sti.toString() + "|";
+        }
+        Log.d("TRAINING_DATA", "[Sti] " + temp);
+
+        temp = "";
+        for (Long res : resTimeList) {
+            temp = temp + res.toString() + "|";
+        }
+        Log.d("TRAINING_DATA", "[Res] " + temp);
+
+    }
+
     public void upload() {
         FirebaseHelper firebaseHelper = new FirebaseHelper();
         firebaseHelper.uploadAllData(name, task, dif, accXList, accYList, accZList, locLatList, locLngList, stiTimeList, resTimeList);
-
     }
 }

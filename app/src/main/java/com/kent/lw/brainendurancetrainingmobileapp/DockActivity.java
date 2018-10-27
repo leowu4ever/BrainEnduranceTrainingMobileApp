@@ -126,6 +126,9 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     private LatLng testLast, tempLocation;
     private boolean testInit;
 
+    // data collection
+    private TrainingData trainingData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,6 +201,8 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
             }
         });
 
+        trainingData = new TrainingData();
+
     }
 
     private void initDialog() {
@@ -252,11 +257,16 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         transaction.add(R.id.container, trainingFragment, "TRAINING_FRAGMENT");
         transaction.commit();
 
+
         // start training
 
         // start  map
 
-        // reset training data
+        // reset training dat
+        trainingData.resetAllData();
+
+        trainingData.updateTask(taskSelected);
+        trainingData.updateDif(difSelected);
 
         resetTrainingData();
 
@@ -318,16 +328,16 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
                     // can do volume and priority for background noise
                     sp.play(beepSound, 1f, 1f, 0, 0, 1);
 
-                    Log.d("STIMULUS_MILI", System.currentTimeMillis() + "");
-                    Log.d("STIMULUS_MILI_BUTTON_NA", System.nanoTime() + "");
-                    handler.postDelayed(this, stimulusInterval);
+                    trainingData.updateStiTimeList(System.currentTimeMillis());
 
+                    handler.postDelayed(this, stimulusInterval);
                 }
             }
         };
         handler.postDelayed(stimulusRunnable, 0);
 
         trainingStarted = true;
+
     }
 
     @Override
@@ -354,6 +364,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         trainingStarted = false;
         removePolylines();
 
+        trainingData.printAllData();
     }
 
     public void resumeTraining() {
@@ -483,13 +494,15 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
                                 trainingFragment.setTvSpeed(speedString);
 
                                 lastLocation = tempLocation;
+                                trainingData.updateLocLatList(lastLocation.latitude);
+                                trainingData.updateLocLngList(lastLocation.longitude);
 
                                 // finally do prompt
                                 if (speed < 3) {
                                     sp.play(speedupSound, 1, 1, 0, 0, 1);
                                 }
                             }
-                            }
+                        }
                     }
 
                 }
