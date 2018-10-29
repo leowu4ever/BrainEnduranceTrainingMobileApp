@@ -138,10 +138,11 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     private TrainingData trainingData;
 
     // local storage
-    private String STORAGE_PATH = "/Brain Training Datat Folder/";
+    private String STORAGE_PATH = "/Brain Training Data Folder/";
 
+    // firebase
     private Button btnTest;
-
+    private FirebaseHelper firebaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,34 +216,29 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         });
 
         trainingData = new TrainingData();
+        firebaseHelper = new FirebaseHelper();
 
-        btnTest = findViewById(R.id.btn_test);
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseHelper fh = new FirebaseHelper();
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                trainingData.updateName(user.getEmail().replace(".", ""));
-                fh.uploadAllData(trainingData);
+    }
 
-                Gson gson = new Gson();
+    private void saveDataToFirebase() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        trainingData.updateName(user.getEmail().replace(".", ""));
+        firebaseHelper.uploadAllData(trainingData);
+    }
 
-                Log.d("JSON", Environment.getExternalStorageDirectory().toString());
+    private void saveDataToLocal() {
+        Gson gson = new Gson();
+        File filePath = new File(Environment.getExternalStorageDirectory() + STORAGE_PATH);
+        if (!filePath.exists()) {
+            filePath.mkdir();
+        }
 
+        try (FileWriter writer = new FileWriter(Environment.getExternalStorageDirectory() + STORAGE_PATH + "123.json")) {
+            gson.toJson(gson.toJson(trainingData), writer);
 
-                File filePath = new File(Environment.getExternalStorageDirectory() + STORAGE_PATH);
-                if (!filePath.exists()) {
-                    filePath.mkdir();
-                }
-
-                try (FileWriter writer = new FileWriter(Environment.getExternalStorageDirectory() + STORAGE_PATH + "123.json")) {
-                    gson.toJson(gson.toJson(trainingData), writer);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initDialog() {
@@ -407,6 +403,8 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         trainingStarted = false;
         removePolylines();
 
+        saveDataToFirebase();
+        saveDataToLocal();
         trainingData.printAllData();
     }
 

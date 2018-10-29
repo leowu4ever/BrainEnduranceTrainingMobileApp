@@ -1,0 +1,1115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues by="lint 3.2.1" client="gradle" format="4" variant="all" version="3.2.1">
+
+    <issue
+        errorLine1="        mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, new LocationCallback() {"
+        errorLine2="        ^" id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`">
+        <location column="9"
+            file="src/main/java/com/kent/lw/brainendurancetrainingmobileapp/DockActivity.java"
+            line="471" />
+    </issue>
+
+    <issue errorLine1="    protected void onDestroy() {" errorLine2="                   ~~~~~~~~~"
+        id="MissingSuperCall" message="Overriding method should call `super.onDestroy`">
+        <location column="20"
+            file="src/main/java/com/kent/lw/brainendurancetrainingmobileapp/TrainingActivity.java"
+            line="196" />
+    </issue>
+
+    <issue errorLine1="                    android:id=&quot;@+id/radioButton12&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="DuplicateIds"
+        message="Duplicate id `@+id/radioButton12`, already defined earlier in this layout">
+        <location column="21" file="src/main/res/layout/activity_task.xml" line="96" />
+        <location column="21" file="src/main/res/layout/activity_task.xml" line="39" />
+    </issue>
+
+    <issue errorLine1="                    android:id=&quot;@+id/radioButton11&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="DuplicateIds"
+        message="Duplicate id `@+id/radioButton11`, already defined earlier in this layout">
+        <location column="21" file="src/main/res/layout/activity_task.xml" line="104" />
+        <location column="21" file="src/main/res/layout/activity_task.xml" line="47" />
+    </issue>
+
+    <issue errorLine1="                    android:id=&quot;@+id/textView10&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="DuplicateIds"
+        message="Duplicate id `@+id/textView10`, already defined earlier in this layout">
+        <location column="21" file="src/main/res/layout/fragment_task.xml" line="86" />
+        <location column="21" file="src/main/res/layout/fragment_task.xml" line="41" />
+    </issue>
+
+    <issue errorLine1="                    android:layout_height=&quot;match_parent&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="ScrollViewSize"
+        message="This LinearLayout should use `android:layout_height=&quot;wrap_content&quot;`">
+        <location column="21" file="src/main/res/layout/dialog_profile.xml" line="67" />
+    </issue>
+
+    <issue
+        errorLine1="                                String distanceString = String.format(&quot;%.1f&quot;, distance) + &quot;m&quot;;"
+        errorLine2="                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead">
+        <location column="57"
+            file="src/main/java/com/kent/lw/brainendurancetrainingmobileapp/DockActivity.java"
+            line="488" />
+    </issue>
+
+    <issue
+        errorLine1="                                String speedString = String.format(&quot;%.1f&quot;, speed) + &quot;m/s&quot;;"
+        errorLine2="                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead">
+        <location column="54"
+            file="src/main/java/com/kent/lw/brainendurancetrainingmobileapp/DockActivity.java"
+            line="493" />
+    </issue>
+
+    <issue
+        errorLine1="                tvDistance.setText(&quot;Distance: &quot; + String.format(&quot;%.2f&quot;, distance) + &quot;m&quot;);"
+        errorLine2="                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead">
+        <location column="51"
+            file="src/main/java/com/kent/lw/brainendurancetrainingmobileapp/TrainingActivity.java"
+            line="166" />
+    </issue>
+
+    <issue
+        errorLine1="                tvSpeed.setText(&quot;GPS speed: &quot; + String.format(&quot;%.2f&quot;, speed) + &quot;m/s&quot;);"
+        errorLine2="                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead">
+        <location column="49"
+            file="src/main/java/com/kent/lw/brainendurancetrainingmobileapp/TrainingActivity.java"
+            line="168" />
+    </issue>
+
+    <issue errorLine1="    &lt;LinearLayout" errorLine2="     ~~~~~~~~~~~~" id="MissingConstraints"
+        message="This view is not constrained. It only has designtime positions, so it will jump to (0,0) at runtime unless you add the constraints">
+        <location column="6" file="src/main/res/layout/activity_profile.xml" line="8" />
+    </issue>
+
+    <issue errorLine1="    &lt;LinearLayout" errorLine2="     ~~~~~~~~~~~~" id="MissingConstraints"
+        message="This view is not constrained. It only has designtime positions, so it will jump to (0,0) at runtime unless you add the constraints">
+        <location column="6" file="src/main/res/layout/activity_task.xml" line="8" />
+    </issue>
+
+    <issue errorLine1="                    android:autofillHints=&quot;Task&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="UnusedAttribute"
+        message="Attribute `autofillHints` is only used in API level 26 and higher (current min is 21)">
+        <location column="21" file="src/main/res/layout/fragment_task.xml" line="52" />
+    </issue>
+
+    <issue errorLine1="                    android:autofillHints=&quot;Task&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="UnusedAttribute"
+        message="Attribute `autofillHints` is only used in API level 26 and higher (current min is 21)">
+        <location column="21" file="src/main/res/layout/fragment_task.xml" line="97" />
+    </issue>
+
+    <issue errorLine1="        &lt;receiver" errorLine2="         ~~~~~~~~" id="ExportedReceiver"
+        message="Exported receiver does not require permission">
+        <location column="10" file="src/main/AndroidManifest.xml" line="47" />
+    </issue>
+
+    <issue errorLine1="    &lt;application" errorLine2="     ~~~~~~~~~~~" id="AllowBackup"
+        message="On SDK version 23 and up, your app data will be automatically backed up, and restored on app install. Your GCM regid will not work across restores, so you must ensure that it is excluded from the back-up set. Use the attribute `android:fullBackupContent` to specify an `@xml` resource which configures which files to backup. More info: https://developer.android.com/training/backup/autosyncapi.html">
+        <location column="6" file="src/main/AndroidManifest.xml" line="10" />
+    </issue>
+
+    <issue errorLine1="                android:layout_width=&quot;wrap_content&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="InefficientWeight"
+        message="Use a `layout_width` of `0dp` instead of `wrap_content` for better performance">
+        <location column="17" file="src/main/res/layout/activity_login.xml" line="32" />
+    </issue>
+
+    <issue errorLine1="            android:layout_width=&quot;wrap_content&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="InefficientWeight"
+        message="Use a `layout_width` of `0dp` instead of `wrap_content` for better performance">
+        <location column="13" file="src/main/res/layout/activity_training.xml" line="31" />
+    </issue>
+
+    <issue errorLine1="        android:layout_height=&quot;wrap_content&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="InefficientWeight"
+        message="Use a `layout_height` of `0dp` instead of `wrap_content` for better performance">
+        <location column="9" file="src/main/res/layout/dialog_pause.xml" line="12" />
+    </issue>
+
+    <issue errorLine1="                android:layout_weight=&quot;0&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~" id="NestedWeights"
+        message="Nested weights are bad for performance">
+        <location column="17" file="src/main/res/layout/fragment_task.xml" line="30" />
+    </issue>
+
+    <issue errorLine1="                android:layout_weight=&quot;0&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~" id="NestedWeights"
+        message="Nested weights are bad for performance">
+        <location column="17" file="src/main/res/layout/fragment_task.xml" line="74" />
+    </issue>
+
+    <issue id="UnusedResources" message="The resource `R.raw..DS_Store` appears to be unused">
+        <location file="src/main/res/raw/.DS_Store" />
+    </issue>
+
+    <issue errorLine1="    &lt;dimen name=&quot;fab_margin&quot;>16dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~" id="UnusedResources"
+        message="The resource `R.dimen.fab_margin` appears to be unused">
+        <location column="12" file="src/main/res/values/dimens.xml" line="2" />
+    </issue>
+
+    <issue errorLine1="    &lt;dimen name=&quot;activity_horizontal_margin&quot;>16dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="UnusedResources"
+        message="The resource `R.dimen.activity_horizontal_margin` appears to be unused">
+        <location column="12" file="src/main/res/values/dimens.xml" line="4" />
+    </issue>
+
+    <issue errorLine1="    &lt;dimen name=&quot;activity_vertical_margin&quot;>16dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="UnusedResources"
+        message="The resource `R.dimen.activity_vertical_margin` appears to be unused">
+        <location column="12" file="src/main/res/values/dimens.xml" line="5" />
+    </issue>
+
+    <issue
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^" id="UnusedResources"
+        message="The resource `R.drawable.ic_dashboard_black_24dp` appears to be unused">
+        <location column="1" file="src/main/res/drawable/ic_dashboard_black_24dp.xml" line="1" />
+    </issue>
+
+    <issue id="UnusedResources" message="The resource `R.drawable.ic_flic` appears to be unused">
+        <location file="src/main/res/drawable-v24/ic_flic.png" />
+    </issue>
+
+    <issue
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^" id="UnusedResources"
+        message="The resource `R.drawable.ic_home_black_24dp` appears to be unused">
+        <location column="1" file="src/main/res/drawable/ic_home_black_24dp.xml" line="1" />
+    </issue>
+
+    <issue
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^" id="UnusedResources"
+        message="The resource `R.drawable.ic_notifications_black_24dp` appears to be unused">
+        <location column="1" file="src/main/res/drawable/ic_notifications_black_24dp.xml"
+            line="1" />
+    </issue>
+
+    <issue id="UnusedResources" message="The resource `R.raw.map_style_xml` appears to be unused">
+        <location file="src/main/res/raw/map_style_xml" />
+    </issue>
+
+    <issue
+        errorLine1="&lt;menu xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^" id="UnusedResources"
+        message="The resource `R.menu.menu_main` appears to be unused">
+        <location column="1" file="src/main/res/menu/menu_main.xml" line="1" />
+    </issue>
+
+    <issue
+        errorLine1="&lt;menu xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^" id="UnusedResources"
+        message="The resource `R.menu.navigation` appears to be unused">
+        <location column="1" file="src/main/res/menu/navigation.xml" line="2" />
+    </issue>
+
+    <issue id="UnusedResources" message="The resource `R.raw.sound` appears to be unused">
+        <location file="src/main/res/raw/sound.mp3" />
+    </issue>
+
+    <issue errorLine1="    &lt;string name=&quot;action_settings&quot;>Settings&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~" id="UnusedResources"
+        message="The resource `R.string.action_settings` appears to be unused">
+        <location column="13" file="src/main/res/values/strings.xml" line="3" />
+    </issue>
+
+    <issue errorLine1="    &lt;string name=&quot;title_activity_maps&quot;>Map&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="UnusedResources"
+        message="The resource `R.string.title_activity_maps` appears to be unused">
+        <location column="13" file="src/main/res/values/strings.xml" line="4" />
+    </issue>
+
+    <issue errorLine1="    &lt;string name=&quot;title_activity_dock&quot;>DockActivity&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="UnusedResources"
+        message="The resource `R.string.title_activity_dock` appears to be unused">
+        <location column="13" file="src/main/res/values/strings.xml" line="5" />
+    </issue>
+
+    <issue errorLine1="    &lt;string name=&quot;title_home&quot;>Home&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~" id="UnusedResources"
+        message="The resource `R.string.title_home` appears to be unused">
+        <location column="13" file="src/main/res/values/strings.xml" line="6" />
+    </issue>
+
+    <issue errorLine1="    &lt;string name=&quot;title_dashboard&quot;>Dashboard&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~" id="UnusedResources"
+        message="The resource `R.string.title_dashboard` appears to be unused">
+        <location column="13" file="src/main/res/values/strings.xml" line="7" />
+    </issue>
+
+    <issue
+        errorLine1="    &lt;string name=&quot;title_notifications&quot;>Notifications&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="UnusedResources"
+        message="The resource `R.string.title_notifications` appears to be unused">
+        <location column="13" file="src/main/res/values/strings.xml" line="8" />
+    </issue>
+
+    <issue
+        errorLine1="    &lt;string name=&quot;hello_blank_fragment&quot;>Hello blank fragment&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="UnusedResources"
+        message="The resource `R.string.hello_blank_fragment` appears to be unused">
+        <location column="13" file="src/main/res/values/strings.xml" line="10" />
+    </issue>
+
+    <issue
+        errorLine1="    &lt;style name=&quot;AppTheme.AppBarOverlay&quot; parent=&quot;ThemeOverlay.AppCompat.Dark.ActionBar&quot; />"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="UnusedResources"
+        message="The resource `R.style.AppTheme_AppBarOverlay` appears to be unused">
+        <location column="12" file="src/main/res/values/styles.xml" line="16" />
+    </issue>
+
+    <issue
+        errorLine1="    &lt;style name=&quot;AppTheme.PopupOverlay&quot; parent=&quot;ThemeOverlay.AppCompat.Light&quot; />"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="UnusedResources"
+        message="The resource `R.style.AppTheme_PopupOverlay` appears to be unused">
+        <location column="12" file="src/main/res/values/styles.xml" line="18" />
+    </issue>
+
+    <issue errorLine1="        &lt;RadioGroup" errorLine2="         ~~~~~~~~~~" id="UselessLeaf"
+        message="This `RadioGroup` view is useless (no children, no `background`, no `id`, no `style`)">
+        <location column="10" file="src/main/res/layout/activity_task.xml" line="25" />
+    </issue>
+
+    <issue errorLine1="        &lt;RadioGroup" errorLine2="         ~~~~~~~~~~" id="UselessLeaf"
+        message="This `RadioGroup` view is useless (no children, no `background`, no `id`, no `style`)">
+        <location column="10" file="src/main/res/layout/activity_task.xml" line="82" />
+    </issue>
+
+    <issue errorLine1="    &lt;FrameLayout" errorLine2="     ~~~~~~~~~~~" id="UselessParent"
+        message="This `FrameLayout` layout or its `RelativeLayout` parent is possibly useless">
+        <location column="6" file="src/main/res/layout/activity_dock.xml" line="10" />
+    </issue>
+
+    <issue errorLine1="            &lt;LinearLayout" errorLine2="             ~~~~~~~~~~~~"
+        id="UselessParent"
+        message="This `LinearLayout` layout or its `RadioGroup` parent is useless">
+        <location column="14" file="src/main/res/layout/activity_task.xml" line="33" />
+    </issue>
+
+    <issue errorLine1="            &lt;LinearLayout" errorLine2="             ~~~~~~~~~~~~"
+        id="UselessParent"
+        message="This `LinearLayout` layout or its `RadioGroup` parent is useless">
+        <location column="14" file="src/main/res/layout/activity_task.xml" line="90" />
+    </issue>
+
+    <issue errorLine1="            &lt;ScrollView" errorLine2="             ~~~~~~~~~~"
+        id="UselessParent"
+        message="This `ScrollView` layout or its `LinearLayout` parent is useless">
+        <location column="14" file="src/main/res/layout/dialog_profile.xml" line="60" />
+    </issue>
+
+    <issue errorLine1="                    &lt;TableLayout"
+        errorLine2="                     ~~~~~~~~~~~" id="UselessParent"
+        message="This `TableLayout` layout or its `LinearLayout` parent is useless">
+        <location column="22" file="src/main/res/layout/dialog_profile.xml" line="70" />
+    </issue>
+
+    <issue errorLine1="        &lt;Button" errorLine2="         ~~~~~~" id="ButtonStyle"
+        message="Buttons in button bars should be borderless; use `style=&quot;?android:attr/buttonBarButtonStyle&quot;` (and `?android:attr/buttonBarStyle` on the parent)">
+        <location column="10" file="src/main/res/layout/activity_training.xml" line="74" />
+    </issue>
+
+    <issue errorLine1="        &lt;Button" errorLine2="         ~~~~~~" id="ButtonStyle"
+        message="Buttons in button bars should be borderless; use `style=&quot;?android:attr/buttonBarButtonStyle&quot;` (and `?android:attr/buttonBarStyle` on the parent)">
+        <location column="10" file="src/main/res/layout/activity_training.xml" line="83" />
+    </issue>
+
+    <issue errorLine1="        &lt;Button" errorLine2="         ~~~~~~" id="ButtonStyle"
+        message="Buttons in button bars should be borderless; use `style=&quot;?android:attr/buttonBarButtonStyle&quot;` (and `?android:attr/buttonBarStyle` on the parent)">
+        <location column="10" file="src/main/res/layout/fragment_training.xml" line="119" />
+    </issue>
+
+    <issue errorLine1="        &lt;Button" errorLine2="         ~~~~~~" id="ButtonStyle"
+        message="Buttons in button bars should be borderless; use `style=&quot;?android:attr/buttonBarButtonStyle&quot;` (and `?android:attr/buttonBarStyle` on the parent)">
+        <location column="10" file="src/main/res/layout/fragment_training.xml" line="130" />
+    </issue>
+
+    <issue errorLine1="                android:inputType=&quot;textPersonName&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="TextFields"
+        message="The view name (`@+id/tv_email`) suggests this is an e-mail address, but it does not include &apos;`textEmail`&apos; in the `inputType`">
+        <location column="17" file="src/main/res/layout/activity_login.xml" line="40" />
+        <location column="17" file="src/main/res/layout/activity_login.xml" line="31" />
+    </issue>
+
+    <issue errorLine1="            &lt;EditText" errorLine2="             ~~~~~~~~" id="Autofill"
+        message="Missing `autofillHints` attribute">
+        <location column="14" file="src/main/res/layout/activity_login.xml" line="30" />
+    </issue>
+
+    <issue errorLine1="            &lt;EditText" errorLine2="             ~~~~~~~~" id="Autofill"
+        message="Missing `autofillHints` attribute">
+        <location column="14" file="src/main/res/layout/activity_login.xml" line="51" />
+    </issue>
+
+    <issue errorLine1="            &lt;ImageButton" errorLine2="             ~~~~~~~~~~~"
+        id="ContentDescription" message="Missing `contentDescription` attribute on image">
+        <location column="14" file="src/main/res/layout/activity_dock.xml" line="38" />
+    </issue>
+
+    <issue errorLine1="            &lt;ImageButton" errorLine2="             ~~~~~~~~~~~"
+        id="ContentDescription" message="Missing `contentDescription` attribute on image">
+        <location column="14" file="src/main/res/layout/activity_dock.xml" line="51" />
+    </issue>
+
+    <issue errorLine1="            &lt;ImageView" errorLine2="             ~~~~~~~~~"
+        id="ContentDescription" message="Missing `contentDescription` attribute on image">
+        <location column="14" file="src/main/res/layout/fragment_task.xml" line="26" />
+    </issue>
+
+    <issue errorLine1="            &lt;ImageView" errorLine2="             ~~~~~~~~~"
+        id="ContentDescription" message="Missing `contentDescription` attribute on image">
+        <location column="14" file="src/main/res/layout/fragment_task.xml" line="70" />
+    </issue>
+
+    <issue
+        errorLine1="        tv.setText(&quot;(X: &quot; + event.values[0] + &quot;)      (Y: &quot; + event.values[1] + &quot;)      (Z: &quot; + event.values[2] + &quot;)&quot;);"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders.">
+        <location column="20"
+            file="src/main/java/com/kent/lw/brainendurancetrainingmobileapp/MainActivity.java"
+            line="200" />
+    </issue>
+
+    <issue errorLine1="        tvDis.setText(distance + &quot;m&quot;);"
+        errorLine2="                      ~~~~~~~~~~~~~~" id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders.">
+        <location column="23"
+            file="src/main/java/com/kent/lw/brainendurancetrainingmobileapp/MainActivity.java"
+            line="241" />
+    </issue>
+
+    <issue
+        errorLine1="                tvDuration.setText(&quot;Duration: &quot; + hour + &quot;h &quot; + min + &quot;m &quot; + sec + &quot;s&quot;);"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders.">
+        <location column="36"
+            file="src/main/java/com/kent/lw/brainendurancetrainingmobileapp/TrainingActivity.java"
+            line="131" />
+    </issue>
+
+    <issue
+        errorLine1="                tvDuration.setText(&quot;Duration: &quot; + hour + &quot;h &quot; + min + &quot;m &quot; + sec + &quot;s&quot;);"
+        errorLine2="                                   ~~~~~~~~~~~~" id="SetTextI18n"
+        message="String literal in `setText` can not be translated. Use Android resources instead.">
+        <location column="36"
+            file="src/main/java/com/kent/lw/brainendurancetrainingmobileapp/TrainingActivity.java"
+            line="131" />
+    </issue>
+
+    <issue
+        errorLine1="                tvStep.setText(&quot;step speed: &quot; + speed + &quot;m/s&quot;);"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders.">
+        <location column="32"
+            file="src/main/java/com/kent/lw/brainendurancetrainingmobileapp/TrainingActivity.java"
+            line="147" />
+    </issue>
+
+    <issue
+        errorLine1="                tvStep.setText(&quot;step speed: &quot; + speed + &quot;m/s&quot;);"
+        errorLine2="                               ~~~~~~~~~~~~~~" id="SetTextI18n"
+        message="String literal in `setText` can not be translated. Use Android resources instead.">
+        <location column="32"
+            file="src/main/java/com/kent/lw/brainendurancetrainingmobileapp/TrainingActivity.java"
+            line="147" />
+    </issue>
+
+    <issue
+        errorLine1="                tvDistance.setText(&quot;Distance: &quot; + String.format(&quot;%.2f&quot;, distance) + &quot;m&quot;);"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders.">
+        <location column="36"
+            file="src/main/java/com/kent/lw/brainendurancetrainingmobileapp/TrainingActivity.java"
+            line="166" />
+    </issue>
+
+    <issue
+        errorLine1="                tvDistance.setText(&quot;Distance: &quot; + String.format(&quot;%.2f&quot;, distance) + &quot;m&quot;);"
+        errorLine2="                                   ~~~~~~~~~~~~" id="SetTextI18n"
+        message="String literal in `setText` can not be translated. Use Android resources instead.">
+        <location column="36"
+            file="src/main/java/com/kent/lw/brainendurancetrainingmobileapp/TrainingActivity.java"
+            line="166" />
+    </issue>
+
+    <issue
+        errorLine1="                tvSpeed.setText(&quot;GPS speed: &quot; + String.format(&quot;%.2f&quot;, speed) + &quot;m/s&quot;);"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        id="SetTextI18n"
+        message="Do not concatenate text displayed with `setText`. Use resource string with placeholders.">
+        <location column="33"
+            file="src/main/java/com/kent/lw/brainendurancetrainingmobileapp/TrainingActivity.java"
+            line="168" />
+    </issue>
+
+    <issue
+        errorLine1="                tvSpeed.setText(&quot;GPS speed: &quot; + String.format(&quot;%.2f&quot;, speed) + &quot;m/s&quot;);"
+        errorLine2="                                ~~~~~~~~~~~~~" id="SetTextI18n"
+        message="String literal in `setText` can not be translated. Use Android resources instead.">
+        <location column="33"
+            file="src/main/java/com/kent/lw/brainendurancetrainingmobileapp/TrainingActivity.java"
+            line="168" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Brain Endurance Training&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Brain Endurance Training&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_login.xml" line="18" />
+    </issue>
+
+    <issue errorLine1="                android:hint=&quot;Email&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Email&quot;, should use `@string` resource">
+        <location column="17" file="src/main/res/layout/activity_login.xml" line="39" />
+    </issue>
+
+    <issue errorLine1="                android:hint=&quot;Password&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Password&quot;, should use `@string` resource">
+        <location column="17" file="src/main/res/layout/activity_login.xml" line="58" />
+    </issue>
+
+    <issue errorLine1="                android:text=&quot;LOG IN&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;LOG IN&quot;, should use `@string` resource">
+        <location column="17" file="src/main/res/layout/activity_login.xml" line="78" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;TextView&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;TextView&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_main.xml" line="17" />
+    </issue>
+
+    <issue errorLine1="                android:text=&quot;Step Counter:&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Step Counter:&quot;, should use `@string` resource">
+        <location column="17" file="src/main/res/layout/activity_main.xml" line="43" />
+    </issue>
+
+    <issue errorLine1="                android:text=&quot;Speed:&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Speed:&quot;, should use `@string` resource">
+        <location column="17" file="src/main/res/layout/activity_main.xml" line="50" />
+    </issue>
+
+    <issue errorLine1="                android:text=&quot;Distance:&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Distance:&quot;, should use `@string` resource">
+        <location column="17" file="src/main/res/layout/activity_main.xml" line="57" />
+    </issue>
+
+    <issue errorLine1="                    android:text=&quot;Play A Sound&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Play A Sound&quot;, should use `@string` resource">
+        <location column="21" file="src/main/res/layout/activity_main.xml" line="81" />
+    </issue>
+
+    <issue errorLine1="                    android:text=&quot;Connect to Flic Smart Button&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        id="HardcodedText"
+        message="Hardcoded string &quot;Connect to Flic Smart Button&quot;, should use `@string` resource">
+        <location column="21" file="src/main/res/layout/activity_main.xml" line="89" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Username:&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Username:&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_profile.xml" line="20" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Overall accuracy rate:&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Overall accuracy rate:&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_profile.xml" line="26" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Overall response time:&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Overall response time:&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_profile.xml" line="32" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Training record&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Training record&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_profile.xml" line="44" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Connect with Flic controller&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Connect with Flic controller&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_profile.xml" line="52" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;New training&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;New training&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_profile.xml" line="61" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Duration&quot; />"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Duration&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/activity_result.xml" line="14" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Distance&quot; />"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Distance&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/activity_result.xml" line="20" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Speed&quot; />"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Speed&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/activity_result.xml" line="26" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Average response time&quot; />"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Average response time&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/activity_result.xml" line="32" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Accuracy rate&quot; />"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Accuracy rate&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/activity_result.xml" line="38" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Feedback&quot; />"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Feedback&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/activity_result.xml" line="44" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Ok&quot;" errorLine2="        ~~~~~~~~~~~~~~~~~"
+        id="HardcodedText" message="Hardcoded string &quot;Ok&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/activity_result.xml" line="55" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Physical Task&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Physical Task&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_task.xml" line="19" />
+    </issue>
+
+    <issue errorLine1="                    android:text=&quot;Marching&quot; />"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Marching&quot;, should use `@string` resource">
+        <location column="21" file="src/main/res/layout/activity_task.xml" line="44" />
+    </issue>
+
+    <issue errorLine1="                    android:text=&quot;Running&quot; />"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Running&quot;, should use `@string` resource">
+        <location column="21" file="src/main/res/layout/activity_task.xml" line="51" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Minimum Speed&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Minimum Speed&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_task.xml" line="59" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Cognitive Task&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Cognitive Task&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_task.xml" line="78" />
+    </issue>
+
+    <issue errorLine1="                    android:text=&quot;A-PVT&quot; />"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;A-PVT&quot;, should use `@string` resource">
+        <location column="21" file="src/main/res/layout/activity_task.xml" line="101" />
+    </issue>
+
+    <issue errorLine1="                    android:text=&quot;W-AVT&quot; />"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;W-AVT&quot;, should use `@string` resource">
+        <location column="21" file="src/main/res/layout/activity_task.xml" line="108" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Random stimulus interval&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Random stimulus interval&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_task.xml" line="116" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Tone loudness&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Tone loudness&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_task.xml" line="130" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Max Tone Loudness&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Max Tone Loudness&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_task.xml" line="144" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Stimulus ON duration&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Stimulus ON duration&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_task.xml" line="158" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Timeout threshold&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Timeout threshold&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_task.xml" line="172" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Play background noise&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Play background noise&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_task.xml" line="187" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Start&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Start&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_task.xml" line="199" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;0h1min30s&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;0h1min30s&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_training.xml" line="26" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;70m&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;70m&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_training.xml" line="35" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;0m/s&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;0m/s&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_training.xml" line="53" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;0m/s&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;0m/s&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_training.xml" line="62" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Pause&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Pause&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_training.xml" line="79" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Finish&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Finish&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/activity_training.xml" line="87" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Training Finished&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Training Finished&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/dialog_finish.xml" line="13" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Duration&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Duration&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/dialog_finish.xml" line="33" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Distance&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Distance&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/dialog_finish.xml" line="41" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Speed&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Speed&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/dialog_finish.xml" line="49" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Average response time&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Average response time&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/dialog_finish.xml" line="57" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Accuracy&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Accuracy&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/dialog_finish.xml" line="65" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Save and Close&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Save and Close&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/dialog_finish.xml" line="86" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Training Paused&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Training Paused&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/dialog_pause.xml" line="16" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Resume&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Resume&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/dialog_pause.xml" line="27" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Profile&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Profile&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/dialog_profile.xml" line="12" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Username:&quot; />"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Username:&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/dialog_profile.xml" line="28" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Overall accuracy rate:&quot; />"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Overall accuracy rate:&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/dialog_profile.xml" line="34" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Overall response time:&quot; />"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Overall response time:&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/dialog_profile.xml" line="41" />
+    </issue>
+
+    <issue errorLine1="                                android:text=&quot;Date&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Date&quot;, should use `@string` resource">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="85" />
+    </issue>
+
+    <issue errorLine1="                                android:text=&quot;Duration&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Duration&quot;, should use `@string` resource">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="95" />
+    </issue>
+
+    <issue errorLine1="                                android:text=&quot;Response time&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Response time&quot;, should use `@string` resource">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="105" />
+    </issue>
+
+    <issue errorLine1="                                android:text=&quot;Accuracy rate&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Accuracy rate&quot;, should use `@string` resource">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="115" />
+    </issue>
+
+    <issue errorLine1="                                android:text=&quot;Distance&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Distance&quot;, should use `@string` resource">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="125" />
+    </issue>
+
+    <issue errorLine1="                                android:text=&quot;Average speed&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Average speed&quot;, should use `@string` resource">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="135" />
+    </issue>
+
+    <issue errorLine1="                                android:text=&quot;Task type&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Task type&quot;, should use `@string` resource">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="145" />
+    </issue>
+
+    <issue errorLine1="                                android:text=&quot;09/09/2018&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;09/09/2018&quot;, should use `@string` resource">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="161" />
+    </issue>
+
+    <issue errorLine1="                                android:text=&quot;1h20min30s&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;1h20min30s&quot;, should use `@string` resource">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="169" />
+    </issue>
+
+    <issue errorLine1="                                android:text=&quot;300ms&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;300ms&quot;, should use `@string` resource">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="177" />
+    </issue>
+
+    <issue errorLine1="                                android:text=&quot;93%&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;93%&quot;, should use `@string` resource">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="185" />
+    </issue>
+
+    <issue errorLine1="                                android:text=&quot;10km&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;10km&quot;, should use `@string` resource">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="193" />
+    </issue>
+
+    <issue errorLine1="                                android:text=&quot;80m/min&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;80m/min&quot;, should use `@string` resource">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="201" />
+    </issue>
+
+    <issue errorLine1="                                android:text=&quot;Marching + AVT&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        id="HardcodedText"
+        message="Hardcoded string &quot;Marching + AVT&quot;, should use `@string` resource">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="209" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Back&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Back&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/dialog_profile.xml" line="233" />
+    </issue>
+
+    <issue errorLine1="                    android:text=&quot;Cognitive Task&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Cognitive Task&quot;, should use `@string` resource">
+        <location column="21" file="src/main/res/layout/fragment_task.xml" line="44" />
+    </issue>
+
+    <issue errorLine1="                    android:text=&quot;Difficult Level&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Difficult Level&quot;, should use `@string` resource">
+        <location column="21" file="src/main/res/layout/fragment_task.xml" line="89" />
+    </issue>
+
+    <issue errorLine1="        android:text=&quot;Start Training&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Start Training&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/layout/fragment_task.xml" line="120" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;0H 0M OS&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;0H 0M OS&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/fragment_training.xml" line="23" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;TIME&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;TIME&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/fragment_training.xml" line="34" />
+    </issue>
+
+    <issue errorLine1="                android:text=&quot;0KM&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;0KM&quot;, should use `@string` resource">
+        <location column="17" file="src/main/res/layout/fragment_training.xml" line="61" />
+    </issue>
+
+    <issue errorLine1="                android:text=&quot;Distance&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Distance&quot;, should use `@string` resource">
+        <location column="17" file="src/main/res/layout/fragment_training.xml" line="71" />
+    </issue>
+
+    <issue errorLine1="                android:text=&quot;0M/MIN&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;0M/MIN&quot;, should use `@string` resource">
+        <location column="17" file="src/main/res/layout/fragment_training.xml" line="91" />
+    </issue>
+
+    <issue errorLine1="                android:text=&quot;Average Speed&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Average Speed&quot;, should use `@string` resource">
+        <location column="17" file="src/main/res/layout/fragment_training.xml" line="101" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Pause&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Pause&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/fragment_training.xml" line="126" />
+    </issue>
+
+    <issue errorLine1="            android:text=&quot;Finish&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Finish&quot;, should use `@string` resource">
+        <location column="13" file="src/main/res/layout/fragment_training.xml" line="137" />
+    </issue>
+
+    <issue errorLine1="        android:title=&quot;Profile&quot; />"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Profile&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/menu/navigation.xml" line="7" />
+    </issue>
+
+    <issue errorLine1="        android:title=&quot;Training&quot; />"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Training&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/menu/navigation.xml" line="12" />
+    </issue>
+
+    <issue errorLine1="        android:title=&quot;Records&quot; />"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
+        message="Hardcoded string &quot;Records&quot;, should use `@string` resource">
+        <location column="9" file="src/main/res/menu/navigation.xml" line="17" />
+    </issue>
+
+    <issue errorLine1="                android:layout_marginLeft=&quot;10dp&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginLeft` with `android:layout_marginStart=&quot;10dp&quot;` to better support right-to-left layouts">
+        <location column="17" file="src/main/res/layout/activity_main.xml" line="49" />
+    </issue>
+
+    <issue errorLine1="                android:layout_marginLeft=&quot;10dp&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginLeft` with `android:layout_marginStart=&quot;10dp&quot;` to better support right-to-left layouts">
+        <location column="17" file="src/main/res/layout/activity_main.xml" line="56" />
+    </issue>
+
+    <issue errorLine1="                    android:layout_marginRight=&quot;10dp&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;10dp&quot;` to better support right-to-left layouts">
+        <location column="21" file="src/main/res/layout/activity_task.xml" line="42" />
+    </issue>
+
+    <issue errorLine1="                    android:layout_marginRight=&quot;10dp&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;10dp&quot;` to better support right-to-left layouts">
+        <location column="21" file="src/main/res/layout/activity_task.xml" line="99" />
+    </issue>
+
+    <issue errorLine1="            android:layout_marginLeft=&quot;5dp&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginLeft` with `android:layout_marginStart=&quot;5dp&quot;` to better support right-to-left layouts">
+        <location column="13" file="src/main/res/layout/activity_training.xml" line="25" />
+    </issue>
+
+    <issue errorLine1="            android:layout_marginLeft=&quot;5dp&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginLeft` with `android:layout_marginStart=&quot;5dp&quot;` to better support right-to-left layouts">
+        <location column="13" file="src/main/res/layout/activity_training.xml" line="33" />
+    </issue>
+
+    <issue errorLine1="            android:layout_marginLeft=&quot;5dp&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginLeft` with `android:layout_marginStart=&quot;5dp&quot;` to better support right-to-left layouts">
+        <location column="13" file="src/main/res/layout/activity_training.xml" line="51" />
+    </issue>
+
+    <issue errorLine1="            android:layout_marginLeft=&quot;5dp&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginLeft` with `android:layout_marginStart=&quot;5dp&quot;` to better support right-to-left layouts">
+        <location column="13" file="src/main/res/layout/activity_training.xml" line="60" />
+    </issue>
+
+    <issue errorLine1="            android:layout_marginRight=&quot;30dp&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;30dp&quot;` to better support right-to-left layouts">
+        <location column="13" file="src/main/res/layout/activity_training.xml" line="78" />
+    </issue>
+
+    <issue errorLine1="                                android:layout_marginRight=&quot;25dp&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;25dp&quot;` to better support right-to-left layouts">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="84" />
+    </issue>
+
+    <issue errorLine1="                                android:layout_marginRight=&quot;25dp&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;25dp&quot;` to better support right-to-left layouts">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="94" />
+    </issue>
+
+    <issue errorLine1="                                android:layout_marginRight=&quot;25dp&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;25dp&quot;` to better support right-to-left layouts">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="104" />
+    </issue>
+
+    <issue errorLine1="                                android:layout_marginRight=&quot;25dp&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;25dp&quot;` to better support right-to-left layouts">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="114" />
+    </issue>
+
+    <issue errorLine1="                                android:layout_marginRight=&quot;25dp&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;25dp&quot;` to better support right-to-left layouts">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="124" />
+    </issue>
+
+    <issue errorLine1="                                android:layout_marginRight=&quot;25dp&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;25dp&quot;` to better support right-to-left layouts">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="134" />
+    </issue>
+
+    <issue errorLine1="                                android:layout_marginRight=&quot;0dp&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;0dp&quot;` to better support right-to-left layouts">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="144" />
+    </issue>
+
+    <issue errorLine1="                                android:layout_marginRight=&quot;25dp&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;25dp&quot;` to better support right-to-left layouts">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="160" />
+    </issue>
+
+    <issue errorLine1="                                android:layout_marginRight=&quot;25dp&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;25dp&quot;` to better support right-to-left layouts">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="168" />
+    </issue>
+
+    <issue errorLine1="                                android:layout_marginRight=&quot;25dp&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;25dp&quot;` to better support right-to-left layouts">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="176" />
+    </issue>
+
+    <issue errorLine1="                                android:layout_marginRight=&quot;25dp&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;25dp&quot;` to better support right-to-left layouts">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="184" />
+    </issue>
+
+    <issue errorLine1="                                android:layout_marginRight=&quot;25dp&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;25dp&quot;` to better support right-to-left layouts">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="192" />
+    </issue>
+
+    <issue errorLine1="                                android:layout_marginRight=&quot;25dp&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;25dp&quot;` to better support right-to-left layouts">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="200" />
+    </issue>
+
+    <issue errorLine1="                                android:layout_marginRight=&quot;0dp&quot;"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~" id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;0dp&quot;` to better support right-to-left layouts">
+        <location column="33" file="src/main/res/layout/dialog_profile.xml" line="208" />
+    </issue>
+
+</issues>
