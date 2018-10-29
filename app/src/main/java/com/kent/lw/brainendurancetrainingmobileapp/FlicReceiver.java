@@ -21,6 +21,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
             if (DockActivity.trainingStarted) {
                 Log.d("STIMULUS_MILI_BUTTON", System.currentTimeMillis() + "");
                 Log.d("STIMULUS_MILI_BUTTON_NA", System.nanoTime() + "");
+                DockActivity.trainingData.updateResTimeList(System.currentTimeMillis());
             }
         }
     }

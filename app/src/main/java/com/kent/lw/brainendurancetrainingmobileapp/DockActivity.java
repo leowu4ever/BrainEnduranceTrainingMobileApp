@@ -135,7 +135,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     private boolean testInit;
 
     // data collection
-    private TrainingData trainingData;
+    public static TrainingData trainingData;
 
     // local storage
     private String STORAGE_PATH = "/Brain Training Data Folder/";
