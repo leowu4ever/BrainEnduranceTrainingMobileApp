@@ -3,8 +3,6 @@ package com.kent.lw.brainendurancetrainingmobileapp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.List;
-
 public class FirebaseHelper {
 
     private DatabaseReference db;
@@ -13,17 +11,15 @@ public class FirebaseHelper {
         db = FirebaseDatabase.getInstance().getReference();
     }
 
-    public void uploadAllData(String name, String task, String dif, List<Double> accXList, List<Double> accYList, List<Double> accZList,
-                              List<Double> locLatList, List<Double> locLngList, List<Long> stiTimeList, List<Long> resTimeList) {
-        db.child(name).setValue(name);
-        db.child(name + "/" + task).setValue(task);
-        db.child(name + "/" + dif).setValue(dif);
-        db.child(name + "/" + "accX").setValue(accXList);
-        db.child(name + "/" + "accY").setValue(accYList);
-        db.child(name + "/" + "accZ").setValue(accZList);
-        db.child(name + "/" + "locLat").setValue(locLatList);
-        db.child(name + "/" + "locLng").setValue(locLngList);
-        db.child(name + "/" + "stiTime").setValue(stiTimeList);
-        db.child(name + "/" + "resTime").setValue(resTimeList);
+    public void uploadAllData(TrainingData td) {
+        db.child(td.getName() + "/" + td.getId() + "/" + "task").setValue(td.getTask());
+        db.child(td.getName() + "/" + td.getId() + "/" + "dif").setValue(td.getDif());
+        db.child(td.getName() + "/" + td.getId() + "/" + "accX").setValue(td.getAccXList());
+        db.child(td.getName() + "/" + td.getId() + "/" + "accY").setValue(td.getAccYList());
+        db.child(td.getName() + "/" + td.getId() + "/" + "accZ").setValue(td.getAccZList());
+        db.child(td.getName() + "/" + td.getId() + "/" + "locLat").setValue(td.getLocLatList());
+        db.child(td.getName() + "/" + td.getId() + "/" + "locLng").setValue(td.getLocLngList());
+        db.child(td.getName() + "/" + td.getId() + "/" + "stiTime").setValue(td.getStiTimeList());
+        db.child(td.getName() + "/" + td.getId() + "/" + "resTime").setValue(td.getResTimeList());
     }
 }

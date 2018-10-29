@@ -1,5 +1,6 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -45,8 +47,14 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 import com.google.maps.android.SphericalUtil;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,6 +137,12 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     // data collection
     private TrainingData trainingData;
 
+    // local storage
+    private String STORAGE_PATH = "/Brain Training Datat Folder/";
+
+    private Button btnTest;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,7 +159,6 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
         transaction.commit();
         initDialog();
-
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,6 +216,33 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
 
         trainingData = new TrainingData();
 
+        btnTest = findViewById(R.id.btn_test);
+        btnTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseHelper fh = new FirebaseHelper();
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                trainingData.updateName(user.getEmail().replace(".", ""));
+                fh.uploadAllData(trainingData);
+
+                Gson gson = new Gson();
+
+                Log.d("JSON", Environment.getExternalStorageDirectory().toString());
+
+
+                File filePath = new File(Environment.getExternalStorageDirectory() + STORAGE_PATH);
+                if (!filePath.exists()) {
+                    filePath.mkdir();
+                }
+
+                try (FileWriter writer = new FileWriter(Environment.getExternalStorageDirectory() + STORAGE_PATH + "123.json")) {
+                    gson.toJson(gson.toJson(trainingData), writer);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void initDialog() {
@@ -245,6 +285,8 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         profileDialog.setContentView(R.layout.dialog_profile);
         btnBack = profileDialog.findViewById(R.id.btn_back);
         profileDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
     }
 
     // fragment
@@ -267,6 +309,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
 
         trainingData.updateTask(taskSelected);
         trainingData.updateDif(difSelected);
+        trainingData.updateId(System.currentTimeMillis());
 
         resetTrainingData();
 
@@ -389,11 +432,13 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     private void getLocationPermission() {
 
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
         } else {
             ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
     }

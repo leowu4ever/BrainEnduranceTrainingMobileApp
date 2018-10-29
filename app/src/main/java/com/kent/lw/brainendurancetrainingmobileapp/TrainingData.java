@@ -9,6 +9,8 @@ public class TrainingData {
 
     public String name, task, dif;
 
+    public Long id;
+
     public List<Double> accXList;
     public List<Double> accYList;
     public List<Double> accZList;
@@ -18,7 +20,6 @@ public class TrainingData {
 
     public List<Long> stiTimeList;
     public List<Long> resTimeList;
-
 
     public TrainingData() {
         accXList = new ArrayList<Double>();
@@ -37,22 +38,22 @@ public class TrainingData {
     }
 
     public void updateTask(String task) {
-
         this.task = task;
     }
 
     public void updateDif(String dif) {
-
         this.dif = dif;
     }
 
+    public void updateId(Long id) {
+        this.id = id;
+    }
     public void updateAccXList(Double accX) {
         accXList.add(accX);
     }
 
     public void updateAccYList(Double accY) {
         accYList.add(accY);
-
     }
 
     public void updateAccZList(Double accZ) {
@@ -60,31 +61,70 @@ public class TrainingData {
     }
 
     public void updateLocLatList(Double lat) {
-
         locLatList.add(lat);
     }
 
     public void updateLocLngList(Double lng) {
-
         locLngList.add(lng);
     }
 
     public void updateStiTimeList(Long stiTime) {
-
         stiTimeList.add(stiTime);
     }
 
     public void updateResTimeList(Long resTime) {
-
         resTimeList.add(resTime);
     }
 
+    public String getName() {
+        return this.name;
+    }
 
+    public String getTask() {
+        return this.task;
+    }
+
+    public String getDif() {
+        return this.dif;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public List<Double> getAccXList() {
+        return accXList;
+    }
+
+    public List<Double> getAccYList() {
+        return accYList;
+    }
+
+    public List<Double> getAccZList() {
+        return accZList;
+    }
+
+    public List<Double> getLocLatList() {
+        return locLatList;
+    }
+
+    public List<Double> getLocLngList() {
+        return locLngList;
+    }
+
+    public List<Long> getResTimeList() {
+        return resTimeList;
+    }
+
+    public List<Long> getStiTimeList() {
+        return stiTimeList;
+    }
 
     public void resetAllData() {
         name = "";
         task = "";
         dif = "";
+        id = 0l;
         accXList.clear();
         accYList.clear();
         accZList.clear();
@@ -100,6 +140,7 @@ public class TrainingData {
         Log.d("TRAINING_DATA", "[Name]: " + name);
         Log.d("TRAINING_DATA", "[Task]: " + task);
         Log.d("TRAINING_DATA", "[Dif]: " + dif);
+        Log.d("TRAINING_DATA", "[Id]: " + id.toString());
 
         String temp = "";
         for (Double accX : accXList) {
@@ -144,10 +185,5 @@ public class TrainingData {
         }
         Log.d("TRAINING_DATA", "[Res] " + temp);
 
-    }
-
-    public void upload() {
-        FirebaseHelper firebaseHelper = new FirebaseHelper();
-        firebaseHelper.uploadAllData(name, task, dif, accXList, accYList, accZList, locLatList, locLngList, stiTimeList, resTimeList);
     }
 }
