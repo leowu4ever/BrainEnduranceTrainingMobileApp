@@ -140,8 +140,6 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     // local storage
     private String STORAGE_PATH = "/Brain Training Data Folder/";
 
-    // firebase
-    private Button btnTest;
     private FirebaseHelper firebaseHelper;
 
     @Override
@@ -233,7 +231,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
             filePath.mkdir();
         }
 
-        try (FileWriter writer = new FileWriter(Environment.getExternalStorageDirectory() + STORAGE_PATH + "123.json")) {
+        try (FileWriter writer = new FileWriter(Environment.getExternalStorageDirectory() + STORAGE_PATH + trainingData.getId() + ".json")) {
             gson.toJson(gson.toJson(trainingData), writer);
 
         } catch (IOException e) {
