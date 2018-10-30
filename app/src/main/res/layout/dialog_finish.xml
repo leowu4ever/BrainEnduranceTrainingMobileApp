@@ -27,7 +27,7 @@
 
 
     <TextView
-        android:id="@+id/textView34"
+        android:id="@+id/tv_finish_duration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Duration"
@@ -35,7 +35,7 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/textView35"
+        android:id="@+id/tv_finish_distance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Distance"
@@ -43,7 +43,7 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/textView36"
+        android:id="@+id/tv_finish_speed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Speed"
@@ -51,7 +51,7 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/textView37"
+        android:id="@+id/tv_finish_ast"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Average response time"
@@ -59,7 +59,7 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/textView38"
+        android:id="@+id/tv_finish_accuracy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Accuracy"

@@ -30,6 +30,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -392,6 +393,22 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
 
     @Override
     public void finishTraining() {
+
+        TextView tvFinishDuration = finishDialog.findViewById(R.id.tv_finish_duration);
+        TextView tvFinishDistance = finishDialog.findViewById(R.id.tv_finish_distance);
+        TextView tvFinishSpeed = finishDialog.findViewById(R.id.tv_finish_speed);
+        TextView tvFinishAST = finishDialog.findViewById(R.id.tv_finish_ast);
+        TextView tvFinishAccuracy = finishDialog.findViewById(R.id.tv_finish_accuracy);
+
+        // update finish dialog
+
+        hour = (time) / 1000 / 3600;
+        min = (time / 1000) / 60;
+        sec = (time / 1000) % 60;
+
+        tvFinishDuration.setText("Duration: " + hour + "H" + min + "M" + sec + "S");
+        tvFinishDistance.setText("Distance: " + distance + "KM");
+        tvFinishSpeed.setText("Speed: " + speed + "M/S");
 
 
         finishDialog.show();
