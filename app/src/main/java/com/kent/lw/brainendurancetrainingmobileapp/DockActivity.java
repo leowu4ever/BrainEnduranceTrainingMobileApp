@@ -143,6 +143,12 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
 
     private FirebaseHelper firebaseHelper;
 
+    // finish dialog
+    public static int stiTotalCount, resCorrectCount, resTotalCount;
+    public static long resTotalTime;
+    public static float ast, accuracy;
+    public static long RES_TIME_COUNTED_THRESHOLD = 1000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -643,6 +649,12 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         sec = 0;
         distance = 0;
         speed = 0;
+        stiTotalCount = 0;
+        resCorrectCount = 0;
+        resTotalCount = 0;
+        resTotalTime = 0;
+        ast = 0;
+        accuracy = 0;
     }
 
     private void initSoundPool() {
