@@ -27,7 +27,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
                 long lastSti = DockActivity.trainingData.getStiTimeList().get(DockActivity.trainingData.getStiTimeList().size() - 1);
                 long resTime = resMili - lastSti;
                 DockActivity.resTotalCount++;
-                if(resTime <= DockActivity.RES_TIME_COUNTED_THRESHOLD) {
+                if(resTime <= DockActivity.APVT_RES_TIME_COUNTED_THRESHOLD) {
                     DockActivity.resCorrectCount++;
                     DockActivity.resTotalTime = DockActivity.resTotalTime + resTime;
                 }

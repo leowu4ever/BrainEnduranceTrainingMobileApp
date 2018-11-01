@@ -144,10 +144,10 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     private FirebaseHelper firebaseHelper;
 
     // finish dialog
-    public static int stiTotalCount, resCorrectCount, resTotalCount;
+    public static double stiTotalCount, resCorrectCount, resTotalCount;
     public static long resTotalTime;
-    public static float ast, accuracy;
-    public static long RES_TIME_COUNTED_THRESHOLD = 1000;
+    public static float art, accuracy;
+    public static long APVT_RES_TIME_COUNTED_THRESHOLD = 500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -373,7 +373,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
                     sp.play(beepSound, 1f, 1f, 0, 0, 1);
 
                     trainingData.updateStiTimeList(System.currentTimeMillis());
-
+                    stiTotalCount++;
                     handler.postDelayed(this, stimulusInterval);
                 }
             }
@@ -401,9 +401,11 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
     public void finishTraining() {
 
         TextView tvFinishDuration = finishDialog.findViewById(R.id.tv_finish_duration);
+
         TextView tvFinishDistance = finishDialog.findViewById(R.id.tv_finish_distance);
+
         TextView tvFinishSpeed = finishDialog.findViewById(R.id.tv_finish_speed);
-        TextView tvFinishAST = finishDialog.findViewById(R.id.tv_finish_ast);
+        TextView tvFinishART = finishDialog.findViewById(R.id.tv_finish_ast);
         TextView tvFinishAccuracy = finishDialog.findViewById(R.id.tv_finish_accuracy);
 
         // update finish dialog
@@ -411,10 +413,18 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         hour = (time) / 1000 / 3600;
         min = (time / 1000) / 60;
         sec = (time / 1000) % 60;
+        String distanceString = String.format("%.1f", distance);
+        String speedString = String.format("%.1f", speed);
+        String artString = String.format("%.1f", (resTotalTime/resCorrectCount));
+        String accuracyString = String.format("%.1f", (resCorrectCount/stiTotalCount * 100));
 
-        tvFinishDuration.setText("Duration: " + hour + "H" + min + "M" + sec + "S");
-        tvFinishDistance.setText("Distance: " + distance + "KM");
-        tvFinishSpeed.setText("Speed: " + speed + "M/S");
+
+        tvFinishDuration.setText("Duration: " + min + "M" + sec + "S");
+        tvFinishDistance.setText("Distance: " + distanceString + "KM");
+        tvFinishSpeed.setText("Speed: " + speedString + "M/S");
+
+        tvFinishART.setText("Average Response Time: " + artString + "MS");
+        tvFinishAccuracy.setText("Accuracy (correct response/number of stimulus):" + accuracyString + "%" + " (" + (resCorrectCount + "/" + stiTotalCount) + ")");
 
 
         finishDialog.show();
@@ -653,7 +663,7 @@ public class DockActivity extends AppCompatActivity implements TaskCommunicator,
         resCorrectCount = 0;
         resTotalCount = 0;
         resTotalTime = 0;
-        ast = 0;
+        art = 0;
         accuracy = 0;
     }
 
