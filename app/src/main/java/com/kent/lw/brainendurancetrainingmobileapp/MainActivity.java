@@ -521,7 +521,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         }
     }
 
-    protected void createLocationRequest() {
+    private void createLocationRequest() {
         initLocationRequestSettings();
 
         // init last location
@@ -537,51 +537,52 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                         }
                     }
                 });
+
+                mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, new LocationCallback() {
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        if (trainingStarted) {
+
+                            // update map
+                            if (locationResult != null) {
+
+                                for (Location location : locationResult.getLocations()) {
+                                    tempLocation = convertToLatLng(location);
+
+                                    if (getDistance(lastLocation, tempLocation) < MAX_DISTANCE_UPDATE_THRESHOLD) {
+
+                                        drawAPolyline(lastLocation, tempLocation);
+
+                                        // update distance
+                                        distance = distance + getDistance(lastLocation, tempLocation);
+                                        String distanceString = String.format("%.1f", distance) + "m";
+                                        trainingFragment.setTvDistance(distanceString);
+
+                                        // update speed
+                                        speed = (distance / time) * 1000;
+                                        String speedString = String.format("%.1f", speed) + "m/s";
+                                        trainingFragment.setTvSpeed(speedString);
+
+                                        lastLocation = tempLocation;
+                                        trainingData.updateLocLatList(lastLocation.latitude);
+                                        trainingData.updateLocLngList(lastLocation.longitude);
+
+                                        // finally do prompt
+                                        if (speed < 3) {
+                                            sp.play(speedupSound, 1, 1, 0, 0, 1);
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }, null /* Looper */);
             }
         } catch (SecurityException e) {
 
         }
 
-        mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (trainingStarted) {
-
-                    // update map
-                    if (locationResult != null) {
-
-                        for (Location location : locationResult.getLocations()) {
-                            tempLocation = convertToLatLng(location);
-
-                            if (getDistance(lastLocation, tempLocation) < MAX_DISTANCE_UPDATE_THRESHOLD) {
-
-                                drawAPolyline(lastLocation, tempLocation);
-
-                                // update distance
-                                distance = distance + getDistance(lastLocation, tempLocation);
-                                String distanceString = String.format("%.1f", distance) + "m";
-                                trainingFragment.setTvDistance(distanceString);
-
-                                // update speed
-                                speed = (distance / time) * 1000;
-                                String speedString = String.format("%.1f", speed) + "m/s";
-                                trainingFragment.setTvSpeed(speedString);
-
-                                lastLocation = tempLocation;
-                                trainingData.updateLocLatList(lastLocation.latitude);
-                                trainingData.updateLocLngList(lastLocation.longitude);
-
-                                // finally do prompt
-                                if (speed < 3) {
-                                    sp.play(speedupSound, 1, 1, 0, 0, 1);
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }
-        }, null /* Looper */);
     }
 
     private void initLocationRequestSettings() {
