@@ -19,20 +19,20 @@ public class FlicReceiver extends FlicBroadcastReceiver {
     public void onButtonUpOrDown(Context context, FlicButton button, boolean wasQueued, int timeDiff, boolean isUp, boolean isDown) {
 
         if (isDown) {
-            if (DockActivity.trainingStarted) {
+            if (MainActivity.trainingStarted) {
 //                Log.d("STIMULUS_MILI_BUTTON", System.currentTimeMillis() + "");
 //                Log.d("STIMULUS_MILI_BUTTON_NA", System.nanoTime() + "");
                 Long resMili = System.currentTimeMillis();
-                DockActivity.trainingData.updateResTimeList(resMili);
-                long lastSti = DockActivity.trainingData.getStiTimeList().get(DockActivity.trainingData.getStiTimeList().size() - 1);
+                MainActivity.trainingData.updateResTimeList(resMili);
+                long lastSti = MainActivity.trainingData.getStiTimeList().get(MainActivity.trainingData.getStiTimeList().size() - 1);
                 long resTime = resMili - lastSti;
-                DockActivity.resTotalCount++;
-                if(resTime <= DockActivity.APVT_RES_TIME_COUNTED_THRESHOLD) {
-                    DockActivity.resCorrectCount++;
-                    DockActivity.resTotalTime = DockActivity.resTotalTime + resTime;
+                MainActivity.resTotalCount++;
+                if(resTime <= MainActivity.APVT_RES_TIME_COUNTED_THRESHOLD) {
+                    MainActivity.resCorrectCount++;
+                    MainActivity.resTotalTime = MainActivity.resTotalTime + resTime;
                 }
 
-                Toast.makeText(context, "resTime is " + resTime + "correct count is " + DockActivity.resCorrectCount, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "resTime is " + resTime + "correct count is " + MainActivity.resCorrectCount, Toast.LENGTH_SHORT).show();
 
             }
         }

@@ -23,11 +23,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".MainActivity" />
-        <activity android:name=".TaskActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".TrainingActivity" />
-        <activity android:name=".ResultActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,11 +30,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".RecordActivity"
-            android:screenOrientation="landscape" />
 
-        <activity android:name=".DockActivity">
+        <activity android:name=".MainActivity">
 
 
 
