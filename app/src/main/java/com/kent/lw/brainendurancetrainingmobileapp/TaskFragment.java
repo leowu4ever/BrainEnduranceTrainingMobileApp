@@ -40,7 +40,39 @@ public class TaskFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         taskCommunicator = (TaskCommunicator) getActivity();
+        btnTask = getActivity().findViewById(R.id.btn_task);
+        btnTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                taskDialog.show();
+            }
+        });
 
+        btnDif = getActivity().findViewById(R.id.btn_dif);
+        btnDif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                difDialog.show();
+            }
+        });
+
+        btnStart = getActivity().findViewById(R.id.btn_start);
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                taskSelected = btnTask.getText().toString();
+                difSelected =  btnDif.getText().toString();
+                taskCommunicator.startTraining(taskSelected, difSelected);
+
+            }
+        });
+
+        initRbs();
+        initDialogs();
+
+    }
+
+    private void initDialogs() {
         taskDialog = new Dialog(getActivity());
         taskDialog.setContentView(R.layout.dialog_task);
         taskDialog.setCancelable(false);
@@ -58,34 +90,6 @@ public class TaskFragment extends Fragment {
         difCustomDialog.setCancelable(false);
         difCustomDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         difCustomDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
-
-
-        btnStart = getActivity().findViewById(R.id.btn_start);
-        btnStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                taskSelected = btnTask.getText().toString();
-                difSelected =  btnDif.getText().toString();
-                taskCommunicator.startTraining(taskSelected, difSelected);
-
-            }
-        });
-
-        btnTask = getActivity().findViewById(R.id.btn_task);
-        btnTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                taskDialog.show();
-            }
-        });
-
-        btnDif = getActivity().findViewById(R.id.btn_dif);
-        btnDif.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                difDialog.show();
-            }
-        });
 
         btnAPVT = taskDialog.findViewById(R.id.btn_apvt);
         btnAPVT.setOnClickListener(new View.OnClickListener() {
@@ -161,7 +165,6 @@ public class TaskFragment extends Fragment {
             }
         });
 
-        initRbs();
     }
 
     private void initRbs() {
