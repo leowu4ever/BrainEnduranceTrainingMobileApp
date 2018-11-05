@@ -10,10 +10,20 @@
     tools:context=".TaskFragment">
 
 
+    <View
+        android:id="@+id/view4"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="1"
+        android:background="@color/colorPrimary" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="0dp"
         android:orientation="horizontal">
 
 
@@ -32,7 +42,7 @@
                 android:src="@drawable/ic_brain" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:orientation="vertical">
@@ -41,16 +51,24 @@
                     android:id="@+id/textView10"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/cardview_light_background"
                     android:text="Cognitive Task"
-                    android:textAlignment="viewStart"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="false"
                     android:textSize="12sp" />
 
-                <Spinner
-                    android:id="@+id/spinner_task"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:autofillHints="Task"
-                    android:entries="@array/task_name" />
+
+                <Button
+                    android:id="@+id/btn_task"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/cardview_light_background"
+                    android:elevation="0dp"
+                    android:text="Please select"
+                    android:textAlignment="viewStart"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -77,7 +95,7 @@
                 android:src="@drawable/ic_dif" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:orientation="vertical">
@@ -88,14 +106,22 @@
                     android:layout_height="wrap_content"
                     android:text="Difficult Level"
                     android:textAlignment="viewStart"
+                    android:textAllCaps="false"
                     android:textSize="12sp" />
 
-                <Spinner
-                    android:id="@+id/spinner_dif"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:autofillHints="Task"
-                    android:entries="@array/task_dif" />
+                <Button
+                    android:id="@+id/btn_dif"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:background="@color/common_google_signin_btn_text_dark_default"
+                    android:elevation="0dp"
+                    android:text="Please select"
+                    android:textAlignment="viewStart"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
             </LinearLayout>
 
         </LinearLayout>
@@ -117,7 +143,7 @@
         android:layout_margin="10dp"
         android:background="@drawable/button_rounded_corner"
         android:elevation="0dp"
-        android:text="Start Training"
+        android:text="Start"
         android:textAllCaps="true"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textStyle="bold" />

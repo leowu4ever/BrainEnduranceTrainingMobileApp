@@ -37,8 +37,8 @@
 
             <ImageButton
                 android:id="@+id/btn_profile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_margin="5dp"
                 android:adjustViewBounds="true"
                 android:background="@drawable/button_circle"
@@ -50,8 +50,8 @@
 
             <ImageButton
                 android:id="@+id/btn_flic"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_margin="5dp"
                 android:background="@drawable/button_circle"
                 android:padding="5dp"
