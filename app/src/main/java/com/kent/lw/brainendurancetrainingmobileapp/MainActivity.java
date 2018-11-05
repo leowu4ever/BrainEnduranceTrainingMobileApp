@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private final int W_AVT_NUMBER_OF_SHORTER_ESAY = 40;    // NEED TO BE CHECKED
     private final int W_AVT_NUMBER_OF_SHORTER_MEDIUM = 40;  // NEED TO BE CHECKED
     private final int W_AVT_NUMBER_OF_SHORTER_HARD = 40;    // NEED TO BE CHECKED
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private final double MAG_THRESHOLD = 7.0;
     private FrameLayout container;
     // UI
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     // map
     private GoogleMap mMap;
-    private boolean mLocationPermissionGranted;
+    public static boolean mLocationPermissionGranted;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private LatLng curLocation, lastLocation;
     private boolean mapInited = false;

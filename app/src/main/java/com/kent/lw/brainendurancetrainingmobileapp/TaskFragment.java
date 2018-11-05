@@ -67,9 +67,8 @@ public class TaskFragment extends Fragment {
             }
         });
 
-        initRbs();
         initDialogs();
-
+        initRbs();
     }
 
     private void initDialogs() {

@@ -1,8 +1,12 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -50,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         };
+        getLocationPermission();
     }
 
     private void startSignIn() {
@@ -66,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (!task.isSuccessful()) {
                         Toast.makeText(LoginActivity.this, "fail to login", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(LoginActivity.this, "login successfully", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(LoginActivity.this, "login successfully", Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -77,6 +82,21 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    // map
+    private void getLocationPermission() {
+
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            MainActivity.mLocationPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MainActivity.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
     }
 }
 
