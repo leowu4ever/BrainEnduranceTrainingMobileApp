@@ -75,11 +75,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private final int A_PVT_INTERVAL_MEDIUM = 8 * 1000;
     private final int A_PVT_INTERVAL_HARD = 11 * 1000;
 
-
-
-
-
-
     // W-AVT
     private final String TASK_W_AVT = "W-AVT";
 
@@ -151,8 +146,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     // distance
     private double distance, speed;
-    private LatLng testLast, tempLocation;
-    private boolean testInit;
+    private LatLng tempLocation;
 
     // data collection
     public static TrainingData trainingData;
@@ -182,24 +176,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
         transaction.commit();
         initDialog();
-
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                profileDialog.dismiss();
-            }
-        });
-
-
-        btnProfile = findViewById(R.id.btn_profile);
-
-        btnProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                profileDialog.show();
-            }
-        });
+        initBtns();
 
         // -- map --
         getLocationPermission();
@@ -219,6 +196,23 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         // flic
         initFlic();
 
+
+        // firebase data model
+        trainingData = new TrainingData();
+        firebaseHelper = new FirebaseHelper();
+    }
+
+    private void initBtns() {
+        btnProfile = findViewById(R.id.btn_profile);
+
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                profileDialog.show();
+            }
+        });
+
         btnFlic = findViewById(R.id.btn_flic);
         btnFlic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,10 +229,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 }
             }
         });
-
-        trainingData = new TrainingData();
-        firebaseHelper = new FirebaseHelper();
-
     }
 
     private void saveDataToFirebase() {
@@ -302,7 +292,12 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         profileDialog.setContentView(R.layout.dialog_profile);
         btnBack = profileDialog.findViewById(R.id.btn_back);
         profileDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                profileDialog.dismiss();
+            }
+        });
 
     }
 
@@ -316,22 +311,18 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         transaction.add(R.id.container, trainingFragment, "TRAINING_FRAGMENT");
         transaction.commit();
 
-
         // start training
 
         // start  map
 
         // reset training dat
         trainingData.resetAllData();
-
         trainingData.updateTask(taskSelected);
         trainingData.updateDif(difSelected);
         trainingData.updateId(System.currentTimeMillis());
-
         resetTrainingData();
 
         // get parameters // passing as parameters
-
         switch (taskSelected) {
             case TASK_A_PVT:
 
@@ -395,9 +386,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             }
         };
         handler.postDelayed(stimulusRunnable, 0);
-
         trainingStarted = true;
-
     }
 
     @Override
