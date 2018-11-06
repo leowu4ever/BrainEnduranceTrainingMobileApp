@@ -28,7 +28,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +37,6 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -69,24 +67,45 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     private ImageButton btnProfile, btnFlic;
 
-    // Task TAG
-    private final String A_PVT = "A-PVT";
-    private final String W_AVT = "W-AVT";
-    private final String EASY = "Easy";
-    private final String MEDIUM = "Medium";
-    private final String HARD = "Hard";
-    public static boolean trainingStarted = false;
+    // A-PVT
+    private final String TASK_A_PVT = "A-PVT";
     private final int A_PVT_DURATION = 10 * 60 * 1000;
-    private final int W_AVT_DURATION = 60 * 60 * 1000;
+
     private final int A_PVT_INTERVAL_EASY = 4 * 1000;
     private final int A_PVT_INTERVAL_MEDIUM = 8 * 1000;
     private final int A_PVT_INTERVAL_HARD = 11 * 1000;
+
+
+
+
+
+
+    // W-AVT
+    private final String TASK_W_AVT = "W-AVT";
+
+    private final int W_AVT_DURATION = 60 * 60 * 1000;
+
     private final int W_AVT_INTERVAL = 2 * 1000;
+
     private final int W_AVT_NUMBER_OF_SHORTER_ESAY = 40;    // NEED TO BE CHECKED
     private final int W_AVT_NUMBER_OF_SHORTER_MEDIUM = 40;  // NEED TO BE CHECKED
     private final int W_AVT_NUMBER_OF_SHORTER_HARD = 40;    // NEED TO BE CHECKED
+
+    // VISUAL
+    private final String TASK_VISUAL = "Visual";
+
+    // DIF
+    private final String DIF_EASY = "Easy";
+    private final String DIF_MEDIUM = "Medium";
+    private final String DIF_HARD = "Hard";
+    private final String DIF_ADAPTIVE = "Adaptive";
+    private final String DIF_CUSTOM = "Custom";
+
+    //
+    public static boolean trainingStarted = false;
+
+    // permission
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private final double MAG_THRESHOLD = 7.0;
 
     // UI
     private Button btnResume, btnOK, btnBack;
@@ -314,27 +333,27 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         // get parameters // passing as parameters
 
         switch (taskSelected) {
-            case A_PVT:
+            case TASK_A_PVT:
 
                 trainingDuration = A_PVT_DURATION;
 
                 // stimulus
                 switch (difSelected) {
-                    case EASY:
+                    case DIF_EASY:
                         stimulusInterval = A_PVT_INTERVAL_EASY;
                         break;
 
-                    case MEDIUM:
+                    case DIF_MEDIUM:
                         stimulusInterval = A_PVT_INTERVAL_MEDIUM;
                         break;
 
-                    case HARD:
+                    case DIF_HARD:
                         stimulusInterval = A_PVT_INTERVAL_HARD;
                         break;
                 }
                 break;
 
-            case W_AVT:
+            case TASK_W_AVT:
                 stimulusInterval = W_AVT_INTERVAL;
                 trainingDuration = W_AVT_DURATION;
                 break;
