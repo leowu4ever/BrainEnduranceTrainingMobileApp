@@ -87,11 +87,15 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private final int W_AVT_NUMBER_OF_SHORTER_HARD = 40;    // NEED TO BE CHECKED
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private final double MAG_THRESHOLD = 7.0;
-    private FrameLayout container;
+
     // UI
     private Button btnResume, btnOK, btnBack;
+
     // fragments
+    private FragmentManager fragmentManager;
+    private FragmentTransaction transaction;
     private TaskFragment taskFragment;
+    private TrainingFragment trainingFragment;
 
     // ui
     private Dialog pauseDialog, finishDialog, profileDialog;
@@ -100,25 +104,21 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private GoogleMap mMap;
     public static boolean mLocationPermissionGranted;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-    private LatLng curLocation, lastLocation;
+    private LatLng lastLocation;
     private boolean mapInited = false;
     private LocationRequest mLocationRequest;
-    private TrainingFragment trainingFragment;
-    private FragmentManager fragmentManager;
-    private FragmentTransaction transaction;
     private List<Polyline> polylineList;
     private int MIN_DISTANCE_UPDATE_THRESHOLD = 10;
 
     // acc
     private SensorManager sm;
     private Sensor s;
-    private double x, y, z, xLast, yLast, zLast, mag;
-    private int stepsLast, steps, stepsDiff, stepsTemp;
+    private double x, y, z;
     private int MAX_DISTANCE_UPDATE_THRESHOLD = 200;
 
     // runnable
     private Handler handler;
-    private Runnable stimulusRunnable, durationRunnable, speedRunnable, mapRunnable;
+    private Runnable stimulusRunnable, durationRunnable;
     // duration
     private long time, hour, min, sec;
     private final int MAP_UPDATE_INTERVAL = 3000;
@@ -154,8 +154,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        container = findViewById(R.id.container);
-
         taskFragment = new TaskFragment();
         trainingFragment = new TrainingFragment();
 
@@ -186,7 +184,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         // -- map --
         getLocationPermission();
-        curLocation = new LatLng(0, 0);
         lastLocation = new LatLng(0, 0);
         initMap();
         polylineList = new ArrayList<Polyline>();
@@ -393,7 +390,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         // resume handler
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
-        handler.removeCallbacks(mapRunnable);
         trainingStarted = false;
     }
 
@@ -430,7 +426,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         finishDialog.show();
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
-        handler.removeCallbacks(mapRunnable);
         trainingStarted = false;
         removePolylines();
 
@@ -443,7 +438,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         handler.postDelayed(durationRunnable, 1000);
         handler.postDelayed(stimulusRunnable, 0);
-        handler.postDelayed(mapRunnable, 0);
         trainingStarted = true;
 
     }
@@ -582,7 +576,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         } catch (SecurityException e) {
 
         }
-
     }
 
     private void initLocationRequestSettings() {
@@ -616,11 +609,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         return new LatLng(location.getLatitude(), location.getLongitude());
     }
 
-    private void moveCam(LatLng latLng, float zoom) {
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-    }
-
-
     // acc
     public void initAcc() {
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -640,11 +628,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         x = event.values[0];
         y = event.values[1];
         z = event.values[2];
-        mag = Math.sqrt(x * x + y * y + z * z);
-
-        if (mag >= MAG_THRESHOLD) {
-            steps++;
-        }
+        Log.d("ACC", x + " " + y + " " + z);
     }
 
     @Override
