@@ -56,6 +56,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import io.flic.lib.FlicAppNotInstalledException;
 import io.flic.lib.FlicBroadcastReceiverFlags;
@@ -66,6 +67,10 @@ import io.flic.lib.FlicManagerInitializedCallback;
 public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, OnMapReadyCallback, SensorEventListener {
 
     private ImageButton btnProfile, btnFlic;
+
+    // A-PVT-CUSTOM
+    public static int apvtDuration, apvtStiIntervalMin, apvtStiIntervalMax,  apvtBgNoise, apvtValidResThresholdMin, apvtValidResThresholdMax;
+    public static float apvtStiDurationMin, apvtStiDurationMax, apvtToneVolumeMin, apvtToneVolumeMax;
 
     // A-PVT
     private final String TASK_A_PVT = "A-PVT";
@@ -162,6 +167,10 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static float art, accuracy;
     public static long APVT_RES_TIME_COUNTED_THRESHOLD = 500;
 
+
+    // TEMP
+    Random rd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -196,10 +205,12 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         // flic
         initFlic();
 
-
         // firebase data model
         trainingData = new TrainingData();
         firebaseHelper = new FirebaseHelper();
+
+        // temp
+        rd = new Random();
     }
 
     private void initBtns() {
@@ -322,71 +333,124 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         trainingData.updateId(System.currentTimeMillis());
         resetTrainingData();
 
-        // get parameters // passing as parameters
-        switch (taskSelected) {
-            case TASK_A_PVT:
 
-                trainingDuration = A_PVT_DURATION;
+        if(!difSelected.equals(DIF_CUSTOM)) {
+            // get parameters // passing as parameters
+            switch (taskSelected) {
+                case TASK_A_PVT:
 
-                // stimulus
-                switch (difSelected) {
-                    case DIF_EASY:
-                        stimulusInterval = A_PVT_INTERVAL_EASY;
-                        break;
+                    trainingDuration = A_PVT_DURATION;
 
-                    case DIF_MEDIUM:
-                        stimulusInterval = A_PVT_INTERVAL_MEDIUM;
-                        break;
+                    // stimulus
+                    switch (difSelected) {
+                        case DIF_EASY:
+                            stimulusInterval = A_PVT_INTERVAL_EASY;
+                            break;
 
-                    case DIF_HARD:
-                        stimulusInterval = A_PVT_INTERVAL_HARD;
-                        break;
+                        case DIF_MEDIUM:
+                            stimulusInterval = A_PVT_INTERVAL_MEDIUM;
+                            break;
+
+                        case DIF_HARD:
+                            stimulusInterval = A_PVT_INTERVAL_HARD;
+                            break;
+                    }
+                    break;
+
+                case TASK_W_AVT:
+                    stimulusInterval = W_AVT_INTERVAL;
+                    trainingDuration = W_AVT_DURATION;
+                    break;
+            }
+
+            // duration
+            durationRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    String durationString = hour + "h " + min + "m " + sec + "s";
+                    trainingFragment.setTvDuration(durationString);
+                    if (trainingDuration > 0) {
+                        trainingDuration = trainingDuration - 1000;
+                        time = time + 1000;
+                        hour = (trainingDuration) / 1000 / 3600;
+                        min = (trainingDuration / 1000) / 60;
+                        sec = (trainingDuration / 1000) % 60;
+                        handler.postDelayed(this, 1000);
+                    } else {
+                        finishTraining();
+                    }
+
                 }
-                break;
+            };
+            handler.postDelayed(durationRunnable, 0);
 
-            case TASK_W_AVT:
-                stimulusInterval = W_AVT_INTERVAL;
-                trainingDuration = W_AVT_DURATION;
-                break;
+            // simtimulus
+            stimulusRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (trainingDuration > 0) {
+                        // can do volume and priority for background noise
+                        sp.play(beepSound, 1f, 1f, 0, 0, 1);
+
+                        trainingData.updateStiTimeList(System.currentTimeMillis());
+                        stiTotalCount++;
+                        handler.postDelayed(this, stimulusInterval);
+                    }
+                }
+            };
+            handler.postDelayed(stimulusRunnable, 0);
+            trainingStarted = true;
+        } else {
+
+            // CUSTOM
+
+
+            // duration
+            durationRunnable = new Runnable() {
+                @Override
+                public void run() {
+
+                    if (apvtDuration > 0) {
+                        String durationString = min + "m " + sec + "s";
+                        trainingFragment.setTvDuration(durationString);
+
+                        min = (apvtDuration / 1000) / 60;
+                        sec = (apvtDuration / 1000) % 60;
+                        apvtDuration = apvtDuration - 1000;
+                        time = time + 1000;
+                        handler.postDelayed(this, 1000);
+                    } else {
+                        finishTraining();
+                    }
+                }
+            };
+            handler.postDelayed(durationRunnable, 0);
+
+            // simtimulus
+            stimulusRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (apvtDuration > 0) {
+                        // can do volume and priority for background noise
+                        float randomDuration = rd.nextFloat() * (apvtStiDurationMax - apvtStiDurationMin) + apvtStiDurationMin;
+                        Log.d("duration",  apvtStiDurationMin + " " + apvtStiDurationMax + " " + randomDuration);
+
+                        float randomVolume = rd.nextFloat() * (apvtToneVolumeMax - apvtToneVolumeMin) + apvtToneVolumeMin;
+                        Log.d("volume",  apvtToneVolumeMin + " " + apvtToneVolumeMax + " " + randomVolume);
+
+                        sp.play(beepSound, randomVolume , randomVolume, 0, 0, randomDuration);
+
+                        trainingData.updateStiTimeList(System.currentTimeMillis());
+                        stiTotalCount++;
+
+                        int randomInterval = rd.nextInt(apvtStiIntervalMax - apvtStiIntervalMin + 1) + apvtStiIntervalMin;
+                        handler.postDelayed(this, randomInterval * 1000);
+                    }
+                }
+            };
+            handler.postDelayed(stimulusRunnable, 0);
+            trainingStarted = true;
         }
-
-        // duration
-        durationRunnable = new Runnable() {
-            @Override
-            public void run() {
-                String durationString = hour + "h " + min + "m " + sec + "s";
-                trainingFragment.setTvDuration(durationString);
-                if (trainingDuration > 0) {
-                    trainingDuration = trainingDuration - 1000;
-                    time = time + 1000;
-                    hour = (trainingDuration) / 1000 / 3600;
-                    min = (trainingDuration / 1000) / 60;
-                    sec = (trainingDuration / 1000) % 60;
-                    handler.postDelayed(this, 1000);
-                } else {
-                    finishTraining();
-                }
-
-            }
-        };
-        handler.postDelayed(durationRunnable, 0);
-
-        // simtimulus
-        stimulusRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (trainingDuration > 0) {
-                    // can do volume and priority for background noise
-                    sp.play(beepSound, 1f, 1f, 0, 0, 1);
-
-                    trainingData.updateStiTimeList(System.currentTimeMillis());
-                    stiTotalCount++;
-                    handler.postDelayed(this, stimulusInterval);
-                }
-            }
-        };
-        handler.postDelayed(stimulusRunnable, 0);
-        trainingStarted = true;
     }
 
     @Override
@@ -405,23 +469,20 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public void finishTraining() {
 
         TextView tvFinishDuration = finishDialog.findViewById(R.id.tv_finish_duration);
-
         TextView tvFinishDistance = finishDialog.findViewById(R.id.tv_finish_distance);
-
         TextView tvFinishSpeed = finishDialog.findViewById(R.id.tv_finish_speed);
         TextView tvFinishART = finishDialog.findViewById(R.id.tv_finish_ast);
         TextView tvFinishAccuracy = finishDialog.findViewById(R.id.tv_finish_accuracy);
 
         // update finish dialog
-
         hour = (time) / 1000 / 3600;
         min = (time / 1000) / 60;
         sec = (time / 1000) % 60;
+
         String distanceString = String.format("%.1f", distance);
         String speedString = String.format("%.1f", speed);
         String artString = String.format("%.1f", (resTotalTime/resCorrectCount));
         String accuracyString = String.format("%.1f", (resCorrectCount/stiTotalCount * 100));
-
 
         tvFinishDuration.setText("Duration: " + min + "M" + sec + "S");
         tvFinishDistance.setText("Distance: " + distanceString + "KM");
@@ -429,7 +490,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         tvFinishART.setText("Average Response Time: " + artString + "MS");
         tvFinishAccuracy.setText("Accuracy (correct response/number of stimulus):" + accuracyString + "%" + " (" + (resCorrectCount + "/" + stiTotalCount) + ")");
-
 
         finishDialog.show();
         handler.removeCallbacks(durationRunnable);

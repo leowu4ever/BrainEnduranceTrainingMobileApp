@@ -173,6 +173,7 @@ public class TaskFragment extends Fragment {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
                 tvTaskDuration.setText("Task Duration: " + rightPinValue + "min");
+                MainActivity.apvtDuration = Integer.parseInt(rightPinValue) * 60 * 1000;
             }
         });
 
@@ -181,7 +182,9 @@ public class TaskFragment extends Fragment {
         rbInterval.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvInterval.setText("Stimulus Interval: fron " + (Integer.parseInt(leftPinValue) * 100) + "ms" + " to " + (Integer.parseInt(rightPinValue) * 100) + "ms");
+                tvInterval.setText("Stimulus Interval: from " + (Integer.parseInt(leftPinValue) * 1000) + "ms" + " to " + (Integer.parseInt(rightPinValue) * 1000) + "ms");
+                MainActivity.apvtStiIntervalMin = Integer.parseInt(leftPinValue);
+                MainActivity.apvtStiIntervalMax = Integer.parseInt(rightPinValue);
             }
         });
 
@@ -190,7 +193,9 @@ public class TaskFragment extends Fragment {
         rbStiDuration.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvStiDuration.setText("Stimulus Duration: fron " + (Integer.parseInt(leftPinValue) * 100) + "ms" + " to " + (Integer.parseInt(rightPinValue) * 100) + "ms");
+                tvStiDuration.setText("Stimulus Duration: from " + (Float.parseFloat(leftPinValue) * 100) + "%" + " to " + (Float.parseFloat(rightPinValue) * 100) + "%");
+                MainActivity.apvtStiDurationMin = Float.parseFloat(leftPinValue);
+                MainActivity.apvtStiDurationMax = Float.parseFloat(rightPinValue);
             }
         });
 
@@ -199,7 +204,9 @@ public class TaskFragment extends Fragment {
         rbVolume.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvVolume.setText("Tone Volume: fron " + (Integer.parseInt(leftPinValue) * 100) + "%" + " to " + (Integer.parseInt(rightPinValue) * 100) + "%");
+                tvVolume.setText("Tone Volume: from " + (Float.parseFloat(leftPinValue) * 100) + "%" + " to " + (Float.parseFloat(rightPinValue) * 100) + "%");
+                MainActivity.apvtToneVolumeMin = Float.parseFloat(leftPinValue);
+                MainActivity.apvtToneVolumeMax = Float.parseFloat(rightPinValue);
             }
         });
 
@@ -209,6 +216,9 @@ public class TaskFragment extends Fragment {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
                 tvNoise.setText("Background Noise: " + (Integer.parseInt(rightPinValue) * 100) + "%");
+                MainActivity.apvtBgNoise = Integer.parseInt(rightPinValue);
+
+
             }
         });
 
@@ -218,6 +228,8 @@ public class TaskFragment extends Fragment {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
                 tvThreshold.setText("Vaild Response : from " + (Integer.parseInt(leftPinValue) * 100) + "ms" + " to " + (Integer.parseInt(rightPinValue) * 100) + "ms");
+                MainActivity.apvtValidResThresholdMin = Integer.parseInt(leftPinValue);
+                MainActivity.apvtValidResThresholdMax = Integer.parseInt(rightPinValue);
             }
         });
     }
