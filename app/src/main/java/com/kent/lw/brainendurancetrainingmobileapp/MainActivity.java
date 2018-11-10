@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     // acc
     private SensorManager sm;
-    private Sensor s;
+    private Sensor accelerometer, gyroscope;
     private double x, y, z;
     private int MAX_DISTANCE_UPDATE_THRESHOLD = 200;
 
@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             durationRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    String durationString = hour + "h " + min + "m " + sec + "s";
+                    String durationString = hour + "h " + min + "m " + sec + "accelerometer";
                     trainingFragment.setTvDuration(durationString);
                     if (trainingDuration > 0) {
                         trainingDuration = trainingDuration - 1000;
@@ -357,7 +357,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 public void run() {
 
                     if (apvtDuration > 0) {
-                        String durationString = min + "m " + sec + "s";
+                        String durationString = min + "m " + sec + "accelerometer";
                         trainingFragment.setTvDuration(durationString);
 
                         min = (apvtDuration / 1000) / 60;
@@ -574,7 +574,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                                         // update speed
                                         speed = (distance / time) * 1000;
-                                        String speedString = String.format("%.1f", speed) + "m/s";
+                                        String speedString = String.format("%.1f", speed) + "m/accelerometer";
                                         trainingFragment.setTvSpeed(speedString);
 
                                         lastLocation = tempLocation;
@@ -602,23 +602,35 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // acc
     public void initAcc() {
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        // use accelerometer
-        if (sm.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION) != null) {
-            s = sm.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-            sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
-            Log.d("acc", "found");
+
+        if (sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null && sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null) {
+            accelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            gyroscope = sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+
+            sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+            sm.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_NORMAL);
 
         } else {
-            Log.d("acc", "not found");
         }
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        x = event.values[0];
-        y = event.values[1];
-        z = event.values[2];
-        Log.d("ACC", x + " " + y + " " + z);
+
+
+        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            x = event.values[0];
+            y = event.values[1];
+            z = event.values[2];
+            Log.d("ACC", x + " " + y + " " + z);
+        }
+
+        if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+            x = event.values[0];
+            y = event.values[1];
+            z = event.values[2];
+            Log.d("GYRO", x + " " + y + " " + z);
+        }
     }
 
     @Override
