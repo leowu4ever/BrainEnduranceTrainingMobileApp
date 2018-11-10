@@ -146,6 +146,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -200,7 +203,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dh.showProfileDialog();
+
+                Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(i);
             }
         });
 

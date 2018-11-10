@@ -30,12 +30,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".MainActivity">
-
-
-
-        </activity>
+        <activity android:name=".MainActivity"></activity>
 
         <receiver
             android:name=".FlicReceiver"
@@ -46,7 +41,7 @@
             </intent-filter>
         </receiver>
 
-
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>

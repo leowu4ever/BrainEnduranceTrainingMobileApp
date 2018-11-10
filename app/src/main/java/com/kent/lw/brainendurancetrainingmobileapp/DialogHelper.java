@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class DialogHelper {
 
 
-    public Dialog pauseDialog, finishDialog, profileDialog;
+    public Dialog pauseDialog, finishDialog;
     public Button btnResume, btnOK, btnBack;
     public TextView tvFinishDuration, tvFinishDistance, tvFinishSpeed, tvFinishART, tvFinishAccuracy;
 
@@ -19,8 +19,6 @@ public class DialogHelper {
         //dialog
         pauseDialog = new Dialog(context);
         finishDialog = new Dialog(context);
-        profileDialog = new Dialog(context);
-
         pauseDialog.setContentView(R.layout.dialog_pause);
         pauseDialog.setCancelable(false);
         pauseDialog.setCanceledOnTouchOutside(false);
@@ -52,17 +50,6 @@ public class DialogHelper {
                 MainActivity.showTaskFragment();
             }
         });
-
-        profileDialog.setContentView(R.layout.dialog_profile);
-        btnBack = profileDialog.findViewById(R.id.btn_back);
-        profileDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                profileDialog.dismiss();
-            }
-        });
-
 
         tvFinishDuration = finishDialog.findViewById(R.id.tv_finish_duration);
         tvFinishDistance = finishDialog.findViewById(R.id.tv_finish_distance);
@@ -97,9 +84,6 @@ public class DialogHelper {
         pauseDialog.show();
     }
 
-    public void showProfileDialog() {
-        profileDialog.show();
-    }
 }
 
 
