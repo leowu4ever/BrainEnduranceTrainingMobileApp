@@ -1,6 +1,5 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,10 +27,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.ButtCap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -107,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private boolean mapInited = false;
     private LocationRequest mLocationRequest;
     private List<Polyline> polylineList;
-    private int MIN_DISTANCE_UPDATE_THRESHOLD = 10;
     public MapHelper mh;
 
     // acc
@@ -121,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static  Runnable stimulusRunnable, durationRunnable;
     // duration
     private long time, hour, min, sec;
-    private final int MAP_UPDATE_INTERVAL = 3000;
 
     // stimulus
     private int stimulusInterval, trainingDuration;
@@ -147,7 +142,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static float art, accuracy;
     public static long APVT_RES_TIME_COUNTED_THRESHOLD = 500;
 
-
     // TEMP
     Random rd;
 
@@ -164,14 +158,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         sh.initSoundHelper(this);
 
 
-        taskFragment = new TaskFragment();
-        trainingFragment = new TrainingFragment();
-
-        fragmentManager = getSupportFragmentManager();
-        transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-        transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
-        transaction.commit();
+        initFragments();
         //
         // initDialog();
         initBtns();
@@ -200,8 +187,17 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         mLocationRequest = new LocationRequest();
         mh.getLocationPermission(this);
 
+    }
 
+    private void initFragments() {
+        taskFragment = new TaskFragment();
+        trainingFragment = new TrainingFragment();
 
+        fragmentManager = getSupportFragmentManager();
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
+        transaction.commit();
     }
 
     private void initBtns() {
@@ -252,8 +248,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             e.printStackTrace();
         }
     }
-
-
 
     // fragment
     @Override
