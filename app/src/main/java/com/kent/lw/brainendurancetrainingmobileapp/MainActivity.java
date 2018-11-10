@@ -442,6 +442,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         saveDataToLocal();
         trainingData.printAllData();
         hideTrainingFragment();
+
+        btnProfile.setVisibility(View.VISIBLE);
+        btnFlic.setVisibility(View.VISIBLE);
     }
 
     public static void resumeTraining() {

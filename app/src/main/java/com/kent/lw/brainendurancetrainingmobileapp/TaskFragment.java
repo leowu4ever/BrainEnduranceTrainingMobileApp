@@ -20,8 +20,8 @@ import com.appyvet.materialrangebar.RangeBar;
  */
 public class TaskFragment extends Fragment {
 
-    private Dialog taskDialog, difDialog,difCustomDialog;
-    private Button btnStart, btnTask, btnDif, btnAPVT, btnWAVT, btnEasy, btnMedium, btnHard, btnAdaptive, btnCustom, btnSave;
+    private Dialog taskDialog, difDialog,difCustomDialog, activityDialog, durationDialog;
+    private Button btnStart, btnActivity, btnDuration, btnTask, btnDif, btnAPVT, btnWAVT, btnVisual, btnEasy, btnMedium, btnHard, btnAdaptive, btnCustom, btnSave, btnWalking, btnMarching, btnRunning, btnDurationSave;
     private String taskSelected, difSelected;
 
     private RangeBar rbTaskDuration, rbInterval, rbStiDuration, rbVolume, rbNoise, rbThreshold;
@@ -56,6 +56,21 @@ public class TaskFragment extends Fragment {
             }
         });
 
+        btnActivity = getActivity().findViewById(R.id.btn_activity);
+        btnActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activityDialog.show();
+            }
+        });
+
+        btnDuration = getActivity().findViewById(R.id.btn_duration);
+        btnDuration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                durationDialog.show();
+            }
+        });
         btnStart = getActivity().findViewById(R.id.btn_start);
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +105,48 @@ public class TaskFragment extends Fragment {
         difCustomDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         difCustomDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
 
+        activityDialog = new Dialog(getActivity());
+        activityDialog.setContentView(R.layout.dialog_activity);
+        activityDialog.setCancelable(false);
+        activityDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        activityDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
+
+        durationDialog = new Dialog(getActivity());
+        durationDialog.setContentView(R.layout.dialog_duration);
+        durationDialog.setCancelable(false);
+        durationDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        durationDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
+
+
+        btnWalking = activityDialog.findViewById(R.id.btn_walking);
+        btnWalking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnActivity.setText(btnWalking.getText());
+                activityDialog.dismiss();
+            }
+        });
+
+        btnRunning = activityDialog.findViewById(R.id.btn_running);
+        btnRunning.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnActivity.setText(btnRunning.getText());
+                activityDialog.dismiss();
+            }
+        });
+
+        btnMarching = activityDialog.findViewById(R.id.btn_marching);
+        btnMarching.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnActivity.setText(btnMarching.getText());
+                activityDialog.dismiss();
+
+            }
+        });
+
+
         btnAPVT = taskDialog.findViewById(R.id.btn_apvt);
         btnAPVT.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +161,15 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 btnTask.setText(btnWAVT.getText());
+                taskDialog.dismiss();
+            }
+        });
+
+        btnVisual = taskDialog.findViewById(R.id.btn_visual);
+        btnVisual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnTask.setText(btnVisual.getText());
                 taskDialog.dismiss();
             }
         });
@@ -150,7 +216,6 @@ public class TaskFragment extends Fragment {
         btnCustom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnDif.setText(btnCustom.getText());
                 difDialog.dismiss();
                 difCustomDialog.show();
             }
@@ -161,21 +226,29 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 difCustomDialog.dismiss();
+                btnDif.setText(btnCustom.getText());
             }
         });
 
+        btnDurationSave = durationDialog.findViewById(R.id.btn_duration_save);
+        btnDurationSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                durationDialog.dismiss();
+                btnDuration.setText(rbTaskDuration.getRightPinValue() + " min");
+            }
+        });
     }
 
     private void initRbs() {
-        tvTaskDuration = difCustomDialog.findViewById(R.id.tv_task_duration);
-        rbTaskDuration = difCustomDialog.findViewById(R.id.rb_task_duration);
-        rbTaskDuration.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
-            @Override
-            public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvTaskDuration.setText("Task Duration: " + rightPinValue + "min");
-                MainActivity.apvtDuration = Integer.parseInt(rightPinValue) * 60 * 1000;
-            }
-        });
+
+
+        rbTaskDuration = durationDialog.findViewById(R.id.rb_task_duration);
+
+
+
+
+
 
         tvInterval = difCustomDialog.findViewById(R.id.tv_interval);
         rbInterval = difCustomDialog.findViewById(R.id.rb_interval);

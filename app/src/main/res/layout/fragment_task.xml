@@ -59,7 +59,7 @@
 
 
                 <Button
-                    android:id="@+id/btn_task"
+                    android:id="@+id/btn_activity"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/cardview_light_background"
@@ -110,7 +110,7 @@
                     android:textSize="12sp" />
 
                 <Button
-                    android:id="@+id/btn_dif"
+                    android:id="@+id/btn_duration"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0"
