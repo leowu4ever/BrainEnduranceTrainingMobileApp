@@ -48,6 +48,7 @@ public class DialogHelper {
             @Override
             public void onClick(View v) {
                 finishDialog.dismiss();
+
                 MainActivity.showTaskFragment();
             }
         });

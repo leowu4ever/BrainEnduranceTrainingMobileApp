@@ -21,5 +21,8 @@ public class FirebaseHelper {
         db.child(td.getName() + "/" + td.getId() + "/" + "locLng").setValue(td.getLocLngList());
         db.child(td.getName() + "/" + td.getId() + "/" + "stiTime").setValue(td.getStiTimeList());
         db.child(td.getName() + "/" + td.getId() + "/" + "resTime").setValue(td.getResTimeList());
+
+
+        //db.child("lwu@kentacuk").removeValue();
     }
 }

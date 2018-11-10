@@ -32,7 +32,6 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileWriter;
@@ -153,14 +152,10 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         dh = new DialogHelper();
         dh.initDialog(this);
 
-
         sh = new SoundHelper();
         sh.initSoundHelper(this);
 
-
         initFragments();
-        //
-        // initDialog();
         initBtns();
 
         // -- map --
@@ -192,7 +187,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private void initFragments() {
         taskFragment = new TaskFragment();
         trainingFragment = new TrainingFragment();
-
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
@@ -226,12 +220,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 }
             }
         });
-    }
-
-    private void saveDataToFirebase() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        trainingData.updateName(user.getEmail().replace(".", ""));
-        firebaseHelper.uploadAllData(trainingData);
     }
 
     private void saveDataToLocal() {
@@ -430,7 +418,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         trainingStarted = false;
         mh.removePolylines(polylineList);
 
-        saveDataToFirebase();
+        trainingData.updateName(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""));
+        firebaseHelper.uploadAllData(trainingData);
+
         saveDataToLocal();
         trainingData.printAllData();
     }
