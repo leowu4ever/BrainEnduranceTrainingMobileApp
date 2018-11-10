@@ -42,13 +42,12 @@ public class DialogHelper {
         finishDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         finishDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
 
-
         btnOK = finishDialog.findViewById(R.id.btn_ok);
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finishDialog.dismiss();
                 MainActivity.showTaskFragment();
+                finishDialog.dismiss();
             }
         });
 

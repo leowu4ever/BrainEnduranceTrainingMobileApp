@@ -196,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private void initFragments() {
         taskFragment = new TaskFragment();
         trainingFragment = new TrainingFragment();
+
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
@@ -310,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             durationRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    String durationString = hour + "h " + min + "m " + sec + "accelerometer";
+                    String durationString = hour + "h " + min + "m " + sec + "s";
                     trainingFragment.setTvDuration(durationString);
                     if (trainingDuration > 0) {
                         trainingDuration = trainingDuration - 1000;
@@ -357,7 +358,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 public void run() {
 
                     if (apvtDuration > 0) {
-                        String durationString = min + "m " + sec + "accelerometer";
+                        String durationString = min + "m " + sec + "s";
                         trainingFragment.setTvDuration(durationString);
 
                         min = (apvtDuration / 1000) / 60;
@@ -448,11 +449,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     }
 
     public static void resumeTraining() {
-
         handler.postDelayed(durationRunnable, 1000);
         handler.postDelayed(stimulusRunnable, 0);
         trainingStarted = true;
-
     }
 
     public static void showTaskFragment() {
@@ -520,7 +519,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 public void onComplete(@NonNull Task task) {
                     if (task.isSuccessful()) {
                         Location location = (Location) task.getResult();
-                        myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                        myLatLng = new LatLng(location.getLatitude() - 0.004, location.getLongitude());
                         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(myLatLng, 15);
                         mMap.animateCamera(cameraUpdate);
 
@@ -574,7 +573,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                                         // update speed
                                         speed = (distance / time) * 1000;
-                                        String speedString = String.format("%.1f", speed) + "m/accelerometer";
+                                        String speedString = String.format("%.1f", speed) + "m/s";
                                         trainingFragment.setTvSpeed(speedString);
 
                                         lastLocation = tempLocation;
