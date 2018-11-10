@@ -5,17 +5,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
-import android.media.AudioAttributes;
-import android.media.AudioManager;
-import android.media.SoundPool;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -29,9 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -50,14 +42,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.google.maps.android.SphericalUtil;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import io.flic.lib.FlicAppNotInstalledException;
 import io.flic.lib.FlicBroadcastReceiverFlags;
 import io.flic.lib.FlicButton;
@@ -87,10 +77,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     private final int W_AVT_INTERVAL = 2 * 1000;
 
-    private final int W_AVT_NUMBER_OF_SHORTER_ESAY = 40;    // NEED TO BE CHECKED
-    private final int W_AVT_NUMBER_OF_SHORTER_MEDIUM = 40;  // NEED TO BE CHECKED
-    private final int W_AVT_NUMBER_OF_SHORTER_HARD = 40;    // NEED TO BE CHECKED
-
     // VISUAL
     private final String TASK_VISUAL = "Visual";
 
@@ -111,13 +97,15 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private Button btnResume, btnOK, btnBack;
 
     // fragments
-    private FragmentManager fragmentManager;
-    private FragmentTransaction transaction;
-    private TaskFragment taskFragment;
-    private TrainingFragment trainingFragment;
+    public static FragmentManager fragmentManager;
+    public static FragmentTransaction transaction;
+    public static TaskFragment taskFragment;
+    public static TrainingFragment trainingFragment;
 
     // ui
     private Dialog pauseDialog, finishDialog, profileDialog;
+
+    public DialogHelper dh;
 
     // map
     private GoogleMap mMap;
@@ -136,8 +124,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private int MAX_DISTANCE_UPDATE_THRESHOLD = 200;
 
     // runnable
-    private Handler handler;
-    private Runnable stimulusRunnable, durationRunnable;
+    public static Handler handler;
+    public static  Runnable stimulusRunnable, durationRunnable;
     // duration
     private long time, hour, min, sec;
     private final int MAP_UPDATE_INTERVAL = 3000;
@@ -146,8 +134,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private int stimulusInterval, trainingDuration;
 
     // soundpool
-    private SoundPool sp;
-    private int beepSound, speedupSound;
+    private SoundHelper sh;
 
     // distance
     private double distance, speed;
@@ -176,6 +163,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dh = new DialogHelper();
+        dh.initDialog(this);
+
+
+        sh = new SoundHelper();
+        sh.initSoundHelper(this);
+
         taskFragment = new TaskFragment();
         trainingFragment = new TrainingFragment();
 
@@ -184,7 +178,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
         transaction.commit();
-        initDialog();
+        //
+        // initDialog();
         initBtns();
 
         // -- map --
@@ -198,9 +193,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         // runnable
         handler = new Handler();
-
-        // soundpool
-        initSoundPool();
 
         // flic
         initFlic();
@@ -263,54 +255,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         }
     }
 
-    private void initDialog() {
-        //dialog
-        pauseDialog = new Dialog(this);
-        finishDialog = new Dialog(this);
-        profileDialog = new Dialog(this);
 
-        pauseDialog.setContentView(R.layout.dialog_pause);
-        pauseDialog.setCancelable(false);
-        pauseDialog.setCanceledOnTouchOutside(false);
-        pauseDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        pauseDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
-
-        btnResume = pauseDialog.findViewById(R.id.btn_resume);
-        btnResume.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pauseDialog.dismiss();
-                resumeTraining();
-            }
-        });
-
-        finishDialog.setContentView(R.layout.dialog_finish);
-        finishDialog.setCancelable(false);
-        finishDialog.setCanceledOnTouchOutside(false);
-        finishDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        finishDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
-
-
-        btnOK = finishDialog.findViewById(R.id.btn_ok);
-        btnOK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finishDialog.dismiss();
-                showTaskFragment();
-            }
-        });
-
-        profileDialog.setContentView(R.layout.dialog_profile);
-        btnBack = profileDialog.findViewById(R.id.btn_back);
-        profileDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                profileDialog.dismiss();
-            }
-        });
-
-    }
 
     // fragment
     @Override
@@ -390,7 +335,10 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 public void run() {
                     if (trainingDuration > 0) {
                         // can do volume and priority for background noise
-                        sp.play(beepSound, 1f, 1f, 0, 0, 1);
+                        //sp.play(beepSound, 1f, 1f, 0, 0, 1);
+                        sh.playBeepSound(1,1,0,0,1);
+
+
 
                         trainingData.updateStiTimeList(System.currentTimeMillis());
                         stiTotalCount++;
@@ -438,7 +386,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                         float randomVolume = rd.nextFloat() * (apvtToneVolumeMax - apvtToneVolumeMin) + apvtToneVolumeMin;
                         Log.d("volume",  apvtToneVolumeMin + " " + apvtToneVolumeMax + " " + randomVolume);
 
-                        sp.play(beepSound, randomVolume , randomVolume, 0, 0, randomDuration);
+                        sh.playBeepSound(randomVolume,randomVolume,0,0,randomDuration);
 
                         trainingData.updateStiTimeList(System.currentTimeMillis());
                         stiTotalCount++;
@@ -457,8 +405,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public void pauseTraining() {
 
         // show dialog
-        pauseDialog.show();
-
+        dh.showPauseDialog();
         // resume handler
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
@@ -468,11 +415,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     @Override
     public void finishTraining() {
 
-        TextView tvFinishDuration = finishDialog.findViewById(R.id.tv_finish_duration);
-        TextView tvFinishDistance = finishDialog.findViewById(R.id.tv_finish_distance);
-        TextView tvFinishSpeed = finishDialog.findViewById(R.id.tv_finish_speed);
-        TextView tvFinishART = finishDialog.findViewById(R.id.tv_finish_ast);
-        TextView tvFinishAccuracy = finishDialog.findViewById(R.id.tv_finish_accuracy);
+
 
         // update finish dialog
         hour = (time) / 1000 / 3600;
@@ -484,14 +427,14 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         String artString = String.format("%.1f", (resTotalTime/resCorrectCount));
         String accuracyString = String.format("%.1f", (resCorrectCount/stiTotalCount * 100));
 
-        tvFinishDuration.setText("Duration: " + min + "M" + sec + "S");
-        tvFinishDistance.setText("Distance: " + distanceString + "KM");
-        tvFinishSpeed.setText("Speed: " + speedString + "M/S");
+        dh.setTvFinishDuration("Duration: " + min + "M" + sec + "S");
+        dh.setTvFinishDistance("Distance: " + distanceString + "KM");
+        dh.setTvFinishSpeed("Speed: " + speedString + "M/S");
 
-        tvFinishART.setText("Average Response Time: " + artString + "MS");
-        tvFinishAccuracy.setText("Accuracy (correct response/number of stimulus):" + accuracyString + "%" + " (" + (resCorrectCount + "/" + stiTotalCount) + ")");
+        dh.setTvFinishART("Average Response Time: " + artString + "MS");
+        dh.setTvFinishAccuracy("Accuracy (correct response/number of stimulus):" + accuracyString + "%" + " (" + (resCorrectCount + "/" + stiTotalCount) + ")");
 
-        finishDialog.show();
+        dh.showFinishDialog();
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
         trainingStarted = false;
@@ -502,7 +445,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         trainingData.printAllData();
     }
 
-    public void resumeTraining() {
+    public static void resumeTraining() {
 
         handler.postDelayed(durationRunnable, 1000);
         handler.postDelayed(stimulusRunnable, 0);
@@ -510,7 +453,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     }
 
-    public void showTaskFragment() {
+    public static void showTaskFragment() {
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.remove(trainingFragment);
@@ -631,7 +574,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                                         // finally do prompt
                                         if (speed < 3) {
-                                            sp.play(speedupSound, 1, 1, 0, 0, 1);
+                                            sh.playSpeedupSound(1,1,0,0,1);
+
                                         }
                                     }
                                 }
@@ -718,21 +662,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         resTotalTime = 0;
         art = 0;
         accuracy = 0;
-    }
-
-    private void initSoundPool() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .build();
-
-            sp = new SoundPool.Builder().setMaxStreams(6).setAudioAttributes(audioAttributes).build();
-        } else {
-            sp = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
-        }
-        beepSound = sp.load(this, R.raw.beep, 1);
-        speedupSound = sp.load(this, R.raw.speedup, 1);
     }
 
 
