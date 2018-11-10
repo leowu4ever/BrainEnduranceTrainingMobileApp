@@ -76,6 +76,12 @@ public class MapHelper {
             if (MainActivity.mLocationPermissionGranted) {
                 mMap.setMyLocationEnabled(true);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                mMap.getUiSettings().setZoomControlsEnabled(false);
+                mMap.getUiSettings().setCompassEnabled(false);
+                mMap.getUiSettings().setZoomGesturesEnabled(false);
+                mMap.getUiSettings().setTiltGesturesEnabled(false);
+                mMap.getUiSettings().setRotateGesturesEnabled(false);
+
 
             } else {
                 mMap.setMyLocationEnabled(false);

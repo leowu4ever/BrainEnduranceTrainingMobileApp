@@ -44,6 +44,7 @@ public class TrainingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 trainingCommunicator.finishTraining();
+
             }
         });
 

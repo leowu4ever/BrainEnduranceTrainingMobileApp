@@ -12,13 +12,15 @@ public class DialogHelper {
 
 
     public Dialog pauseDialog, finishDialog;
-    public Button btnResume, btnOK, btnBack;
+    public Button btnResume, btnOK;
     public TextView tvFinishDuration, tvFinishDistance, tvFinishSpeed, tvFinishART, tvFinishAccuracy;
 
     public void initDialog(Context context) {
         //dialog
         pauseDialog = new Dialog(context);
         finishDialog = new Dialog(context);
+
+
         pauseDialog.setContentView(R.layout.dialog_pause);
         pauseDialog.setCancelable(false);
         pauseDialog.setCanceledOnTouchOutside(false);
@@ -46,7 +48,6 @@ public class DialogHelper {
             @Override
             public void onClick(View v) {
                 finishDialog.dismiss();
-
                 MainActivity.showTaskFragment();
             }
         });

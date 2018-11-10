@@ -261,11 +261,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     @Override
     public void startTraining(String taskSelected, String difSelected) {
         // replace task fragment with training fragment
-        transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-        transaction.remove(taskFragment);
-        transaction.add(R.id.container, trainingFragment, "TRAINING_FRAGMENT");
-        transaction.commit();
+        showTrainingFragment();
 
         // start training
 
@@ -443,6 +439,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         saveDataToLocal();
         trainingData.printAllData();
+        hideTrainingFragment();
     }
 
     public static void resumeTraining() {
@@ -456,9 +453,25 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static void showTaskFragment() {
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-        transaction.remove(trainingFragment);
         transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
         transaction.commit();
+    }
+
+    public static void hideTrainingFragment() {
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.remove(trainingFragment);
+        transaction.commit();
+    }
+
+
+    public static void showTrainingFragment() {
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.remove(taskFragment);
+        transaction.add(R.id.container, trainingFragment, "TRAINING_FRAGMENT");
+        transaction.commit();
+
     }
 
     @Override
