@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView tvEmail, tvPassword;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-
+    public MapHelper mh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         };
-        getLocationPermission();
+
+        mh = new MapHelper();
+        mh.getLocationPermission(this);
     }
 
     private void startSignIn() {
@@ -82,21 +84,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    // map
-    private void getLocationPermission() {
-
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            MainActivity.mLocationPermissionGranted = true;
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    MainActivity.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
     }
 }
 

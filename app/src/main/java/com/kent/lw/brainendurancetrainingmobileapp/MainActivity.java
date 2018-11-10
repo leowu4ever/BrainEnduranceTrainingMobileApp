@@ -1,7 +1,6 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,14 +13,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -41,7 +37,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
-import com.google.maps.android.SphericalUtil;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -93,8 +88,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // permission
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
 
-    // UI
-    private Button btnResume, btnOK, btnBack;
 
     // fragments
     public static FragmentManager fragmentManager;
@@ -103,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static TrainingFragment trainingFragment;
 
     // ui
-    private Dialog pauseDialog, finishDialog, profileDialog;
 
     public DialogHelper dh;
 
@@ -116,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private LocationRequest mLocationRequest;
     private List<Polyline> polylineList;
     private int MIN_DISTANCE_UPDATE_THRESHOLD = 10;
+    public MapHelper mh;
 
     // acc
     private SensorManager sm;
@@ -170,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         sh = new SoundHelper();
         sh.initSoundHelper(this);
 
+
         taskFragment = new TaskFragment();
         trainingFragment = new TrainingFragment();
 
@@ -183,7 +177,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         initBtns();
 
         // -- map --
-        getLocationPermission();
         lastLocation = new LatLng(0, 0);
         initMap();
         polylineList = new ArrayList<Polyline>();
@@ -203,6 +196,12 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         // temp
         rd = new Random();
+        mh = new MapHelper();
+        mLocationRequest = new LocationRequest();
+        mh.getLocationPermission(this);
+
+
+
     }
 
     private void initBtns() {
@@ -211,8 +210,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                profileDialog.show();
+                dh.showProfileDialog();
             }
         });
 
@@ -415,8 +413,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     @Override
     public void finishTraining() {
 
-
-
         // update finish dialog
         hour = (time) / 1000 / 3600;
         min = (time / 1000) / 60;
@@ -438,7 +434,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
         trainingStarted = false;
-        removePolylines();
+        mh.removePolylines(polylineList);
 
         saveDataToFirebase();
         saveDataToLocal();
@@ -461,22 +457,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         transaction.commit();
     }
 
-
-    // map
-    private void getLocationPermission() {
-
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            mLocationPermissionGranted = true;
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[],
@@ -490,7 +470,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 }
             }
         }
-        updateLocationUI();
+        mh.updateLocationUI(mMap, this);
     }
 
     public void initMap() {
@@ -505,29 +485,12 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setPadding(10, 10, 10, 10);
-        updateLocationUI();
+        mh.updateLocationUI(mMap, this);
         createLocationRequest();
     }
 
-    private void updateLocationUI() {
-
-        try {
-            if (mLocationPermissionGranted) {
-                mMap.setMyLocationEnabled(true);
-                mMap.getUiSettings().setMyLocationButtonEnabled(true);
-
-            } else {
-                mMap.setMyLocationEnabled(false);
-                mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                getLocationPermission();
-            }
-        } catch (SecurityException e) {
-            Log.e("Exception: %s", e.getMessage());
-        }
-    }
-
     private void createLocationRequest() {
-        initLocationRequestSettings();
+        mh.initLocationRequestSettings(mLocationRequest);
 
         // init last location
         try {
@@ -537,7 +500,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful() && !mapInited) {
-                            lastLocation = convertToLatLng((Location) task.getResult());
+                            lastLocation = mh.convertToLatLng((Location) task.getResult());
                             mapInited = true;
                         }
                     }
@@ -552,14 +515,14 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                             if (locationResult != null) {
 
                                 for (Location location : locationResult.getLocations()) {
-                                    tempLocation = convertToLatLng(location);
+                                    tempLocation = mh.convertToLatLng(location);
 
-                                    if (getDistance(lastLocation, tempLocation) < MAX_DISTANCE_UPDATE_THRESHOLD) {
+                                    if (mh.getDistance(lastLocation, tempLocation) < MAX_DISTANCE_UPDATE_THRESHOLD) {
 
-                                        drawAPolyline(lastLocation, tempLocation);
+                                        mh.drawAPolyline(mMap, polylineList, lastLocation, tempLocation, MainActivity.this);
 
                                         // update distance
-                                        distance = distance + getDistance(lastLocation, tempLocation);
+                                        distance = distance + mh.getDistance(lastLocation, tempLocation);
                                         String distanceString = String.format("%.1f", distance) + "m";
                                         trainingFragment.setTvDistance(distanceString);
 
@@ -588,37 +551,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         } catch (SecurityException e) {
 
         }
-    }
-
-    private void initLocationRequestSettings() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(MAP_UPDATE_INTERVAL);
-        mLocationRequest.setFastestInterval(MAP_UPDATE_INTERVAL);
-        mLocationRequest.setSmallestDisplacement(MIN_DISTANCE_UPDATE_THRESHOLD);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
-
-    private void drawAPolyline(LatLng l1, LatLng l2) {
-        Polyline polyline = mMap.addPolyline(new PolylineOptions().add(l1, l2));
-        polyline.setEndCap(new ButtCap());
-        polyline.setWidth(10);
-        polyline.setColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
-        polylineList.add(polyline);
-    }
-
-    private void removePolylines() {
-        for (Polyline polyline : polylineList) {
-            polyline.remove();
-        }
-        polylineList.clear();
-    }
-
-    private double getDistance(LatLng l1, LatLng l2) {
-        return SphericalUtil.computeDistanceBetween(l1, l2);
-    }
-
-    private LatLng convertToLatLng(Location location) {
-        return new LatLng(location.getLatitude(), location.getLongitude());
     }
 
     // acc

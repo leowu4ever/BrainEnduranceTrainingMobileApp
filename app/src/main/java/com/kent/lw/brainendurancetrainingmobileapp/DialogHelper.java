@@ -95,6 +95,10 @@ public class DialogHelper {
     public void showPauseDialog() {
         pauseDialog.show();
     }
+
+    public void showProfileDialog() {
+        profileDialog.show();
+    }
 }
 
 
