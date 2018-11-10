@@ -263,6 +263,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         // replace task fragment with training fragment
         showTrainingFragment();
 
+        btnProfile.setVisibility(View.GONE);
+        btnFlic.setVisibility(View.GONE);
         // start training
 
         // start  map
