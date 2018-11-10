@@ -26,6 +26,8 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -49,7 +51,7 @@ import io.flic.lib.FlicManagerInitializedCallback;
 
 public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, OnMapReadyCallback, SensorEventListener {
 
-    private ImageButton btnProfile, btnFlic;
+    private ImageButton btnProfile, btnFlic, btnMap;
 
     // A-PVT-CUSTOM
     public static int apvtDuration, apvtStiIntervalMin, apvtStiIntervalMax,  apvtBgNoise, apvtValidResThresholdMin, apvtValidResThresholdMax;
@@ -106,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private LocationRequest mLocationRequest;
     private List<Polyline> polylineList;
     public MapHelper mh;
+    private LatLng myLatLng;
 
     // acc
     private SensorManager sm;
@@ -228,6 +231,14 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 }
             }
         });
+
+        btnMap = findViewById(R.id.btn_map);
+        btnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateLocation();
+            }
+        });
     }
 
     private void saveDataToLocal() {
@@ -244,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             e.printStackTrace();
         }
     }
+
 
     // fragment
     @Override
@@ -479,6 +491,30 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         mMap.setPadding(10, 10, 10, 10);
         mh.updateLocationUI(mMap, this);
         createLocationRequest();
+        updateLocation();
+    }
+
+    public void updateLocation() {
+        try {
+            Task location = mFusedLocationProviderClient.getLastLocation();
+            location.addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    if (task.isSuccessful()) {
+                        Location location = (Location) task.getResult();
+                        myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(myLatLng, 15);
+                        mMap.animateCamera(cameraUpdate);
+
+                    } else {
+
+                    }
+                }
+            });
+
+        } catch (SecurityException e) {
+
+        }
     }
 
     private void createLocationRequest() {

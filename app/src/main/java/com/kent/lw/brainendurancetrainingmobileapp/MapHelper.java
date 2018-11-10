@@ -75,7 +75,7 @@ public class MapHelper {
         try {
             if (MainActivity.mLocationPermissionGranted) {
                 mMap.setMyLocationEnabled(true);
-                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
             } else {
                 mMap.setMyLocationEnabled(false);
@@ -86,5 +86,4 @@ public class MapHelper {
             Log.e("Exception: %s", e.getMessage());
         }
     }
-
 }
