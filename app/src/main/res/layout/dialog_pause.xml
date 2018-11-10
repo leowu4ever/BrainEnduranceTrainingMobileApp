@@ -13,7 +13,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
         android:layout_weight="0"
-        android:text="Training Paused"
+        android:text="Pause"
         android:textAllCaps="true"
         android:textSize="30sp"
         android:textStyle="bold" />
