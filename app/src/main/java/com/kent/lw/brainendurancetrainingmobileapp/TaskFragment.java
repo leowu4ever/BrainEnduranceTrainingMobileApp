@@ -20,14 +20,15 @@ import com.appyvet.materialrangebar.RangeBar;
  */
 public class TaskFragment extends Fragment {
 
-    private Dialog taskDialog, difDialog,difCustomDialog, activityDialog, durationDialog;
+    private Dialog taskDialog, difDialog,difCustomDialog, activityDialog, durationDialog, helpAPVTDialog, helpGONOGODialog;
     private Button btnStart, btnActivity, btnDuration, btnTask, btnDif, btnAPVT, btnWAVT, btnVisual, btnEasy, btnMedium, btnHard, btnAdaptive, btnCustom, btnSave, btnWalking, btnMarching, btnRunning, btnDurationSave;
     private String taskSelected, difSelected;
 
-    private RangeBar rbTaskDuration, rbInterval, rbStiDuration, rbVolume, rbNoise, rbThreshold;
-    private TextView tvTaskDuration, tvInterval, tvStiDuration, tvVolume, tvNoise, tvThreshold;
-
+    private RangeBar rbTaskDuration, rbInterval, rbVolume, rbNoise, rbThreshold;
+    private TextView tvInterval, tvVolume, tvNoise, tvThreshold;
     private TaskCommunicator taskCommunicator;
+
+    private Button btnHelpAPVT, btnHelpGONOGO, btnHelpAPVTOK, btnHelpGONOGOOK;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,7 +39,13 @@ public class TaskFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        initFragmentBtns();
+        initDialogs();
+        initAPVTRbs();
+        initHelpBtns();
+    }
 
+    private void initFragmentBtns() {
         taskCommunicator = (TaskCommunicator) getActivity();
         btnTask = getActivity().findViewById(R.id.btn_task);
         btnTask.setOnClickListener(new View.OnClickListener() {
@@ -72,108 +79,70 @@ public class TaskFragment extends Fragment {
             }
         });
         btnStart = getActivity().findViewById(R.id.btn_start);
+
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 taskSelected = btnTask.getText().toString();
                 difSelected =  btnDif.getText().toString();
                 taskCommunicator.startTraining(taskSelected, difSelected);
-
             }
         });
-
-        initDialogs();
-        initRbs();
     }
 
     private void initDialogs() {
         taskDialog = new Dialog(getActivity());
-        taskDialog.setContentView(R.layout.dialog_task);
-        taskDialog.setCancelable(false);
-        taskDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        taskDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
-
         difDialog = new Dialog(getActivity());
-        difDialog.setContentView(R.layout.dialog_dif);
-        difDialog.setCancelable(false);
-        difDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        difDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
-
         difCustomDialog = new Dialog(getActivity());
-        difCustomDialog.setContentView(R.layout.dialog_dif_custom_apvt);
-        difCustomDialog.setCancelable(false);
-        difCustomDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        difCustomDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
-
         activityDialog = new Dialog(getActivity());
-        activityDialog.setContentView(R.layout.dialog_activity);
-        activityDialog.setCancelable(false);
-        activityDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        activityDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
-
         durationDialog = new Dialog(getActivity());
-        durationDialog.setContentView(R.layout.dialog_duration);
-        durationDialog.setCancelable(false);
-        durationDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        durationDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
 
+        helpAPVTDialog = new Dialog(getActivity());
+        helpGONOGODialog = new Dialog(getActivity());
 
-        btnWalking = activityDialog.findViewById(R.id.btn_walking);
-        btnWalking.setOnClickListener(new View.OnClickListener() {
+        setupDialog(taskDialog, R.layout.dialog_task);
+        setupDialog(difDialog, R.layout.dialog_dif);
+        setupDialog(difCustomDialog, R.layout.dialog_dif_custom_apvt);
+        setupDialog(activityDialog, R.layout.dialog_activity);
+        setupDialog(durationDialog, R.layout.dialog_duration);
+
+        setupDialog(helpAPVTDialog, R.layout.dialog_help_apvt);
+        setupDialog(helpGONOGODialog, R.layout.dialog_help_gonogo);
+
+        initActivityBtns();
+        initTaskBtns();
+        initDifBtns();
+        initDurationBtns();
+    }
+
+    private void setupDialog(Dialog d, int layout) {
+        d.setContentView(layout);
+        d.setCancelable(false);
+        d.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        d.getWindow().setWindowAnimations(R.style.DialogAnimation);
+    }
+
+    private void initDurationBtns() {
+        btnSave = difCustomDialog.findViewById(R.id.btn_save);
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnActivity.setText(btnWalking.getText());
-                activityDialog.dismiss();
+                difCustomDialog.dismiss();
+                btnDif.setText(btnCustom.getText());
             }
         });
 
-        btnRunning = activityDialog.findViewById(R.id.btn_running);
-        btnRunning.setOnClickListener(new View.OnClickListener() {
+        btnDurationSave = durationDialog.findViewById(R.id.btn_duration_save);
+        btnDurationSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnActivity.setText(btnRunning.getText());
-                activityDialog.dismiss();
+                durationDialog.dismiss();
+                btnDuration.setText(rbTaskDuration.getRightPinValue() + " min");
             }
         });
+    }
 
-        btnMarching = activityDialog.findViewById(R.id.btn_marching);
-        btnMarching.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnActivity.setText(btnMarching.getText());
-                activityDialog.dismiss();
-
-            }
-        });
-
-
-        btnAPVT = taskDialog.findViewById(R.id.btn_apvt);
-        btnAPVT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnTask.setText(btnAPVT.getText());
-                taskDialog.dismiss();
-            }
-        });
-
-        btnWAVT = taskDialog.findViewById(R.id.btn_wavt);
-        btnWAVT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnTask.setText(btnWAVT.getText());
-                taskDialog.dismiss();
-            }
-        });
-
-        btnVisual = taskDialog.findViewById(R.id.btn_visual);
-        btnVisual.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnTask.setText(btnVisual.getText());
-                taskDialog.dismiss();
-            }
-        });
-
+    private void initDifBtns() {
         btnEasy = difDialog.findViewById(R.id.btn_easy);
         btnEasy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -220,35 +189,75 @@ public class TaskFragment extends Fragment {
                 difCustomDialog.show();
             }
         });
+    }
 
-        btnSave = difCustomDialog.findViewById(R.id.btn_save);
-        btnSave.setOnClickListener(new View.OnClickListener() {
+    private void initTaskBtns() {
+        btnAPVT = taskDialog.findViewById(R.id.btn_apvt);
+        btnAPVT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                difCustomDialog.dismiss();
-                btnDif.setText(btnCustom.getText());
+                btnTask.setText(btnAPVT.getText());
+                taskDialog.dismiss();
             }
         });
 
-        btnDurationSave = durationDialog.findViewById(R.id.btn_duration_save);
-        btnDurationSave.setOnClickListener(new View.OnClickListener() {
+        btnWAVT = taskDialog.findViewById(R.id.btn_wavt);
+        btnWAVT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                durationDialog.dismiss();
-                btnDuration.setText(rbTaskDuration.getRightPinValue() + " min");
+                btnTask.setText(btnWAVT.getText());
+                taskDialog.dismiss();
+            }
+        });
+
+        btnVisual = taskDialog.findViewById(R.id.btn_visual);
+        btnVisual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnTask.setText(btnVisual.getText());
+                taskDialog.dismiss();
             }
         });
     }
 
-    private void initRbs() {
+    private void initActivityBtns() {
+        btnWalking = activityDialog.findViewById(R.id.btn_walking);
+        btnWalking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnActivity.setText(btnWalking.getText());
+                activityDialog.dismiss();
+            }
+        });
 
+        btnRunning = activityDialog.findViewById(R.id.btn_running);
+        btnRunning.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnActivity.setText(btnRunning.getText());
+                activityDialog.dismiss();
+            }
+        });
+
+        btnMarching = activityDialog.findViewById(R.id.btn_marching);
+        btnMarching.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnActivity.setText(btnMarching.getText());
+                activityDialog.dismiss();
+            }
+        });
+    }
+
+    private void initAPVTRbs() {
 
         rbTaskDuration = durationDialog.findViewById(R.id.rb_task_duration);
+        rbTaskDuration.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
+            @Override
+            public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
 
-
-
-
-
+            }
+        });
 
         tvInterval = difCustomDialog.findViewById(R.id.tv_interval);
         rbInterval = difCustomDialog.findViewById(R.id.rb_interval);
@@ -294,6 +303,39 @@ public class TaskFragment extends Fragment {
                 tvThreshold.setText("Vaild Response : from " + (Integer.parseInt(leftPinValue) * 100) + "ms" + " to " + (Integer.parseInt(rightPinValue) * 100) + "ms");
                 MainActivity.apvtValidResThresholdMin = Integer.parseInt(leftPinValue);
                 MainActivity.apvtValidResThresholdMax = Integer.parseInt(rightPinValue);
+            }
+        });
+    }
+
+    private void initHelpBtns() {
+        btnHelpAPVT = taskDialog.findViewById(R.id.btn_help_apvt);
+        btnHelpAPVT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                helpAPVTDialog.show();
+            }
+        });
+
+        btnHelpAPVTOK = helpAPVTDialog.findViewById(R.id.btn_help_apvt_ok);
+        btnHelpAPVTOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                helpAPVTDialog.dismiss();
+            }
+        });
+
+        btnHelpGONOGO = taskDialog.findViewById(R.id.btn_help_gonogo);
+        btnHelpGONOGO.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                helpGONOGODialog.show();
+            }
+        });
+        btnHelpGONOGOOK = helpGONOGODialog.findViewById(R.id.btn_help_gonogo_ok);
+        btnHelpGONOGOOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                helpGONOGODialog.dismiss();
             }
         });
     }
