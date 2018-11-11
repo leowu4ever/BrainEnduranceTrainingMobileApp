@@ -60,16 +60,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // A-PVT
     private final String TASK_A_PVT = "A-PVT";
     private final int A_PVT_DURATION = 10 * 60 * 1000;
-
     private final int A_PVT_INTERVAL_EASY = 4 * 1000;
     private final int A_PVT_INTERVAL_MEDIUM = 8 * 1000;
     private final int A_PVT_INTERVAL_HARD = 11 * 1000;
 
     // W-AVT
     private final String TASK_W_AVT = "W-AVT";
-
     private final int W_AVT_DURATION = 60 * 60 * 1000;
-
     private final int W_AVT_INTERVAL = 2 * 1000;
 
     // VISUAL
@@ -96,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static TrainingFragment trainingFragment;
 
     // ui
-
     public DialogHelper dh;
 
     // map
@@ -114,11 +110,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private SensorManager sm;
     private Sensor accelerometer, gyroscope;
     private double x, y, z;
-    private int MAX_DISTANCE_UPDATE_THRESHOLD = 200;
+    private int MAX_DISTANCE_UPDATE_THRESHOLD = 100;
 
     // runnable
     public static Handler handler;
-    public static  Runnable stimulusRunnable, durationRunnable;
+    public static Runnable countdownRunnbale, stimulusRunnable, durationRunnable;
+    private int countdown = 4000;
+
     // duration
     private long time, hour, min, sec;
 
@@ -278,6 +276,26 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         resetTrainingData();
 
 
+        countdownRunnbale = new Runnable() {
+            @Override
+            public void run() {
+                if(countdown > 1000 && countdown <= 4000) {
+                    if (countdown == 4000) {
+                        sh.playStartSound(1,1,0,0,1);
+                        dh.showCountdownDialog();
+                    }
+                    countdown = countdown - 1000;
+                    dh.setCountdownText(countdown/1000 + "");
+                    handler.postDelayed(countdownRunnbale, 1000);
+                } else {
+                    dh.dismissCountdownDialog();
+                    handler.removeCallbacks(countdownRunnbale);
+                }
+            }
+        };
+        handler.postDelayed(countdownRunnbale, 0);
+
+
         if(!difSelected.equals(DIF_CUSTOM)) {
             // get parameters // passing as parameters
             switch (taskSelected) {
@@ -307,6 +325,10 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     break;
             }
 
+
+
+
+
             // duration
             durationRunnable = new Runnable() {
                 @Override
@@ -326,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                 }
             };
-            handler.postDelayed(durationRunnable, 0);
+            handler.postDelayed(durationRunnable, 4000);
 
             // simtimulus
             stimulusRunnable = new Runnable() {
@@ -345,7 +367,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     }
                 }
             };
-            handler.postDelayed(stimulusRunnable, 0);
+            handler.postDelayed(stimulusRunnable, 4000);
             trainingStarted = true;
         } else {
 
@@ -371,7 +393,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     }
                 }
             };
-            handler.postDelayed(durationRunnable, 0);
+            handler.postDelayed(durationRunnable, 4000);
 
             // simtimulus
             stimulusRunnable = new Runnable() {
@@ -395,7 +417,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     }
                 }
             };
-            handler.postDelayed(stimulusRunnable, 0);
+            handler.postDelayed(stimulusRunnable, 4000);
             trainingStarted = true;
         }
     }
@@ -413,6 +435,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     @Override
     public void finishTraining() {
+        sh.playFinishSound(1,1,0,0,1);
 
         // update finish dialog
         hour = (time) / 1000 / 3600;
@@ -651,6 +674,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         resTotalTime = 0;
         art = 0;
         accuracy = 0;
+        countdown = 4000;
     }
 
 

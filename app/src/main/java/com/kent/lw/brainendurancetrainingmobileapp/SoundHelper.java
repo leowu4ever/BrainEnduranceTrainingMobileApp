@@ -12,7 +12,7 @@ public class SoundHelper extends Application {
 
     // soundpool
     public SoundPool sp;
-    public int beepSound, speedupSound;
+    public int beepSound, speedupSound, startSound, finishSound;
 
 
     public void initSoundHelper(Context context) {
@@ -27,16 +27,26 @@ public class SoundHelper extends Application {
             sp = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
         }
 
-
         beepSound = sp.load(context, R.raw.beep, 1);
         speedupSound = sp.load(context, R.raw.speedup, 1);
+        startSound = sp.load(context, R.raw.start, 1);
+        finishSound = sp.load(context, R.raw.finish, 1);
     }
 
-    public void playBeepSound (float leftVolume, float rightVolume, int priority, int loop, float rate) {
+    public void playBeepSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
         sp.play(beepSound, leftVolume, rightVolume, priority, loop, rate);
     }
 
-    public void playSpeedupSound (float leftVolume, float rightVolume, int priority, int loop, float rate) {
+    public void playSpeedupSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
         sp.play(speedupSound, leftVolume, rightVolume, priority, loop, rate);
     }
+
+    public void playStartSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
+        sp.play(startSound, leftVolume, rightVolume, priority, loop, rate);
+    }
+
+    public void playFinishSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
+        sp.play(finishSound, leftVolume, rightVolume, priority, loop, rate);
+    }
+
 }

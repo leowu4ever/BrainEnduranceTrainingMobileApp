@@ -11,21 +11,20 @@ import android.widget.TextView;
 public class DialogHelper {
 
 
-    public Dialog pauseDialog, finishDialog;
+    public Dialog pauseDialog, finishDialog, countdownDialog;
     public Button btnResume, btnOK;
-    public TextView tvFinishDuration, tvFinishDistance, tvFinishSpeed, tvFinishART, tvFinishAccuracy;
+    public TextView tvFinishDuration, tvFinishDistance, tvFinishSpeed, tvFinishART, tvFinishAccuracy, tvCountdown;
 
     public void initDialog(Context context) {
         //dialog
         pauseDialog = new Dialog(context);
         finishDialog = new Dialog(context);
+        countdownDialog = new Dialog(context);
+        setupDialog(pauseDialog, R.layout.dialog_pause);
+        setupDialog(finishDialog, R.layout.dialog_finish);
+        setupDialog(countdownDialog, R.layout.dialog_countdown);
 
 
-        pauseDialog.setContentView(R.layout.dialog_pause);
-        pauseDialog.setCancelable(false);
-        pauseDialog.setCanceledOnTouchOutside(false);
-        pauseDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        pauseDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
 
         btnResume = pauseDialog.findViewById(R.id.btn_resume);
         btnResume.setOnClickListener(new View.OnClickListener() {
@@ -35,12 +34,6 @@ public class DialogHelper {
                 MainActivity.resumeTraining();
             }
         });
-
-        finishDialog.setContentView(R.layout.dialog_finish);
-        finishDialog.setCancelable(false);
-        finishDialog.setCanceledOnTouchOutside(false);
-        finishDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        finishDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
 
         btnOK = finishDialog.findViewById(R.id.btn_ok);
         btnOK.setOnClickListener(new View.OnClickListener() {
@@ -56,13 +49,18 @@ public class DialogHelper {
         tvFinishSpeed = finishDialog.findViewById(R.id.tv_finish_speed);
         tvFinishART = finishDialog.findViewById(R.id.tv_finish_ast);
         tvFinishAccuracy = finishDialog.findViewById(R.id.tv_finish_accuracy);
+    }
 
+    public void setupDialog(Dialog d, int layout) {
+        d.setContentView(layout);
+        d.setCancelable(false);
+        d.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        d.getWindow().setWindowAnimations(R.style.DialogAnimation);
     }
 
     public void setTvFinishDuration(String s) {
         tvFinishDuration.setText(s);
     }
-
     public void setTvFinishDistance(String s) {
         tvFinishDistance.setText(s);
     }
@@ -75,15 +73,26 @@ public class DialogHelper {
     public void setTvFinishAccuracy(String s) {
         tvFinishAccuracy.setText(s);
     }
-
     public void showFinishDialog() {
         finishDialog.show();
     }
-
     public void showPauseDialog() {
         pauseDialog.show();
     }
 
+
+    public void showCountdownDialog() {
+        countdownDialog.show();
+    }
+
+    public void dismissCountdownDialog() {
+        countdownDialog.dismiss();
+    }
+
+    public void setCountdownText(String s) {
+        tvCountdown = countdownDialog.findViewById(R.id.tv_countdown);
+        tvCountdown.setText(s);
+    }
 }
 
 

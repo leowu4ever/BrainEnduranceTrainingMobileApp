@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,8 @@ import com.appyvet.materialrangebar.RangeBar;
  */
 public class TaskFragment extends Fragment {
 
-    private Dialog taskDialog, difDialog,difCustomDialog, activityDialog, durationDialog, helpAPVTDialog, helpGONOGODialog;
-    private Button btnStart, btnActivity, btnDuration, btnTask, btnDif, btnAPVT, btnWAVT, btnVisual, btnEasy, btnMedium, btnHard, btnAdaptive, btnCustom, btnSave, btnWalking, btnMarching, btnRunning, btnDurationSave;
+    private Dialog taskDialog, difDialog, difCustomAPVTDialog, difCustomGonogoDialog, activityDialog, durationDialog, helpAPVTDialog, helpGonogoDialog;
+    private Button btnStart, btnActivity, btnDuration, btnTask, btnDif, btnAPVT, btnGonono, btnVisual, btnEasy, btnMedium, btnHard, btnAdaptive, btnCustom, btnSave, btnWalking, btnMarching, btnRunning, btnDurationSave;
     private String taskSelected, difSelected;
 
     private RangeBar rbTaskDuration, rbInterval, rbVolume, rbNoise, rbThreshold;
@@ -34,7 +35,6 @@ public class TaskFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_task, container, false);
     }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -93,21 +93,23 @@ public class TaskFragment extends Fragment {
     private void initDialogs() {
         taskDialog = new Dialog(getActivity());
         difDialog = new Dialog(getActivity());
-        difCustomDialog = new Dialog(getActivity());
+        difCustomAPVTDialog = new Dialog(getActivity());
+        difCustomGonogoDialog = new Dialog(getActivity());
         activityDialog = new Dialog(getActivity());
         durationDialog = new Dialog(getActivity());
 
         helpAPVTDialog = new Dialog(getActivity());
-        helpGONOGODialog = new Dialog(getActivity());
+        helpGonogoDialog = new Dialog(getActivity());
 
         setupDialog(taskDialog, R.layout.dialog_task);
         setupDialog(difDialog, R.layout.dialog_dif);
-        setupDialog(difCustomDialog, R.layout.dialog_dif_custom_apvt);
+        setupDialog(difCustomAPVTDialog, R.layout.dialog_dif_custom_apvt);
+        setupDialog(difCustomGonogoDialog, R.layout.dialog_dif_custom_gonogo);
         setupDialog(activityDialog, R.layout.dialog_activity);
         setupDialog(durationDialog, R.layout.dialog_duration);
 
         setupDialog(helpAPVTDialog, R.layout.dialog_help_apvt);
-        setupDialog(helpGONOGODialog, R.layout.dialog_help_gonogo);
+        setupDialog(helpGonogoDialog, R.layout.dialog_help_gonogo);
 
         initActivityBtns();
         initTaskBtns();
@@ -123,11 +125,11 @@ public class TaskFragment extends Fragment {
     }
 
     private void initDurationBtns() {
-        btnSave = difCustomDialog.findViewById(R.id.btn_save);
+        btnSave = difCustomAPVTDialog.findViewById(R.id.btn_save);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                difCustomDialog.dismiss();
+                difCustomAPVTDialog.dismiss();
                 btnDif.setText(btnCustom.getText());
             }
         });
@@ -185,8 +187,15 @@ public class TaskFragment extends Fragment {
         btnCustom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                difDialog.dismiss();
-                difCustomDialog.show();
+                if(btnTask.getText().equals(btnAPVT.getText())) {
+                    difDialog.dismiss();
+                    difCustomAPVTDialog.show();
+                }
+
+                if(btnTask.getText().equals(btnGonono.getText())) {
+                    difDialog.dismiss();
+                    difCustomGonogoDialog.show();
+                }
             }
         });
     }
@@ -201,11 +210,11 @@ public class TaskFragment extends Fragment {
             }
         });
 
-        btnWAVT = taskDialog.findViewById(R.id.btn_wavt);
-        btnWAVT.setOnClickListener(new View.OnClickListener() {
+        btnGonono = taskDialog.findViewById(R.id.btn_gonogo);
+        btnGonono.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnTask.setText(btnWAVT.getText());
+                btnTask.setText(btnGonono.getText());
                 taskDialog.dismiss();
             }
         });
@@ -259,8 +268,8 @@ public class TaskFragment extends Fragment {
             }
         });
 
-        tvInterval = difCustomDialog.findViewById(R.id.tv_interval);
-        rbInterval = difCustomDialog.findViewById(R.id.rb_interval);
+        tvInterval = difCustomAPVTDialog.findViewById(R.id.tv_interval);
+        rbInterval = difCustomAPVTDialog.findViewById(R.id.rb_interval);
         rbInterval.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
@@ -270,10 +279,8 @@ public class TaskFragment extends Fragment {
             }
         });
 
-
-
-        tvVolume = difCustomDialog.findViewById(R.id.tv_volume);
-        rbVolume = difCustomDialog.findViewById(R.id.rb_volume);
+        tvVolume = difCustomAPVTDialog.findViewById(R.id.tv_volume);
+        rbVolume = difCustomAPVTDialog.findViewById(R.id.rb_volume);
         rbVolume.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
@@ -283,20 +290,19 @@ public class TaskFragment extends Fragment {
             }
         });
 
-        tvNoise = difCustomDialog.findViewById(R.id.tv_noise);
-        rbNoise = difCustomDialog.findViewById(R.id.rb_noise);
+        tvNoise = difCustomAPVTDialog.findViewById(R.id.tv_noise);
+        rbNoise = difCustomAPVTDialog.findViewById(R.id.rb_noise);
         rbNoise.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
                 tvNoise.setText("Background Noise: " + (Integer.parseInt(rightPinValue) * 100) + "%");
                 MainActivity.apvtBgNoise = Integer.parseInt(rightPinValue);
 
-
             }
         });
 
-        tvThreshold = difCustomDialog.findViewById(R.id.tv_threshold);
-        rbThreshold = difCustomDialog.findViewById(R.id.rb_threshold);
+        tvThreshold = difCustomAPVTDialog.findViewById(R.id.tv_threshold);
+        rbThreshold = difCustomAPVTDialog.findViewById(R.id.rb_threshold);
         rbThreshold.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
@@ -328,14 +334,14 @@ public class TaskFragment extends Fragment {
         btnHelpGONOGO.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                helpGONOGODialog.show();
+                helpGonogoDialog.show();
             }
         });
-        btnHelpGONOGOOK = helpGONOGODialog.findViewById(R.id.btn_help_gonogo_ok);
+        btnHelpGONOGOOK = helpGonogoDialog.findViewById(R.id.btn_help_gonogo_ok);
         btnHelpGONOGOOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                helpGONOGODialog.dismiss();
+                helpGonogoDialog.dismiss();
             }
         });
     }
