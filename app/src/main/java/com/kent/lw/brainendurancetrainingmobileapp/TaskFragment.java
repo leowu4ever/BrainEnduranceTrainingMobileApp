@@ -100,7 +100,7 @@ public class TaskFragment extends Fragment {
         difDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
 
         difCustomDialog = new Dialog(getActivity());
-        difCustomDialog.setContentView(R.layout.dialog_dif_custom);
+        difCustomDialog.setContentView(R.layout.dialog_dif_custom_apvt);
         difCustomDialog.setCancelable(false);
         difCustomDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         difCustomDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
@@ -261,16 +261,7 @@ public class TaskFragment extends Fragment {
             }
         });
 
-        tvStiDuration = difCustomDialog.findViewById(R.id.tv_sti_duration);
-        rbStiDuration = difCustomDialog.findViewById(R.id.rb_sti_duration);
-        rbStiDuration.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
-            @Override
-            public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvStiDuration.setText("Stimulus Duration: from " + (Float.parseFloat(leftPinValue) * 100) + "%" + " to " + (Float.parseFloat(rightPinValue) * 100) + "%");
-                MainActivity.apvtStiDurationMin = Float.parseFloat(leftPinValue);
-                MainActivity.apvtStiDurationMax = Float.parseFloat(rightPinValue);
-            }
-        });
+
 
         tvVolume = difCustomDialog.findViewById(R.id.tv_volume);
         rbVolume = difCustomDialog.findViewById(R.id.rb_volume);

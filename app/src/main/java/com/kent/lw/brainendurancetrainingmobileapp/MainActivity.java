@@ -519,7 +519,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 public void onComplete(@NonNull Task task) {
                     if (task.isSuccessful()) {
                         Location location = (Location) task.getResult();
-                        myLatLng = new LatLng(location.getLatitude() - 0.004, location.getLongitude());
+                        myLatLng = new LatLng(location.getLatitude() - 0.0035, location.getLongitude());
                         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(myLatLng, 15);
                         mMap.animateCamera(cameraUpdate);
 
