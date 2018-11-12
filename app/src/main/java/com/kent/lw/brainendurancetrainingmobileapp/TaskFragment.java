@@ -19,6 +19,7 @@ import com.appyvet.materialrangebar.RangeBar;
 public class TaskFragment extends Fragment {
 
     private TaskCommunicator taskCommunicator;
+    private String taskSelected, difSelected;
 
     // fragment
     private Button btnStart;
@@ -32,8 +33,9 @@ public class TaskFragment extends Fragment {
     private Button btnDif, btnEasy, btnMedium, btnHard, btnAdaptive, btnCustom;
 
     // dif prompt dialog
-    private Dialog difPromptDialog;
+    private Dialog promptDialog;
     private Button btnDifPromptOk;
+    private TextView tvPrompt;
 
     // activity dialog
     private Dialog activityDialog;
@@ -51,13 +53,17 @@ public class TaskFragment extends Fragment {
     // apvt custom dialog
     private Dialog difCustomAPVTDialog;
     private Button btnCustomApvtSave;
-    private String taskSelected, difSelected;
-    private RangeBar rbInterval, rbVolume, rbNoise, rbThreshold;
-    private TextView tvInterval, tvVolume, tvNoise, tvThreshold;
+    private RangeBar rbIntervalApvt, rbVolumeApvt, rbNoiseApvt, rbThresholdApvt;
+    private TextView tvIntervalApvt, tvVolumeApvt, tvNoiseApvt, tvThresholdApvt;
 
     //gonogo dialog
     private Dialog difCustomGonogoDialog;
     private Button btnCustomGonogoSave;
+    private RangeBar rbIntervalGonogo, rbVolumeGonogo, rbNoiseGonogo, rbThresholdGonogo;
+    private TextView tvIntervalGonogo, tvVolumeGonogo, tvNoiseGonogo, tvThresholdGonogo;
+
+    // btn default text
+    private final String btnDefaultText = "Please select";
 
 
     @Override
@@ -76,6 +82,7 @@ public class TaskFragment extends Fragment {
 
     private void initFragmentBtns() {
         taskCommunicator = (TaskCommunicator) getActivity();
+
         btnTask = getActivity().findViewById(R.id.btn_task);
         btnTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,10 +95,11 @@ public class TaskFragment extends Fragment {
         btnDif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!btnTask.getText().equals("Please select")) {
+                if(!btnTask.getText().equals(btnDefaultText)) {
                     difDialog.show();
                 } else {
-                    difPromptDialog.show();
+                    tvPrompt.setText("Please select a cognitive task.");
+                    promptDialog.show();
                 }
             }
         });
@@ -113,12 +121,19 @@ public class TaskFragment extends Fragment {
         });
         btnStart = getActivity().findViewById(R.id.btn_start);
 
+
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                taskSelected = btnTask.getText().toString();
-                difSelected =  btnDif.getText().toString();
-                taskCommunicator.startTraining(taskSelected, difSelected);
+
+                if(!btnTask.getText().equals(btnDefaultText) && !btnDuration.getText().equals(btnDefaultText) && !btnTask.getText().equals(btnDefaultText) && !btnDif.getText().equals(btnDefaultText)) {
+                    taskSelected = btnTask.getText().toString();
+                    difSelected =  btnDif.getText().toString();
+                    taskCommunicator.startTraining(taskSelected, difSelected);
+                } else {
+                    promptDialog.show();
+                    tvPrompt.setText("Please complete all sections.");
+                }
             }
         });
     }
@@ -132,7 +147,7 @@ public class TaskFragment extends Fragment {
         durationDialog = new Dialog(getActivity());
         helpApvtDialog = new Dialog(getActivity());
         helpGonogoDialog = new Dialog(getActivity());
-        difPromptDialog = new Dialog(getActivity());
+        promptDialog = new Dialog(getActivity());
 
 
         setupDialog(taskDialog, R.layout.dialog_task);
@@ -141,7 +156,7 @@ public class TaskFragment extends Fragment {
         setupDialog(difCustomGonogoDialog, R.layout.dialog_dif_custom_gonogo);
         setupDialog(activityDialog, R.layout.dialog_activity);
         setupDialog(durationDialog, R.layout.dialog_duration);
-        setupDialog(difPromptDialog, R.layout.dialog_dif_prompt);
+        setupDialog(promptDialog, R.layout.dialog_prompt);
 
         setupDialog(helpApvtDialog, R.layout.dialog_help_apvt);
         setupDialog(helpGonogoDialog, R.layout.dialog_help_gonogo);
@@ -152,11 +167,12 @@ public class TaskFragment extends Fragment {
         initDurationBtns();
         initCustomBtns();
 
-        btnDifPromptOk = difPromptDialog.findViewById(R.id.btn_dif_prompt_ok);
+        tvPrompt = promptDialog.findViewById(R.id.tv_prompt);
+        btnDifPromptOk = promptDialog.findViewById(R.id.btn_dif_prompt_ok);
         btnDifPromptOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                difPromptDialog.dismiss();
+                promptDialog.dismiss();
             }
         });
     }
@@ -178,6 +194,16 @@ public class TaskFragment extends Fragment {
                 btnDuration.setText(rbTaskDuration.getRightPinValue() + " min");
             }
         });
+
+
+        rbTaskDuration = durationDialog.findViewById(R.id.rb_task_duration);
+        rbTaskDuration.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
+            @Override
+            public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
+
+            }
+        });
+
     }
 
     private void initCustomBtns() {
@@ -316,53 +342,48 @@ public class TaskFragment extends Fragment {
 
     private void initAPVTRbs() {
 
-        rbTaskDuration = durationDialog.findViewById(R.id.rb_task_duration);
-        rbTaskDuration.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
+        tvIntervalApvt = difCustomAPVTDialog.findViewById(R.id.tv_interval_apvt);
+        rbIntervalApvt = difCustomAPVTDialog.findViewById(R.id.rb_interval_apvt);
+        rbIntervalApvt.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-
-            }
-        });
-
-        tvInterval = difCustomAPVTDialog.findViewById(R.id.tv_interval);
-        rbInterval = difCustomAPVTDialog.findViewById(R.id.rb_interval);
-        rbInterval.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
-            @Override
-            public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvInterval.setText("Stimulus interval: " + leftPinValue + " ~ " + rightPinValue + "s");
+                tvIntervalApvt.setText("Stimulus interval: " + leftPinValue + " ~ " + rightPinValue + "s");
                 MainActivity.apvtStiIntervalMin = Integer.parseInt(leftPinValue);
                 MainActivity.apvtStiIntervalMax = Integer.parseInt(rightPinValue);
+
+                MainActivity.apvtTask.setIntervalFrom(Integer.parseInt(leftPinValue));
+                MainActivity.apvtTask.setIntervalTo(Integer.parseInt(rightPinValue));
             }
         });
 
-        tvVolume = difCustomAPVTDialog.findViewById(R.id.tv_volume);
-        rbVolume = difCustomAPVTDialog.findViewById(R.id.rb_volume);
-        rbVolume.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
+        tvVolumeApvt = difCustomAPVTDialog.findViewById(R.id.tv_volume_apvt);
+        rbVolumeApvt = difCustomAPVTDialog.findViewById(R.id.rb_volume_apvt);
+        rbVolumeApvt.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvVolume.setText("Tone volume: " + (Float.parseFloat(leftPinValue) * 100) + " ~ " + (Float.parseFloat(rightPinValue) * 100) + "%");
+                tvVolumeApvt.setText("Tone volume: " + (Float.parseFloat(leftPinValue) * 100) + " ~ " + (Float.parseFloat(rightPinValue) * 100) + "%");
                 MainActivity.apvtToneVolumeMin = Float.parseFloat(leftPinValue);
                 MainActivity.apvtToneVolumeMax = Float.parseFloat(rightPinValue);
             }
         });
 
-        tvNoise = difCustomAPVTDialog.findViewById(R.id.tv_noise);
-        rbNoise = difCustomAPVTDialog.findViewById(R.id.rb_noise);
-        rbNoise.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
+        tvNoiseApvt = difCustomAPVTDialog.findViewById(R.id.tv_noise_apvt);
+        rbNoiseApvt = difCustomAPVTDialog.findViewById(R.id.rb_noise_apvt);
+        rbNoiseApvt.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvNoise.setText("Background noise: " + (Integer.parseInt(rightPinValue) * 100) + "%");
+                tvNoiseApvt.setText("Background noise: " + (Integer.parseInt(rightPinValue) * 100) + "%");
                 MainActivity.apvtBgNoise = Integer.parseInt(rightPinValue);
 
             }
         });
 
-        tvThreshold = difCustomAPVTDialog.findViewById(R.id.tv_threshold);
-        rbThreshold = difCustomAPVTDialog.findViewById(R.id.rb_threshold);
-        rbThreshold.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
+        tvThresholdApvt = difCustomAPVTDialog.findViewById(R.id.tv_threshold_apvt);
+        rbThresholdApvt = difCustomAPVTDialog.findViewById(R.id.rb_threshold_apvt);
+        rbThresholdApvt.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvThreshold.setText("Vaild response time: " + (Integer.parseInt(leftPinValue) * 100) + " ~ " + (Integer.parseInt(rightPinValue) * 100) + "ms");
+                tvThresholdApvt.setText("Vaild response time: " + (Integer.parseInt(leftPinValue) * 100) + " ~ " + (Integer.parseInt(rightPinValue) * 100) + "ms");
                 MainActivity.apvtValidResThresholdMin = Integer.parseInt(leftPinValue);
                 MainActivity.apvtValidResThresholdMax = Integer.parseInt(rightPinValue);
             }
