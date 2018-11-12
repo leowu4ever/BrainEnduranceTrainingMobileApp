@@ -1,30 +1,44 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
 import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class TrainingData {
 
-    public String name, task, dif;
 
+    // user info
     public Long id;
+    public String name;
+    public String activity;
 
-    public List<Double> accXList;
-    public List<Double> accYList;
-    public List<Double> accZList;
 
-    public List<Double> locLatList;
-    public List<Double> locLngList;
+    // task
+    public String task, dif;
 
-    public List<Long> stiTimeList;
-    public List<Long> resTimeList;
+    // cognitive task
+    public int stiCount, resCount, hitResCount, totalResTime;
+    public float accuracy;
+
+    public List<Long> stiTimeList, resTimeList;
+
+    // physical
+    public float distance, avgSpeed, avgPace, startTime, time;
+
+    public List<Double> accXList, accYList, accZList;
+
+    public List<Double> gyroXList, gyroYList, gyroZList;
+
+    public List<Double> locLatList, locLngList;
 
     public TrainingData() {
         accXList = new ArrayList<Double>();
         accYList = new ArrayList<Double>();
         accZList = new ArrayList<Double>();
+
+        gyroXList = new ArrayList<Double>();
+        gyroYList = new ArrayList<Double>();
+        gyroZList = new ArrayList<Double>();
 
         locLatList = new ArrayList<Double>();
         locLngList = new ArrayList<Double>();
@@ -48,6 +62,98 @@ public class TrainingData {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getActivity() {
+
+        return activity;
+    }
+
+    public void setActivity(String activity) {
+        this.activity = activity;
+    }
+
+    public int getStiCount() {
+        return stiCount;
+    }
+
+    public void setStiCount(int stiCount) {
+        this.stiCount = stiCount;
+    }
+
+    public int getResCount() {
+        return resCount;
+    }
+
+    public void setResCount(int resCount) {
+        this.resCount = resCount;
+    }
+
+    public int getHitResCount() {
+        return hitResCount;
+    }
+
+    public void setHitResCount(int hitResCount) {
+        this.hitResCount = hitResCount;
+    }
+
+    public float getAccuracy() {
+
+        float a = (float) hitResCount/ (float) stiCount * 100;
+        return a;
+    }
+
+    public void setAccuracy(float accuracy) {
+        this.accuracy = accuracy;
+    }
+
+    public int getTotalResTime() {
+        return totalResTime;
+    }
+
+    public void setTotalResTime(int totalResTime) {
+        this.totalResTime = totalResTime;
+    }
+
+    public float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
+    }
+
+    public float getAvgSpeed() {
+        return avgSpeed;
+    }
+
+    public void setAvgSpeed(float avgSpeed) {
+        this.avgSpeed = avgSpeed;
+    }
+
+    public float getAvgPace() {
+        return avgPace;
+    }
+
+    public void setAvgPace(float avgPace) {
+        this.avgPace = avgPace;
+    }
+
+    public float getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(float startTime) {
+        this.startTime = startTime;
+    }
+
+    public float getTime() {
+        return time;
+    }
+
+    public void setTime(float time) {
+        this.time = time;
+    }
+
     public void setAccXList(Double accX) {
         accXList.add(accX);
     }
@@ -58,6 +164,19 @@ public class TrainingData {
 
     public void setAccZList(Double accZ) {
         accZList.add(accZ);
+    }
+
+
+    public void setGyroXList(Double gyroX) {
+        gyroXList.add(gyroX);
+    }
+
+    public void setGyroYList(Double gyroY) {
+        gyroYList.add(gyroY);
+    }
+
+    public void setGyroZList(Double gyroZ) {
+        gyroZList.add(gyroZ);
     }
 
     public void setLocLatList(Double lat) {
@@ -104,6 +223,18 @@ public class TrainingData {
         return accZList;
     }
 
+    public List<Double> getGyroXList() {
+        return gyroXList;
+    }
+
+    public List<Double> getGyroYList() {
+        return gyroYList;
+    }
+
+    public List<Double> getGyroZList() {
+        return gyroZList;
+    }
+
     public List<Double> getLocLatList() {
         return locLatList;
     }
@@ -120,11 +251,34 @@ public class TrainingData {
         return stiTimeList;
     }
 
+    public void incStiCount() {
+        stiCount++;
+    }
+
+    public void incHitResCount() {
+        hitResCount++;
+    }
+
     public void resetAllData() {
         name = "";
         task = "";
         dif = "";
         id = 0l;
+        activity = "";
+
+
+        stiCount = 0;
+        resCount = 0;
+        hitResCount = 0;
+        accuracy = 0;
+        totalResTime = 0;
+
+        distance = 0;
+        avgSpeed = 0;
+        avgPace = 0;
+        startTime = 0;
+        time = 0;
+
         accXList.clear();
         accYList.clear();
         accZList.clear();
@@ -186,4 +340,6 @@ public class TrainingData {
         Log.d("TRAINING_DATA", "[Res] " + temp);
 
     }
+
+
 }

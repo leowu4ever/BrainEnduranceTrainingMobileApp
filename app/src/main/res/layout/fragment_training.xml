@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="0H 0M OS"
+            android:text="0M OS"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textSize="36sp"
@@ -94,7 +94,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_distance"
+                android:id="@+id/tv_pace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="0KM"
@@ -163,10 +163,10 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_distance"
+                android:id="@+id/tv_sti_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="123"
+                android:text="0"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="24sp"
@@ -194,10 +194,10 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_speed"
+                android:id="@+id/tv_hit_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="23"
+                android:text="0"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="24sp"
@@ -226,10 +226,10 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_speed"
+                android:id="@+id/tv_accuracy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="15"
+                android:text="0%"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="24sp"
@@ -239,7 +239,7 @@
                 android:id="@+id/textView42"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Lapse Count"
+                android:text="Accuracy"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="12sp" />
@@ -258,10 +258,10 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_speed"
+                android:id="@+id/tv_avg_res_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="123"
+                android:text="0ms"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="24sp"

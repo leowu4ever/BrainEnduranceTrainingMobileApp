@@ -385,7 +385,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 @Override
                 public void run() {
                     if (apvtTask.getDuration() > 0) {
-                        // can do volume and priority for background noise
+
+                        // update sti count on tv and td
+                        trainingData.incStiCount();
+                        trainingFragment.setTvStiCount(trainingData.getStiCount() + "");
+
+                        // update accuracy
+                        trainingFragment.setTvAccuracy(trainingData.getAccuracy() + "");
 
                         float randomVolume = rd.nextFloat() * (apvtTask.getVolumeTo() - apvtTask.getVolumeFrom()) + apvtTask.getVolumeFrom();
                         sh.playBeepSound(randomVolume,randomVolume,0,0,1);

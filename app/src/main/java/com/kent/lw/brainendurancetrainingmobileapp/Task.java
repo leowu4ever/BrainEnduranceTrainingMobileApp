@@ -77,7 +77,7 @@ public class Task {
         return resThreshold;
     }
 
-    public void setResThreshold(int resThreshold) {
+    public void  setResThreshold(int resThreshold) {
         this.resThreshold = resThreshold;
     }
 

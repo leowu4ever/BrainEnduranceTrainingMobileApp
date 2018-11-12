@@ -389,7 +389,7 @@ public class TaskFragment extends Fragment {
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
                 tvThresholdApvt.setText("Vaild response time: " + (Integer.parseInt(rightPinValue) * 100) + "ms");
 
-                MainActivity.apvtTask.setResThreshold(Integer.parseInt(rightPinValue) * 1000);
+                MainActivity.apvtTask.setResThreshold(Integer.parseInt(rightPinValue) * 100);
 
             }
         });

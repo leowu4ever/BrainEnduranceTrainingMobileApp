@@ -16,14 +16,13 @@ import android.widget.TextView;
  */
 public class TrainingFragment extends Fragment {
 
-    private Button btnPause;
-    private Button btnFinish;
-    private TextView tvDuration;
-    private TextView tvDistance;
-    private TextView tvSpeed;
-
-
     private TrainingCommunicator trainingCommunicator;
+
+    private Button btnPause, btnFinish;
+    private TextView tvDuration;
+    private TextView tvDistance, tvPace, tvSpeed;
+    private TextView tvStiCount, tvHitCount, tvAccuracy, tvAvgResTime;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,17 +57,43 @@ public class TrainingFragment extends Fragment {
         tvDuration = getActivity().findViewById(R.id.tv_duration);
         tvDistance = getActivity().findViewById(R.id.tv_distance);
         tvSpeed = getActivity().findViewById(R.id.tv_speed);
+        tvPace = getActivity().findViewById(R.id.tv_pace);
+        tvStiCount = getActivity().findViewById(R.id.tv_sti_count);
+        tvHitCount = getActivity().findViewById(R.id.tv_hit_count);
+        tvAccuracy = getActivity().findViewById(R.id.tv_accuracy);
+        tvAvgResTime = getActivity().findViewById(R.id.tv_speed);
+
     }
 
-    public void setTvDuration(String durationString) {
-        tvDuration.setText(durationString);
+    public void setTvDuration(String s) {
+        tvDuration.setText(s);
     }
 
-    public void setTvDistance(String distanceString) {
-        tvDistance.setText(distanceString);
+    public void setTvDistance(String s) {
+        tvDistance.setText(s);
     }
 
-    public void setTvSpeed(String speedString) {
-        tvSpeed.setText(speedString);
+    public void setTvSpeed(String s) {
+        tvSpeed.setText(s);
+    }
+
+    public void setTvPace(String s) {
+        tvPace.setText(s);
+    }
+
+    public void setTvStiCount(String s) {
+        tvStiCount.setText(s);
+    }
+
+    public void setTvHitCount(String s) {
+        tvHitCount.setText(s);
+    }
+
+    public void setTvAccuracy(String s) {
+        tvAccuracy.setText(s + "%");
+    }
+
+    public void setTvAvgResTime(String s) {
+        tvAvgResTime.setText(s);
     }
 }
