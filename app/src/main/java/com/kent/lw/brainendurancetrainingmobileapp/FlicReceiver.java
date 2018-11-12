@@ -27,7 +27,8 @@ public class FlicReceiver extends FlicBroadcastReceiver {
                 long lastSti = MainActivity.trainingData.getStiTimeList().get(MainActivity.trainingData.getStiTimeList().size() - 1);
                 long resTime = resMili - lastSti;
                 MainActivity.resTotalCount++;
-                if(resTime <= MainActivity.APVT_RES_TIME_COUNTED_THRESHOLD) {
+
+                if(resTime <= MainActivity.apvtTask.getResThreshold()) {
                     MainActivity.resCorrectCount++;
                     MainActivity.resTotalTime = MainActivity.resTotalTime + resTime;
                 }

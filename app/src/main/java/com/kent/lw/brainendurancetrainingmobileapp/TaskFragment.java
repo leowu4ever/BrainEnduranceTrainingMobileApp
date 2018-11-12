@@ -1,10 +1,12 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
+import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,7 +128,7 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(!btnTask.getText().equals(btnDefaultText) && !btnDuration.getText().equals(btnDefaultText) && !btnTask.getText().equals(btnDefaultText) && !btnDif.getText().equals(btnDefaultText)) {
+                if(!btnTask.getText().equals(btnDefaultText) && !btnDuration.getText().equals(btnDefaultText) && !btnActivity.getText().equals(btnDefaultText) && !btnDif.getText().equals(btnDefaultText)) {
                     taskSelected = btnTask.getText().toString();
                     difSelected =  btnDif.getText().toString();
                     taskCommunicator.startTraining(taskSelected, difSelected);
@@ -200,10 +202,9 @@ public class TaskFragment extends Fragment {
         rbTaskDuration.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-
+                MainActivity.apvtTask.setDuration(Integer.parseInt(rightPinValue) * 60 * 1000);
             }
         });
-
     }
 
     private void initCustomBtns() {
@@ -213,6 +214,10 @@ public class TaskFragment extends Fragment {
             public void onClick(View v) {
                 difCustomAPVTDialog.dismiss();
                 btnDif.setText(btnCustom.getText());
+
+                // show task configuration
+                Log.d("apvttask", MainActivity.apvtTask.toString());
+
             }
         });
 
@@ -348,8 +353,6 @@ public class TaskFragment extends Fragment {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
                 tvIntervalApvt.setText("Stimulus interval: " + leftPinValue + " ~ " + rightPinValue + "s");
-                MainActivity.apvtStiIntervalMin = Integer.parseInt(leftPinValue);
-                MainActivity.apvtStiIntervalMax = Integer.parseInt(rightPinValue);
 
                 MainActivity.apvtTask.setIntervalFrom(Integer.parseInt(leftPinValue));
                 MainActivity.apvtTask.setIntervalTo(Integer.parseInt(rightPinValue));
@@ -362,8 +365,9 @@ public class TaskFragment extends Fragment {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
                 tvVolumeApvt.setText("Tone volume: " + (Float.parseFloat(leftPinValue) * 100) + " ~ " + (Float.parseFloat(rightPinValue) * 100) + "%");
-                MainActivity.apvtToneVolumeMin = Float.parseFloat(leftPinValue);
-                MainActivity.apvtToneVolumeMax = Float.parseFloat(rightPinValue);
+
+                MainActivity.apvtTask.setVolumeFrom(Float.parseFloat(leftPinValue));
+                MainActivity.apvtTask.setVolumeTo(Float.parseFloat(rightPinValue));
             }
         });
 
@@ -373,8 +377,8 @@ public class TaskFragment extends Fragment {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
                 tvNoiseApvt.setText("Background noise: " + (Integer.parseInt(rightPinValue) * 100) + "%");
-                MainActivity.apvtBgNoise = Integer.parseInt(rightPinValue);
 
+                MainActivity.apvtTask.setNoise(Integer.parseInt(rightPinValue));
             }
         });
 
@@ -383,9 +387,10 @@ public class TaskFragment extends Fragment {
         rbThresholdApvt.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvThresholdApvt.setText("Vaild response time: " + (Integer.parseInt(leftPinValue) * 100) + " ~ " + (Integer.parseInt(rightPinValue) * 100) + "ms");
-                MainActivity.apvtValidResThresholdMin = Integer.parseInt(leftPinValue);
-                MainActivity.apvtValidResThresholdMax = Integer.parseInt(rightPinValue);
+                tvThresholdApvt.setText("Vaild response time: " + (Integer.parseInt(rightPinValue) * 100) + "ms");
+
+                MainActivity.apvtTask.setResThreshold(Integer.parseInt(rightPinValue) * 1000);
+
             }
         });
     }

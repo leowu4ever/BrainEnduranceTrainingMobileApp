@@ -9,7 +9,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -36,10 +35,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.gson.Gson;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -53,10 +49,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     private ImageButton btnProfile, btnFlic, btnMap;
 
-    // A-PVT-CUSTOM
-    public static int apvtDuration, apvtStiIntervalMin, apvtStiIntervalMax,  apvtBgNoise, apvtValidResThresholdMin, apvtValidResThresholdMax;
-    public static float apvtStiDurationMin, apvtStiDurationMax, apvtToneVolumeMin, apvtToneVolumeMax;
-
     // A-PVT
     private final String TASK_A_PVT = "A-PVT";
     private final int A_PVT_DURATION = 10 * 60 * 1000;
@@ -65,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private final int A_PVT_INTERVAL_HARD = 11 * 1000;
 
     // W-AVT
-    private final String TASK_W_AVT = "W-AVT";
+    private final String TASK_Gonogo = "W-AVT";
     private final int W_AVT_DURATION = 60 * 60 * 1000;
     private final int W_AVT_INTERVAL = 2 * 1000;
 
@@ -84,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     // permission
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-
 
     // fragments
     public static FragmentManager fragmentManager;
@@ -133,16 +124,12 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // data collection
     public static TrainingData trainingData;
 
-    // local storage
-    private String STORAGE_PATH = "/Brain Training Data Folder/";
-
     private FirebaseHelper firebaseHelper;
 
     // finish dialog
     public static double stiTotalCount, resCorrectCount, resTotalCount;
     public static long resTotalTime;
     public static float art, accuracy;
-    public static long APVT_RES_TIME_COUNTED_THRESHOLD = 500;
 
     // TEMP
     Random rd;
@@ -150,6 +137,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // TASK configuration
     public static ApvtTask apvtTask;
     public static GonogoTask gonogoTask;
+
+    // saveHelper
+    private JsonHelper jh;
 
 
     @Override
@@ -195,6 +185,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         mh.getLocationPermission(this);
 
         initTask();
+
+        jh = new JsonHelper();
+
     }
 
     private void initTask() {
@@ -251,22 +244,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         });
     }
 
-    private void saveDataToLocal() {
-        Gson gson = new Gson();
-        File filePath = new File(Environment.getExternalStorageDirectory() + STORAGE_PATH);
-        if (!filePath.exists()) {
-            filePath.mkdir();
-        }
-
-        try (FileWriter writer = new FileWriter(Environment.getExternalStorageDirectory() + STORAGE_PATH + trainingData.getId() + ".json")) {
-            gson.toJson(gson.toJson(trainingData), writer);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     // fragment
     @Override
     public void startTraining(String taskSelected, String difSelected) {
@@ -285,7 +262,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         trainingData.setDif(difSelected);
         trainingData.setId(System.currentTimeMillis());
         resetTrainingData();
-
 
         countdownRunnbale = new Runnable() {
             @Override
@@ -330,15 +306,11 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     }
                     break;
 
-                case TASK_W_AVT:
+                case TASK_Gonogo:
                     stimulusInterval = W_AVT_INTERVAL;
                     trainingDuration = W_AVT_DURATION;
                     break;
             }
-
-
-
-
 
             // duration
             durationRunnable = new Runnable() {
@@ -384,46 +356,45 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
             // CUSTOM
 
-
             // duration
             durationRunnable = new Runnable() {
                 @Override
                 public void run() {
 
-                    if (apvtDuration > 0) {
+                    if (apvtTask.getDuration() > 0) {
                         String durationString = min + "m " + sec + "s";
                         trainingFragment.setTvDuration(durationString);
 
-                        min = (apvtDuration / 1000) / 60;
-                        sec = (apvtDuration / 1000) % 60;
-                        apvtDuration = apvtDuration - 1000;
+                        min = (apvtTask.getDuration() / 1000) / 60;
+                        sec = (apvtTask.getDuration() / 1000) % 60;
+
+                        apvtTask.setDuration(apvtTask.getDuration() - 1000);
                         time = time + 1000;
+
                         handler.postDelayed(this, 1000);
                     } else {
                         finishTraining();
                     }
                 }
             };
+            // start after count down
             handler.postDelayed(durationRunnable, 4000);
 
             // simtimulus
             stimulusRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    if (apvtDuration > 0) {
+                    if (apvtTask.getDuration() > 0) {
                         // can do volume and priority for background noise
-                        float randomDuration = rd.nextFloat() * (apvtStiDurationMax - apvtStiDurationMin) + apvtStiDurationMin;
-                        Log.d("duration",  apvtStiDurationMin + " " + apvtStiDurationMax + " " + randomDuration);
 
-                        float randomVolume = rd.nextFloat() * (apvtToneVolumeMax - apvtToneVolumeMin) + apvtToneVolumeMin;
-                        Log.d("volume",  apvtToneVolumeMin + " " + apvtToneVolumeMax + " " + randomVolume);
-
-                        sh.playBeepSound(randomVolume,randomVolume,0,0,randomDuration);
+                        float randomVolume = rd.nextFloat() * (apvtTask.getVolumeTo() - apvtTask.getVolumeFrom()) + apvtTask.getVolumeFrom();
+                        sh.playBeepSound(randomVolume,randomVolume,0,0,1);
 
                         trainingData.setStiTimeList(System.currentTimeMillis());
                         stiTotalCount++;
 
-                        int randomInterval = rd.nextInt(apvtStiIntervalMax - apvtStiIntervalMin + 1) + apvtStiIntervalMin;
+
+                        int randomInterval = rd.nextInt(apvtTask.getIntervalTo() - apvtTask.getIntervalFrom() + 1) + apvtTask.getIntervalFrom();
                         handler.postDelayed(this, randomInterval * 1000);
                     }
                 }
@@ -432,6 +403,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             trainingStarted = true;
         }
     }
+
+
 
     @Override
     public void pauseTraining() {
@@ -474,7 +447,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         trainingData.setName(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""));
         firebaseHelper.uploadAllData(trainingData);
 
-        saveDataToLocal();
+        jh.saveDataToLocal(trainingData);
         trainingData.printAllData();
         hideTrainingFragment();
 

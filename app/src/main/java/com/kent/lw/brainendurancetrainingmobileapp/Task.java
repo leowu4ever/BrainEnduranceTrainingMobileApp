@@ -7,14 +7,15 @@ public class Task {
     private int intervalFrom;
     private int intervalTo;
 
-    private int volumeFrom;
-    private int volumeTo;
+    private float volumeFrom;
+    private float volumeTo;
 
     private int noise;
 
     private int resThreshold;
 
-    public Task(int duration, int intervalFrom, int intervalTo, int volumeFrom, int volumeTo, int noise, int resThreshold) {
+    public Task(int duration, int intervalFrom, int intervalTo, float volumeFrom, float volumeTo, int noise, int resThreshold) {
+
         this.duration = duration;
         this.intervalFrom = intervalFrom;
         this.intervalTo = intervalTo;
@@ -22,19 +23,6 @@ public class Task {
         this.volumeTo = volumeTo;
         this.noise = noise;
         this.resThreshold = resThreshold;
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "duration=" + duration +
-                ", intervalFrom=" + intervalFrom +
-                ", intervalTo=" + intervalTo +
-                ", volumeFrom=" + volumeFrom +
-                ", volumeTo=" + volumeTo +
-                ", noise=" + noise +
-                ", resThreshold=" + resThreshold +
-                '}';
     }
 
     public int getDuration() {
@@ -61,19 +49,19 @@ public class Task {
         this.intervalTo = intervalTo;
     }
 
-    public int getVolumeFrom() {
+    public float getVolumeFrom() {
         return volumeFrom;
     }
 
-    public void setVolumeFrom(int volumeFrom) {
+    public void setVolumeFrom(float volumeFrom) {
         this.volumeFrom = volumeFrom;
     }
 
-    public int getVolumeTo() {
+    public float getVolumeTo() {
         return volumeTo;
     }
 
-    public void setVolumeTo(int volumeTo) {
+    public void setVolumeTo(float volumeTo) {
         this.volumeTo = volumeTo;
     }
 
@@ -91,6 +79,19 @@ public class Task {
 
     public void setResThreshold(int resThreshold) {
         this.resThreshold = resThreshold;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "duration=" + duration +
+                ", intervalFrom=" + intervalFrom +
+                ", intervalTo=" + intervalTo +
+                ", volumeFrom=" + volumeFrom +
+                ", volumeTo=" + volumeTo +
+                ", noise=" + noise +
+                ", resThreshold=" + resThreshold +
+                '}';
     }
 }
 
