@@ -643,9 +643,9 @@
         <location column="21" file="src/main/res/layout/activity_task.xml" line="108" />
     </issue>
 
-    <issue errorLine1="            android:text=&quot;Random stimulus interval&quot; />"
+    <issue errorLine1="            android:text=&quot;Random stimulus intervalFrom&quot; />"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" id="HardcodedText"
-        message="Hardcoded string &quot;Random stimulus interval&quot;, should use `@string` resource">
+        message="Hardcoded string &quot;Random stimulus intervalFrom&quot;, should use `@string` resource">
         <location column="13" file="src/main/res/layout/activity_task.xml" line="116" />
     </issue>
 

@@ -198,8 +198,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     }
 
     private void initTask() {
-        apvtTask = new ApvtTask(0, 0 ,0, 0, 0);
-        gonogoTask = new GonogoTask(0, 0 ,0, 0, 0);
+        apvtTask = new ApvtTask(0, 0 ,0, 0, 0, 0, 0);
+        gonogoTask = new GonogoTask(0, 0 ,0, 0, 0, 0, 0);
     }
 
     private void initFragments() {
