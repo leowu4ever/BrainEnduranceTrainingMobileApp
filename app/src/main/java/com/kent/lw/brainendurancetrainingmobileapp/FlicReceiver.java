@@ -23,7 +23,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
 //                Log.d("STIMULUS_MILI_BUTTON", System.currentTimeMillis() + "");
 //                Log.d("STIMULUS_MILI_BUTTON_NA", System.nanoTime() + "");
                 Long resMili = System.currentTimeMillis();
-                MainActivity.trainingData.updateResTimeList(resMili);
+                MainActivity.trainingData.setResTimeList(resMili);
                 long lastSti = MainActivity.trainingData.getStiTimeList().get(MainActivity.trainingData.getStiTimeList().size() - 1);
                 long resTime = resMili - lastSti;
                 MainActivity.resTotalCount++;

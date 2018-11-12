@@ -33,46 +33,46 @@ public class TrainingData {
         resTimeList = new ArrayList<Long>();
     }
 
-    public void updateName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public void updateTask(String task) {
+    public void setTask(String task) {
         this.task = task;
     }
 
-    public void updateDif(String dif) {
+    public void setDif(String dif) {
         this.dif = dif;
     }
 
-    public void updateId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
-    public void updateAccXList(Double accX) {
+    public void setAccXList(Double accX) {
         accXList.add(accX);
     }
 
-    public void updateAccYList(Double accY) {
+    public void setAccYList(Double accY) {
         accYList.add(accY);
     }
 
-    public void updateAccZList(Double accZ) {
+    public void setAccZList(Double accZ) {
         accZList.add(accZ);
     }
 
-    public void updateLocLatList(Double lat) {
+    public void setLocLatList(Double lat) {
         locLatList.add(lat);
     }
 
-    public void updateLocLngList(Double lng) {
+    public void setLocLngList(Double lng) {
         locLngList.add(lng);
     }
 
-    public void updateStiTimeList(Long stiTime) {
+    public void setStiTimeList(Long stiTime) {
         stiTimeList.add(stiTime);
     }
 
-    public void updateResTimeList(Long resTime) {
+    public void setResTimeList(Long resTime) {
         resTimeList.add(resTime);
     }
 

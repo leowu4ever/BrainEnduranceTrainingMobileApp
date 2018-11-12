@@ -147,6 +147,11 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // TEMP
     Random rd;
 
+    // TASK configuration
+    public static ApvtTask apvtTask;
+    public static GonogoTask gonogoTask;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -189,6 +194,12 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         mLocationRequest = new LocationRequest();
         mh.getLocationPermission(this);
 
+        initTask();
+    }
+
+    private void initTask() {
+        apvtTask = new ApvtTask(0, 0 ,0, 0, 0);
+        gonogoTask = new GonogoTask(0, 0 ,0, 0, 0);
     }
 
     private void initFragments() {
@@ -270,9 +281,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         // reset training dat
         trainingData.resetAllData();
-        trainingData.updateTask(taskSelected);
-        trainingData.updateDif(difSelected);
-        trainingData.updateId(System.currentTimeMillis());
+        trainingData.setTask(taskSelected);
+        trainingData.setDif(difSelected);
+        trainingData.setId(System.currentTimeMillis());
         resetTrainingData();
 
 
@@ -361,7 +372,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
 
 
-                        trainingData.updateStiTimeList(System.currentTimeMillis());
+                        trainingData.setStiTimeList(System.currentTimeMillis());
                         stiTotalCount++;
                         handler.postDelayed(this, stimulusInterval);
                     }
@@ -409,7 +420,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                         sh.playBeepSound(randomVolume,randomVolume,0,0,randomDuration);
 
-                        trainingData.updateStiTimeList(System.currentTimeMillis());
+                        trainingData.setStiTimeList(System.currentTimeMillis());
                         stiTotalCount++;
 
                         int randomInterval = rd.nextInt(apvtStiIntervalMax - apvtStiIntervalMin + 1) + apvtStiIntervalMin;
@@ -460,7 +471,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         trainingStarted = false;
         mh.removePolylines(polylineList);
 
-        trainingData.updateName(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""));
+        trainingData.setName(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""));
         firebaseHelper.uploadAllData(trainingData);
 
         saveDataToLocal();
@@ -600,8 +611,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                         trainingFragment.setTvSpeed(speedString);
 
                                         lastLocation = tempLocation;
-                                        trainingData.updateLocLatList(lastLocation.latitude);
-                                        trainingData.updateLocLngList(lastLocation.longitude);
+                                        trainingData.setLocLatList(lastLocation.latitude);
+                                        trainingData.setLocLngList(lastLocation.longitude);
 
                                         // finally do prompt
                                         if (speed < 3) {

@@ -1,6 +1,4 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
-
-
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -20,15 +18,47 @@ import com.appyvet.materialrangebar.RangeBar;
  */
 public class TaskFragment extends Fragment {
 
-    private Dialog taskDialog, difDialog, difCustomAPVTDialog, difCustomGonogoDialog, activityDialog, durationDialog, helpApvtDialog, helpGonogoDialog;
-    private Button btnStart, btnActivity, btnDuration, btnTask, btnDif, btnAPVT, btnGonono, btnVisual, btnEasy, btnMedium, btnHard, btnAdaptive, btnCustom, btnCustomApvtSave, btnCustomGonogoSave, btnWalking, btnMarching, btnRunning, btnDurationSave;
-    private String taskSelected, difSelected;
-
-    private RangeBar rbTaskDuration, rbInterval, rbVolume, rbNoise, rbThreshold;
-    private TextView tvInterval, tvVolume, tvNoise, tvThreshold;
     private TaskCommunicator taskCommunicator;
 
-    private Button btnHelpAPVT, btnHelpGonogo, btnHelpAPVTOK, btnHelpGonogoOK;
+    // fragment
+    private Button btnStart;
+
+    // task dialog
+    private Dialog taskDialog;
+    private Button btnTask, btnAPVT, btnGonono, btnVisual, btnHelpApvt, btnHelpGonogo;
+
+    // dif dialog
+    private Dialog difDialog;
+    private Button btnDif, btnEasy, btnMedium, btnHard, btnAdaptive, btnCustom;
+
+    // dif prompt dialog
+    private Dialog difPromptDialog;
+    private Button btnDifPromptOk;
+
+    // activity dialog
+    private Dialog activityDialog;
+    private Button btnWalking, btnMarching, btnRunning, btnActivity;
+
+    // duration dialog
+    private Dialog durationDialog;
+    private Button btnDuration, btnDurationSave;
+    private RangeBar rbTaskDuration;
+
+    // help dialog
+    private Dialog helpApvtDialog, helpGonogoDialog;
+    private Button btnHelpApvtOK, btnHelpGonogoOK;
+
+    // apvt custom dialog
+    private Dialog difCustomAPVTDialog;
+    private Button btnCustomApvtSave;
+    private String taskSelected, difSelected;
+    private RangeBar rbInterval, rbVolume, rbNoise, rbThreshold;
+    private TextView tvInterval, tvVolume, tvNoise, tvThreshold;
+
+    //gonogo dialog
+    private Dialog difCustomGonogoDialog;
+    private Button btnCustomGonogoSave;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,7 +88,11 @@ public class TaskFragment extends Fragment {
         btnDif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                difDialog.show();
+                if(!btnTask.getText().equals("Please select")) {
+                    difDialog.show();
+                } else {
+                    difPromptDialog.show();
+                }
             }
         });
 
@@ -98,6 +132,8 @@ public class TaskFragment extends Fragment {
         durationDialog = new Dialog(getActivity());
         helpApvtDialog = new Dialog(getActivity());
         helpGonogoDialog = new Dialog(getActivity());
+        difPromptDialog = new Dialog(getActivity());
+
 
         setupDialog(taskDialog, R.layout.dialog_task);
         setupDialog(difDialog, R.layout.dialog_dif);
@@ -105,6 +141,7 @@ public class TaskFragment extends Fragment {
         setupDialog(difCustomGonogoDialog, R.layout.dialog_dif_custom_gonogo);
         setupDialog(activityDialog, R.layout.dialog_activity);
         setupDialog(durationDialog, R.layout.dialog_duration);
+        setupDialog(difPromptDialog, R.layout.dialog_dif_prompt);
 
         setupDialog(helpApvtDialog, R.layout.dialog_help_apvt);
         setupDialog(helpGonogoDialog, R.layout.dialog_help_gonogo);
@@ -114,6 +151,14 @@ public class TaskFragment extends Fragment {
         initDifBtns();
         initDurationBtns();
         initCustomBtns();
+
+        btnDifPromptOk = difPromptDialog.findViewById(R.id.btn_dif_prompt_ok);
+        btnDifPromptOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                difPromptDialog.dismiss();
+            }
+        });
     }
 
     private void setupDialog(Dialog d, int layout) {
@@ -284,7 +329,7 @@ public class TaskFragment extends Fragment {
         rbInterval.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvInterval.setText("Stimulus Interval: from " + (Integer.parseInt(leftPinValue) * 1000) + "ms" + " to " + (Integer.parseInt(rightPinValue) * 1000) + "ms");
+                tvInterval.setText("Stimulus interval: " + leftPinValue + " ~ " + rightPinValue + "s");
                 MainActivity.apvtStiIntervalMin = Integer.parseInt(leftPinValue);
                 MainActivity.apvtStiIntervalMax = Integer.parseInt(rightPinValue);
             }
@@ -295,7 +340,7 @@ public class TaskFragment extends Fragment {
         rbVolume.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvVolume.setText("Tone Volume: from " + (Float.parseFloat(leftPinValue) * 100) + "%" + " to " + (Float.parseFloat(rightPinValue) * 100) + "%");
+                tvVolume.setText("Tone volume: " + (Float.parseFloat(leftPinValue) * 100) + " ~ " + (Float.parseFloat(rightPinValue) * 100) + "%");
                 MainActivity.apvtToneVolumeMin = Float.parseFloat(leftPinValue);
                 MainActivity.apvtToneVolumeMax = Float.parseFloat(rightPinValue);
             }
@@ -306,7 +351,7 @@ public class TaskFragment extends Fragment {
         rbNoise.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvNoise.setText("Background Noise: " + (Integer.parseInt(rightPinValue) * 100) + "%");
+                tvNoise.setText("Background noise: " + (Integer.parseInt(rightPinValue) * 100) + "%");
                 MainActivity.apvtBgNoise = Integer.parseInt(rightPinValue);
 
             }
@@ -317,7 +362,7 @@ public class TaskFragment extends Fragment {
         rbThreshold.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvThreshold.setText("Vaild Response : from " + (Integer.parseInt(leftPinValue) * 100) + "ms" + " to " + (Integer.parseInt(rightPinValue) * 100) + "ms");
+                tvThreshold.setText("Vaild response time: " + (Integer.parseInt(leftPinValue) * 100) + " ~ " + (Integer.parseInt(rightPinValue) * 100) + "ms");
                 MainActivity.apvtValidResThresholdMin = Integer.parseInt(leftPinValue);
                 MainActivity.apvtValidResThresholdMax = Integer.parseInt(rightPinValue);
             }
@@ -325,16 +370,16 @@ public class TaskFragment extends Fragment {
     }
 
     private void initHelpBtns() {
-        btnHelpAPVT = taskDialog.findViewById(R.id.btn_help_apvt);
-        btnHelpAPVT.setOnClickListener(new View.OnClickListener() {
+        btnHelpApvt = taskDialog.findViewById(R.id.btn_help_apvt);
+        btnHelpApvt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 helpApvtDialog.show();
             }
         });
 
-        btnHelpAPVTOK = helpApvtDialog.findViewById(R.id.btn_help_apvt_ok);
-        btnHelpAPVTOK.setOnClickListener(new View.OnClickListener() {
+        btnHelpApvtOK = helpApvtDialog.findViewById(R.id.btn_help_apvt_ok);
+        btnHelpApvtOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 helpApvtDialog.dismiss();
