@@ -1,4 +1,4 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
-public class APVTTask extends Task{
+public class ApvtTask extends Task{
 }
