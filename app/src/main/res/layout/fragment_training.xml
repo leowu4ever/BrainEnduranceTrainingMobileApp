@@ -294,7 +294,7 @@
             android:background="@color/colorPrimary" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/tv_log_res"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Response Log"
@@ -302,7 +302,7 @@
             android:textSize="8sp" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tv_log_sti"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Stimulus Log"

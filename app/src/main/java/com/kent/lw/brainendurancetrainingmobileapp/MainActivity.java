@@ -247,6 +247,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // fragment
     @Override
     public void startTraining(String taskSelected, String difSelected) {
+
         // replace task fragment with training fragment
         showTrainingFragment();
 
@@ -401,6 +402,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
 
                         int randomInterval = rd.nextInt(apvtTask.getIntervalTo() - apvtTask.getIntervalFrom() + 1) + apvtTask.getIntervalFrom();
+                        trainingFragment.setTvSti("Next stimulus in " + randomInterval + "s");
                         handler.postDelayed(this, randomInterval * 1000);
                     }
                 }

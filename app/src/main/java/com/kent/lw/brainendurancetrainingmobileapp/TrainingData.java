@@ -10,14 +10,18 @@ public class TrainingData {
     // user info
     public Long id;
     public String name;
+
+    // for activity
     public String activity;
 
+    public String duration;
 
     // task
     public String task, dif;
 
     // cognitive task
-    public int stiCount, resCount, hitResCount, totalResTime;
+    public int stiCount, resCount, hitResCount;
+    public long totalResTime;
     public float accuracy;
 
     public List<Long> stiTimeList, resTimeList;
@@ -47,6 +51,10 @@ public class TrainingData {
         resTimeList = new ArrayList<Long>();
     }
 
+    public String getActivity() {
+        return activity;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -63,9 +71,12 @@ public class TrainingData {
         this.id = id;
     }
 
-    public String getActivity() {
+    public String getDuration() {
+        return duration;
+    }
 
-        return activity;
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
     public void setActivity(String activity) {
@@ -106,7 +117,7 @@ public class TrainingData {
         this.accuracy = accuracy;
     }
 
-    public int getTotalResTime() {
+    public long getTotalResTime() {
         return totalResTime;
     }
 
@@ -259,13 +270,15 @@ public class TrainingData {
         hitResCount++;
     }
 
+    public void addResTime(long resTime) {
+        totalResTime = totalResTime + resTime;
+    }
+
     public void resetAllData() {
         name = "";
         task = "";
         dif = "";
         id = 0l;
-        activity = "";
-
 
         stiCount = 0;
         resCount = 0;
@@ -341,5 +354,35 @@ public class TrainingData {
 
     }
 
-
+    @Override
+    public String toString() {
+        return "TrainingData{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", activity='" + activity + '\'' +
+                ", duration='" + duration + '\'' +
+                ", task='" + task + '\'' +
+                ", dif='" + dif + '\'' +
+                ", stiCount=" + stiCount +
+                ", resCount=" + resCount +
+                ", hitResCount=" + hitResCount +
+                ", totalResTime=" + totalResTime +
+                ", accuracy=" + accuracy +
+                ", stiTimeList=" + stiTimeList +
+                ", resTimeList=" + resTimeList +
+                ", distance=" + distance +
+                ", avgSpeed=" + avgSpeed +
+                ", avgPace=" + avgPace +
+                ", startTime=" + startTime +
+                ", time=" + time +
+                ", accXList=" + accXList +
+                ", accYList=" + accYList +
+                ", accZList=" + accZList +
+                ", gyroXList=" + gyroXList +
+                ", gyroYList=" + gyroYList +
+                ", gyroZList=" + gyroZList +
+                ", locLatList=" + locLatList +
+                ", locLngList=" + locLngList +
+                '}';
+    }
 }

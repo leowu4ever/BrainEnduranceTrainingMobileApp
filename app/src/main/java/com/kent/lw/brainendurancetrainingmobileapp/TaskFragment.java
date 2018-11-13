@@ -131,6 +131,12 @@ public class TaskFragment extends Fragment {
                 if(!btnTask.getText().equals(btnDefaultText) && !btnDuration.getText().equals(btnDefaultText) && !btnActivity.getText().equals(btnDefaultText) && !btnDif.getText().equals(btnDefaultText)) {
                     taskSelected = btnTask.getText().toString();
                     difSelected =  btnDif.getText().toString();
+
+                    MainActivity.trainingData.setActivity(btnActivity.getText() + "");
+                    MainActivity.trainingData.setDuration(btnDuration.getText() + "");
+                    MainActivity.trainingData.setTask(btnTask.getText() + "");
+                    MainActivity.trainingData.setDif(btnDif.getText() + "");
+
                     taskCommunicator.startTraining(taskSelected, difSelected);
                 } else {
                     promptDialog.show();

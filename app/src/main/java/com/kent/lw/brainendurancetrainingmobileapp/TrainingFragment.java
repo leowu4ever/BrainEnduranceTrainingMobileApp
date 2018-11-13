@@ -22,6 +22,7 @@ public class TrainingFragment extends Fragment {
     private TextView tvDuration;
     private TextView tvDistance, tvPace, tvSpeed;
     private TextView tvStiCount, tvHitCount, tvAccuracy, tvAvgResTime;
+    private TextView tvLogRes, tvLogSti;
 
 
     @Override
@@ -61,8 +62,10 @@ public class TrainingFragment extends Fragment {
         tvStiCount = getActivity().findViewById(R.id.tv_sti_count);
         tvHitCount = getActivity().findViewById(R.id.tv_hit_count);
         tvAccuracy = getActivity().findViewById(R.id.tv_accuracy);
-        tvAvgResTime = getActivity().findViewById(R.id.tv_speed);
+        tvAvgResTime = getActivity().findViewById(R.id.tv_avg_res_time);
 
+        tvLogRes = getActivity().findViewById(R.id.tv_log_res);
+        tvLogSti = getActivity().findViewById(R.id.tv_log_sti);
     }
 
     public void setTvDuration(String s) {
@@ -95,5 +98,13 @@ public class TrainingFragment extends Fragment {
 
     public void setTvAvgResTime(String s) {
         tvAvgResTime.setText(s);
+    }
+
+    public void setTvLogRes(String s) {
+        tvLogRes.setText(s);
+    }
+
+    public void setTvSti(String s) {
+        tvLogSti.setText(s);
     }
 }

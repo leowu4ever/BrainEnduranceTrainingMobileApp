@@ -24,26 +24,28 @@ public class FlicReceiver extends FlicBroadcastReceiver {
 //                Log.d("STIMULUS_MILI_BUTTON_NA", System.nanoTime() + "");
                 Long resMili = System.currentTimeMillis();
                 MainActivity.trainingData.setResTimeList(resMili);
-                long lastSti = MainActivity.trainingData.getStiTimeList().get(MainActivity.trainingData.getStiTimeList().size() - 1);
-                long resTime = resMili - lastSti;
+                long lastStiMili = MainActivity.trainingData.getStiTimeList().get(MainActivity.trainingData.getStiTimeList().size() - 1);
+                long resTime = resMili - lastStiMili;
 
-                if(resTime <= MainActivity.apvtTask.getResThreshold()) {
+                MainActivity.trainingFragment.setTvLogRes("Response time  is " + resTime + "ms");
 
-                    MainActivity.resCorrectCount++;
+
+                // within valid res threshold
+                if(resTime <= MainActivity.apvtTask.getResThreshold() && resTime > 100) {
+
                     MainActivity.resTotalTime = MainActivity.resTotalTime + resTime;
 
                     // update hit respon count textview
                     MainActivity.trainingData.incHitResCount();
                     MainActivity.trainingFragment.setTvHitCount(MainActivity.trainingData.getHitResCount() + "");
 
+                    // update avg res time
+                    MainActivity.trainingData.addResTime(resTime);
+                    MainActivity.trainingFragment.setTvAvgResTime(MainActivity.trainingData.getTotalResTime() / MainActivity.trainingData.getHitResCount() + "ms");
 
                     // update accuracy
                     MainActivity.trainingFragment.setTvAccuracy(MainActivity.trainingData.getAccuracy() + "");
-
                 }
-
-                Toast.makeText(context, "resTime is " + resTime + "correct count is " + MainActivity.resCorrectCount, Toast.LENGTH_SHORT).show();
-
             }
         }
     }
