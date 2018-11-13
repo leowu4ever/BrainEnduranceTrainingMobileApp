@@ -68,8 +68,6 @@ public class MapHelper {
         }
     }
 
-
-
     public void updateLocationUI(GoogleMap mMap, Context context) {
 
         try {
