@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,6 +27,7 @@ import java.util.Date;
 public class ProfileActivity extends AppCompatActivity {
 
     private Button btnBack;
+    private File fileTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             Log.d("filesss", file.getName() + "");
 //
-//            Gson g = new Gson();
-//            String s = "{\"accXList\":[],\"accYList\":[],\"accZList\":[],\"accuracy\":0.0,\"activity\":\"Walking\",\"avgPace\":0.0,\"avgResTime\":0,\"avgSpeed\":0.0,\"dif\":\"Custom\",\"distance\":0.0,\"duration\":\"16 min\",\"gyroXList\":[],\"gyroYList\":[],\"gyroZList\":[],\"hitResCount\":0,\"id\":1542213210563,\"locLatList\":[],\"locLngList\":[],\"name\":\"lwu@kentacuk\",\"resCount\":0,\"resMiliList\":[],\"resTimeList\":[],\"startTime\":1.54221321E12,\"stiCount\":1,\"stiMiliList\":[1542213214584],\"task\":\"A-PVT\",\"time\":4000,\"totalResTime\":0}";
-//            TrainingData t = g.fromJson(s, TrainingData.class);
-//            Log.d("gsongson", t.toString());
+            fileTemp = file;
 
             LinearLayout parentLayout = findViewById(R.id.linear_layout_history);
             LinearLayout containerLayout = new LinearLayout(this);
@@ -90,6 +90,26 @@ public class ProfileActivity extends AppCompatActivity {
             btnDetail.setTextColor(Color.parseColor("#ffffff"));
 
             btnDetail.setBackgroundResource(R.drawable.button_rounded_corner);
+            btnDetail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Gson g = new Gson();
+
+                    String temp = readJsonFile(Environment.getExternalStorageDirectory() + JsonHelper.STORAGE_PATH + fileTemp.getName());
+                    Log.d("gsongson-temp", temp);
+
+                    String s = temp.substring(1, temp.length() - 1);
+
+                    Log.d("gsongson-s", s);
+
+
+
+                    TrainingData t = g.fromJson(s, TrainingData.class);
+                    Log.d("gsongson-temp", temp);
+
+                    Log.d("gsongson", t.toString());
+                }
+            });
         }
     }
 
@@ -109,12 +129,12 @@ public class ProfileActivity extends AppCompatActivity {
         return formattedDate;
     }
 
-    private String readFromFile() {
+    private String readJsonFile(String jsonPath) {
 
         String readings = "";
         FileInputStream inputStream = null;
         try {
-             inputStream = new FileInputStream (new File(Environment.getExternalStorageDirectory() + JsonHelper.STORAGE_PATH + "1540885194505.json"));  // 2nd line
+             inputStream = new FileInputStream (new File(jsonPath));  // 2nd line
 
             if (inputStream != null) {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
