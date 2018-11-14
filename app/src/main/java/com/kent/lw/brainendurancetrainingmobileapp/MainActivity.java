@@ -190,10 +190,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         jh = new JsonHelper();
 
 
-        Gson g = new Gson();
-        String s = "{\"accXList\":[],\"accYList\":[],\"accZList\":[],\"accuracy\":0.0,\"activity\":\"Walking\",\"avgPace\":0.0,\"avgResTime\":0,\"avgSpeed\":0.0,\"dif\":\"Custom\",\"distance\":0.0,\"duration\":\"16 min\",\"gyroXList\":[],\"gyroYList\":[],\"gyroZList\":[],\"hitResCount\":0,\"id\":1542213210563,\"locLatList\":[],\"locLngList\":[],\"name\":\"lwu@kentacuk\",\"resCount\":0,\"resMiliList\":[],\"resTimeList\":[],\"startTime\":1.54221321E12,\"stiCount\":1,\"stiMiliList\":[1542213214584],\"task\":\"A-PVT\",\"time\":4000,\"totalResTime\":0}";
-        TrainingData t = g.fromJson(s, TrainingData.class);
-        Log.d("gsongson", t.toString());
+
 
 
     }

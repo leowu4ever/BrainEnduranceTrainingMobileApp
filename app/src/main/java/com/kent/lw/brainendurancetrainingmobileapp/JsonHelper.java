@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class JsonHelper {
 
-    private String STORAGE_PATH = "/Brain Training Data Folder/";
+    public static String STORAGE_PATH = "/Brain Training Data Folder/";
 
     public void saveDataToLocal(TrainingData trainingData) {
         Gson gson = new Gson();
