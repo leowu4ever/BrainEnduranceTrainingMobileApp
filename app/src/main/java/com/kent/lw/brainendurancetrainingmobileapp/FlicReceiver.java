@@ -23,12 +23,13 @@ public class FlicReceiver extends FlicBroadcastReceiver {
 //                Log.d("STIMULUS_MILI_BUTTON", System.currentTimeMillis() + "");
 //                Log.d("STIMULUS_MILI_BUTTON_NA", System.nanoTime() + "");
                 Long resMili = System.currentTimeMillis();
-                MainActivity.trainingData.setResTimeList(resMili);
-                long lastStiMili = MainActivity.trainingData.getStiTimeList().get(MainActivity.trainingData.getStiTimeList().size() - 1);
+                MainActivity.trainingData.setResMiliList(resMili);
+                long lastStiMili = MainActivity.trainingData.getStiMiliList().get(MainActivity.trainingData.getStiMiliList().size() - 1);
                 long resTime = resMili - lastStiMili;
 
                 MainActivity.trainingFragment.setTvLogRes("Response time  is " + resTime + "ms");
-
+                MainActivity.trainingData.incResCount();
+                MainActivity.trainingData.setResTimeList(resTime);
 
                 // within valid res threshold
                 if(resTime <= MainActivity.apvtTask.getResThreshold() && resTime > 100) {

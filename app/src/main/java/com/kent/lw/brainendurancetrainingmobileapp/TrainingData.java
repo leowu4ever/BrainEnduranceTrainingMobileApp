@@ -6,7 +6,6 @@ import java.util.List;
 
 public class TrainingData {
 
-
     // user info
     public Long id;
     public String name;
@@ -22,12 +21,15 @@ public class TrainingData {
     // cognitive task
     public int stiCount, resCount, hitResCount;
     public long totalResTime;
+
+    public long avgResTime;
     public float accuracy;
 
-    public List<Long> stiTimeList, resTimeList;
+    public List<Long> stiMiliList, resMiliList, resTimeList;
 
     // physical
-    public float distance, avgSpeed, avgPace, startTime, time;
+    public float distance, avgSpeed, avgPace, startTime;
+    public long time;
 
     public List<Double> accXList, accYList, accZList;
 
@@ -47,7 +49,8 @@ public class TrainingData {
         locLatList = new ArrayList<Double>();
         locLngList = new ArrayList<Double>();
 
-        stiTimeList = new ArrayList<Long>();
+        stiMiliList = new ArrayList<Long>();
+        resMiliList = new ArrayList<Long>();
         resTimeList = new ArrayList<Long>();
     }
 
@@ -108,7 +111,6 @@ public class TrainingData {
     }
 
     public float getAccuracy() {
-
         float a = (float) hitResCount/ (float) stiCount * 100;
         return a;
     }
@@ -120,6 +122,19 @@ public class TrainingData {
     public long getTotalResTime() {
         return totalResTime;
     }
+
+    public long getAvgResTime() {
+        if(hitResCount == 0) {
+            return 0;
+        } else {
+            return totalResTime/hitResCount;
+        }
+    }
+
+    public void setAvgResTime(long avgResTime) {
+        this.avgResTime = avgResTime;
+    }
+
 
     public void setTotalResTime(int totalResTime) {
         this.totalResTime = totalResTime;
@@ -157,11 +172,11 @@ public class TrainingData {
         this.startTime = startTime;
     }
 
-    public float getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(float time) {
+    public void setTime(long time) {
         this.time = time;
     }
 
@@ -198,13 +213,18 @@ public class TrainingData {
         locLngList.add(lng);
     }
 
-    public void setStiTimeList(Long stiTime) {
-        stiTimeList.add(stiTime);
+    public void setStiMiliList(Long stiMili) {
+        stiMiliList.add(stiMili);
+    }
+
+    public void setResMiliList(Long resMili) {
+        resMiliList.add(resMili);
     }
 
     public void setResTimeList(Long resTime) {
         resTimeList.add(resTime);
     }
+
 
     public String getName() {
         return this.name;
@@ -254,16 +274,25 @@ public class TrainingData {
         return locLngList;
     }
 
-    public List<Long> getResTimeList() {
-        return resTimeList;
+    public List<Long> getResMiliList() {
+        return resMiliList;
     }
 
-    public List<Long> getStiTimeList() {
-        return stiTimeList;
+    public List<Long> getStiMiliList() {
+        return stiMiliList;
     }
+
+    public List<Long> getResTimeList() {
+        return resMiliList;
+    }
+
 
     public void incStiCount() {
         stiCount++;
+    }
+
+    public void incResCount() {
+        resCount++;
     }
 
     public void incHitResCount() {
@@ -299,8 +328,8 @@ public class TrainingData {
         locLatList.clear();
         locLngList.clear();
 
-        stiTimeList.clear();
-        resTimeList.clear();
+        stiMiliList.clear();
+        resMiliList.clear();
     }
 
     public void printAllData() {
@@ -341,13 +370,13 @@ public class TrainingData {
         Log.d("TRAINING_DATA", "[Lng] " + temp);
 
         temp = "";
-        for (Long sti : stiTimeList) {
+        for (Long sti : stiMiliList) {
             temp = temp + sti.toString() + "|";
         }
         Log.d("TRAINING_DATA", "[Sti] " + temp);
 
         temp = "";
-        for (Long res : resTimeList) {
+        for (Long res : resMiliList) {
             temp = temp + res.toString() + "|";
         }
         Log.d("TRAINING_DATA", "[Res] " + temp);
@@ -368,8 +397,8 @@ public class TrainingData {
                 ", hitResCount=" + hitResCount +
                 ", totalResTime=" + totalResTime +
                 ", accuracy=" + accuracy +
-                ", stiTimeList=" + stiTimeList +
-                ", resTimeList=" + resTimeList +
+                ", stiMiliList=" + stiMiliList +
+                ", resMiliList=" + resMiliList +
                 ", distance=" + distance +
                 ", avgSpeed=" + avgSpeed +
                 ", avgPace=" + avgPace +

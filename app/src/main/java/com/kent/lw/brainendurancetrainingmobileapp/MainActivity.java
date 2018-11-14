@@ -35,6 +35,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private SoundHelper sh;
 
     // distance
-    private double distance, speed;
+    private float distance, speed;
     private LatLng tempLocation;
 
     // data collection
@@ -187,6 +188,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         initTask();
 
         jh = new JsonHelper();
+
+
+        Gson g = new Gson();
+        String s = "{\"accXList\":[],\"accYList\":[],\"accZList\":[],\"accuracy\":0.0,\"activity\":\"Walking\",\"avgPace\":0.0,\"avgResTime\":0,\"avgSpeed\":0.0,\"dif\":\"Custom\",\"distance\":0.0,\"duration\":\"16 min\",\"gyroXList\":[],\"gyroYList\":[],\"gyroZList\":[],\"hitResCount\":0,\"id\":1542213210563,\"locLatList\":[],\"locLngList\":[],\"name\":\"lwu@kentacuk\",\"resCount\":0,\"resMiliList\":[],\"resTimeList\":[],\"startTime\":1.54221321E12,\"stiCount\":1,\"stiMiliList\":[1542213214584],\"task\":\"A-PVT\",\"time\":4000,\"totalResTime\":0}";
+        TrainingData t = g.fromJson(s, TrainingData.class);
+        Log.d("gsongson", t.toString());
+
 
     }
 
@@ -269,6 +277,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             public void run() {
                 if(countdown > 1000 && countdown <= 4000) {
                     if (countdown == 4000) {
+                        trainingData.setStartTime(System.currentTimeMillis());
                         sh.playStartSound(1,1,0,0,1);
                         dh.showCountdownDialog();
                     }
@@ -345,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
 
 
-                        trainingData.setStiTimeList(System.currentTimeMillis());
+                        trainingData.setStiMiliList(System.currentTimeMillis());
                         stiTotalCount++;
                         handler.postDelayed(this, stimulusInterval);
                     }
@@ -372,6 +381,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                         apvtTask.setDuration(apvtTask.getDuration() - 1000);
                         time = time + 1000;
 
+                        trainingData.setTime(time);
+
                         handler.postDelayed(this, 1000);
                     } else {
                         finishTraining();
@@ -387,18 +398,17 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 public void run() {
                     if (apvtTask.getDuration() > 0) {
 
+                        float randomVolume = rd.nextFloat() * (apvtTask.getVolumeTo() - apvtTask.getVolumeFrom()) + apvtTask.getVolumeFrom();
+                        sh.playBeepSound(randomVolume,randomVolume,0,0,1);
+
+                        trainingData.setStiMiliList(System.currentTimeMillis());
+
                         // update sti count on tv and td
                         trainingData.incStiCount();
                         trainingFragment.setTvStiCount(trainingData.getStiCount() + "");
 
                         // update accuracy
                         trainingFragment.setTvAccuracy(trainingData.getAccuracy() + "");
-
-                        float randomVolume = rd.nextFloat() * (apvtTask.getVolumeTo() - apvtTask.getVolumeFrom()) + apvtTask.getVolumeFrom();
-                        sh.playBeepSound(randomVolume,randomVolume,0,0,1);
-
-                        trainingData.setStiTimeList(System.currentTimeMillis());
-                        stiTotalCount++;
 
 
                         int randomInterval = rd.nextInt(apvtTask.getIntervalTo() - apvtTask.getIntervalFrom() + 1) + apvtTask.getIntervalFrom();
@@ -439,12 +449,14 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         String artString = String.format("%.1f", (resTotalTime/resCorrectCount));
         String accuracyString = String.format("%.1f", (resCorrectCount/stiTotalCount * 100));
 
-        dh.setTvFinishDuration("Duration: " + min + "M" + sec + "S");
-        dh.setTvFinishDistance("Distance: " + distanceString + "KM");
-        dh.setTvFinishSpeed("Speed: " + speedString + "M/S");
 
-        dh.setTvFinishART("Average Response Time: " + artString + "MS");
-        dh.setTvFinishAccuracy("Accuracy (correct response/number of stimulus):" + accuracyString + "%" + " (" + (resCorrectCount + "/" + stiTotalCount) + ")");
+        // set up finish dialog
+//
+//        dh.setTvFinishDuration("Duration: " + min + "M" + sec + "S");
+//        dh.setTvFinishDistance("Distance: " + distanceString + "KM");
+//        dh.setTvFinishSpeed("Speed: " + speedString + "M/S");
+//        dh.setTvFinishART("Average Response Time: " + artString + "MS");
+//        dh.setTvFinishAccuracy("Accuracy (correct response/number of stimulus):" + accuracyString + "%" + " (" + (resCorrectCount + "/" + stiTotalCount) + ")");
 
         dh.showFinishDialog();
         handler.removeCallbacks(durationRunnable);
@@ -453,9 +465,12 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         mh.removePolylines(polylineList);
 
         trainingData.setName(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""));
-        firebaseHelper.uploadAllData(trainingData);
 
+        // firebase upload
+
+        firebaseHelper.uploadAllData(trainingData, apvtTask);
         jh.saveDataToLocal(trainingData);
+
         trainingData.printAllData();
         hideTrainingFragment();
 
@@ -582,14 +597,22 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                         mh.drawAPolyline(mMap, polylineList, lastLocation, tempLocation, MainActivity.this);
 
                                         // update distance
-                                        distance = distance + mh.getDistance(lastLocation, tempLocation);
-                                        String distanceString = String.format("%.1f", distance) + "m";
+                                        distance = distance + mh.getDistance(lastLocation, tempLocation) / 1000;
+                                        String distanceString = String.format("%.3f", distance) + "km";
                                         trainingFragment.setTvDistance(distanceString);
+                                        trainingData.setDistance(distance);
 
                                         // update speed
-                                        speed = (distance / time) * 1000;
-                                        String speedString = String.format("%.1f", speed) + "m/s";
+                                        speed = (distance / time) * 1000 * 60 * 60;
+                                        String speedString = String.format("%.3f", speed) + "km/h";
                                         trainingFragment.setTvSpeed(speedString);
+                                        trainingData.setAvgSpeed(speed);
+
+                                        // update pace
+
+
+
+
 
                                         lastLocation = tempLocation;
                                         trainingData.setLocLatList(lastLocation.latitude);
@@ -630,20 +653,28 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-
-
         if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             x = event.values[0];
             y = event.values[1];
             z = event.values[2];
-            Log.d("ACC", x + " " + y + " " + z);
+
+//            trainingData.setAccXList(x);
+//            trainingData.setAccYList(y);
+//            trainingData.setAccZList(z);
+
+            //Log.d("ACC", x + " " + y + " " + z);
         }
 
         if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
             x = event.values[0];
             y = event.values[1];
             z = event.values[2];
-            Log.d("GYRO", x + " " + y + " " + z);
+
+//            trainingData.setGyroXList(x);
+//            trainingData.setGyroYList(y);
+//            trainingData.setGyroZList(z);
+
+            //Log.d("GYRO", x + " " + y + " " + z);
         }
     }
 

@@ -3,6 +3,7 @@ package com.kent.lw.brainendurancetrainingmobileapp;
 import android.os.Environment;
 import com.google.gson.Gson;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -24,4 +25,18 @@ public class JsonHelper {
             e.printStackTrace();
         }
     }
+
+//    public void appendToFile(String str) {
+//        File file = getFileStreamPath("test.txt");
+//
+//
+//
+//        if (!file.exists()) {
+//            file.createNewFile();
+//        }
+//        FileOutputStream writer = openFileOutput(file.getName(), MODE_APPEND | MODE_WORLD_READABLE);
+//        writer.write(str.getBytes());
+//        writer.flush();
+//        writer.close();
+//    }
 }

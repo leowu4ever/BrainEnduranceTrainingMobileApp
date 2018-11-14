@@ -13,7 +13,7 @@ public class DialogHelper {
 
     public Dialog pauseDialog, finishDialog, countdownDialog;
     public Button btnResume, btnOK;
-    public TextView tvFinishDuration, tvFinishDistance, tvFinishSpeed, tvFinishART, tvFinishAccuracy, tvCountdown;
+    public TextView tvFinishDuration, tvFinishDistance, tvFinishSpeed, tvFinishPace, tvFinishART, tvFinishAccuracy, tvCountdown;
 
     public void initDialog(Context context) {
         //dialog
@@ -46,6 +46,7 @@ public class DialogHelper {
 
         tvFinishDuration = finishDialog.findViewById(R.id.tv_finish_duration);
         tvFinishDistance = finishDialog.findViewById(R.id.tv_finish_distance);
+        tvFinishPace = finishDialog.findViewById(R.id.tv_finish_pace);
         tvFinishSpeed = finishDialog.findViewById(R.id.tv_finish_speed);
         tvFinishART = finishDialog.findViewById(R.id.tv_finish_ast);
         tvFinishAccuracy = finishDialog.findViewById(R.id.tv_finish_accuracy);
@@ -58,22 +59,8 @@ public class DialogHelper {
         d.getWindow().setWindowAnimations(R.style.DialogAnimation);
     }
 
-    public void setTvFinishDuration(String s) {
-        tvFinishDuration.setText(s);
-    }
-    public void setTvFinishDistance(String s) {
-        tvFinishDistance.setText(s);
-    }
-    public void setTvFinishSpeed(String s) {
-        tvFinishSpeed.setText(s);
-    }
-    public void setTvFinishART(String s) {
-        tvFinishART.setText(s);
-    }
-    public void setTvFinishAccuracy(String s) {
-        tvFinishAccuracy.setText(s);
-    }
     public void showFinishDialog() {
+        setupFinishDialog();
         finishDialog.show();
     }
     public void showPauseDialog() {
@@ -92,6 +79,15 @@ public class DialogHelper {
     public void setCountdownText(String s) {
         tvCountdown = countdownDialog.findViewById(R.id.tv_countdown);
         tvCountdown.setText(s);
+    }
+
+    public void setupFinishDialog() {
+        tvFinishDuration.setText("Duration: " + MainActivity.trainingData.getTime());
+        tvFinishDistance.setText("Distance: " + MainActivity.trainingData.getDistance() + "KM");
+        tvFinishSpeed.setText("Speed: " + MainActivity.trainingData.getAvgSpeed() + "KM/H");
+        tvFinishPace.setText("Pace: " + MainActivity.trainingData.getAvgPace() + "MIN/KM");
+        tvFinishART.setText("Avg RT: " + MainActivity.trainingData.getAvgResTime() + "ms");
+        tvFinishAccuracy.setText("Accuracy: " + MainActivity.trainingData.getAccuracy() + "%");
     }
 }
 

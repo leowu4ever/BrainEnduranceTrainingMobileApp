@@ -51,7 +51,7 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/tv_finish_speed2"
+        android:id="@+id/tv_finish_pace"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Pace"
