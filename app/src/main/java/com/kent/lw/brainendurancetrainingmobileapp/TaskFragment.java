@@ -382,9 +382,8 @@ public class TaskFragment extends Fragment {
         rbNoiseApvt.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvNoiseApvt.setText("Background noise: " + (Integer.parseInt(rightPinValue) * 100) + "%");
-
-                MainActivity.apvtTask.setNoise(Integer.parseInt(rightPinValue));
+                tvNoiseApvt.setText("Background noise: " + (Float.parseFloat(rightPinValue) * 100) + "%");
+                MainActivity.apvtTask.setNoise(Float.parseFloat(rightPinValue));
             }
         });
 
@@ -394,9 +393,7 @@ public class TaskFragment extends Fragment {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
                 tvThresholdApvt.setText("Vaild response time: " + (Integer.parseInt(rightPinValue) * 100) + "ms");
-
                 MainActivity.apvtTask.setResThreshold(Integer.parseInt(rightPinValue) * 100);
-
             }
         });
     }

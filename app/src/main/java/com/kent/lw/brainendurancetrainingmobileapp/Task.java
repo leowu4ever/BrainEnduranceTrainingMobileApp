@@ -10,11 +10,11 @@ public class Task {
     private float volumeFrom;
     private float volumeTo;
 
-    private int noise;
+    private float noise;
 
     private int resThreshold;
 
-    public Task(int duration, int intervalFrom, int intervalTo, float volumeFrom, float volumeTo, int noise, int resThreshold) {
+    public Task(int duration, int intervalFrom, int intervalTo, float volumeFrom, float volumeTo, float noise, int resThreshold) {
 
         this.duration = duration;
         this.intervalFrom = intervalFrom;
@@ -65,11 +65,11 @@ public class Task {
         this.volumeTo = volumeTo;
     }
 
-    public int getNoise() {
+    public float getNoise() {
         return noise;
     }
 
-    public void setNoise(int noise) {
+    public void setNoise(float noise) {
         this.noise = noise;
     }
 

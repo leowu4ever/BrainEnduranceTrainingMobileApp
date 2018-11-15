@@ -35,7 +35,6 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,10 +115,10 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private int stimulusInterval, trainingDuration;
 
     // soundpool
-    private SoundHelper sh;
+    public static SoundHelper sh;
 
     // distance
-    private float distance, speed;
+    private float distance, speed, pace;
     private LatLng tempLocation;
 
     // data collection
@@ -368,16 +367,20 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 @Override
                 public void run() {
 
+                    if (time == 0) {
+                        Log.d("noise", apvtTask.getNoise()+"");
+                        sh.playNoiseSound(apvtTask.getNoise(), apvtTask.getNoise(), 0, -1,1
+                        );
+                    }
+
                     if (apvtTask.getDuration() > 0) {
                         String durationString = min + "m " + sec + "s";
-                        trainingFragment.setTvDuration(durationString);
-
                         min = (apvtTask.getDuration() / 1000) / 60;
                         sec = (apvtTask.getDuration() / 1000) % 60;
+                        trainingFragment.setTvDuration(durationString);
 
                         apvtTask.setDuration(apvtTask.getDuration() - 1000);
                         time = time + 1000;
-
                         trainingData.setTime(time);
 
                         handler.postDelayed(this, 1000);
@@ -426,6 +429,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         // show dialog
         dh.showPauseDialog();
+        sh.stopNoiseSound();
         // resume handler
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
@@ -435,6 +439,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     @Override
     public void finishTraining() {
         sh.playFinishSound(1,1,0,0,1);
+        sh.stopNoiseSound();
 
         // update finish dialog
         hour = (time) / 1000 / 3600;
@@ -479,6 +484,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         handler.postDelayed(durationRunnable, 1000);
         handler.postDelayed(stimulusRunnable, 0);
         trainingStarted = true;
+        sh.playNoiseSound(apvtTask.getNoise(), apvtTask.getNoise(), 0, -1,1);
+
     }
 
     public static void showTaskFragment() {
@@ -595,22 +602,23 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                                         // update distance
                                         distance = distance + mh.getDistance(lastLocation, tempLocation) / 1000;
-                                        String distanceString = String.format("%.3f", distance) + "km";
+                                        String distanceString = String.format("%.3f", distance);
                                         trainingFragment.setTvDistance(distanceString);
                                         trainingData.setDistance(distance);
 
                                         // update speed
                                         speed = (distance / time) * 1000 * 60 * 60;
-                                        String speedString = String.format("%.3f", speed) + "km/h";
+                                        String speedString = String.format("%.1f", speed);
                                         trainingFragment.setTvSpeed(speedString);
                                         trainingData.setAvgSpeed(speed);
 
                                         // update pace
+                                        pace = 1 / ((distance / time) * 1000 * 60);
+                                        String paceString = String.format("%.1f", pace);
+                                        trainingFragment.setTvPace(paceString);
+                                        trainingData.setAvgPace(pace);
 
-
-
-
-
+                                        // update location
                                         lastLocation = tempLocation;
                                         trainingData.setLocLatList(lastLocation.latitude);
                                         trainingData.setLocLngList(lastLocation.longitude);

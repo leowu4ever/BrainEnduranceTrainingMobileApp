@@ -67,7 +67,7 @@
                 android:id="@+id/tv_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0KM"
+                android:text="0"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="24sp"
@@ -77,9 +77,10 @@
                 android:id="@+id/textView44"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Distance"
+                android:text="Distance (km)"
                 android:textAlignment="center"
-                android:textAllCaps="true" />
+                android:textAllCaps="true"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <View
@@ -97,7 +98,7 @@
                 android:id="@+id/tv_pace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0KM"
+                android:text="0"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="24sp"
@@ -107,9 +108,10 @@
                 android:id="@+id/textView44"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="AVERAFE PACE"
+                android:text="AVG.PACE(MIN/KM)"
                 android:textAlignment="center"
-                android:textAllCaps="true" />
+                android:textAllCaps="true"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <View
@@ -128,7 +130,7 @@
                 android:id="@+id/tv_speed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0M/MIN"
+                android:text="0"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="24sp"
@@ -138,9 +140,10 @@
                 android:id="@+id/textView42"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Average Speed"
+                android:text="AVG.SPEED(KM/H)"
                 android:textAlignment="center"
-                android:textAllCaps="true" />
+                android:textAllCaps="true"
+                android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -229,7 +232,7 @@
                 android:id="@+id/tv_accuracy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0%"
+                android:text="0"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="24sp"
@@ -239,7 +242,7 @@
                 android:id="@+id/textView42"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Accuracy"
+                android:text="Accuracy(%)"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="12sp" />
@@ -261,7 +264,7 @@
                 android:id="@+id/tv_avg_res_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0ms"
+                android:text="0"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="24sp"
@@ -271,7 +274,7 @@
                 android:id="@+id/textView42"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Avg RT"
+                android:text="Avg.RT(ms)"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="12sp" />

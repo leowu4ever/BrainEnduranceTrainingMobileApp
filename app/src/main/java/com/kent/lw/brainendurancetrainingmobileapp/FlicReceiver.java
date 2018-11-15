@@ -42,7 +42,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
 
                     // update avg res time
                     MainActivity.trainingData.addResTime(resTime);
-                    MainActivity.trainingFragment.setTvAvgResTime(MainActivity.trainingData.getTotalResTime() / MainActivity.trainingData.getHitResCount() + "ms");
+                    MainActivity.trainingFragment.setTvAvgResTime(MainActivity.trainingData.getTotalResTime() / MainActivity.trainingData.getHitResCount() + "");
 
                     // update accuracy
                     MainActivity.trainingFragment.setTvAccuracy(MainActivity.trainingData.getAccuracy() + "");
