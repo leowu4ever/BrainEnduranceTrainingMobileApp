@@ -51,7 +51,6 @@ public class ProfileActivity extends AppCompatActivity {
         File f = new File(Environment.getExternalStorageDirectory() + JsonHelper.STORAGE_PATH);
         File[] files = f.listFiles();
 
-
         // reads every file
         for (File file : files) {
 
