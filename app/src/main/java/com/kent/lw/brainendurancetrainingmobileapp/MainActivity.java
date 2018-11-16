@@ -9,6 +9,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -36,6 +37,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -664,28 +670,58 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            x = event.values[0];
-            y = event.values[1];
-            z = event.values[2];
+
+        if(trainingStarted) {
+
+            if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                x = event.values[0];
+                y = event.values[1];
+                z = event.values[2];
 
 //            trainingData.setAccXList(x);
 //            trainingData.setAccYList(y);
 //            trainingData.setAccZList(z);
 
-            //Log.d("ACC", x + " " + y + " " + z);
-        }
+                Log.d("ACC", x + " " + y + " " + z);
+            }
 
-        if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
-            x = event.values[0];
-            y = event.values[1];
-            z = event.values[2];
+            if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+                x = event.values[0];
+                y = event.values[1];
+                z = event.values[2];
 
 //            trainingData.setGyroXList(x);
 //            trainingData.setGyroYList(y);
 //            trainingData.setGyroZList(z);
 
-            //Log.d("GYRO", x + " " + y + " " + z);
+                Log.d("GYRO", x + " " + y + " " + z);
+
+
+                File file = new File (Environment.getExternalStorageDirectory() + JsonHelper.STORAGE_PATH + "gyrotest11.txt");
+                if (!file.exists()) {
+                    try {
+                        file.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    FileOutputStream fos = null;
+                    try {
+                        fos = new FileOutputStream(file.getAbsoluteFile().toString(), true);
+                        OutputStreamWriter osw = new OutputStreamWriter(fos);
+
+                        osw.append((x + " " + y + " " + z));
+                        osw.close();
+
+                        fos.flush();
+                        fos.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 
