@@ -93,7 +93,7 @@ public class TrainingFragment extends Fragment {
     }
 
     public void setTvAccuracy(String s) {
-        tvAccuracy.setText(s + "%");
+        tvAccuracy.setText(s);
     }
 
     public void setTvAvgResTime(String s) {
