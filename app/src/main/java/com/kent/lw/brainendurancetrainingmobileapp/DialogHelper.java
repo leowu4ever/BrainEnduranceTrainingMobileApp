@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.constraint.solver.widgets.ConstraintWidgetGroup;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -60,7 +61,6 @@ public class DialogHelper {
     }
 
     public void showFinishDialog() {
-        setupFinishDialog();
         finishDialog.show();
     }
     public void showPauseDialog() {
@@ -81,13 +81,13 @@ public class DialogHelper {
         tvCountdown.setText(s);
     }
 
-    public void setupFinishDialog() {
-        tvFinishDuration.setText("Duration: " + MainActivity.trainingData.getTime());
-        tvFinishDistance.setText("Distance: " + MainActivity.trainingData.getDistance() + "KM");
-        tvFinishSpeed.setText("Speed: " + MainActivity.trainingData.getAvgSpeed() + "KM/H");
-        tvFinishPace.setText("Pace: " + MainActivity.trainingData.getAvgPace() + "MIN/KM");
-        tvFinishART.setText("Avg RT: " + MainActivity.trainingData.getAvgResTime() + "ms");
-        tvFinishAccuracy.setText("Accuracy: " + MainActivity.trainingData.getAccuracy() + "%");
+    public void setupFinishDialog(TrainingData td) {
+        tvFinishDuration.setText("Duration: " + td.getTime());
+        tvFinishDistance.setText("Distance: " + td.getDistance() + "KM");
+        tvFinishSpeed.setText("Speed: " + td.getAvgSpeed() + "KM/H");
+        tvFinishPace.setText("Pace: " + td.getAvgPace() + "MIN/KM");
+        tvFinishART.setText("Avg RT: " + td.getAvgResTime() + "ms");
+        tvFinishAccuracy.setText("Accuracy: " + td.getAccuracy() + "%");
     }
 }
 

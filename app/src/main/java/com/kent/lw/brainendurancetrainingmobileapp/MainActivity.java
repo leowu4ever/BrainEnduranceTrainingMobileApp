@@ -460,7 +460,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 //        dh.setTvFinishART("Average Response Time: " + artString + "MS");
 //        dh.setTvFinishAccuracy("Accuracy (correct response/number of stimulus):" + accuracyString + "%" + " (" + (resCorrectCount + "/" + stiTotalCount) + ")");
 
+
+        dh.setupFinishDialog(trainingData);
         dh.showFinishDialog();
+
+
+
+
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
         trainingStarted = false;
