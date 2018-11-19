@@ -1,5 +1,5 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
-import android.app.Activity;
+
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -20,52 +20,42 @@ import com.appyvet.materialrangebar.RangeBar;
  */
 public class TaskFragment extends Fragment {
 
+    // btn default text
+    private final String btnDefaultText = "Please select";
     private TaskCommunicator taskCommunicator;
     private String taskSelected, difSelected;
-
     // fragment
     private Button btnStart;
-
     // task dialog
     private Dialog taskDialog;
     private Button btnTask, btnAPVT, btnGonono, btnVisual, btnHelpApvt, btnHelpGonogo;
-
     // dif dialog
     private Dialog difDialog;
     private Button btnDif, btnEasy, btnMedium, btnHard, btnAdaptive, btnCustom;
-
     // dif prompt dialog
     private Dialog promptDialog;
     private Button btnDifPromptOk;
     private TextView tvPrompt;
-
     // activity dialog
     private Dialog activityDialog;
     private Button btnWalking, btnMarching, btnRunning, btnActivity;
-
     // duration dialog
     private Dialog durationDialog;
     private Button btnDuration, btnDurationSave;
     private RangeBar rbTaskDuration;
-
     // help dialog
     private Dialog helpApvtDialog, helpGonogoDialog;
     private Button btnHelpApvtOK, btnHelpGonogoOK;
-
     // apvt custom dialog
     private Dialog difCustomAPVTDialog;
     private Button btnCustomApvtSave;
     private RangeBar rbIntervalApvt, rbVolumeApvt, rbNoiseApvt, rbThresholdApvt;
     private TextView tvIntervalApvt, tvVolumeApvt, tvNoiseApvt, tvThresholdApvt;
-
     //gonogo dialog
     private Dialog difCustomGonogoDialog;
     private Button btnCustomGonogoSave;
     private RangeBar rbIntervalGonogo, rbVolumeGonogo, rbNoiseGonogo, rbThresholdGonogo;
     private TextView tvIntervalGonogo, tvVolumeGonogo, tvNoiseGonogo, tvThresholdGonogo;
-
-    // btn default text
-    private final String btnDefaultText = "Please select";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -96,7 +86,7 @@ public class TaskFragment extends Fragment {
         btnDif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!btnTask.getText().equals(btnDefaultText)) {
+                if (!btnTask.getText().equals(btnDefaultText)) {
                     difDialog.show();
                 } else {
                     tvPrompt.setText("Please select a cognitive task.");
@@ -127,9 +117,9 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(!btnTask.getText().equals(btnDefaultText) && !btnDuration.getText().equals(btnDefaultText) && !btnActivity.getText().equals(btnDefaultText) && !btnDif.getText().equals(btnDefaultText)) {
+                if (!btnTask.getText().equals(btnDefaultText) && !btnDuration.getText().equals(btnDefaultText) && !btnActivity.getText().equals(btnDefaultText) && !btnDif.getText().equals(btnDefaultText)) {
                     taskSelected = btnTask.getText().toString();
-                    difSelected =  btnDif.getText().toString();
+                    difSelected = btnDif.getText().toString();
 
                     MainActivity.trainingData.setActivity(btnActivity.getText() + "");
                     MainActivity.trainingData.setDuration(btnDuration.getText() + "");
@@ -278,12 +268,12 @@ public class TaskFragment extends Fragment {
         btnCustom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnTask.getText().equals(btnAPVT.getText())) {
+                if (btnTask.getText().equals(btnAPVT.getText())) {
                     difDialog.dismiss();
                     difCustomAPVTDialog.show();
                 }
 
-                if(btnTask.getText().equals(btnGonono.getText())) {
+                if (btnTask.getText().equals(btnGonono.getText())) {
                     difDialog.dismiss();
                     difCustomGonogoDialog.show();
                 }

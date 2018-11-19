@@ -1,6 +1,6 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
-public class ApvtTask extends Task{
+public class ApvtTask extends Task {
 
     // A-PVT
     private final String TASK_A_PVT = "A-PVT";

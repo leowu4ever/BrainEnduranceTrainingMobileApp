@@ -30,16 +30,14 @@ public class ProfileActivity extends AppCompatActivity {
     private File fileTemp;
     private DialogHelper dh;
 
-    public static String getTimeFromMili(long miili)
-    {
+    public static String getTimeFromMili(long miili) {
         Date date = new Date();
         date.setTime(miili);
         String formattedDate = new SimpleDateFormat("HH:mm:ss").format(date);
         return formattedDate;
     }
 
-    public static String getDateFromMili(long mili)
-    {
+    public static String getDateFromMili(long mili) {
         Date date = new Date();
         date.setTime(mili);
         String formattedDate = new SimpleDateFormat("MM/dd/yyyy").format(date);
@@ -50,7 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
@@ -131,28 +129,26 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    private String readJsonFile(String  path) {
+    private String readJsonFile(String path) {
 
         String readings = "";
         FileInputStream fis = null;
         try {
-            fis = new FileInputStream (new File(path));  // 2nd line
+            fis = new FileInputStream(new File(path));  // 2nd line
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();
             String readinText = "";
 
-            while ( (readinText = br.readLine()) != null ) {
+            while ((readinText = br.readLine()) != null) {
                 sb.append(readinText);
             }
             readings = sb.toString();
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             Log.e("login activity", "File not found: " + e.toString());
         } catch (IOException e) {
             Log.e("login activity", "Can not read file: " + e.toString());
-        }
-        finally {
+        } finally {
             if (fis != null) {
                 try {
                     fis.close();

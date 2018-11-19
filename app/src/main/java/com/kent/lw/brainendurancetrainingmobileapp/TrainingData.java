@@ -1,6 +1,7 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
 import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,20 +59,8 @@ public class TrainingData {
         return activity;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setTask(String task) {
-        this.task = task;
-    }
-
-    public void setDif(String dif) {
-        this.dif = dif;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setActivity(String activity) {
+        this.activity = activity;
     }
 
     public String getDuration() {
@@ -80,10 +69,6 @@ public class TrainingData {
 
     public void setDuration(String duration) {
         this.duration = duration;
-    }
-
-    public void setActivity(String activity) {
-        this.activity = activity;
     }
 
     public int getStiCount() {
@@ -111,7 +96,7 @@ public class TrainingData {
     }
 
     public float getAccuracy() {
-        float a = (float) hitResCount/ (float) stiCount * 100;
+        float a = (float) hitResCount / (float) stiCount * 100;
         return a;
     }
 
@@ -123,21 +108,20 @@ public class TrainingData {
         return totalResTime;
     }
 
+    public void setTotalResTime(int totalResTime) {
+        this.totalResTime = totalResTime;
+    }
+
     public long getAvgResTime() {
-        if(hitResCount == 0) {
+        if (hitResCount == 0) {
             return 0;
         } else {
-            return totalResTime/hitResCount;
+            return totalResTime / hitResCount;
         }
     }
 
     public void setAvgResTime(long avgResTime) {
         this.avgResTime = avgResTime;
-    }
-
-
-    public void setTotalResTime(int totalResTime) {
-        this.totalResTime = totalResTime;
     }
 
     public float getDistance() {
@@ -180,112 +164,125 @@ public class TrainingData {
         this.time = time;
     }
 
-    public void setAccXList(Double accX) {
-        accXList.add(accX);
-    }
-
-    public void setAccYList(Double accY) {
-        accYList.add(accY);
-    }
-
-    public void setAccZList(Double accZ) {
-        accZList.add(accZ);
-    }
-
-
-    public void setGyroXList(Double gyroX) {
-        gyroXList.add(gyroX);
-    }
-
-    public void setGyroYList(Double gyroY) {
-        gyroYList.add(gyroY);
-    }
-
-    public void setGyroZList(Double gyroZ) {
-        gyroZList.add(gyroZ);
-    }
-
-    public void setLocLatList(Double lat) {
-        locLatList.add(lat);
-    }
-
-    public void setLocLngList(Double lng) {
-        locLngList.add(lng);
-    }
-
-    public void setStiMiliList(Long stiMili) {
-        stiMiliList.add(stiMili);
-    }
-
-    public void setResMiliList(Long resMili) {
-        resMiliList.add(resMili);
-    }
-
-    public void setResTimeList(Long resTime) {
-        resTimeList.add(resTime);
-    }
-
-
     public String getName() {
         return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getTask() {
         return this.task;
     }
 
+    public void setTask(String task) {
+        this.task = task;
+    }
+
     public String getDif() {
         return this.dif;
+    }
+
+    public void setDif(String dif) {
+        this.dif = dif;
     }
 
     public Long getId() {
         return this.id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public List<Double> getAccXList() {
         return accXList;
+    }
+
+    public void setAccXList(Double accX) {
+        accXList.add(accX);
     }
 
     public List<Double> getAccYList() {
         return accYList;
     }
 
+    public void setAccYList(Double accY) {
+        accYList.add(accY);
+    }
+
     public List<Double> getAccZList() {
         return accZList;
+    }
+
+    public void setAccZList(Double accZ) {
+        accZList.add(accZ);
     }
 
     public List<Double> getGyroXList() {
         return gyroXList;
     }
 
+    public void setGyroXList(Double gyroX) {
+        gyroXList.add(gyroX);
+    }
+
     public List<Double> getGyroYList() {
         return gyroYList;
+    }
+
+    public void setGyroYList(Double gyroY) {
+        gyroYList.add(gyroY);
     }
 
     public List<Double> getGyroZList() {
         return gyroZList;
     }
 
+    public void setGyroZList(Double gyroZ) {
+        gyroZList.add(gyroZ);
+    }
+
     public List<Double> getLocLatList() {
         return locLatList;
+    }
+
+    public void setLocLatList(Double lat) {
+        locLatList.add(lat);
     }
 
     public List<Double> getLocLngList() {
         return locLngList;
     }
 
+    public void setLocLngList(Double lng) {
+        locLngList.add(lng);
+    }
+
     public List<Long> getResMiliList() {
         return resMiliList;
+    }
+
+    public void setResMiliList(Long resMili) {
+        resMiliList.add(resMili);
     }
 
     public List<Long> getStiMiliList() {
         return stiMiliList;
     }
 
+    public void setStiMiliList(Long stiMili) {
+        stiMiliList.add(stiMili);
+    }
+
     public List<Long> getResTimeList() {
         return resMiliList;
     }
 
+    public void setResTimeList(Long resTime) {
+        resTimeList.add(resTime);
+    }
 
     public void incStiCount() {
         stiCount++;

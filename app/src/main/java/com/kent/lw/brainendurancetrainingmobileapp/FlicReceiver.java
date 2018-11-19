@@ -30,7 +30,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
                 MainActivity.trainingData.setResTimeList(resTime);
 
                 // within valid res threshold
-                if(resTime <= MainActivity.apvtTask.getResThreshold() && resTime > 100) {
+                if (resTime <= MainActivity.apvtTask.getResThreshold() && resTime > 100) {
 
                     MainActivity.resTotalTime = MainActivity.resTotalTime + resTime;
 

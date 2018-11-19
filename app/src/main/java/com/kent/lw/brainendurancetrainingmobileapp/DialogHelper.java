@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.constraint.solver.widgets.ConstraintWidgetGroup;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -64,35 +63,44 @@ public class DialogHelper {
     public void showFinishDialog() {
         finishDialog.show();
     }
+
     public void dismissFinishDialog() {
         finishDialog.dismiss();
     }
+
     public void showPauseDialog() {
         pauseDialog.show();
     }
-    public void dismissPauseDialog () {
+
+    public void dismissPauseDialog() {
         pauseDialog.dismiss();
     }
+
     public void showCountdownDialog() {
         countdownDialog.show();
     }
+
     public void dismissCountdownDialog() {
         countdownDialog.dismiss();
     }
+
     public void setCountdownText(String s) {
         tvCountdown = countdownDialog.findViewById(R.id.tv_countdown);
         tvCountdown.setText(s);
     }
+
     public void showLockDialog() {
         lockDialog.show();
     }
+
     public void dismissLockDialog() {
         lockDialog.dismiss();
     }
 
-    public boolean isLockDialogShowing () {
+    public boolean isLockDialogShowing() {
         return lockDialog.isShowing();
     }
+
     public void setupFinishDialog(TrainingData td) {
         tvFinishDuration.setText("Duration: " + td.getTime());
         tvFinishDistance.setText("Distance: " + td.getDistance() + "KM");

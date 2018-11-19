@@ -21,8 +21,8 @@ import java.util.List;
 
 public class MapHelper {
 
-    private int MIN_DISTANCE_UPDATE_THRESHOLD = 10;
     private final int MAP_UPDATE_INTERVAL = 3000;
+    private int MIN_DISTANCE_UPDATE_THRESHOLD = 10;
 
     public LatLng convertToLatLng(Location location) {
         return new LatLng(location.getLatitude(), location.getLongitude());

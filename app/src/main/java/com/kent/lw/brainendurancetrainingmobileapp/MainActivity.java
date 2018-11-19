@@ -21,6 +21,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -45,6 +46,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import io.flic.lib.FlicAppNotInstalledException;
 import io.flic.lib.FlicBroadcastReceiverFlags;
 import io.flic.lib.FlicButton;
@@ -53,110 +55,118 @@ import io.flic.lib.FlicManagerInitializedCallback;
 
 public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, OnMapReadyCallback, SensorEventListener {
 
-    private ImageButton btnProfile, btnFlic, btnMap;
-
+    // permission
+    public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    //
+    public static boolean trainingStarted = false;
+    // fragments
+    public static FragmentManager fragmentManager;
+    public static FragmentTransaction transaction;
+    public static TaskFragment taskFragment;
+    public static TrainingFragment trainingFragment;
+    public static boolean mLocationPermissionGranted;
+    // runnable
+    public static Handler handler;
+    public static Runnable countdownRunnbale, stimulusRunnable, durationRunnable;
+    // soundpool
+    public static SoundHelper sh;
+    // data collection
+    public static TrainingData trainingData;
+    // finish dialog
+    public static double stiTotalCount, resCorrectCount, resTotalCount;
+    public static long resTotalTime;
+    public static float art, accuracy;
+    // TASK configuration
+    public static ApvtTask apvtTask;
+    public static GonogoTask gonogoTask;
+    //lock threshold
+    public final int LOCK_THRESHOLD = 1;
     // A-PVT
     private final String TASK_A_PVT = "A-PVT";
     private final int A_PVT_DURATION = 10 * 60 * 1000;
     private final int A_PVT_INTERVAL_EASY = 4 * 1000;
     private final int A_PVT_INTERVAL_MEDIUM = 8 * 1000;
     private final int A_PVT_INTERVAL_HARD = 11 * 1000;
-
     // W-AVT
     private final String TASK_Gonogo = "W-AVT";
     private final int W_AVT_DURATION = 60 * 60 * 1000;
     private final int W_AVT_INTERVAL = 2 * 1000;
-
     // VISUAL
     private final String TASK_VISUAL = "Visual";
-
     // DIF
     private final String DIF_EASY = "Easy";
     private final String DIF_MEDIUM = "Medium";
     private final String DIF_HARD = "Hard";
     private final String DIF_ADAPTIVE = "Adaptive";
     private final String DIF_CUSTOM = "Custom";
-
-    //
-    public static boolean trainingStarted = false;
-
-    // permission
-    public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-
-    // fragments
-    public static FragmentManager fragmentManager;
-    public static FragmentTransaction transaction;
-    public static TaskFragment taskFragment;
-    public static TrainingFragment trainingFragment;
-
+    private final int accSensor = Sensor.TYPE_LINEAR_ACCELERATION;
     // ui
     public DialogHelper dh;
-
+    public MapHelper mh;
+    // TEMP
+    Random rd;
+    private ImageButton btnProfile, btnFlic, btnMap;
     // map
     private GoogleMap mMap;
-    public static boolean mLocationPermissionGranted;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private LatLng lastLocation;
     private boolean mapInited = false;
     private LocationRequest mLocationRequest;
     private List<Polyline> polylineList;
-    public MapHelper mh;
     private LatLng myLatLng;
-
     // acc
     private SensorManager sm;
     private Sensor accelerometer, gyroscope;
     private double x, y, z;
     private int MAX_DISTANCE_UPDATE_THRESHOLD = 100;
-    private final int accSensor = Sensor.TYPE_LINEAR_ACCELERATION;
-
-    // runnable
-    public static Handler handler;
-    public static Runnable countdownRunnbale, stimulusRunnable, durationRunnable;
     private int countdown = 4000;
-
     // duration
     private long time, hour, min, sec;
-
     // stimulus
     private int stimulusInterval, trainingDuration;
-
-    // soundpool
-    public static SoundHelper sh;
-
     // distance
     private float distance, speed, pace;
     private LatLng tempLocation;
-
-    // data collection
-    public static TrainingData trainingData;
-
     private FirebaseHelper firebaseHelper;
-
-    // finish dialog
-    public static double stiTotalCount, resCorrectCount, resTotalCount;
-    public static long resTotalTime;
-    public static float art, accuracy;
-
-    // TEMP
-    Random rd;
-
-    // TASK configuration
-    public static ApvtTask apvtTask;
-    public static GonogoTask gonogoTask;
-
     // saveHelper
     private JsonHelper jh;
 
-    //lock threshold
-    public final int LOCK_THRESHOLD = 1;
+    public static void resumeTraining() {
+        handler.postDelayed(durationRunnable, 1000);
+        handler.postDelayed(stimulusRunnable, 0);
+        trainingStarted = true;
+        sh.playNoiseSound(apvtTask.getNoise(), apvtTask.getNoise(), 0, -1, 1);
 
+    }
+
+    public static void showTaskFragment() {
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
+        transaction.commit();
+    }
+
+    public static void hideTrainingFragment() {
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.remove(trainingFragment);
+        transaction.commit();
+    }
+
+    public static void showTrainingFragment() {
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.remove(taskFragment);
+        transaction.add(R.id.container, trainingFragment, "TRAINING_FRAGMENT");
+        transaction.commit();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 
@@ -202,8 +212,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     }
 
     private void initTask() {
-        apvtTask = new ApvtTask(0, 0 ,0, 0, 0, 0, 0);
-        gonogoTask = new GonogoTask(0, 0 ,0, 0, 0, 0, 0);
+        apvtTask = new ApvtTask(0, 0, 0, 0, 0, 0, 0);
+        gonogoTask = new GonogoTask(0, 0, 0, 0, 0, 0, 0);
     }
 
     private void initFragments() {
@@ -278,14 +288,14 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         countdownRunnbale = new Runnable() {
             @Override
             public void run() {
-                if(countdown > 1000 && countdown <= 4000) {
+                if (countdown > 1000 && countdown <= 4000) {
                     if (countdown == 4000) {
                         trainingData.setStartTime(System.currentTimeMillis());
-                        sh.playStartSound(1,1,0,0,1);
+                        sh.playStartSound(1, 1, 0, 0, 1);
                         dh.showCountdownDialog();
                     }
                     countdown = countdown - 1000;
-                    dh.setCountdownText(countdown/1000 + "");
+                    dh.setCountdownText(countdown / 1000 + "");
                     handler.postDelayed(countdownRunnbale, 1000);
                 } else {
                     dh.dismissCountdownDialog();
@@ -296,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         handler.postDelayed(countdownRunnbale, 0);
 
 
-        if(!difSelected.equals(DIF_CUSTOM)) {
+        if (!difSelected.equals(DIF_CUSTOM)) {
             // get parameters // passing as parameters
             switch (taskSelected) {
                 case TASK_A_PVT:
@@ -353,8 +363,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     if (trainingDuration > 0) {
                         // can do volume and priority for background noise
                         //sp.play(beepSound, 1f, 1f, 0, 0, 1);
-                        sh.playBeepSound(1,1,0,0,1);
-
+                        sh.playBeepSound(1, 1, 0, 0, 1);
 
 
                         trainingData.setStiMiliList(System.currentTimeMillis());
@@ -375,8 +384,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 public void run() {
 
                     if (time == 0) {
-                        Log.d("noise", apvtTask.getNoise()+"");
-                        sh.playNoiseSound(apvtTask.getNoise(), apvtTask.getNoise(), 0, -1,1
+                        Log.d("noise", apvtTask.getNoise() + "");
+                        sh.playNoiseSound(apvtTask.getNoise(), apvtTask.getNoise(), 0, -1, 1
                         );
                     }
 
@@ -406,7 +415,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     if (apvtTask.getDuration() > 0) {
 
                         float randomVolume = rd.nextFloat() * (apvtTask.getVolumeTo() - apvtTask.getVolumeFrom()) + apvtTask.getVolumeFrom();
-                        sh.playBeepSound(randomVolume,randomVolume,0,0,1);
+                        sh.playBeepSound(randomVolume, randomVolume, 0, 0, 1);
 
                         trainingData.setStiMiliList(System.currentTimeMillis());
 
@@ -429,8 +438,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         }
     }
 
-
-
     @Override
     public void pauseTraining() {
 
@@ -445,7 +452,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     @Override
     public void finishTraining() {
-        sh.playFinishSound(1,1,0,0,1);
+        sh.playFinishSound(1, 1, 0, 0, 1);
         sh.stopNoiseSound();
 
         // update finish dialog
@@ -475,15 +482,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         btnFlic.setVisibility(View.VISIBLE);
     }
 
-    public static void resumeTraining() {
-        handler.postDelayed(durationRunnable, 1000);
-        handler.postDelayed(stimulusRunnable, 0);
-        trainingStarted = true;
-        sh.playNoiseSound(apvtTask.getNoise(), apvtTask.getNoise(), 0, -1,1);
-
-    }
-
-
     public void resetTrainingData() {
         trainingDuration = 0;
         time = 0;
@@ -499,30 +497,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         art = 0;
         accuracy = 0;
         countdown = 4000;
-    }
-
-    public static void showTaskFragment() {
-        transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-        transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
-        transaction.commit();
-    }
-
-    public static void hideTrainingFragment() {
-        transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-        transaction.remove(trainingFragment);
-        transaction.commit();
-    }
-
-
-    public static void showTrainingFragment() {
-        transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-        transaction.remove(taskFragment);
-        transaction.add(R.id.container, trainingFragment, "TRAINING_FRAGMENT");
-        transaction.commit();
-
     }
 
     @Override
@@ -637,7 +611,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                                         // finally do prompt
                                         if (speed < 3) {
-                                            sh.playSpeedupSound(1,1,0,0,1);
+                                            sh.playSpeedupSound(1, 1, 0, 0, 1);
 
                                         }
                                     }
@@ -671,9 +645,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     @Override
     public void onSensorChanged(SensorEvent event) {
 
-        if(trainingStarted) {
+        if (trainingStarted) {
 
-            if(event.sensor.getType() == accSensor) {
+            if (event.sensor.getType() == accSensor) {
                 x = event.values[0];
                 y = event.values[1];
                 z = event.values[2];
@@ -684,19 +658,19 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                 Log.d("ACC", x + " " + y + " " + z);
 
-                double mag = x*x + y*y + z*z;
+                double mag = x * x + y * y + z * z;
                 Log.d("mag", mag + "");
 
-                if (mag > LOCK_THRESHOLD && !dh.isLockDialogShowing()){
+                if (mag > LOCK_THRESHOLD && !dh.isLockDialogShowing()) {
                     dh.showLockDialog();
                 }
 
-                if (mag < LOCK_THRESHOLD && dh.isLockDialogShowing()){
+                if (mag < LOCK_THRESHOLD && dh.isLockDialogShowing()) {
                     dh.dismissLockDialog();
                 }
             }
 
-            if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+            if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
                 x = event.values[0];
                 y = event.values[1];
                 z = event.values[2];
@@ -708,7 +682,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 //Log.d("GYRO", x + " " + y + " " + z);
 
 
-                File file = new File (Environment.getExternalStorageDirectory() + JsonHelper.STORAGE_PATH + "gyrotest11.txt");
+                File file = new File(Environment.getExternalStorageDirectory() + JsonHelper.STORAGE_PATH + "gyrotest11.txt");
                 if (!file.exists()) {
                     try {
                         file.createNewFile();
