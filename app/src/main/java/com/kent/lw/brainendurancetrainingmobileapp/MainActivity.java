@@ -673,7 +673,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     try {
                         fos = new FileOutputStream(file.getAbsoluteFile().toString(), true);
                         OutputStreamWriter osw = new OutputStreamWriter(fos);
-                        osw.append(System.currentTimeMillis() + "__" + x + " " + y + " " + z);
+                        osw.append(System.currentTimeMillis() + "__" + x + " " + y + " " + z + "\n");
                         osw.close();
 
                         fos.flush();
@@ -726,7 +726,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     try {
                         fos = new FileOutputStream(file.getAbsoluteFile().toString(), true);
                         OutputStreamWriter osw = new OutputStreamWriter(fos);
-                        osw.append(System.currentTimeMillis() + "__" + x + " " + y + " " + z);
+                        osw.append(System.currentTimeMillis() + "__" + x + " " + y + " " + z + "\n");
                         osw.close();
 
                         fos.flush();
