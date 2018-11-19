@@ -10,20 +10,23 @@ import java.io.IOException;
 
 public class JsonHelper {
 
-    public static String STORAGE_PATH = "/Brain Training Data Folder/";
+    public static String PATH_TRAINING_DATA = "/Brain Training Data Folder/Training Data/";
+    public static String PATH_MOTION_DATA = "/Brain Training Data Folder/Motion Data/";
 
     public void saveDataToLocal(TrainingData trainingData) {
         Gson gson = new Gson();
-        File filePath = new File(Environment.getExternalStorageDirectory() + STORAGE_PATH);
+        File filePath = new File(Environment.getExternalStorageDirectory() + PATH_TRAINING_DATA);
         if (!filePath.exists()) {
             filePath.mkdir();
         }
 
-        try (FileWriter writer = new FileWriter(Environment.getExternalStorageDirectory() + STORAGE_PATH + trainingData.getId() + ".json")) {
+        try (FileWriter writer = new FileWriter(Environment.getExternalStorageDirectory() + PATH_TRAINING_DATA + trainingData.getId() + ".json")) {
             gson.toJson(gson.toJson(trainingData), writer);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 }

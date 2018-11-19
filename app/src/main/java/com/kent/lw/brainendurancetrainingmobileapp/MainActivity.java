@@ -473,6 +473,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         // firebase upload
 
         firebaseHelper.uploadAllData(trainingData, apvtTask);
+        FirestorageHelper.uploadFiles();
         jh.saveDataToLocal(trainingData);
 
         trainingData.printAllData();
@@ -645,19 +646,50 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     @Override
     public void onSensorChanged(SensorEvent event) {
 
+
         if (trainingStarted) {
+
+            File filePath = new File(Environment.getExternalStorageDirectory() + JsonHelper.PATH_MOTION_DATA);
+            if (!filePath.exists()) {
+                filePath.mkdir();
+            }
 
             if (event.sensor.getType() == accSensor) {
                 x = event.values[0];
                 y = event.values[1];
                 z = event.values[2];
 
+                File file = new File(Environment.getExternalStorageDirectory() + JsonHelper.PATH_MOTION_DATA + trainingData.getId() + "_acc_.txt");
+
+                if (!file.exists()) {
+                    try {
+                        file.createNewFile();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    FileOutputStream fos = null;
+                    try {
+                        fos = new FileOutputStream(file.getAbsoluteFile().toString(), true);
+                        OutputStreamWriter osw = new OutputStreamWriter(fos);
+                        osw.append(System.currentTimeMillis() + "__" + x + " " + y + " " + z);
+                        osw.close();
+
+                        fos.flush();
+                        fos.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
 //            trainingData.setAccXList(x);
 //            trainingData.setAccYList(y);
 //            trainingData.setAccZList(z);
 
                 Log.d("ACC", x + " " + y + " " + z);
-
                 double mag = x * x + y * y + z * z;
                 Log.d("mag", mag + "");
 
@@ -671,6 +703,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             }
 
             if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+
                 x = event.values[0];
                 y = event.values[1];
                 z = event.values[2];
@@ -679,13 +712,12 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 //            trainingData.setGyroYList(y);
 //            trainingData.setGyroZList(z);
 
-                //Log.d("GYRO", x + " " + y + " " + z);
+                File file = new File(Environment.getExternalStorageDirectory() + JsonHelper.PATH_MOTION_DATA + trainingData.getId() + "_gyro_.txt");
 
-
-                File file = new File(Environment.getExternalStorageDirectory() + JsonHelper.STORAGE_PATH + "gyrotest11.txt");
                 if (!file.exists()) {
                     try {
                         file.createNewFile();
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -694,8 +726,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     try {
                         fos = new FileOutputStream(file.getAbsoluteFile().toString(), true);
                         OutputStreamWriter osw = new OutputStreamWriter(fos);
-
-                        osw.append((x + " " + y + " " + z));
+                        osw.append(System.currentTimeMillis() + "__" + x + " " + y + " " + z);
                         osw.close();
 
                         fos.flush();

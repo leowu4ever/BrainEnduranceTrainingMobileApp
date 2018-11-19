@@ -40,7 +40,7 @@ public class ProfileActivity extends AppCompatActivity {
     public static String getDateFromMili(long mili) {
         Date date = new Date();
         date.setTime(mili);
-        String formattedDate = new SimpleDateFormat("MM/dd/yyyy").format(date);
+        String formattedDate = new SimpleDateFormat("yyyy.MM.dd").format(date);
         return formattedDate;
     }
 
@@ -65,10 +65,20 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         initHistory();
+
+        // init overall
+        // read in overall performance json
+        // convert to class object
+
+        initOverall();
+
     }
 
+    private void initOverall() {
+
+    }
     private void initHistory() {
-        File f = new File(Environment.getExternalStorageDirectory() + JsonHelper.STORAGE_PATH);
+        File f = new File(Environment.getExternalStorageDirectory() + JsonHelper.PATH_TRAINING_DATA);
         File[] files = f.listFiles();
         // reads every file
         for (File file : files) {
@@ -120,7 +130,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Gson g = new Gson();
 
-                String temp = readJsonFile(Environment.getExternalStorageDirectory() + JsonHelper.STORAGE_PATH + fileTemp.getName()).replace("\\", "");
+                String temp = readJsonFile(Environment.getExternalStorageDirectory() + JsonHelper.PATH_TRAINING_DATA + fileTemp.getName()).replace("\\", "");
                 temp = temp.substring(1, temp.length() - 1);
                 TrainingData td = g.fromJson(temp, TrainingData.class);
                 dh.setupFinishDialog(td);
