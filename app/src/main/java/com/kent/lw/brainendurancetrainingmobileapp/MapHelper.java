@@ -55,7 +55,6 @@ public class MapHelper {
     }
 
     public void getLocationPermission(Context context) {
-
         if (ContextCompat.checkSelfPermission(context.getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(context.getApplicationContext(),
@@ -69,7 +68,6 @@ public class MapHelper {
     }
 
     public void updateLocationUI(GoogleMap mMap, Context context) {
-
         try {
             if (MainActivity.mLocationPermissionGranted) {
                 mMap.setMyLocationEnabled(true);
@@ -79,8 +77,6 @@ public class MapHelper {
                 mMap.getUiSettings().setZoomGesturesEnabled(false);
                 mMap.getUiSettings().setTiltGesturesEnabled(false);
                 mMap.getUiSettings().setRotateGesturesEnabled(false);
-
-
             } else {
                 mMap.setMyLocationEnabled(false);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);

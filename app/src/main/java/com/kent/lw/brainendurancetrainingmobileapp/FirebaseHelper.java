@@ -51,4 +51,12 @@ public class FirebaseHelper {
 
         //db.child("lwu@kentacuk").removeValue();
     }
+
+    public void upload(String content) {
+
+    }
+
+    public void upload(float content) {
+
+    }
 }

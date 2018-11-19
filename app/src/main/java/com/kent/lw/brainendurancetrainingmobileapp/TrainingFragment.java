@@ -35,6 +35,10 @@ public class TrainingFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        initUIs();
+    }
+
+    private void initUIs() {
         trainingCommunicator = (TrainingCommunicator) getActivity();
 
         btnPause = getActivity().findViewById(R.id.btn_pause);

@@ -20,8 +20,6 @@ public class FlicReceiver extends FlicBroadcastReceiver {
 
         if (isDown) {
             if (MainActivity.trainingStarted) {
-//                Log.d("STIMULUS_MILI_BUTTON", System.currentTimeMillis() + "");
-//                Log.d("STIMULUS_MILI_BUTTON_NA", System.nanoTime() + "");
                 Long resMili = System.currentTimeMillis();
                 MainActivity.trainingData.setResMiliList(resMili);
                 long lastStiMili = MainActivity.trainingData.getStiMiliList().get(MainActivity.trainingData.getStiMiliList().size() - 1);

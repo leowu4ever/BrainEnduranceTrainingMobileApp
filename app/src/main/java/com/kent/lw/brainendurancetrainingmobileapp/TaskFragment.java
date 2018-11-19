@@ -67,7 +67,6 @@ public class TaskFragment extends Fragment {
     // btn default text
     private final String btnDefaultText = "Please select";
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_task, container, false);
@@ -156,7 +155,6 @@ public class TaskFragment extends Fragment {
         helpApvtDialog = new Dialog(getActivity());
         helpGonogoDialog = new Dialog(getActivity());
         promptDialog = new Dialog(getActivity());
-
 
         setupDialog(taskDialog, R.layout.dialog_task);
         setupDialog(difDialog, R.layout.dialog_dif);
@@ -406,7 +404,6 @@ public class TaskFragment extends Fragment {
                 helpApvtDialog.show();
             }
         });
-
         btnHelpApvtOK = helpApvtDialog.findViewById(R.id.btn_help_apvt_ok);
         btnHelpApvtOK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -414,7 +411,6 @@ public class TaskFragment extends Fragment {
                 helpApvtDialog.dismiss();
             }
         });
-
         btnHelpGonogo = taskDialog.findViewById(R.id.btn_help_gonogo);
         btnHelpGonogo.setOnClickListener(new View.OnClickListener() {
             @Override

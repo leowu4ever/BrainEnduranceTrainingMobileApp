@@ -66,16 +66,12 @@ public class DialogHelper {
     public void showPauseDialog() {
         pauseDialog.show();
     }
-
-
     public void showCountdownDialog() {
         countdownDialog.show();
     }
-
     public void dismissCountdownDialog() {
         countdownDialog.dismiss();
     }
-
     public void setCountdownText(String s) {
         tvCountdown = countdownDialog.findViewById(R.id.tv_countdown);
         tvCountdown.setText(s);
