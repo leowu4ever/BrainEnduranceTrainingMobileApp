@@ -15,18 +15,9 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:layout_weight="0"
-        android:text="Paused"
+        android:text="Locked"
         android:textAllCaps="true"
         android:textSize="30sp"
         android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/btn_resume"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/button_rounded_corner"
-        android:text="Resume"
-        android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
 </LinearLayout>

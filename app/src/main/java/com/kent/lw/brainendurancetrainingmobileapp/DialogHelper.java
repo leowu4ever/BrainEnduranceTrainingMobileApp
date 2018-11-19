@@ -12,7 +12,7 @@ import android.widget.TextView;
 public class DialogHelper {
 
 
-    public Dialog pauseDialog, finishDialog, countdownDialog;
+    public Dialog pauseDialog, finishDialog, countdownDialog, lockDialog;
     public Button btnResume, btnOK;
     public TextView tvFinishDuration, tvFinishDistance, tvFinishSpeed, tvFinishPace, tvFinishART, tvFinishAccuracy, tvCountdown;
 
@@ -21,17 +21,18 @@ public class DialogHelper {
         pauseDialog = new Dialog(context);
         finishDialog = new Dialog(context);
         countdownDialog = new Dialog(context);
+        lockDialog = new Dialog(context);
+
         setupDialog(pauseDialog, R.layout.dialog_pause);
         setupDialog(finishDialog, R.layout.dialog_finish);
         setupDialog(countdownDialog, R.layout.dialog_countdown);
-
-
+        setupDialog(lockDialog, R.layout.dialog_locked);
 
         btnResume = pauseDialog.findViewById(R.id.btn_resume);
         btnResume.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pauseDialog.dismiss();
+                dismissPauseDialog();
                 MainActivity.resumeTraining();
             }
         });
@@ -41,7 +42,7 @@ public class DialogHelper {
             @Override
             public void onClick(View v) {
                 MainActivity.showTaskFragment();
-                finishDialog.dismiss();
+                dismissFinishDialog();
             }
         });
 
@@ -63,8 +64,14 @@ public class DialogHelper {
     public void showFinishDialog() {
         finishDialog.show();
     }
+    public void dismissFinishDialog() {
+        finishDialog.dismiss();
+    }
     public void showPauseDialog() {
         pauseDialog.show();
+    }
+    public void dismissPauseDialog () {
+        pauseDialog.dismiss();
     }
     public void showCountdownDialog() {
         countdownDialog.show();
@@ -76,7 +83,16 @@ public class DialogHelper {
         tvCountdown = countdownDialog.findViewById(R.id.tv_countdown);
         tvCountdown.setText(s);
     }
+    public void showLockDialog() {
+        lockDialog.show();
+    }
+    public void dismissLockDialog() {
+        lockDialog.dismiss();
+    }
 
+    public boolean isLockDialogShowing () {
+        return lockDialog.isShowing();
+    }
     public void setupFinishDialog(TrainingData td) {
         tvFinishDuration.setText("Duration: " + td.getTime());
         tvFinishDistance.setText("Distance: " + td.getDistance() + "KM");

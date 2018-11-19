@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private Sensor accelerometer, gyroscope;
     private double x, y, z;
     private int MAX_DISTANCE_UPDATE_THRESHOLD = 100;
+    private final int accSensor = Sensor.TYPE_LINEAR_ACCELERATION;
 
     // runnable
     public static Handler handler;
@@ -147,12 +148,17 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // saveHelper
     private JsonHelper jh;
 
+    //lock threshold
+    public final int LOCK_THRESHOLD = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -193,11 +199,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         initTask();
 
         jh = new JsonHelper();
-
-
-
-
-
     }
 
     private void initTask() {
@@ -452,26 +453,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         min = (time / 1000) / 60;
         sec = (time / 1000) % 60;
 
-        String distanceString = String.format("%.1f", distance);
-        String speedString = String.format("%.1f", speed);
-        String artString = String.format("%.1f", (resTotalTime/resCorrectCount));
-        String accuracyString = String.format("%.1f", (resCorrectCount/stiTotalCount * 100));
-
-
-        // set up finish dialog
-//
-//        dh.setTvFinishDuration("Duration: " + min + "M" + sec + "S");
-//        dh.setTvFinishDistance("Distance: " + distanceString + "KM");
-//        dh.setTvFinishSpeed("Speed: " + speedString + "M/S");
-//        dh.setTvFinishART("Average Response Time: " + artString + "MS");
-//        dh.setTvFinishAccuracy("Accuracy (correct response/number of stimulus):" + accuracyString + "%" + " (" + (resCorrectCount + "/" + stiTotalCount) + ")");
-
-
         dh.setupFinishDialog(trainingData);
         dh.showFinishDialog();
-
-
-
 
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
@@ -498,6 +481,24 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         trainingStarted = true;
         sh.playNoiseSound(apvtTask.getNoise(), apvtTask.getNoise(), 0, -1,1);
 
+    }
+
+
+    public void resetTrainingData() {
+        trainingDuration = 0;
+        time = 0;
+        hour = 0;
+        min = 0;
+        sec = 0;
+        distance = 0;
+        speed = 0;
+        stiTotalCount = 0;
+        resCorrectCount = 0;
+        resTotalCount = 0;
+        resTotalTime = 0;
+        art = 0;
+        accuracy = 0;
+        countdown = 4000;
     }
 
     public static void showTaskFragment() {
@@ -570,7 +571,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                         mMap.animateCamera(cameraUpdate);
 
                     } else {
-
                     }
                 }
             });
@@ -657,8 +657,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public void initAcc() {
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-        if (sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null && sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null) {
-            accelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        if (sm.getDefaultSensor(accSensor) != null && sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null) {
+            accelerometer = sm.getDefaultSensor(accSensor);
             gyroscope = sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
             sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
@@ -673,7 +673,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         if(trainingStarted) {
 
-            if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            if(event.sensor.getType() == accSensor) {
                 x = event.values[0];
                 y = event.values[1];
                 z = event.values[2];
@@ -683,6 +683,17 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 //            trainingData.setAccZList(z);
 
                 Log.d("ACC", x + " " + y + " " + z);
+
+                double mag = x*x + y*y + z*z;
+                Log.d("mag", mag + "");
+
+                if (mag > LOCK_THRESHOLD && !dh.isLockDialogShowing()){
+                    dh.showLockDialog();
+                }
+
+                if (mag < LOCK_THRESHOLD && dh.isLockDialogShowing()){
+                    dh.dismissLockDialog();
+                }
             }
 
             if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
@@ -694,7 +705,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 //            trainingData.setGyroYList(y);
 //            trainingData.setGyroZList(z);
 
-                Log.d("GYRO", x + " " + y + " " + z);
+                //Log.d("GYRO", x + " " + y + " " + z);
 
 
                 File file = new File (Environment.getExternalStorageDirectory() + JsonHelper.STORAGE_PATH + "gyrotest11.txt");
@@ -728,23 +739,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
-    }
-
-    public void resetTrainingData() {
-        trainingDuration = 0;
-        time = 0;
-        hour = 0;
-        min = 0;
-        sec = 0;
-        distance = 0;
-        speed = 0;
-        stiTotalCount = 0;
-        resCorrectCount = 0;
-        resTotalCount = 0;
-        resTotalTime = 0;
-        art = 0;
-        accuracy = 0;
-        countdown = 4000;
     }
 
 
