@@ -23,18 +23,18 @@ public class FirebaseHelper {
         db.child(rootPath + "2_Training Configuration" + "/" + "Activity").setValue(td.getActivity());
         db.child(rootPath + "2_Training Configuration" + "/" + "Duration").setValue(td.getDuration());
         db.child(rootPath + "2_Training Configuration" + "/" + "Task").setValue(td.getTask());
-        db.child(rootPath + "/" + "2_Training Configuration" + "/" + "Dif").setValue(td.getDif());
-        db.child(rootPath + "/" + "2_Training Configuration" + "/" + "Dif").setValue(t);
+        db.child(rootPath + "2_Training Configuration" + "/" + "Dif").setValue(td.getDif());
+        db.child(rootPath + "2_Training Configuration" + "/" + "Dif").setValue(t);
 
-        db.child(rootPath + "/" + "3_Cognitive Performance" + "/" + "Sti Count").setValue(td.getStiCount());
-        db.child(rootPath + "/" + "3_Cognitive Performance" + "/" + "Res Count").setValue(td.getResCount());
-        db.child(rootPath + "/" + "3_Cognitive Perform  ance" + "/" + "Hit Res Count").setValue(td.getHitResCount());
-        db.child(rootPath + "/" + "3_Cognitive Performance" + "/" + "Accuracy").setValue(td.getAccuracy());
-        db.child(rootPath + "/" + "3_Cognitive Performance" + "/" + "Avg Res Time").setValue(td.getAvgResTime());
+        db.child(rootPath + "3_Cognitive Performance" + "/" + "Sti Count").setValue(td.getStiCount());
+        db.child(rootPath + "3_Cognitive Performance" + "/" + "Res Count").setValue(td.getResCount());
+        db.child(rootPath + "3_Cognitive Performance" + "/" + "Hit Res Count").setValue(td.getHitResCount());
+        db.child(rootPath + "3_Cognitive Performance" + "/" + "Accuracy").setValue(td.getAccuracy());
+        db.child(rootPath + "3_Cognitive Performance" + "/" + "Avg Res Time").setValue(td.getAvgResTime());
 
-        db.child(rootPath + "/" + "4_Physical Performance" + "/" + "Distance").setValue(td.getDistance());
-        db.child(rootPath + "/" + "4_Physical Performance" + "/" + "Avg Speed").setValue(td.getAvgSpeed());
-        db.child(rootPath + "/" + "4_Physical Performance" + "/" + "Avg Pace").setValue(td.getAvgPace());
+        db.child(rootPath + "4_Physical Performance" + "/" + "Distance").setValue(td.getDistance());
+        db.child(rootPath + "4_Physical Performance" + "/" + "Avg Speed").setValue(td.getAvgSpeed());
+        db.child(rootPath + "4_Physical Performance" + "/" + "Avg Pace").setValue(td.getAvgPace());
 
         db.child(rootPath + "5_Stimulus Record" + "/" + "Sti Mili List").setValue(td.getStiMiliList());
         db.child(rootPath + "5_Stimulus Record" + "/" + "Res Mili List").setValue(td.getResMiliList());
@@ -46,7 +46,7 @@ public class FirebaseHelper {
 
         db.child(rootPath + "6_Motion Sensors" + "/" + "Gyroscope" + "/" + "Gyro X List").setValue(td.getGyroXList());
         db.child(rootPath + "6_Motion Sensors" + "/" + "Gyroscope" + "/" + "Gyro Y List").setValue(td.getGyroYList());
-        db.child(rootPath +  "6_Motion Sensors" + "/" + "Gyroscope" + "/" + "Gyro Z List").setValue(td.getGyroZList());
+        db.child(rootPath + "6_Motion Sensors" + "/" + "Gyroscope" + "/" + "Gyro Z List").setValue(td.getGyroZList());
 
         db.child(rootPath + "7_Location" + "/" + "Lat").setValue(td.getLocLatList());
         db.child(rootPath + "7_Location" + "/" + "Lng").setValue(td.getLocLngList());
