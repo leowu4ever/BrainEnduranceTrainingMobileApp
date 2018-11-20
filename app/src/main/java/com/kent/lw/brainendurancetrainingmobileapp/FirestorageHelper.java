@@ -25,7 +25,7 @@ public class FirestorageHelper {
 
         StorageReference storageRef = storage.getReference();
 
-        Uri file = Uri.fromFile(new File(Environment.getExternalStorageDirectory() + JsonHelper.PATH_MOTION_DATA + "1542662918079_acc_.txt"));
+        Uri file = Uri.fromFile(new File(Environment.getExternalStorageDirectory() + FileHelper.PATH_MOTION_DATA + "1542662918079_acc_.txt"));
         StorageReference riversRef = storageRef.child("Motion Data/"+file.getLastPathSegment());
         UploadTask uploadTask = riversRef.putFile(file);
 

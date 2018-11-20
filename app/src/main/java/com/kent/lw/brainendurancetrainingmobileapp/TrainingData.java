@@ -133,7 +133,11 @@ public class TrainingData {
     }
 
     public float getAvgSpeed() {
-        return avgSpeed;
+        if (!Float.isNaN(avgSpeed) && !Float.isInfinite(avgSpeed)) {
+            return avgSpeed;
+        } else {
+            return 0;
+        }
     }
 
     public void setAvgSpeed(float avgSpeed) {

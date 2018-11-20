@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private LatLng tempLocation;
     private FirebaseHelper firebaseHelper;
     // saveHelper
-    private JsonHelper jh;
+    private FileHelper fh;
 
     public static void resumeTraining() {
         handler.postDelayed(durationRunnable, 1000);
@@ -208,7 +208,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         initTask();
 
-        jh = new JsonHelper();
+        fh = new FileHelper();
+        fh.initDir();
     }
 
     private void initTask() {
@@ -473,8 +474,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         // firebase upload
 
         firebaseHelper.uploadAllData(trainingData, apvtTask);
-        FirestorageHelper.uploadFiles();
-        jh.saveDataToLocal(trainingData);
+        //FirestorageHelper.uploadFiles();
+        fh.saveJsonToLocal();
 
         trainingData.printAllData();
         hideTrainingFragment();
@@ -649,41 +650,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         if (trainingStarted) {
 
-            File filePath = new File(Environment.getExternalStorageDirectory() + JsonHelper.PATH_MOTION_DATA);
-            if (!filePath.exists()) {
-                filePath.mkdir();
-            }
-
             if (event.sensor.getType() == accSensor) {
                 x = event.values[0];
                 y = event.values[1];
                 z = event.values[2];
 
-                File file = new File(Environment.getExternalStorageDirectory() + JsonHelper.PATH_MOTION_DATA + trainingData.getId() + "_acc_.txt");
+                fh.saveTxtToLocal(System.currentTimeMillis() + "__" + x + " " + y + " " + z + "\n", "acc");
 
-                if (!file.exists()) {
-                    try {
-                        file.createNewFile();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    FileOutputStream fos = null;
-                    try {
-                        fos = new FileOutputStream(file.getAbsoluteFile().toString(), true);
-                        OutputStreamWriter osw = new OutputStreamWriter(fos);
-                        osw.append(System.currentTimeMillis() + "__" + x + " " + y + " " + z + "\n");
-                        osw.close();
-
-                        fos.flush();
-                        fos.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
 
 //            trainingData.setAccXList(x);
 //            trainingData.setAccYList(y);
@@ -702,41 +675,21 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 }
             }
 
+
+
+
             if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
 
                 x = event.values[0];
                 y = event.values[1];
                 z = event.values[2];
 
+                fh.saveTxtToLocal(System.currentTimeMillis() + "__" + x + " " + y + " " + z + "\n", "gyro");
 //            trainingData.setGyroXList(x);
 //            trainingData.setGyroYList(y);
 //            trainingData.setGyroZList(z);
 
-                File file = new File(Environment.getExternalStorageDirectory() + JsonHelper.PATH_MOTION_DATA + trainingData.getId() + "_gyro_.txt");
 
-                if (!file.exists()) {
-                    try {
-                        file.createNewFile();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    FileOutputStream fos = null;
-                    try {
-                        fos = new FileOutputStream(file.getAbsoluteFile().toString(), true);
-                        OutputStreamWriter osw = new OutputStreamWriter(fos);
-                        osw.append(System.currentTimeMillis() + "__" + x + " " + y + " " + z + "\n");
-                        osw.close();
-
-                        fos.flush();
-                        fos.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
         }
     }

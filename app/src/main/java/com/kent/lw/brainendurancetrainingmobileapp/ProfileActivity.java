@@ -78,7 +78,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
     private void initHistory() {
-        File f = new File(Environment.getExternalStorageDirectory() + JsonHelper.PATH_TRAINING_DATA);
+        File f = new File(Environment.getExternalStorageDirectory() + FileHelper.PATH_TRAINING_DATA);
         File[] files = f.listFiles();
         // reads every file
         for (File file : files) {
@@ -130,7 +130,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Gson g = new Gson();
 
-                String temp = readJsonFile(Environment.getExternalStorageDirectory() + JsonHelper.PATH_TRAINING_DATA + fileTemp.getName()).replace("\\", "");
+                String temp = readJsonFile(Environment.getExternalStorageDirectory() + FileHelper.PATH_TRAINING_DATA + fileTemp.getName()).replace("\\", "");
                 temp = temp.substring(1, temp.length() - 1);
                 TrainingData td = g.fromJson(temp, TrainingData.class);
                 dh.setupFinishDialog(td);
