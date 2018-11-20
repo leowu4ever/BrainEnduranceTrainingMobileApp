@@ -60,6 +60,7 @@
 
                 <Button
                     android:id="@+id/btn_activity"
+                    style="@style/MyButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/cardview_light_background"
@@ -111,6 +112,7 @@
 
                 <Button
                     android:id="@+id/btn_duration"
+                    style="@style/MyButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0"
@@ -177,6 +179,7 @@
 
                 <Button
                     android:id="@+id/btn_task"
+                    style="@style/MyButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/cardview_light_background"
@@ -228,6 +231,7 @@
 
                 <Button
                     android:id="@+id/btn_dif"
+                    style="@style/MyButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0"
