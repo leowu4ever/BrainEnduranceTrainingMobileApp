@@ -9,7 +9,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -38,11 +37,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -73,9 +67,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // data collection
     public static TrainingData trainingData;
     // finish dialog
-    public static double stiTotalCount, resCorrectCount, resTotalCount;
-    public static long resTotalTime;
-    public static float art, accuracy;
+
     // TASK configuration
     public static ApvtTask apvtTask;
     public static GonogoTask gonogoTask;
@@ -136,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         handler.postDelayed(stimulusRunnable, 0);
         trainingStarted = true;
         sh.playNoiseSound(apvtTask.getNoise(), apvtTask.getNoise(), 0, -1, 1);
-
     }
 
     public static void showTaskFragment() {
@@ -159,7 +150,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         transaction.remove(taskFragment);
         transaction.add(R.id.container, trainingFragment, "TRAINING_FRAGMENT");
         transaction.commit();
-
     }
 
     @Override
@@ -192,9 +182,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         // runnable
         handler = new Handler();
-
-        // flic
-        initFlic();
 
         // firebase data model
         trainingData = new TrainingData();
@@ -368,7 +355,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
 
                         trainingData.setStiMiliList(System.currentTimeMillis());
-                        stiTotalCount++;
                         handler.postDelayed(this, stimulusInterval);
                     }
                 }
@@ -492,12 +478,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         sec = 0;
         distance = 0;
         speed = 0;
-        stiTotalCount = 0;
-        resCorrectCount = 0;
-        resTotalCount = 0;
-        resTotalTime = 0;
-        art = 0;
-        accuracy = 0;
         countdown = 4000;
     }
 
@@ -675,9 +655,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 }
             }
 
-
-
-
             if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
 
                 x = event.values[0];
@@ -689,7 +666,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 //            trainingData.setGyroYList(y);
 //            trainingData.setGyroZList(z);
 
-
             }
         }
     }
@@ -697,12 +673,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
-    }
-
-
-    // flic
-    public void initFlic() {
-        FlicManager.setAppCredentials("ddbfde99-d965-41df-8b9d-810bb0c26fe7", "f6e6938e-4d36-46e6-8fe1-d38436bdef83", "Brain Endurance Training Mobile App");
     }
 
     @Override
@@ -713,9 +683,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 FlicButton button = manager.completeGrabButton(requestCode, resultCode, data);
                 if (button != null) {
                     button.registerListenForBroadcast(FlicBroadcastReceiverFlags.UP_OR_DOWN | FlicBroadcastReceiverFlags.REMOVED);
-                    Toast.makeText(MainActivity.this, "Grabbed a button", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Flic button connected", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(MainActivity.this, "Did not grab any button", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Flic button not connected", Toast.LENGTH_SHORT).show();
                 }
             }
         });

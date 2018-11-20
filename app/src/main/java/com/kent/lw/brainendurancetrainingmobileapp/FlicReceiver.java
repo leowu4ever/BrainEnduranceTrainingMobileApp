@@ -32,8 +32,6 @@ public class FlicReceiver extends FlicBroadcastReceiver {
                 // within valid res threshold
                 if (resTime <= MainActivity.apvtTask.getResThreshold() && resTime > 100) {
 
-                    MainActivity.resTotalTime = MainActivity.resTotalTime + resTime;
-
                     // update hit respon count textview
                     MainActivity.trainingData.incHitResCount();
                     MainActivity.trainingFragment.setTvHitCount(MainActivity.trainingData.getHitResCount() + "");
