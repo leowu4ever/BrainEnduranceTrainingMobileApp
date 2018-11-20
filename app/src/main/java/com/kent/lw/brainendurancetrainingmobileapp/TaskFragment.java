@@ -360,8 +360,8 @@ public class TaskFragment extends Fragment {
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
                 //tvVolumeApvt.setText("Tone volume: " + (Float.parseFloat(leftPinValue) * 100) + " ~ " + (Float.parseFloat(rightPinValue) * 100) + "%");
 
-                MainActivity.apvtTask.setVolumeFrom(Float.parseFloat(leftPinValue));
-                MainActivity.apvtTask.setVolumeTo(Float.parseFloat(rightPinValue));
+                MainActivity.apvtTask.setVolumeFrom(Float.parseFloat(leftPinValue)/100);
+                MainActivity.apvtTask.setVolumeTo(Float.parseFloat(rightPinValue)/100);
             }
         });
 
@@ -371,7 +371,7 @@ public class TaskFragment extends Fragment {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
                 //tvNoiseApvt.setText("Background noise: " + (Float.parseFloat(rightPinValue) * 100) + "%");
-                MainActivity.apvtTask.setNoise(Float.parseFloat(rightPinValue));
+                MainActivity.apvtTask.setNoise(Float.parseFloat(rightPinValue)/100);
             }
         });
 

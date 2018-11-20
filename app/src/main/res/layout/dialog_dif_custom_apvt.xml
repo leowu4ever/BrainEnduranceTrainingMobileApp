@@ -94,17 +94,17 @@
         app:mrb_selectorSize="2dp"
         app:mrb_temporaryPins="false"
         app:mrb_tickColor="@color/cardview_light_background"
-        app:mrb_tickEnd="1.0"
+        app:mrb_tickEnd="100"
         app:mrb_tickHeight="1dp"
-        app:mrb_tickInterval="0.1"
-        app:mrb_tickStart="0.1" />
+        app:mrb_tickInterval="10"
+        app:mrb_tickStart="10" />
 
     <TextView
         android:id="@+id/tv_volume_apvt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:text="Tone Volume"
+        android:text="Tone Volume(%)"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textSize="14sp" />
@@ -141,9 +141,9 @@
         app:mrb_selectorSize="2dp"
         app:mrb_temporaryPins="false"
         app:mrb_tickColor="@color/cardview_light_background"
-        app:mrb_tickEnd="1.0"
+        app:mrb_tickEnd="100"
         app:mrb_tickHeight="1dp"
-        app:mrb_tickInterval="0.1"
+        app:mrb_tickInterval="10"
         app:mrb_tickStart="0" />
 
     <TextView
@@ -151,7 +151,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:text="Noise Volume"
+        android:text="Noise Volume(%)"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textSize="14sp" />
