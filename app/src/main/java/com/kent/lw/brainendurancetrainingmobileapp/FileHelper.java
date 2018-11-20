@@ -49,7 +49,7 @@ public class FileHelper {
 
 
     public void saveTxtToLocal(String steamData, String DataType) {
-        File file = new File(Environment.getExternalStorageDirectory() + FileHelper.PATH_MOTION_DATA + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getId()) + "_" + DataType + "_.txt");
+        File file = new File(Environment.getExternalStorageDirectory() + FileHelper.PATH_MOTION_DATA + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getId()) + "_" + DataType + ".txt");
 
         if (!file.exists()) {
             try {
