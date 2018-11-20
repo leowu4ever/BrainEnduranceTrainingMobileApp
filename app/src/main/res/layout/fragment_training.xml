@@ -77,7 +77,7 @@
                 android:id="@+id/textView44"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Distance (km)"
+                android:text="Distance(km)"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="12sp" />

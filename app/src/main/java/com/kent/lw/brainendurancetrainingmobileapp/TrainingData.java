@@ -97,6 +97,7 @@ public class TrainingData {
 
     public float getAccuracy() {
         float a = (float) hitResCount / (float) stiCount * 100;
+        a = Float.parseFloat(String.format("%.3f",a));
         return a;
     }
 

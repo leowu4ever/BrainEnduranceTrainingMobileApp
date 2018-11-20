@@ -346,7 +346,7 @@ public class TaskFragment extends Fragment {
         rbIntervalApvt.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvIntervalApvt.setText("Stimulus interval: " + leftPinValue + " ~ " + rightPinValue + "s");
+                //tvIntervalApvt.setText("Interstimulus interval: " + leftPinValue + " ~ " + rightPinValue + "s");
 
                 MainActivity.apvtTask.setIntervalFrom(Integer.parseInt(leftPinValue));
                 MainActivity.apvtTask.setIntervalTo(Integer.parseInt(rightPinValue));
@@ -358,7 +358,7 @@ public class TaskFragment extends Fragment {
         rbVolumeApvt.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvVolumeApvt.setText("Tone volume: " + (Float.parseFloat(leftPinValue) * 100) + " ~ " + (Float.parseFloat(rightPinValue) * 100) + "%");
+                //tvVolumeApvt.setText("Tone volume: " + (Float.parseFloat(leftPinValue) * 100) + " ~ " + (Float.parseFloat(rightPinValue) * 100) + "%");
 
                 MainActivity.apvtTask.setVolumeFrom(Float.parseFloat(leftPinValue));
                 MainActivity.apvtTask.setVolumeTo(Float.parseFloat(rightPinValue));
@@ -370,7 +370,7 @@ public class TaskFragment extends Fragment {
         rbNoiseApvt.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvNoiseApvt.setText("Background noise: " + (Float.parseFloat(rightPinValue) * 100) + "%");
+                //tvNoiseApvt.setText("Background noise: " + (Float.parseFloat(rightPinValue) * 100) + "%");
                 MainActivity.apvtTask.setNoise(Float.parseFloat(rightPinValue));
             }
         });
@@ -380,8 +380,8 @@ public class TaskFragment extends Fragment {
         rbThresholdApvt.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                tvThresholdApvt.setText("Vaild response time: " + (Integer.parseInt(rightPinValue) * 100) + "ms");
-                MainActivity.apvtTask.setResThreshold(Integer.parseInt(rightPinValue) * 100);
+                //tvThresholdApvt.setText("Vaild response time: " + (Integer.parseInt(rightPinValue) * 100) + "ms");
+                MainActivity.apvtTask.setResThreshold(Integer.parseInt(rightPinValue));
             }
         });
     }

@@ -14,5 +14,3 @@ public class ApvtTask extends Task {
         super(duration, intervalFrom, intervalTo, volumeFrom, volumeTo, noise, resThreshold);
     }
 }
-
-
