@@ -221,7 +221,7 @@
                     android:id="@+id/textView10"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Difficult Level"
+                    android:text="Difficulty Level"
                     android:textAlignment="viewStart"
                     android:textAllCaps="false"
                     android:textSize="12sp" />

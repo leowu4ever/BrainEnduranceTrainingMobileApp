@@ -124,6 +124,7 @@ public class TaskFragment extends Fragment {
                     MainActivity.trainingData.setDuration(btnDuration.getText() + "");
                     MainActivity.trainingData.setTask(btnTask.getText() + "");
                     MainActivity.trainingData.setDif(btnDif.getText() + "");
+                    MainActivity.trainingData.setTaskConfig(MainActivity.apvtTask);
 
                     taskCommunicator.startTraining(taskSelected, difSelected);
                 } else {
@@ -181,21 +182,16 @@ public class TaskFragment extends Fragment {
 
     private void initDurationBtns() {
 
+        rbTaskDuration = durationDialog.findViewById(R.id.rb_task_duration);
+
         btnDurationSave = durationDialog.findViewById(R.id.btn_duration_save);
         btnDurationSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // update duration
+                MainActivity.apvtTask.setDuration(Integer.parseInt(rbTaskDuration.getRightPinValue()) * 60 * 1000);
                 durationDialog.dismiss();
                 btnDuration.setText(rbTaskDuration.getRightPinValue() + " min");
-            }
-        });
-
-
-        rbTaskDuration = durationDialog.findViewById(R.id.rb_task_duration);
-        rbTaskDuration.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
-            @Override
-            public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                MainActivity.apvtTask.setDuration(Integer.parseInt(rightPinValue) * 60 * 1000);
             }
         });
     }

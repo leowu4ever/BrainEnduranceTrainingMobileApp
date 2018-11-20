@@ -381,8 +381,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         min = (time / 1000) / 60;
         sec = (time / 1000) % 60;
 
-        dh.setupFinishDialog(trainingData);
-        dh.showFinishDialog();
+        dh.showFinishDialog(trainingData);
 
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);

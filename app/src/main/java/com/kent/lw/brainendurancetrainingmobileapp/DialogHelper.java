@@ -11,9 +11,11 @@ import android.widget.TextView;
 public class DialogHelper {
 
 
-    public Dialog pauseDialog, finishDialog, countdownDialog, lockDialog;
-    public Button btnResume, btnOK;
+    public Dialog pauseDialog, finishDialog, countdownDialog, lockDialog, detailDialog;
+    public Button btnResumeOk, btnFinishOK, btnDetailOk;
     public TextView tvFinishDuration, tvFinishDistance, tvFinishSpeed, tvFinishPace, tvFinishART, tvFinishAccuracy, tvCountdown;
+    public TextView tvHistoryDate, tvHistoryTime, tvHistoryActivity, tvHistoryTask, tvHistoryDif, tvHistoryDuration, tvHistoryDistance, tvHistorySpeed, tvHistoryPace, tvHistoryART, tvHistoryAccuracy;
+
 
     public void initDialog(Context context) {
         //dialog
@@ -21,14 +23,16 @@ public class DialogHelper {
         finishDialog = new Dialog(context);
         countdownDialog = new Dialog(context);
         lockDialog = new Dialog(context);
+        detailDialog = new Dialog(context);
 
         setupDialog(pauseDialog, R.layout.dialog_pause);
         setupDialog(finishDialog, R.layout.dialog_finish);
         setupDialog(countdownDialog, R.layout.dialog_countdown);
         setupDialog(lockDialog, R.layout.dialog_locked);
+        setupDialog(detailDialog, R.layout.dialog_detail);
 
-        btnResume = pauseDialog.findViewById(R.id.btn_resume);
-        btnResume.setOnClickListener(new View.OnClickListener() {
+        btnResumeOk = pauseDialog.findViewById(R.id.btn_resume);
+        btnResumeOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismissPauseDialog();
@@ -36,8 +40,8 @@ public class DialogHelper {
             }
         });
 
-        btnOK = finishDialog.findViewById(R.id.btn_ok);
-        btnOK.setOnClickListener(new View.OnClickListener() {
+        btnFinishOK = finishDialog.findViewById(R.id.btn_ok);
+        btnFinishOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MainActivity.showTaskFragment();
@@ -45,12 +49,33 @@ public class DialogHelper {
             }
         });
 
+
+        btnDetailOk = detailDialog.findViewById(R.id.btn_detail_ok);
+        btnDetailOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                detailDialog.dismiss();
+            }
+        });
+
         tvFinishDuration = finishDialog.findViewById(R.id.tv_finish_duration);
         tvFinishDistance = finishDialog.findViewById(R.id.tv_finish_distance);
-        tvFinishPace = finishDialog.findViewById(R.id.tv_finish_pace);
         tvFinishSpeed = finishDialog.findViewById(R.id.tv_finish_speed);
-        tvFinishART = finishDialog.findViewById(R.id.tv_finish_ast);
+        tvFinishPace = finishDialog.findViewById(R.id.tv_finish_pace);
+        tvFinishART = finishDialog.findViewById(R.id.tv_finish_art);
         tvFinishAccuracy = finishDialog.findViewById(R.id.tv_finish_accuracy);
+
+        tvHistoryDate = detailDialog.findViewById(R.id.tv_history_date);
+        tvHistoryTime = detailDialog.findViewById(R.id.tv_history_time);
+        tvHistoryActivity = detailDialog.findViewById(R.id.tv_history_activity);
+        tvHistoryTask = detailDialog.findViewById(R.id.tv_history_task);
+        tvHistoryDif = detailDialog.findViewById(R.id.tv_history_dif);
+        tvHistoryDuration = detailDialog.findViewById(R.id.tv_history_duration);
+        tvHistoryDistance = detailDialog.findViewById(R.id.tv_history_distance);
+        tvHistorySpeed = detailDialog.findViewById(R.id.tv_history_speed);
+        tvHistoryPace = detailDialog.findViewById(R.id.tv_history_pace);
+        tvHistoryART = detailDialog.findViewById(R.id.tv_history_art);
+        tvHistoryAccuracy = detailDialog.findViewById(R.id.tv_history_accuracy);
     }
 
     public void setupDialog(Dialog d, int layout) {
@@ -60,7 +85,8 @@ public class DialogHelper {
         d.getWindow().setWindowAnimations(R.style.DialogAnimation);
     }
 
-    public void showFinishDialog() {
+    public void showFinishDialog(TrainingData td) {
+        setupFinishDialog(td);
         finishDialog.show();
     }
 
@@ -108,6 +134,27 @@ public class DialogHelper {
         tvFinishPace.setText("Avg pace: " + td.getAvgPace() + "MIN/KM");
         tvFinishART.setText("Avg RT: " + td.getAvgResTime() + "ms");
         tvFinishAccuracy.setText("Accuracy: " + td.getAccuracy() + "%");
+    }
+
+    public void showHistoryDialog(TrainingData td) {
+        setupHistoryDialog(td);
+        detailDialog.show();
+    }
+
+    public void setupHistoryDialog(TrainingData td) {
+
+        tvHistoryDate.setText("Date: " + DateHelper.getDateFromMili(td.getId()));
+        tvHistoryTime.setText("Time: " + DateHelper.getTimeFromMili(td.getId()));
+
+        tvHistoryActivity.setText("Activity: " + td.getActivity());
+        tvHistoryTask.setText("Cognitive task: " + td.getTask());
+        tvHistoryDif.setText("Difficulty level: " + td.getDif());
+        tvHistoryDuration.setText("Duration: " + DateHelper.getTimeFromMs(td.getTime()));
+        tvHistoryDistance.setText("Distance: " + td.getDistance() + "KM");
+        tvHistorySpeed.setText("Avg speed: " + td.getAvgSpeed() + "KM/H");
+        tvHistoryPace.setText("Avg pace: " + td.getAvgPace() + "MIN/KM");
+        tvHistoryART.setText("Avg RT: " + td.getAvgResTime() + "ms");
+        tvHistoryAccuracy.setText("Accuracy: " + td.getAccuracy() + "%");
     }
 }
 

@@ -21,12 +21,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private Button btnBack;
+    private Button btnHistoryOk;
     private File fileTemp;
     private DialogHelper dh;
 
@@ -42,8 +40,8 @@ public class ProfileActivity extends AppCompatActivity {
         dh = new DialogHelper();
         dh.initDialog(this);
 
-        btnBack = findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(new View.OnClickListener() {
+        btnHistoryOk = findViewById(R.id.btn_back);
+        btnHistoryOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -57,7 +55,6 @@ public class ProfileActivity extends AppCompatActivity {
         // convert to class object
 
         initOverall();
-
     }
 
     private void initOverall() {
@@ -119,12 +116,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String temp = readJsonFile(Environment.getExternalStorageDirectory() + FileHelper.PATH_TRAINING_DATA + fileTemp.getName()).replace("\\", "");
                 temp = temp.substring(1, temp.length() - 1);
                 TrainingData td = g.fromJson(temp, TrainingData.class);
-                dh.setupFinishDialog(td);
-                dh.showFinishDialog();
-
-
-
-
+                dh.showHistoryDialog(td);
             }
         });
     }

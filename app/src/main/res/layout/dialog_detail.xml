@@ -8,14 +8,74 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/textView20"
-        android:layout_width="wrap_content"
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Finished"
+        android:text="Details"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textSize="30sp"
         android:textStyle="bold" />
+
+    <View
+        android:id="@+id/view5"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/tv_history_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:textAlignment="center"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_history_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Time"
+        android:textAlignment="center"
+        android:textSize="14sp" />
+
+    <View
+        android:id="@+id/view14"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/tv_history_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Activity"
+        android:textAlignment="center"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_history_task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cognitive task"
+        android:textAlignment="center"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_history_dif"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Difficulty level"
+        android:textAlignment="center"
+        android:textSize="14sp" />
 
     <View
         android:layout_width="match_parent"
@@ -28,7 +88,7 @@
 
 
     <TextView
-        android:id="@+id/tv_finish_duration"
+        android:id="@+id/tv_history_duration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Duration"
@@ -36,7 +96,7 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/tv_finish_distance"
+        android:id="@+id/tv_history_distance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Distance"
@@ -44,7 +104,7 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/tv_finish_speed"
+        android:id="@+id/tv_history_speed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Avg speed"
@@ -52,7 +112,7 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/tv_finish_pace"
+        android:id="@+id/tv_history_pace"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Avg pace"
@@ -60,7 +120,7 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/tv_finish_art"
+        android:id="@+id/tv_history_art"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Avg RT"
@@ -68,7 +128,7 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/tv_finish_accuracy"
+        android:id="@+id/tv_history_accuracy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Accuracy"
@@ -84,7 +144,7 @@
         android:background="@color/colorPrimary" />
 
     <Button
-        android:id="@+id/btn_ok"
+        android:id="@+id/btn_detail_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -92,7 +152,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/button_rounded_corner"
-        android:text="SAVE"
+        android:text="Ok"
         android:textAllCaps="true"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textStyle="bold" />

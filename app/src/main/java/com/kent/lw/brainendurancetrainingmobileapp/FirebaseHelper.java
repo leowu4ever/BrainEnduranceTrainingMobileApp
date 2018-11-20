@@ -24,7 +24,7 @@ public class FirebaseHelper {
         db.child(rootPath + "2_Training Configuration" + "/" + "Duration").setValue(td.getDuration());
         db.child(rootPath + "2_Training Configuration" + "/" + "Task").setValue(td.getTask());
         db.child(rootPath + "2_Training Configuration" + "/" + "Dif").setValue(td.getDif());
-        db.child(rootPath + "2_Training Configuration" + "/" + "Dif").setValue(t);
+        db.child(rootPath + "2_Training Configuration" + "/" + "Dif Config").setValue(td.getTaskConfig());
 
         db.child(rootPath + "3_Cognitive Performance" + "/" + "Sti Count").setValue(td.getStiCount());
         db.child(rootPath + "3_Cognitive Performance" + "/" + "Res Count").setValue(td.getResCount());

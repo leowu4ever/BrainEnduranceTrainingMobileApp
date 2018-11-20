@@ -39,6 +39,8 @@ public class TrainingData {
 
     public List<Double> locLatList, locLngList;
 
+    public Task taskConfig;
+
     public TrainingData() {
         accXList = new ArrayList<Double>();
         accYList = new ArrayList<Double>();
@@ -54,6 +56,14 @@ public class TrainingData {
         stiMiliList = new ArrayList<Long>();
         resMiliList = new ArrayList<Long>();
         resTimeList = new ArrayList<Long>();
+    }
+
+    public Task getTaskConfig() {
+        return taskConfig;
+    }
+
+    public void setTaskConfig(Task taskConfig) {
+        this.taskConfig = taskConfig;
     }
 
     public String getActivity() {
