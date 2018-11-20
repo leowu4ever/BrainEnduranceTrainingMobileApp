@@ -23,4 +23,11 @@ public class DateHelper {
     public static String getTimeFromMs(long ms) {
         return (ms / 1000) / 60 + "M " + (ms / 1000) % 60 + "S";
     }
+
+    public static String getDateTimeFromMili(long mili) {
+        Date date = new Date();
+        date.setTime(mili);
+        String formattedDate = new SimpleDateFormat("yyyyMMdd_HHmmss").format(date);
+        return formattedDate;
+    }
 }

@@ -29,7 +29,8 @@ public class TrainingData {
     public List<Long> stiMiliList, resMiliList, resTimeList;
 
     // physical
-    public float distance, avgSpeed, avgPace, startTime;
+    public float distance, avgSpeed, avgPace;
+    public String startTime;
     public long time;
 
     public List<Double> accXList, accYList, accZList;
@@ -153,12 +154,12 @@ public class TrainingData {
         this.avgPace = avgPace;
     }
 
-    public float getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(float startTime) {
-        this.startTime = startTime;
+    public void setStartTime(long startTime) {
+        this.startTime = DateHelper.getDateTimeFromMili(startTime);
     }
 
     public long getTime() {
@@ -320,7 +321,7 @@ public class TrainingData {
         distance = 0;
         avgSpeed = 0;
         avgPace = 0;
-        startTime = 0;
+        startTime = "";
         time = 0;
 
         accXList.clear();
