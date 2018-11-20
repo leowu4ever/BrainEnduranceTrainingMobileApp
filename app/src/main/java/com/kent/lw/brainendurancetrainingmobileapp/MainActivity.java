@@ -314,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     if (apvtTask.getDuration() > 0) {
                         min = (apvtTask.getDuration() / 1000) / 60;
                         sec = (apvtTask.getDuration() / 1000) % 60;
-                        String durationString = min + "m " + sec + "s";
+                        String durationString = min + " : " + sec;
                         trainingFragment.setTvDuration(durationString);
 
                         apvtTask.setDuration(apvtTask.getDuration() - 1000);

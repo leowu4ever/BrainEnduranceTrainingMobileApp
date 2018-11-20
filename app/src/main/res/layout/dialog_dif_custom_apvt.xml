@@ -61,6 +61,7 @@
         android:text="Interstimulus Interval(s)"
         android:textAlignment="center"
         android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <View
@@ -107,6 +108,7 @@
         android:text="Tone Volume(%)"
         android:textAlignment="center"
         android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <View
@@ -154,6 +156,7 @@
         android:text="Noise Volume(%)"
         android:textAlignment="center"
         android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <View
@@ -201,6 +204,7 @@
         android:text="Valid Response Time(ms)"
         android:textAlignment="center"
         android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <View

@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="0M OS"
+            android:text="00 : 00"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textSize="36sp"
@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TIME"
+            android:text="Time"
             android:textAlignment="center"
             android:textSize="14sp" />
     </LinearLayout>
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:text="Distance(km)"
                 android:textAlignment="center"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -108,9 +108,9 @@
                 android:id="@+id/textView44"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="AVG.PACE(MIN/KM)"
+                android:text="Avg pace(min/km)"
                 android:textAlignment="center"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -140,9 +140,9 @@
                 android:id="@+id/textView42"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="AVG.SPEED(KM/H)"
+                android:text="Avg speed(km/h)"
                 android:textAlignment="center"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
@@ -179,9 +179,9 @@
                 android:id="@+id/textView44"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sti Count"
+                android:text="Stimulus count"
                 android:textAlignment="center"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -210,9 +210,9 @@
                 android:id="@+id/textView42"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hit Count"
+                android:text="Hit count"
                 android:textAlignment="center"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -244,7 +244,7 @@
                 android:layout_height="wrap_content"
                 android:text="Accuracy(%)"
                 android:textAlignment="center"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -274,9 +274,9 @@
                 android:id="@+id/textView42"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Avg.RT(ms)"
+                android:text="Avg RT(ms)"
                 android:textAlignment="center"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textSize="12sp" />
 
         </LinearLayout>

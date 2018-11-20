@@ -23,7 +23,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:background="@color/colorPrimary" />
 
 
@@ -47,7 +47,7 @@
         android:id="@+id/tv_finish_speed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Speed"
+        android:text="Avg.Speed"
         android:textAlignment="center"
         android:textSize="14sp" />
 
@@ -79,7 +79,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:background="@color/colorPrimary" />
 
