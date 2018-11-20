@@ -295,72 +295,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
 
         if (!difSelected.equals(DIF_CUSTOM)) {
-            // get parameters // passing as parameters
-            switch (taskSelected) {
-                case TASK_A_PVT:
 
-                    trainingDuration = A_PVT_DURATION;
-
-                    // stimulus
-                    switch (difSelected) {
-                        case DIF_EASY:
-                            stimulusInterval = A_PVT_INTERVAL_EASY;
-                            break;
-
-                        case DIF_MEDIUM:
-                            stimulusInterval = A_PVT_INTERVAL_MEDIUM;
-                            break;
-
-                        case DIF_HARD:
-                            stimulusInterval = A_PVT_INTERVAL_HARD;
-                            break;
-                    }
-                    break;
-
-                case TASK_Gonogo:
-                    stimulusInterval = W_AVT_INTERVAL;
-                    trainingDuration = W_AVT_DURATION;
-                    break;
-            }
-
-            // duration
-            durationRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    String durationString = hour + "h " + min + "m " + sec + "s";
-                    trainingFragment.setTvDuration(durationString);
-                    if (trainingDuration > 0) {
-                        trainingDuration = trainingDuration - 1000;
-                        time = time + 1000;
-                        hour = (trainingDuration) / 1000 / 3600;
-                        min = (trainingDuration / 1000) / 60;
-                        sec = (trainingDuration / 1000) % 60;
-                        handler.postDelayed(this, 1000);
-                    } else {
-                        finishTraining();
-                    }
-
-                }
-            };
-            handler.postDelayed(durationRunnable, 4000);
-
-            // simtimulus
-            stimulusRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    if (trainingDuration > 0) {
-                        // can do volume and priority for background noise
-                        //sp.play(beepSound, 1f, 1f, 0, 0, 1);
-                        sh.playBeepSound(1, 1, 0, 0, 1);
-
-
-                        trainingData.setStiMiliList(System.currentTimeMillis());
-                        handler.postDelayed(this, stimulusInterval);
-                    }
-                }
-            };
-            handler.postDelayed(stimulusRunnable, 4000);
-            trainingStarted = true;
         } else {
 
             // CUSTOM
@@ -377,9 +312,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     }
 
                     if (apvtTask.getDuration() > 0) {
-                        String durationString = min + "m " + sec + "s";
                         min = (apvtTask.getDuration() / 1000) / 60;
                         sec = (apvtTask.getDuration() / 1000) % 60;
+                        String durationString = min + "m " + sec + "s";
                         trainingFragment.setTvDuration(durationString);
 
                         apvtTask.setDuration(apvtTask.getDuration() - 1000);
