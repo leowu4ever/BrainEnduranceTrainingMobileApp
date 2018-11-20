@@ -206,12 +206,18 @@ public class TaskFragment extends Fragment {
         btnCustomApvtSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                MainActivity.apvtTask.setIntervalFrom(Integer.parseInt(rbIntervalApvt.getLeftPinValue()));
+                MainActivity.apvtTask.setIntervalTo(Integer.parseInt(rbIntervalApvt.getRightPinValue()));
+                MainActivity.apvtTask.setVolumeFrom(Float.parseFloat(rbVolumeApvt.getLeftPinValue())/100);
+                MainActivity.apvtTask.setVolumeTo(Float.parseFloat(rbVolumeApvt.getRightPinValue())/100);
+                MainActivity.apvtTask.setNoise(Float.parseFloat(rbNoiseApvt.getRightPinValue())/100);
+                MainActivity.apvtTask.setResThreshold(Integer.parseInt(rbThresholdApvt.getRightPinValue()));
+
                 difCustomAPVTDialog.dismiss();
                 btnDif.setText(btnCustom.getText());
 
                 // show task configuration
-                Log.d("apvttask", MainActivity.apvtTask.toString());
-
             }
         });
 
@@ -341,49 +347,16 @@ public class TaskFragment extends Fragment {
 
     private void initAPVTRbs() {
 
-        tvIntervalApvt = difCustomAPVTDialog.findViewById(R.id.tv_interval_apvt);
         rbIntervalApvt = difCustomAPVTDialog.findViewById(R.id.rb_interval_apvt);
-        rbIntervalApvt.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
-            @Override
-            public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                //tvIntervalApvt.setText("Interstimulus interval: " + leftPinValue + " ~ " + rightPinValue + "s");
 
-                MainActivity.apvtTask.setIntervalFrom(Integer.parseInt(leftPinValue));
-                MainActivity.apvtTask.setIntervalTo(Integer.parseInt(rightPinValue));
-            }
-        });
 
-        tvVolumeApvt = difCustomAPVTDialog.findViewById(R.id.tv_volume_apvt);
         rbVolumeApvt = difCustomAPVTDialog.findViewById(R.id.rb_volume_apvt);
-        rbVolumeApvt.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
-            @Override
-            public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                //tvVolumeApvt.setText("Tone volume: " + (Float.parseFloat(leftPinValue) * 100) + " ~ " + (Float.parseFloat(rightPinValue) * 100) + "%");
+     ;
 
-                MainActivity.apvtTask.setVolumeFrom(Float.parseFloat(leftPinValue)/100);
-                MainActivity.apvtTask.setVolumeTo(Float.parseFloat(rightPinValue)/100);
-            }
-        });
-
-        tvNoiseApvt = difCustomAPVTDialog.findViewById(R.id.tv_noise_apvt);
         rbNoiseApvt = difCustomAPVTDialog.findViewById(R.id.rb_noise_apvt);
-        rbNoiseApvt.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
-            @Override
-            public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                //tvNoiseApvt.setText("Background noise: " + (Float.parseFloat(rightPinValue) * 100) + "%");
-                MainActivity.apvtTask.setNoise(Float.parseFloat(rightPinValue)/100);
-            }
-        });
 
-        tvThresholdApvt = difCustomAPVTDialog.findViewById(R.id.tv_threshold_apvt);
         rbThresholdApvt = difCustomAPVTDialog.findViewById(R.id.rb_threshold_apvt);
-        rbThresholdApvt.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
-            @Override
-            public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
-                //tvThresholdApvt.setText("Vaild response time: " + (Integer.parseInt(rightPinValue) * 100) + "ms");
-                MainActivity.apvtTask.setResThreshold(Integer.parseInt(rightPinValue));
-            }
-        });
+
     }
 
     private void initHelpBtns() {

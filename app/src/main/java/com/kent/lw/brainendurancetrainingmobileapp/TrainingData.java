@@ -98,8 +98,12 @@ public class TrainingData {
 
     public float getAccuracy() {
         float a = (float) hitResCount / (float) stiCount * 100;
-        a = Float.parseFloat(String.format("%.3f",a));
-        return a;
+        a = Float.parseFloat(String.format("%.3f", a));
+        if (!Float.isNaN(a) && !Float.isInfinite(a)) {
+            return a;
+        } else {
+            return 0;
+        }
     }
 
     public void setAccuracy(float accuracy) {

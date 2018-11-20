@@ -40,16 +40,8 @@ public class FirebaseHelper {
         db.child(rootPath + "5_Stimulus Record" + "/" + "Res Mili List").setValue(td.getResMiliList());
         db.child(rootPath + "5_Stimulus Record" + "/" + "Res Time List").setValue(td.getResTimeList());
 
-        db.child(rootPath + "6_Motion Sensors" + "/" + "Accelerometer" + "/" + "Acc X List").setValue(td.getAccXList());
-        db.child(rootPath + "6_Motion Sensors" + "/" + "Accelerometer" + "/" + "Acc Y List").setValue(td.getAccYList());
-        db.child(rootPath + "6_Motion Sensors" + "/" + "Accelerometer" + "/" + "Acc Z List").setValue(td.getAccZList());
-
-        db.child(rootPath + "6_Motion Sensors" + "/" + "Gyroscope" + "/" + "Gyro X List").setValue(td.getGyroXList());
-        db.child(rootPath + "6_Motion Sensors" + "/" + "Gyroscope" + "/" + "Gyro Y List").setValue(td.getGyroYList());
-        db.child(rootPath + "6_Motion Sensors" + "/" + "Gyroscope" + "/" + "Gyro Z List").setValue(td.getGyroZList());
-
-        db.child(rootPath + "7_Location" + "/" + "Lat").setValue(td.getLocLatList());
-        db.child(rootPath + "7_Location" + "/" + "Lng").setValue(td.getLocLngList());
+        db.child(rootPath + "6_Location" + "/" + "Lat").setValue(td.getLocLatList());
+        db.child(rootPath + "6_Location" + "/" + "Lng").setValue(td.getLocLngList());
 
         //db.child("lwu@kentacuk").removeValue();
     }

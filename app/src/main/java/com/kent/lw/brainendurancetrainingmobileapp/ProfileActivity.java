@@ -80,16 +80,16 @@ public class ProfileActivity extends AppCompatActivity {
         LinearLayout containerLayout = new LinearLayout(this);
         parentLayout.addView(containerLayout);
 
-        // date tv
+        // date tv  1111-11-11@11:11:11
         final TextView tvDate = new TextView(this);
-        tvDate.setText(DateHelper.getDateFromMili(Long.parseLong(file.getName().replace(".json", ""))));
+        tvDate.setText(file.getName().subSequence(0, 10));
         tvDate.setGravity(Gravity.CENTER);
         tvDate.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
         containerLayout.addView(tvDate);
 
         // time tv
         TextView tvTime = new TextView(this);
-        tvTime.setText(DateHelper.getTimeFromMili(Long.parseLong(file.getName().replace(".json", ""))));
+        tvTime.setText(file.getName().subSequence(11, 19));
         tvTime.setGravity(Gravity.CENTER);
         tvTime.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
         containerLayout.addView(tvTime);

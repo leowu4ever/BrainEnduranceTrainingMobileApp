@@ -16,7 +16,7 @@ public class DateHelper {
     public static String getDateFromMili(long mili) {
         Date date = new Date();
         date.setTime(mili);
-        String formattedDate = new SimpleDateFormat("yyyy.MM.dd").format(date);
+        String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
         return formattedDate;
     }
 
@@ -27,7 +27,7 @@ public class DateHelper {
     public static String getDateTimeFromMili(long mili) {
         Date date = new Date();
         date.setTime(mili);
-        String formattedDate = new SimpleDateFormat("yyyyMMdd_HHmmss").format(date);
+        String formattedDate = new SimpleDateFormat("yyyy-MM-dd@HH:mm:ss").format(date);
         return formattedDate;
     }
 }
