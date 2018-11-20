@@ -47,7 +47,7 @@
         android:id="@+id/tv_finish_speed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Avg.Speed"
+        android:text="Avg speed"
         android:textAlignment="center"
         android:textSize="14sp" />
 
@@ -55,7 +55,7 @@
         android:id="@+id/tv_finish_pace"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pace"
+        android:text="Avg pace"
         android:textAlignment="center"
         android:textSize="14sp" />
 
@@ -63,7 +63,7 @@
         android:id="@+id/tv_finish_ast"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Avg. RT"
+        android:text="Avg RT"
         android:textAlignment="center"
         android:textSize="14sp" />
 

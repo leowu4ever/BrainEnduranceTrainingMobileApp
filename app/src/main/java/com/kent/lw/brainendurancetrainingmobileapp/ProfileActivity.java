@@ -30,20 +30,6 @@ public class ProfileActivity extends AppCompatActivity {
     private File fileTemp;
     private DialogHelper dh;
 
-    public static String getTimeFromMili(long miili) {
-        Date date = new Date();
-        date.setTime(miili);
-        String formattedDate = new SimpleDateFormat("HH:mm:ss").format(date);
-        return formattedDate;
-    }
-
-    public static String getDateFromMili(long mili) {
-        Date date = new Date();
-        date.setTime(mili);
-        String formattedDate = new SimpleDateFormat("yyyy.MM.dd").format(date);
-        return formattedDate;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -96,14 +82,14 @@ public class ProfileActivity extends AppCompatActivity {
 
         // date tv
         final TextView tvDate = new TextView(this);
-        tvDate.setText(getDateFromMili(Long.parseLong(file.getName().replace(".json", ""))));
+        tvDate.setText(DateHelper.getDateFromMili(Long.parseLong(file.getName().replace(".json", ""))));
         tvDate.setGravity(Gravity.CENTER);
         tvDate.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
         containerLayout.addView(tvDate);
 
         // time tv
         TextView tvTime = new TextView(this);
-        tvTime.setText(getTimeFromMili(Long.parseLong(file.getName().replace(".json", ""))));
+        tvTime.setText(DateHelper.getTimeFromMili(Long.parseLong(file.getName().replace(".json", ""))));
         tvTime.setGravity(Gravity.CENTER);
         tvTime.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
         containerLayout.addView(tvTime);

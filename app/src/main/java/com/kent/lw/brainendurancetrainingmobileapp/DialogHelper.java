@@ -102,10 +102,10 @@ public class DialogHelper {
     }
 
     public void setupFinishDialog(TrainingData td) {
-        tvFinishDuration.setText("Duration: " + td.getTime());
+        tvFinishDuration.setText("Duration: " + DateHelper.getTimeFromMs(td.getTime()));
         tvFinishDistance.setText("Distance: " + td.getDistance() + "KM");
-        tvFinishSpeed.setText("Speed: " + td.getAvgSpeed() + "KM/H");
-        tvFinishPace.setText("Pace: " + td.getAvgPace() + "MIN/KM");
+        tvFinishSpeed.setText("Avg speed: " + td.getAvgSpeed() + "KM/H");
+        tvFinishPace.setText("Avg pace: " + td.getAvgPace() + "MIN/KM");
         tvFinishART.setText("Avg RT: " + td.getAvgResTime() + "ms");
         tvFinishAccuracy.setText("Accuracy: " + td.getAccuracy() + "%");
     }
