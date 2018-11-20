@@ -121,6 +121,10 @@ public class ProfileActivity extends AppCompatActivity {
                 TrainingData td = g.fromJson(temp, TrainingData.class);
                 dh.setupFinishDialog(td);
                 dh.showFinishDialog();
+
+
+
+
             }
         });
     }
