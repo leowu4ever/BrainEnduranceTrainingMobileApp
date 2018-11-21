@@ -126,6 +126,7 @@
                     android:layout_height="wrap_content"
                     android:text="Date"
                     android:textAlignment="center"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -143,6 +144,7 @@
                     android:layout_height="wrap_content"
                     android:text="Time"
                     android:textAlignment="center"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -159,6 +161,7 @@
                     android:layout_height="wrap_content"
                     android:text="Details"
                     android:textAlignment="center"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -191,17 +194,51 @@
             android:layout_weight="0"
             android:background="@color/colorPrimary" />
 
-        <Button
-            android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/button_rounded_corner"
+            android:layout_weight="0"
             android:gravity="center"
-            android:text="Back"
-            android:textColor="@color/common_google_signin_btn_text_dark_default"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/button_rounded_corner_negative"
+                android:text="Delete"
+                android:textAllCaps="true"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:textStyle="bold" />
+
+
+            <Button
+                android:id="@+id/btn_upload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/button_rounded_corner"
+                android:gravity="center"
+                android:text="Upload"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:textStyle="bold" />
+
+
+            <Button
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/button_rounded_corner"
+                android:gravity="center"
+                android:text="Back"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
