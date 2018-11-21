@@ -47,11 +47,11 @@ public class FileHelper {
         return g.fromJson(readings, TrainingData.class);
     }
 
-    private static String readJsonFile(String path) {
+    private static String readJsonFile(String filePath) {
         String readings = "";
         FileInputStream fis = null;
         try {
-            fis = new FileInputStream(new File(path));  // 2nd line
+            fis = new FileInputStream(new File(filePath));  // 2nd line
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();

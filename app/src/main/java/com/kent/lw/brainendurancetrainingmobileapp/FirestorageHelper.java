@@ -17,15 +17,14 @@ public class FirestorageHelper {
 
     // great now upload files
 
-    public static void uploadFiles() {
+    public static void uploadFileToFirestorage(String filePath) {
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
 
         // Create a storage reference from our app
-
         StorageReference storageRef = storage.getReference();
 
-        Uri file = Uri.fromFile(new File(Environment.getExternalStorageDirectory() + FileHelper.PATH_MOTION_DATA + "1542662918079_acc_.txt"));
+        Uri file = Uri.fromFile(new File(filePath));
         StorageReference riversRef = storageRef.child("Motion Data/" + file.getLastPathSegment());
         UploadTask uploadTask = riversRef.putFile(file);
 
