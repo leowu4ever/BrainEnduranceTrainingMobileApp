@@ -14,9 +14,9 @@ import android.widget.TextView;
 
 import java.io.File;
 
-public class ProfileActivity extends AppCompatActivity {
+public class HistoryActivity extends AppCompatActivity {
 
-    private Button btnHistoryOk;
+    private Button btnHistoryOk, btnHistoryUpload;
     private TextView tvOverallAccuracy, tvOverallRT;
     private File fileTemp;
     private DialogHelper dh;
@@ -28,7 +28,7 @@ public class ProfileActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_history);
 
         dh = new DialogHelper();
         dh.initDialog(this);
@@ -43,6 +43,15 @@ public class ProfileActivity extends AppCompatActivity {
 
         tvOverallAccuracy = findViewById(R.id.tv_overall_accuracy);
         tvOverallRT = findViewById(R.id.tv_overall_rt);
+
+        btnHistoryUpload = findViewById(R.id.btn_upload);
+        btnHistoryUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirestorageHelper.uploadAllFileToFirestorage();
+            }
+        });
+
         initHistory();
         initOverall();
     }
@@ -54,7 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void initHistory() {
-        File f = new File(Environment.getExternalStorageDirectory() + FileHelper.PATH_TRAINING_DATA);
+        File f = new File(FileHelper.PATH_TRAINING_DATA);
         File[] files = f.listFiles();
         // reads every file
         for (File file : files) {

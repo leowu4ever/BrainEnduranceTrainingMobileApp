@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+                Intent i = new Intent(MainActivity.this, HistoryActivity.class);
                 startActivity(i);
             }
         });
