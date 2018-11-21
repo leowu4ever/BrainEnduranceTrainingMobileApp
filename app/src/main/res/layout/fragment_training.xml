@@ -9,6 +9,19 @@
     android:background="@drawable/fragment_shape"
     tools:context=".TrainingFragment">
 
+    <ImageButton
+        android:id="@+id/btn_lock"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_margin="5dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/button_circle"
+        android:cropToPadding="true"
+        android:elevation="0dp"
+        android:padding="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_lock" />
+
     <View
         android:id="@+id/view11"
         android:layout_width="match_parent"

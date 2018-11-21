@@ -73,23 +73,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static GonogoTask gonogoTask;
     //lock threshold
     public final int LOCK_THRESHOLD = 1;
-    // A-PVT
-    private final String TASK_A_PVT = "A-PVT";
-    private final int A_PVT_DURATION = 10 * 60 * 1000;
-    private final int A_PVT_INTERVAL_EASY = 4 * 1000;
-    private final int A_PVT_INTERVAL_MEDIUM = 8 * 1000;
-    private final int A_PVT_INTERVAL_HARD = 11 * 1000;
-    // W-AVT
-    private final String TASK_Gonogo = "W-AVT";
-    private final int W_AVT_DURATION = 60 * 60 * 1000;
-    private final int W_AVT_INTERVAL = 2 * 1000;
-    // VISUAL
-    private final String TASK_VISUAL = "Visual";
-    // DIF
-    private final String DIF_EASY = "Easy";
-    private final String DIF_MEDIUM = "Medium";
-    private final String DIF_HARD = "Hard";
-    private final String DIF_ADAPTIVE = "Adaptive";
+
     private final String DIF_CUSTOM = "Custom";
     private final int accSensor = Sensor.TYPE_LINEAR_ACCELERATION;
     // ui
@@ -386,11 +370,12 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         sh.playFinishSound(1, 1, 0, 0, 1);
         sh.stopNoiseSound();
 
+        dh.dismissLockDialog();
+
         // update finish dialog
         hour = (time) / 1000 / 3600;
         min = (time / 1000) / 60;
         sec = (time / 1000) % 60;
-
         dh.showFinishDialog(trainingData);
 
         handler.removeCallbacks(durationRunnable);
@@ -420,7 +405,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         btnProfile.setVisibility(View.VISIBLE);
         btnFlic.setVisibility(View.VISIBLE);
 
-        dh.dismissLockDialog();
     }
 
     public void resetTrainingData() {
@@ -579,46 +563,27 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-
-
         if (trainingStarted) {
-
             if (event.sensor.getType() == accSensor) {
                 x = event.values[0];
                 y = event.values[1];
                 z = event.values[2];
-
                 fh.saveStreamMotionDataToLocal(System.currentTimeMillis() + "__" + x + " " + y + " " + z + "\n", "acc");
 
-
-//            trainingData.setAccXList(x);
-//            trainingData.setAccYList(y);
-//            trainingData.setAccZList(z);
-
-                Log.d("ACC", x + " " + y + " " + z);
-                double mag = x * x + y * y + z * z;
-                Log.d("mag", mag + "");
-
-                if (mag > LOCK_THRESHOLD && !dh.isLockDialogShowing()) {
-                    dh.showLockDialog();
-                }
-
-                if (mag < LOCK_THRESHOLD && dh.isLockDialogShowing()) {
-                    dh.dismissLockDialog();
-                }
+//                double mag = x * x + y * y + z * z;
+//                if (mag > LOCK_THRESHOLD && !dh.isLockDialogShowing()) {
+//                    dh.showLockDialog();
+//                }
+//                if (mag < LOCK_THRESHOLD && dh.isLockDialogShowing()) {
+//                    dh.dismissLockDialog();
+//                }
             }
 
             if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
-
                 x = event.values[0];
                 y = event.values[1];
                 z = event.values[2];
-
                 fh.saveStreamMotionDataToLocal(System.currentTimeMillis() + "__" + x + " " + y + " " + z + "\n", "gyro");
-//            trainingData.setGyroXList(x);
-//            trainingData.setGyroYList(y);
-//            trainingData.setGyroZList(z);
-
             }
         }
     }

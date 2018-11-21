@@ -12,7 +12,8 @@ public class DialogHelper {
 
 
     public Dialog pauseDialog, finishDialog, countdownDialog, lockDialog, detailDialog;
-    public Button btnResumeOk, btnFinishOK, btnDetailOk;
+    public Button
+            btnResumeOk, btnFinishOK, btnDetailOk, btnUnlock;
     public TextView tvFinishDuration, tvFinishDistance, tvFinishSpeed, tvFinishPace, tvFinishART, tvFinishAccuracy, tvCountdown;
     public TextView tvHistoryDate, tvHistoryTime, tvHistoryActivity, tvHistoryTask, tvHistoryDif, tvHistoryDuration, tvHistoryDistance, tvHistorySpeed, tvHistoryPace, tvHistoryART, tvHistoryAccuracy;
 
@@ -28,7 +29,7 @@ public class DialogHelper {
         setupDialog(pauseDialog, R.layout.dialog_pause);
         setupDialog(finishDialog, R.layout.dialog_finish);
         setupDialog(countdownDialog, R.layout.dialog_countdown);
-        setupDialog(lockDialog, R.layout.dialog_locked);
+        setupDialog(lockDialog, R.layout.dialog_lock);
         setupDialog(detailDialog, R.layout.dialog_detail);
 
         btnResumeOk = pauseDialog.findViewById(R.id.btn_resume);
@@ -58,6 +59,14 @@ public class DialogHelper {
             }
         });
 
+        btnUnlock = lockDialog.findViewById(R.id.btn_unlock);
+        btnUnlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissLockDialog();
+            }
+        });
+
         tvFinishDuration = finishDialog.findViewById(R.id.tv_finish_duration);
         tvFinishDistance = finishDialog.findViewById(R.id.tv_finish_distance);
         tvFinishSpeed = finishDialog.findViewById(R.id.tv_finish_speed);
@@ -76,6 +85,8 @@ public class DialogHelper {
         tvHistoryPace = detailDialog.findViewById(R.id.tv_history_pace);
         tvHistoryART = detailDialog.findViewById(R.id.tv_history_art);
         tvHistoryAccuracy = detailDialog.findViewById(R.id.tv_history_accuracy);
+
+
     }
 
     public void setupDialog(Dialog d, int layout) {

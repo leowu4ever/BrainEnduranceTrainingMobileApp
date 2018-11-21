@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 
@@ -19,10 +20,13 @@ public class TrainingFragment extends Fragment {
     private TrainingCommunicator trainingCommunicator;
 
     private Button btnPause, btnFinish;
+
+    private ImageButton btnLock;
     private TextView tvDuration;
     private TextView tvDistance, tvPace, tvSpeed;
     private TextView tvStiCount, tvHitCount, tvAccuracy, tvAvgResTime;
     private TextView tvLogRes, tvLogSti;
+    private DialogHelper dh;
 
 
     @Override
@@ -40,6 +44,8 @@ public class TrainingFragment extends Fragment {
 
     private void initUIs() {
         trainingCommunicator = (TrainingCommunicator) getActivity();
+        dh = new DialogHelper();
+        dh.initDialog(getActivity());
 
         btnPause = getActivity().findViewById(R.id.btn_pause);
 
@@ -70,6 +76,15 @@ public class TrainingFragment extends Fragment {
 
         tvLogRes = getActivity().findViewById(R.id.tv_log_res);
         tvLogSti = getActivity().findViewById(R.id.tv_log_sti);
+
+
+        btnLock = getActivity().findViewById(R.id.btn_lock);
+        btnLock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dh.showLockDialog();
+            }
+        });
     }
 
     public void setTvDuration(String s) {
