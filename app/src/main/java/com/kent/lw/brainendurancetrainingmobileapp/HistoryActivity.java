@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -18,8 +19,9 @@ public class HistoryActivity extends AppCompatActivity {
 
     private Button btnHistoryOk, btnHistoryUpload;
     private TextView tvOverallAccuracy, tvOverallRT;
-    private File fileTemp;
     private DialogHelper dh;
+    private File[] files;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,15 +66,15 @@ public class HistoryActivity extends AppCompatActivity {
 
     private void initHistory() {
         File f = new File(FileHelper.PATH_TRAINING_DATA);
-        File[] files = f.listFiles();
+        files = f.listFiles();
         // reads every file
-        for (File file : files) {
-            fileTemp = file;
-            createUIs(file);
+
+        for(int i = 0; i < files.length; i++) {
+            createUIs(i, files[i]);
         }
     }
 
-    private void createUIs(File file) {
+    private void createUIs(int id, File file) {
 
         // history layout container
         LinearLayout parentLayout = findViewById(R.id.linear_layout_history);
@@ -98,7 +100,7 @@ public class HistoryActivity extends AppCompatActivity {
         buttonLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
         buttonLayout.setGravity(Gravity.CENTER);
         containerLayout.addView(buttonLayout);
-        Button btnDetail = new Button(this);
+        final Button btnDetail = new Button(this);
         buttonLayout.addView(btnDetail);
 
         // button container
@@ -110,10 +112,12 @@ public class HistoryActivity extends AppCompatActivity {
 
         // button to launch a history detail dialog
         btnDetail.setBackgroundResource(R.drawable.button_rounded_corner);
+        btnDetail.setId(id);
         btnDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TrainingData td = FileHelper.readTrainingDataFromLocal(fileTemp.getName());
+
+                TrainingData td = FileHelper.readTrainingDataFromLocal(files[btnDetail.getId()].getName());
                 dh.showHistoryDialog(td);
             }
         });

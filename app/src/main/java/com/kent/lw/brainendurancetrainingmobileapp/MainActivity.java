@@ -189,7 +189,11 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         // firebase data model
         trainingData = new TrainingData();
-        overallData = new OverallData();
+
+        overallData = FileHelper.readOverallDataFromLocal();
+        if(overallData == null) {
+            overallData = new OverallData();
+        }
 
         firebaseHelper = new FirebaseHelper();
 
@@ -402,7 +406,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         // FirestorageHelper.uploadFiles();
         fh.saveTrainingDataToLocal();
 
-
         // read in overall
         // write overall
         // close
@@ -416,6 +419,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         btnProfile.setVisibility(View.VISIBLE);
         btnFlic.setVisibility(View.VISIBLE);
+
+        dh.dismissLockDialog();
     }
 
     public void resetTrainingData() {
