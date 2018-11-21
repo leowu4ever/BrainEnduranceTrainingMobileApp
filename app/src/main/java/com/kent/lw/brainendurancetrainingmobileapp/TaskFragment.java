@@ -204,9 +204,9 @@ public class TaskFragment extends Fragment {
 
                 MainActivity.apvtTask.setIntervalFrom(Integer.parseInt(rbIntervalApvt.getLeftPinValue()));
                 MainActivity.apvtTask.setIntervalTo(Integer.parseInt(rbIntervalApvt.getRightPinValue()));
-                MainActivity.apvtTask.setVolumeFrom(Float.parseFloat(rbVolumeApvt.getLeftPinValue())/100);
-                MainActivity.apvtTask.setVolumeTo(Float.parseFloat(rbVolumeApvt.getRightPinValue())/100);
-                MainActivity.apvtTask.setNoise(Float.parseFloat(rbNoiseApvt.getRightPinValue())/100);
+                MainActivity.apvtTask.setVolumeFrom(Float.parseFloat(rbVolumeApvt.getLeftPinValue()) / 100);
+                MainActivity.apvtTask.setVolumeTo(Float.parseFloat(rbVolumeApvt.getRightPinValue()) / 100);
+                MainActivity.apvtTask.setNoise(Float.parseFloat(rbNoiseApvt.getRightPinValue()) / 100);
                 MainActivity.apvtTask.setResThreshold(Integer.parseInt(rbThresholdApvt.getRightPinValue()));
 
                 difCustomAPVTDialog.dismiss();
@@ -346,7 +346,7 @@ public class TaskFragment extends Fragment {
 
 
         rbVolumeApvt = difCustomAPVTDialog.findViewById(R.id.rb_volume_apvt);
-     ;
+        ;
 
         rbNoiseApvt = difCustomAPVTDialog.findViewById(R.id.rb_noise_apvt);
 

@@ -49,17 +49,16 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         initHistory();
-
         // init overall
         // read in overall performance json
         // convert to class object
-
         initOverall();
     }
 
     private void initOverall() {
 
     }
+
     private void initHistory() {
         File f = new File(Environment.getExternalStorageDirectory() + FileHelper.PATH_TRAINING_DATA);
         File[] files = f.listFiles();

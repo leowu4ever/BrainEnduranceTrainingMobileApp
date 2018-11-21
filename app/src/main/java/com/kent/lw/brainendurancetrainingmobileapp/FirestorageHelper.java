@@ -26,7 +26,7 @@ public class FirestorageHelper {
         StorageReference storageRef = storage.getReference();
 
         Uri file = Uri.fromFile(new File(Environment.getExternalStorageDirectory() + FileHelper.PATH_MOTION_DATA + "1542662918079_acc_.txt"));
-        StorageReference riversRef = storageRef.child("Motion Data/"+file.getLastPathSegment());
+        StorageReference riversRef = storageRef.child("Motion Data/" + file.getLastPathSegment());
         UploadTask uploadTask = riversRef.putFile(file);
 
         // Register observers to listen for when the download is done or if it fails
@@ -35,14 +35,14 @@ public class FirestorageHelper {
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
 
-                Log.d("storage","fail");
+                Log.d("storage", "fail");
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                 // ...
-                Log.d("storage","succ");
+                Log.d("storage", "succ");
 
             }
         });

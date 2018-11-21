@@ -394,7 +394,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         firebaseHelper.uploadAllData(trainingData, apvtTask);
         //FirestorageHelper.uploadFiles();
-        fh.saveJsonToLocal();
+        fh.saveTrainingDataToLocal();
 
         trainingData.printAllData();
         hideTrainingFragment();
@@ -568,7 +568,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 y = event.values[1];
                 z = event.values[2];
 
-                fh.saveTxtToLocal(System.currentTimeMillis() + "__" + x + " " + y + " " + z + "\n", "acc");
+                fh.saveMotionDataToLocal(System.currentTimeMillis() + "__" + x + " " + y + " " + z + "\n", "acc");
 
 
 //            trainingData.setAccXList(x);
@@ -594,7 +594,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 y = event.values[1];
                 z = event.values[2];
 
-                fh.saveTxtToLocal(System.currentTimeMillis() + "__" + x + " " + y + " " + z + "\n", "gyro");
+                fh.saveMotionDataToLocal(System.currentTimeMillis() + "__" + x + " " + y + " " + z + "\n", "gyro");
 //            trainingData.setGyroXList(x);
 //            trainingData.setGyroYList(y);
 //            trainingData.setGyroZList(z);
