@@ -2,12 +2,14 @@ package com.kent.lw.brainendurancetrainingmobileapp;
 
 import java.util.List;
 
-public class OverallPerformance {
+public class OverallData {
 
     public float overallRT;
     public float overallAccuracy;
     public List<Float> rtList;
     public List<Float> accuracyList;
+
+    public List<Long> miliList;
 
     public float getOverallRT() {
         return overallRT;
@@ -41,6 +43,11 @@ public class OverallPerformance {
         this.accuracyList = accuracyList;
     }
 
+    public List<Long> getMiliList() {
+        return miliList;
+    }
 
-
+    public void setMiliList(List<Long> miliList) {
+        this.miliList = miliList;
+    }
 }
