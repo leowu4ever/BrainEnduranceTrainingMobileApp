@@ -191,6 +191,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         fh = new FileHelper();
         fh.initDir();
+
+        FlicConfig.setFlicCredentials();
     }
 
     private void initTask() {
@@ -592,6 +594,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
+
 
     @Override
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
