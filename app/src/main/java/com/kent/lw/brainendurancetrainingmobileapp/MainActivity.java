@@ -123,6 +123,10 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // saveHelper
     private FileHelper fh;
 
+    // overall
+    public static OverallData overallData;
+
+
     public static void resumeTraining() {
         handler.postDelayed(durationRunnable, 1000);
         handler.postDelayed(stimulusRunnable, 0);
@@ -185,6 +189,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         // firebase data model
         trainingData = new TrainingData();
+        overallData = new OverallData();
+
         firebaseHelper = new FirebaseHelper();
 
         // temp
@@ -401,6 +407,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         // write overall
         // close
 
+        overallData.setRtList(trainingData.getAvgResTime());
+        overallData.setAccuracyList(trainingData.getAccuracy());
+        FileHelper.saveOverallDataToLocal();
 
         trainingData.printAllData();
         hideTrainingFragment();

@@ -17,6 +17,7 @@ import java.io.File;
 public class ProfileActivity extends AppCompatActivity {
 
     private Button btnHistoryOk;
+    private TextView tvOverallAccuracy, tvOverallRT;
     private File fileTemp;
     private DialogHelper dh;
 
@@ -40,20 +41,16 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        tvOverallAccuracy = findViewById(R.id.tv_overall_accuracy);
+        tvOverallRT = findViewById(R.id.tv_overall_rt);
         initHistory();
-        // init overall
-        // read in overall performance json
-        // convert to class object
         initOverall();
     }
 
     private void initOverall() {
-
-        // check if there is an overall file
-        // if no then 0% for both
-        // otherwise display the relative result
-
-
+        OverallData overallData = FileHelper.readOverallDataFromLocal();
+        tvOverallAccuracy.setText(overallData.getOverallAccuracy() + "%");
+        tvOverallRT.setText(overallData.getOverallRT() + "ms");
     }
 
     private void initHistory() {

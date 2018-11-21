@@ -26,7 +26,7 @@ public class FileHelper {
     public static void saveOverallDataToLocal() {
         Gson gson = new Gson();
         try (FileWriter writer = new FileWriter(Environment.getExternalStorageDirectory() + PATH_OVERALL_DATA + FILENAME_OVERALL_DATA)) {
-            //gson.toJson(gson.toJson(MainActivity.overall), writer);
+            gson.toJson(MainActivity.overallData, writer);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -37,8 +37,6 @@ public class FileHelper {
         Gson g = new Gson();
         String path = Environment.getExternalStorageDirectory() + PATH_OVERALL_DATA + FILENAME_OVERALL_DATA;
         String readings = readJsonFile(path);
-        readings = readings.replace("\\", "");
-        readings = readings.substring(1, readings.length() - 1);
         return g.fromJson(readings, OverallData.class);
     }
 
@@ -46,8 +44,6 @@ public class FileHelper {
         Gson g = new Gson();
         String path = Environment.getExternalStorageDirectory() + PATH_TRAINING_DATA + filename;
         String readings = readJsonFile(path);
-        //readings = readings.replace("\\", "");
-        //readings = readings.substring(1, readings.length() - 1);
         return g.fromJson(readings, TrainingData.class);
     }
 
@@ -105,11 +101,7 @@ public class FileHelper {
 
         File file = new File(Environment.getExternalStorageDirectory() + PATH_OVERALL_DATA + FILENAME_OVERALL_DATA);
         if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            saveOverallDataToLocal();
         }
     }
 

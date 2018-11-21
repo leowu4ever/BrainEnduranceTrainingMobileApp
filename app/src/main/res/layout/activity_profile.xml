@@ -58,7 +58,7 @@
                     app:srcCompat="@drawable/ic_correct" />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/tv_overall_accuracy"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -84,7 +84,7 @@
                     app:srcCompat="@drawable/ic_res" />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/tv_overall_rt"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
