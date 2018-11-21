@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -13,14 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -56,6 +48,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void initOverall() {
+
+        // check if there is an overall file
+        // if no then 0% for both
+        // otherwise display the relative result
+
 
     }
 
@@ -110,44 +107,9 @@ public class ProfileActivity extends AppCompatActivity {
         btnDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Gson g = new Gson();
-
-                String temp = readJsonFile(Environment.getExternalStorageDirectory() + FileHelper.PATH_TRAINING_DATA + fileTemp.getName()).replace("\\", "");
-                temp = temp.substring(1, temp.length() - 1);
-                TrainingData td = g.fromJson(temp, TrainingData.class);
+                TrainingData td = FileHelper.readTrainingDataFromLocal(fileTemp.getName());
                 dh.showHistoryDialog(td);
             }
         });
-    }
-
-    private String readJsonFile(String path) {
-
-        String readings = "";
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(new File(path));  // 2nd line
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String readinText = "";
-
-            while ((readinText = br.readLine()) != null) {
-                sb.append(readinText);
-            }
-            readings = sb.toString();
-        } catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return readings;
     }
 }
