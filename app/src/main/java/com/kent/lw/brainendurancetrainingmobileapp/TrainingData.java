@@ -141,7 +141,7 @@ public class TrainingData {
     }
 
     public float getDistance() {
-        return distance;
+        return Float.parseFloat(String.format("%.3f", distance));
     }
 
     public void setDistance(float distance) {
@@ -150,7 +150,7 @@ public class TrainingData {
 
     public float getAvgSpeed() {
         if (!Float.isNaN(avgSpeed) && !Float.isInfinite(avgSpeed)) {
-            return avgSpeed;
+            return Float.parseFloat(String.format("%.1f", avgSpeed));
         } else {
             return 0;
         }
@@ -161,7 +161,12 @@ public class TrainingData {
     }
 
     public float getAvgPace() {
-        return avgPace;
+        if (!Float.isNaN(avgPace) && !Float.isInfinite(avgPace)) {
+            return Float.parseFloat(String.format("%.1f", avgPace));
+        } else {
+            return 0;
+        }
+
     }
 
     public void setAvgPace(float avgPace) {
@@ -297,7 +302,7 @@ public class TrainingData {
     }
 
     public List<Long> getResTimeList() {
-        return resMiliList;
+        return resTimeList;
     }
 
     public void setResTimeList(Long resTime) {

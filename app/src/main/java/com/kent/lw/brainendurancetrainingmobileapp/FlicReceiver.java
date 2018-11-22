@@ -17,17 +17,16 @@ public class FlicReceiver extends FlicBroadcastReceiver {
 
     @Override
     public void onButtonUpOrDown(Context context, FlicButton button, boolean wasQueued, int timeDiff, boolean isUp, boolean isDown) {
-
+        Long resMili = System.currentTimeMillis();
         if (isDown) {
             if (MainActivity.trainingStarted) {
-                Long resMili = System.currentTimeMillis();
-                MainActivity.trainingData.setResMiliList(resMili);
                 long lastStiMili = MainActivity.trainingData.getStiMiliList().get(MainActivity.trainingData.getStiMiliList().size() - 1);
                 long resTime = resMili - lastStiMili;
 
-                MainActivity.trainingFragment.setTvLogRes("Response time  is " + resTime + "ms");
+                MainActivity.trainingData.setResMiliList(resMili);
                 MainActivity.trainingData.incResCount();
                 MainActivity.trainingData.setResTimeList(resTime);
+                MainActivity.trainingFragment.setTvLogRes("Response time  is " + resTime + "ms");
 
                 // within valid res threshold
                 if (resTime <= MainActivity.apvtTask.getResThreshold() && resTime > 100) {
