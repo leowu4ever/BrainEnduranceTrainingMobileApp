@@ -3,11 +3,11 @@ package com.kent.lw.brainendurancetrainingmobileapp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class FirebaseHelper {
+public class FirebaseDBHelper {
 
     private DatabaseReference db;
 
-    public FirebaseHelper() {
+    public FirebaseDBHelper() {
         db = FirebaseDatabase.getInstance().getReference();
     }
 

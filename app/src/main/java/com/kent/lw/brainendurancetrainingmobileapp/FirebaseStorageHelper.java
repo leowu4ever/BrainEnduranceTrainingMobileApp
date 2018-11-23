@@ -14,7 +14,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 
-public class FirestorageHelper {
+public class FirebaseStorageHelper {
 
     public static void uploadAllFileToFirestorage() {
         uploadAFolderToFirestorage(FileHelper.PATH_TRAINING_DATA, "Training Data/");

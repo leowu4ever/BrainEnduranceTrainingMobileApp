@@ -2,9 +2,7 @@ package com.kent.lw.brainendurancetrainingmobileapp;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -50,7 +48,7 @@ public class HistoryActivity extends AppCompatActivity {
         btnHistoryUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirestorageHelper.uploadAllFileToFirestorage();
+                FirebaseStorageHelper.uploadAllFileToFirestorage();
             }
         });
 
