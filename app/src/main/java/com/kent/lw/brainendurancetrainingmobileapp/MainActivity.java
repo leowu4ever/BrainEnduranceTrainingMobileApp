@@ -71,11 +71,11 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // TASK configuration
     public static ApvtTask apvtTask;
     public static GonogoTask gonogoTask;
-    //lock threshold
-    public final int LOCK_THRESHOLD = 1;
-
+    // overall
+    public static OverallData overallData;
     private final String DIF_CUSTOM = "Custom";
     private final int accSensor = Sensor.TYPE_LINEAR_ACCELERATION;
+    private final int gryoSensor = Sensor.TYPE_GYROSCOPE;
     // ui
     public DialogHelper dh;
     public MapHelper mh;
@@ -99,17 +99,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // duration
     private long time, hour, min, sec;
     // stimulus
-    private int stimulusInterval, trainingDuration;
+    private int trainingDuration;
     // distance
     private float distance, speed, pace;
     private LatLng tempLocation;
-    private FirebaseHelper firebaseHelper;
+    private FirebaseDBHelper firebaseDBHelper;
     // saveHelper
     private FileHelper fh;
-
-    // overall
-    public static OverallData overallData;
-
 
     public static void resumeTraining() {
         handler.postDelayed(durationRunnable, 1000);
@@ -175,11 +171,11 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         trainingData = new TrainingData();
 
         overallData = FileHelper.readOverallDataFromLocal();
-        if(overallData == null) {
+        if (overallData == null) {
             overallData = new OverallData();
         }
 
-        firebaseHelper = new FirebaseHelper();
+        firebaseDBHelper = new FirebaseDBHelper();
 
         // temp
         rd = new Random();
@@ -389,8 +385,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         // firebase upload
 
-        firebaseHelper.uploadAllData(trainingData, apvtTask);
-        // FirestorageHelper.uploadFiles();
+        firebaseDBHelper.uploadAllData(trainingData, apvtTask);
+        // FirebaseStorageHelper.uploadFiles();
         fh.saveTrainingDataToLocal();
 
         // read in overall
@@ -552,12 +548,12 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public void initAcc() {
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-        if (sm.getDefaultSensor(accSensor) != null && sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null) {
+        if (sm.getDefaultSensor(accSensor) != null && sm.getDefaultSensor(gryoSensor) != null) {
             accelerometer = sm.getDefaultSensor(accSensor);
-            gyroscope = sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+            gyroscope = sm.getDefaultSensor(gryoSensor);
 
-            sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-            sm.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_NORMAL);
+            sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
+            sm.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_GAME);
 
         } else {
         }
@@ -571,17 +567,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 y = event.values[1];
                 z = event.values[2];
                 fh.saveStreamMotionDataToLocal(System.currentTimeMillis() + "__" + x + " " + y + " " + z + "\n", "acc");
-
-//                double mag = x * x + y * y + z * z;
-//                if (mag > LOCK_THRESHOLD && !dh.isLockDialogShowing()) {
-//                    dh.showLockDialog();
-//                }
-//                if (mag < LOCK_THRESHOLD && dh.isLockDialogShowing()) {
-//                    dh.dismissLockDialog();
-//                }
             }
 
-            if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+            if (event.sensor.getType() == gryoSensor) {
                 x = event.values[0];
                 y = event.values[1];
                 z = event.values[2];
@@ -594,8 +582,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
-
-
 
     @Override
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
