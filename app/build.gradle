@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.appyvet:materialrangebar:1.4.4'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.6'
 
 }
 
