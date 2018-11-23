@@ -2,8 +2,6 @@ package com.kent.lw.brainendurancetrainingmobileapp;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,7 +20,7 @@ public class FirebaseStorageHelper {
         uploadAFolderToFirestorage(FileHelper.PATH_OVERALL_DATA, "Overall Data/");
     }
 
-    public static void uploadAFolderToFirestorage (String folderPath, String firestorageFolderName) {
+    public static void uploadAFolderToFirestorage(String folderPath, String firestorageFolderName) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
 

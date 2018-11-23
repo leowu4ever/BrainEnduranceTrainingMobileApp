@@ -15,16 +15,16 @@ public class OverallData {
     }
 
     public long getOverallRT() {
-        if(rtList.size() != 0 ) {
-            return getTotalRT()/rtList.size();
+        if (rtList.size() != 0) {
+            return getTotalRT() / rtList.size();
         } else {
             return 0;
         }
     }
 
     public float getOverallAccuracy() {
-        if(accuracyList.size() != 0 ) {
-            float a = getTotalAccuracy()/accuracyList.size();
+        if (accuracyList.size() != 0) {
+            float a = getTotalAccuracy() / accuracyList.size();
             a = Float.parseFloat(String.format("%.1f", a));
             return a;
         } else {
@@ -59,7 +59,7 @@ public class OverallData {
     public long getTotalRT() {
         long total = 0;
 
-        for(long rt : rtList) {
+        for (long rt : rtList) {
             total = total + rt;
         }
         return total;
@@ -69,7 +69,7 @@ public class OverallData {
     public float getTotalAccuracy() {
         float total = 0f;
 
-        for(float accuracy : accuracyList) {
+        for (float accuracy : accuracyList) {
             total = total + accuracy;
         }
         return total;

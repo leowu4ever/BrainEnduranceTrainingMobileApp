@@ -67,7 +67,7 @@ public class HistoryActivity extends AppCompatActivity {
         files = f.listFiles();
         // reads every file
 
-        for(int i = 0; i < files.length; i++) {
+        for (int i = 0; i < files.length; i++) {
             createUIs(i, files[i]);
         }
     }
