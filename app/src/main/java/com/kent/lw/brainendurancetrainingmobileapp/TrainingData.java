@@ -27,6 +27,7 @@ public class TrainingData {
     public float accuracy;
 
     public List<Long> stiMiliList, resMiliList, resTimeList;
+    public List<Integer> stiTypeList;
 
     // physical
     public float distance, avgSpeed, avgPace;
@@ -299,6 +300,14 @@ public class TrainingData {
 
     public void setStiMiliList(Long stiMili) {
         stiMiliList.add(stiMili);
+    }
+
+    public List<Integer> getStiTypeList() {
+        return stiTypeList;
+    }
+
+    public void setStiTypeList(int type) {
+        stiTypeList.add(type);
     }
 
     public List<Long> getResTimeList() {
