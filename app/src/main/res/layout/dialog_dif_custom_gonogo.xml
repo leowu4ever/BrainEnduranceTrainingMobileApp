@@ -28,7 +28,7 @@
         android:background="@color/colorPrimary" />
 
     <com.appyvet.materialrangebar.RangeBar
-        android:id="@+id/rb_noise2"
+        android:id="@+id/rb_nogo_gonogo"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:mrb_connectingLineColor="@color/colorPrimary"
@@ -51,17 +51,18 @@
         app:mrb_tickColor="@color/cardview_light_background"
         app:mrb_tickEnd="100"
         app:mrb_tickHeight="1dp"
-        app:mrb_tickInterval="10"
-        app:mrb_tickStart="0" />
+        app:mrb_tickInterval="5"
+        app:mrb_tickStart="5" />
 
     <TextView
         android:id="@+id/tv_noise2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:text="NO-GO(%)"
+        android:text="Proportion of NO-GO(%)"
         android:textAlignment="center"
         android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <View
@@ -75,7 +76,7 @@
         android:background="@color/colorPrimary" />
 
     <com.appyvet.materialrangebar.RangeBar
-        android:id="@+id/rb_interval"
+        android:id="@+id/rb_interval_gonogo"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:mrb_connectingLineColor="@color/colorPrimary"
@@ -109,6 +110,7 @@
         android:text="Interstimulus Interval(s)"
         android:textAlignment="center"
         android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <View
@@ -122,7 +124,7 @@
         android:background="@color/colorPrimary" />
 
     <com.appyvet.materialrangebar.RangeBar
-        android:id="@+id/rb_volume"
+        android:id="@+id/rb_volume_gonogo"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:mrb_connectingLineColor="@color/colorPrimary"
@@ -155,6 +157,7 @@
         android:text="Tone Volume(%)"
         android:textAlignment="center"
         android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <View
@@ -168,7 +171,7 @@
         android:background="@color/colorPrimary" />
 
     <com.appyvet.materialrangebar.RangeBar
-        android:id="@+id/rb_noise"
+        android:id="@+id/rb_noise_gonogo"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:mrb_connectingLineColor="@color/colorPrimary"
@@ -202,6 +205,7 @@
         android:text="Noise Volume(%)"
         android:textAlignment="center"
         android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <View
@@ -215,7 +219,7 @@
         android:background="@color/colorPrimary" />
 
     <com.appyvet.materialrangebar.RangeBar
-        android:id="@+id/rb_threshold"
+        android:id="@+id/rb_threshold_gonogo"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:mrb_connectingLineColor="@color/colorPrimary"
@@ -249,10 +253,59 @@
         android:text="Valid Response Time(ms)"
         android:textAlignment="center"
         android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <View
         android:id="@+id/view10"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/colorPrimary" />
+
+    <com.appyvet.materialrangebar.RangeBar
+        android:id="@+id/rb_minspeed_gonogo"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:mrb_connectingLineColor="@color/colorPrimary"
+        app:mrb_connectingLineColors="@color/colorPrimary"
+        app:mrb_pinColor="@color/colorPrimary"
+        app:mrb_pinMaxFont="12dp"
+        app:mrb_pinMinFont="12sp"
+        app:mrb_pinPadding="0dp"
+        app:mrb_pinRadius="14dp"
+        app:mrb_pinTextColor="@color/cardview_light_background"
+        app:mrb_rangeBar="false"
+        app:mrb_rangeBarColor="@color/cardview_shadow_start_color"
+        app:mrb_rangeBarPaddingBottom="6dp"
+        app:mrb_rangeBar_rounded="true"
+        app:mrb_selectorBoundaryColor="@color/colorPrimary"
+        app:mrb_selectorBoundarySize="6dp"
+        app:mrb_selectorColor="@color/cardview_light_background"
+        app:mrb_selectorSize="2dp"
+        app:mrb_temporaryPins="false"
+        app:mrb_tickColor="@color/cardview_light_background"
+        app:mrb_tickEnd="10"
+        app:mrb_tickHeight="1dp"
+        app:mrb_tickInterval="0.5"
+        app:mrb_tickStart="0" />
+
+    <TextView
+        android:id="@+id/tv_minispeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:text="Minimum Speed(km/h)"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+
+    <View
+        android:id="@+id/view17"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_marginLeft="0dp"
