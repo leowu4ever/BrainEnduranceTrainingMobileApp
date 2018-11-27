@@ -12,8 +12,7 @@ public class DialogHelper {
 
 
     public Dialog pauseDialog, finishDialog, countdownDialog, lockDialog, detailDialog;
-    public Button
-            btnResumeOk, btnFinishOK, btnDetailOk, btnUnlock;
+    public Button btnResumeOk, btnFinishOK, btnDetailOk, btnUnlock;
     public TextView tvFinishDuration, tvFinishDistance, tvFinishSpeed, tvFinishPace, tvFinishART, tvFinishAccuracy, tvCountdown;
     public TextView tvHistoryDate, tvHistoryTime, tvHistoryActivity, tvHistoryTask, tvHistoryDif, tvHistoryDuration, tvHistoryDistance, tvHistorySpeed, tvHistoryPace, tvHistoryART, tvHistoryAccuracy;
 
