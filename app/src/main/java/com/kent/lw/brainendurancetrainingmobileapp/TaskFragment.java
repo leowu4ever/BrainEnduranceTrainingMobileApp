@@ -125,6 +125,7 @@ public class TaskFragment extends Fragment {
                     MainActivity.trainingData.setDif(btnDif.getText() + "");
                     MainActivity.trainingData.setTaskConfig(MainActivity.apvtTask);
 
+
                     taskCommunicator.startTraining(taskSelected, difSelected);
                 } else {
                     promptDialog.show();
@@ -189,6 +190,7 @@ public class TaskFragment extends Fragment {
             public void onClick(View v) {
                 // update duration
                 MainActivity.apvtTask.setDuration(Integer.parseInt(rbTaskDuration.getRightPinValue()) * 60 * 1000);
+                MainActivity.gonogoTask.setDuration(Integer.parseInt(rbTaskDuration.getRightPinValue()) * 60 * 1000);
                 durationDialog.dismiss();
                 btnDuration.setText(rbTaskDuration.getRightPinValue() + " min");
             }
@@ -207,10 +209,10 @@ public class TaskFragment extends Fragment {
                 MainActivity.apvtTask.setVolumeTo(Float.parseFloat(rbVolumeApvt.getRightPinValue()) / 100);
                 MainActivity.apvtTask.setNoise(Float.parseFloat(rbNoiseApvt.getRightPinValue()) / 100);
                 MainActivity.apvtTask.setResThreshold(Integer.parseInt(rbThresholdApvt.getRightPinValue()));
+                MainActivity.apvtTask.setMinSpeed(Float.parseFloat(rbMinspeedApvt.getRightPinValue()));
 
                 difCustomAPVTDialog.dismiss();
                 btnDif.setText(btnCustom.getText());
-
                 // show task configuration
             }
         });
@@ -230,9 +232,14 @@ public class TaskFragment extends Fragment {
             public void onClick(View v) {
 
                 // set parameters
-
-
-
+                MainActivity.gonogoTask.setNogoPropotion(Integer.parseInt(rbNogo.getRightPinValue()));
+                MainActivity.gonogoTask.setIntervalFrom(Integer.parseInt(rbIntervalGonogo.getRightPinValue()));
+                MainActivity.gonogoTask.setIntervalTo(Integer.parseInt(rbIntervalGonogo.getRightPinValue()));
+                MainActivity.gonogoTask.setVolumeFrom(Float.parseFloat(rbVolumeGonogo.getLeftPinValue()) / 100);
+                MainActivity.gonogoTask.setVolumeTo(Float.parseFloat(rbVolumeGonogo.getRightPinValue()) / 100);
+                MainActivity.gonogoTask.setNoise(Float.parseFloat(rbNoiseGonogo.getRightPinValue()) / 100);
+                MainActivity.gonogoTask.setResThreshold(Integer.parseInt(rbThresholdGonogo.getRightPinValue()));
+                MainActivity.gonogoTask.setMinSpeed(Float.parseFloat(rbMinspeedGonogo.getRightPinValue()));
 
                 difCustomGonogoDialog.dismiss();
                 btnDif.setText(btnCustom.getText());

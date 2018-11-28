@@ -20,7 +20,7 @@ public class TrainingData {
     public String task, dif;
 
     // cognitive task
-    public int stiCount, resCount, hitResCount;
+    public int stiCount, resCount, hitResCount, lapseCount;
     public long totalResTime;
 
     public long avgResTime;
@@ -107,9 +107,17 @@ public class TrainingData {
         this.hitResCount = hitResCount;
     }
 
+    public int getLapseCount() {
+        return lapseCount;
+    }
+
+    public void setLapseCount(int lapseCount) {
+        this.lapseCount = lapseCount;
+    }
+
     public float getAccuracy() {
         float a = (float) hitResCount / (float) stiCount * 100;
-        a = Float.parseFloat(String.format("%.3f", a));
+        a = Float.parseFloat(String.format("%.1f", a));
         if (!Float.isNaN(a) && !Float.isInfinite(a)) {
             return a;
         } else {
@@ -330,6 +338,11 @@ public class TrainingData {
         hitResCount++;
     }
 
+    public void incLapseCount() {
+        lapseCount++;
+    }
+
+
     public void addResTime(long resTime) {
         totalResTime = totalResTime + resTime;
     }
@@ -343,6 +356,7 @@ public class TrainingData {
         stiCount = 0;
         resCount = 0;
         hitResCount = 0;
+        lapseCount = 0;
         accuracy = 0;
         totalResTime = 0;
 

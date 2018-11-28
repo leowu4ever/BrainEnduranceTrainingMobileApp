@@ -38,6 +38,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -297,7 +299,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 public void run() {
 
                     if (time == 0) {
-                        Log.d("noise", apvtTask.getNoise() + "");
                         sh.playNoiseSound(apvtTask.getNoise(), apvtTask.getNoise(), 0, -1, 1
                         );
                     }
@@ -321,33 +322,90 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             // start after count down
             handler.postDelayed(durationRunnable, 4000);
 
-            // simtimulus
-            stimulusRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    if (apvtTask.getDuration() > 0) {
 
-                        float randomVolume = rd.nextFloat() * (apvtTask.getVolumeTo() - apvtTask.getVolumeFrom()) + apvtTask.getVolumeFrom();
-                        sh.playBeepSound(randomVolume, randomVolume, 0, 0, 1);
+            if (taskSelected.equals("A-PVT")){
 
-                        trainingData.setStiMiliList(System.currentTimeMillis());
-
-                        // update sti count on tv and td
-                        trainingData.incStiCount();
-                        trainingFragment.setTvStiCount(trainingData.getStiCount() + "");
-
-                        // update accuracy
-                        trainingFragment.setTvAccuracy(trainingData.getAccuracy() + "");
-
-
-                        int randomInterval = rd.nextInt(apvtTask.getIntervalTo() - apvtTask.getIntervalFrom() + 1) + apvtTask.getIntervalFrom();
-                        trainingFragment.setTvSti("Next stimulus in " + randomInterval + "s");
-                        handler.postDelayed(this, randomInterval * 1000);
-                    }
+                int totalStiCount = apvtTask.getDuration() / 1000 / apvtTask.getIntervalFrom();
+                for (int i = 0; i < totalStiCount; i++) {
+                    apvtTask.setStiTypeList(0);
                 }
-            };
-            handler.postDelayed(stimulusRunnable, 4000);
-            trainingStarted = true;
+
+                // simtimulus
+                stimulusRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (apvtTask.getDuration() > 0) {
+
+                            float randomVolume = rd.nextFloat() * (apvtTask.getVolumeTo() - apvtTask.getVolumeFrom()) + apvtTask.getVolumeFrom();
+                            sh.playBeepSound(randomVolume, randomVolume, 0, 0, 1);
+
+                            trainingData.setStiMiliList(System.currentTimeMillis());
+
+                            // update sti count on tv and td
+                            trainingData.incStiCount();
+                            trainingFragment.setTvStiCount(trainingData.getStiCount() + "");
+
+                            // update accuracy
+                            trainingFragment.setTvAccuracy(trainingData.getAccuracy() + "");
+
+
+                            int randomInterval = rd.nextInt(apvtTask.getIntervalTo() - apvtTask.getIntervalFrom() + 1) + apvtTask.getIntervalFrom();
+                            trainingFragment.setTvSti("Next stimulus in " + randomInterval + "s");
+                            handler.postDelayed(this, randomInterval * 1000);
+                        }
+                    }
+                };
+                handler.postDelayed(stimulusRunnable, 4000);
+                trainingStarted = true;
+            }
+
+            if (taskSelected.equals("GO/NO-GO")) {
+
+                ArrayList<Integer> indexList = new ArrayList<Integer>();
+                int totalStiCount = gonogoTask.getDuration() / 1000 / gonogoTask.getIntervalFrom();
+                for (int i = 0; i < totalStiCount; i++) {
+                    gonogoTask.setStiTypeList(0);
+                    indexList.add(i);
+                }
+
+                Collections.shuffle(indexList);
+
+                float nogoCount = totalStiCount * gonogoTask.getNogoPropotion() / 100;
+                for (int i = 0; i < nogoCount; i++) {
+                    gonogoTask.setStiTypeOn(indexList.get(i), 1);
+                }
+
+                // simtimulus
+                stimulusRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (apvtTask.getDuration() > 0) {
+
+                            float randomVolume = rd.nextFloat() * (gonogoTask.getVolumeTo() - gonogoTask.getVolumeFrom()) + gonogoTask.getVolumeFrom();
+                            // get current sti type from stiTypeList
+                            if (gonogoTask.getStiTypeOn(trainingData.getStiCount()) == 0) {
+                                sh.playBeepSound(randomVolume, randomVolume, 0, 0, 1);
+                            } else {
+                                sh.playNogoSound(randomVolume, randomVolume, 0, 0, 1);
+                            }
+                            trainingData.setStiMiliList(System.currentTimeMillis());
+
+                            // update sti count on tv and td
+                            trainingData.incStiCount();
+                            trainingFragment.setTvStiCount(trainingData.getStiCount() + "");
+
+                            // update accuracy
+                            trainingFragment.setTvAccuracy(trainingData.getAccuracy() + "");
+
+                            int randomInterval = rd.nextInt(gonogoTask.getIntervalTo() - gonogoTask.getIntervalFrom() + 1) + gonogoTask.getIntervalFrom();
+                            trainingFragment.setTvSti("Next stimulus in " + randomInterval + "s");
+                            handler.postDelayed(this, randomInterval * 1000);
+                        }
+                    }
+                };
+                handler.postDelayed(stimulusRunnable, 4000);
+                trainingStarted = true;
+            }
         }
     }
 

@@ -12,7 +12,7 @@ public class SoundHelper extends Application {
     // soundpool
     public SoundPool sp;
     public int beepSound, speedupSound, startSound, finishSound;
-
+    public int nogoSound;
     public int noiseSound, noiseplay;
 
 
@@ -32,8 +32,8 @@ public class SoundHelper extends Application {
         speedupSound = sp.load(context, R.raw.speedup, 1);
         startSound = sp.load(context, R.raw.start, 1);
         finishSound = sp.load(context, R.raw.finish, 1);
-
         noiseSound = sp.load(context, R.raw.kidsplaying, 1);
+        nogoSound = sp.load(context, R.raw.nogo, 1);
     }
 
     public void playBeepSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
@@ -60,4 +60,7 @@ public class SoundHelper extends Application {
     public void stopNoiseSound() {
         sp.stop(noiseplay);
     }
-}
+
+    public void playNogoSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
+        sp.play(nogoSound, leftVolume, rightVolume, priority, loop, rate);
+    }}

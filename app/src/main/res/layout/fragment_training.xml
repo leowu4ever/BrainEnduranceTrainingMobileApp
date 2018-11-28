@@ -192,12 +192,11 @@
                 android:id="@+id/textView44"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Stimulus count"
+                android:text="Stimuli"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textSize="12sp" />
         </LinearLayout>
-
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
@@ -223,17 +222,48 @@
                 android:id="@+id/textView42"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hit count"
+                android:text="Hits"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textSize="12sp" />
 
+        </LinearLayout>
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_lapse_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView44"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lapses"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="@color/colorPrimary" />
+
+
 
         <LinearLayout
             android:layout_width="match_parent"

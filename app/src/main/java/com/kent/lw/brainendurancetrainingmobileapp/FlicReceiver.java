@@ -28,19 +28,45 @@ public class FlicReceiver extends FlicBroadcastReceiver {
                 MainActivity.trainingData.setResTimeList(resTime);
                 MainActivity.trainingFragment.setTvLogRes("Response time  is " + resTime + "ms");
 
-                // within valid res threshold
-                if (resTime <= MainActivity.apvtTask.getResThreshold() && resTime > 100) {
 
-                    // update hit respon count textview
-                    MainActivity.trainingData.incHitResCount();
-                    MainActivity.trainingFragment.setTvHitCount(MainActivity.trainingData.getHitResCount() + "");
+                if (MainActivity.trainingData.task.equals("A-PVT")) {
+                    Log.d("tasktest", MainActivity.apvtTask.getStiTypeOn(MainActivity.trainingData.getStiCount()) + "");
+                    if (resTime <= MainActivity.apvtTask.getResThreshold() && resTime > 100 && MainActivity.apvtTask.getStiTypeOn(MainActivity.trainingData.getStiCount() - 1) == 0) {
 
-                    // update avg res time
-                    MainActivity.trainingData.addResTime(resTime);
-                    MainActivity.trainingFragment.setTvAvgResTime(MainActivity.trainingData.getTotalResTime() / MainActivity.trainingData.getHitResCount() + "");
+                        // update hit respon count textview
+                        MainActivity.trainingData.incHitResCount();
+                        MainActivity.trainingFragment.setTvHitCount(MainActivity.trainingData.getHitResCount() + "");
 
-                    // update accuracy
-                    MainActivity.trainingFragment.setTvAccuracy(MainActivity.trainingData.getAccuracy() + "");
+                        // update avg res time
+                        MainActivity.trainingData.addResTime(resTime);
+                        MainActivity.trainingFragment.setTvAvgResTime(MainActivity.trainingData.getTotalResTime() / MainActivity.trainingData.getHitResCount() + "");
+
+                        // update accuracy
+                        MainActivity.trainingFragment.setTvAccuracy(MainActivity.trainingData.getAccuracy() + "");
+                    } else {
+                        MainActivity.trainingData.incLapseCount();
+                        MainActivity.trainingFragment.setTvLapseCount(MainActivity.trainingData.getLapseCount() + "");
+                    }
+                }
+
+                if (MainActivity.trainingData.task.equals("GO/NO-GO")) {
+
+                    if (resTime <= MainActivity.gonogoTask.getResThreshold() && resTime > 100 && MainActivity.gonogoTask.getStiTypeOn(MainActivity.trainingData.getStiCount() - 1) == 0) {
+
+                        // update hit respon count textview
+                        MainActivity.trainingData.incHitResCount();
+                        MainActivity.trainingFragment.setTvHitCount(MainActivity.trainingData.getHitResCount() + "");
+
+                        // update avg res time
+                        MainActivity.trainingData.addResTime(resTime);
+                        MainActivity.trainingFragment.setTvAvgResTime(MainActivity.trainingData.getTotalResTime() / MainActivity.trainingData.getHitResCount() + "");
+
+                        // update accuracy
+                        MainActivity.trainingFragment.setTvAccuracy(MainActivity.trainingData.getAccuracy() + "");
+                    } else {
+                        MainActivity.trainingData.incLapseCount();
+                        MainActivity.trainingFragment.setTvLapseCount(MainActivity.trainingData.getLapseCount() + "");
+                    }
                 }
             }
         }

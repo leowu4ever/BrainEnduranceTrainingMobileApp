@@ -18,6 +18,7 @@ public class Task {
     private int resThreshold;
 
     private float minSpeed;
+
     private List<Integer> stiTypeList;
 
     public Task(){
@@ -104,6 +105,14 @@ public class Task {
 
     public void setStiTypeList(int stiType) {
         this.stiTypeList.add(stiType);
+    }
+
+    public int getStiTypeOn(int index) {
+        return stiTypeList.get(index);
+    }
+
+    public void setStiTypeOn(int index, int stiType) {
+        this.stiTypeList.set(index, stiType);
     }
 
     @Override
