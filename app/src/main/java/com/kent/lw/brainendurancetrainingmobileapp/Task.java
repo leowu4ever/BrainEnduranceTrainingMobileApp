@@ -1,5 +1,8 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Task {
 
     private int duration;
@@ -14,15 +17,21 @@ public class Task {
 
     private int resThreshold;
 
-    public Task(int duration, int intervalFrom, int intervalTo, float volumeFrom, float volumeTo, float noise, int resThreshold) {
+    private float minSpeed;
+    private List<Integer> stiTypeList;
 
-        this.duration = duration;
-        this.intervalFrom = intervalFrom;
-        this.intervalTo = intervalTo;
-        this.volumeFrom = volumeFrom;
-        this.volumeTo = volumeTo;
-        this.noise = noise;
-        this.resThreshold = resThreshold;
+    public Task(){
+
+        this.duration = 0;
+        this.intervalFrom = 0;
+        this.intervalTo = 0;
+        this.volumeFrom = 0;
+        this.volumeTo = 0;
+        this.noise = 0;
+        this.resThreshold = 0;
+        minSpeed = 0;
+        stiTypeList = new ArrayList<Integer>();
+
     }
 
     public int getDuration() {
@@ -79,6 +88,22 @@ public class Task {
 
     public void setResThreshold(int resThreshold) {
         this.resThreshold = resThreshold;
+    }
+
+    public float getMinSpeed() {
+        return minSpeed;
+    }
+
+    public void setMinSpeed(float minSpeed) {
+        this.minSpeed = minSpeed;
+    }
+
+    public List<Integer> getStiTypeList() {
+        return stiTypeList;
+    }
+
+    public void setStiTypeList(int stiType) {
+        this.stiTypeList.add(stiType);
     }
 
     @Override
