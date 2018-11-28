@@ -47,14 +47,12 @@ public class TaskFragment extends Fragment {
     private Button btnHelpApvtOK, btnHelpGonogoOK;
     // apvt custom dialog
     private Dialog difCustomAPVTDialog;
-    private Button btnCustomApvtSave;
-    private RangeBar rbIntervalApvt, rbVolumeApvt, rbNoiseApvt, rbThresholdApvt;
-    private TextView tvIntervalApvt, tvVolumeApvt, tvNoiseApvt, tvThresholdApvt;
+    private Button btnCustomSaveApvt;
+    private RangeBar rbIntervalApvt, rbVolumeApvt, rbNoiseApvt, rbThresholdApvt, rbMinspeedApvt;
     //gonogo dialog
     private Dialog difCustomGonogoDialog;
-    private Button btnCustomGonogoSave;
-    private RangeBar rbIntervalGonogo, rbVolumeGonogo, rbNoiseGonogo, rbThresholdGonogo;
-    private TextView tvIntervalGonogo, tvVolumeGonogo, tvNoiseGonogo, tvThresholdGonogo;
+    private Button btnCustomSaveGonogo;
+    private RangeBar rbNogo, rbIntervalGonogo, rbVolumeGonogo, rbNoiseGonogo, rbThresholdGonogo, rbMinspeedGonogo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,6 +65,7 @@ public class TaskFragment extends Fragment {
         initFragmentBtns();
         initDialogs();
         initAPVTRbs();
+        initGonogoRbs();
         initHelpBtns();
     }
 
@@ -161,7 +160,7 @@ public class TaskFragment extends Fragment {
         initTaskBtns();
         initDifBtns();
         initDurationBtns();
-        initCustomBtns();
+        initCustomSaveBtns();
 
         tvPrompt = promptDialog.findViewById(R.id.tv_prompt);
         btnDifPromptOk = promptDialog.findViewById(R.id.btn_dif_prompt_ok);
@@ -196,9 +195,9 @@ public class TaskFragment extends Fragment {
         });
     }
 
-    private void initCustomBtns() {
-        btnCustomApvtSave = difCustomAPVTDialog.findViewById(R.id.btn_apvt_save);
-        btnCustomApvtSave.setOnClickListener(new View.OnClickListener() {
+    private void initCustomSaveBtns() {
+        btnCustomSaveApvt = difCustomAPVTDialog.findViewById(R.id.btn_apvt_save);
+        btnCustomSaveApvt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -216,12 +215,27 @@ public class TaskFragment extends Fragment {
             }
         });
 
-        btnCustomGonogoSave = difCustomGonogoDialog.findViewById(R.id.btn_gonogo_save);
-        btnCustomGonogoSave.setOnClickListener(new View.OnClickListener() {
+        btnCustomSaveGonogo = difCustomGonogoDialog.findViewById(R.id.btn_gonogo_save);
+        btnCustomSaveGonogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 difCustomGonogoDialog.dismiss();
                 btnDuration.setText(btnCustom.getText());
+            }
+        });
+
+        btnCustomSaveGonogo = difCustomGonogoDialog.findViewById(R.id.btn_gonogo_save);
+        btnCustomSaveGonogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // set parameters
+
+
+
+
+                difCustomGonogoDialog.dismiss();
+                btnDif.setText(btnCustom.getText());
             }
         });
     }
@@ -343,15 +357,20 @@ public class TaskFragment extends Fragment {
     private void initAPVTRbs() {
 
         rbIntervalApvt = difCustomAPVTDialog.findViewById(R.id.rb_interval_apvt);
-
-
         rbVolumeApvt = difCustomAPVTDialog.findViewById(R.id.rb_volume_apvt);
-        ;
-
         rbNoiseApvt = difCustomAPVTDialog.findViewById(R.id.rb_noise_apvt);
-
         rbThresholdApvt = difCustomAPVTDialog.findViewById(R.id.rb_threshold_apvt);
+        rbMinspeedApvt = difCustomAPVTDialog.findViewById(R.id.rb_minspeed_apvt);
+    }
 
+    private void initGonogoRbs() {
+
+        rbNogo = difCustomGonogoDialog.findViewById(R.id.rb_nogo_gonogo);
+        rbIntervalGonogo = difCustomGonogoDialog.findViewById(R.id.rb_interval_gonogo);
+        rbVolumeGonogo = difCustomGonogoDialog.findViewById(R.id.rb_volume_gonogo);
+        rbNoiseGonogo = difCustomGonogoDialog.findViewById(R.id.rb_noise_gonogo);
+        rbThresholdGonogo = difCustomGonogoDialog.findViewById(R.id.rb_threshold_gonogo);
+        rbMinspeedGonogo = difCustomGonogoDialog.findViewById(R.id.rb_minspeed_gonogo);
     }
 
     private void initHelpBtns() {
