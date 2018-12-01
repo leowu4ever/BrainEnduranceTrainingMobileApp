@@ -233,7 +233,7 @@ public class TaskFragment extends Fragment {
 
                 // set parameters
                 MainActivity.gonogoTask.setNogoPropotion(Integer.parseInt(rbNogo.getRightPinValue()));
-                MainActivity.gonogoTask.setIntervalFrom(Integer.parseInt(rbIntervalGonogo.getRightPinValue()));
+                MainActivity.gonogoTask.setIntervalFrom(Integer.parseInt(rbIntervalGonogo.getLeftPinValue()));
                 MainActivity.gonogoTask.setIntervalTo(Integer.parseInt(rbIntervalGonogo.getRightPinValue()));
                 MainActivity.gonogoTask.setVolumeFrom(Float.parseFloat(rbVolumeGonogo.getLeftPinValue()) / 100);
                 MainActivity.gonogoTask.setVolumeTo(Float.parseFloat(rbVolumeGonogo.getRightPinValue()) / 100);
