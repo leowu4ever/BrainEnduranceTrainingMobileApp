@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         // start  map
 
         // reset training dat
-        trainingData.resetAllData();
+        trainingData.resetData();
         trainingData.setTask(taskSelected);
         trainingData.setDif(difSelected);
         trainingData.setId(System.currentTimeMillis());
