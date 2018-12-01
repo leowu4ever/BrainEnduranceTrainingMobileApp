@@ -21,6 +21,7 @@ import java.util.List;
 
 public class MapHelper {
 
+    public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private final int MAP_UPDATE_INTERVAL = 3000;
     private int MIN_DISTANCE_UPDATE_THRESHOLD = 10;
 
@@ -63,7 +64,7 @@ public class MapHelper {
         } else {
             ActivityCompat.requestPermissions((Activity) context,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    MainActivity.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
     }
 

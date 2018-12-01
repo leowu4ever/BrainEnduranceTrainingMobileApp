@@ -50,7 +50,6 @@ import io.flic.lib.FlicManagerInitializedCallback;
 public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, OnMapReadyCallback, SensorEventListener {
 
     // permission
-    public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     //
     public static boolean trainingStarted = false;
     // fragments
@@ -325,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                 int totalStiCount = apvtTask.getDuration() / 1000 / apvtTask.getIntervalFrom();
                 for (int i = 0; i < totalStiCount; i++) {
-                    apvtTask.setStiTypeList(0);
+                    trainingData.setStiTypeList(0);
                 }
 
                 // simtimulus
@@ -362,7 +361,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 ArrayList<Integer> indexList = new ArrayList<Integer>();
                 int totalStiCount = gonogoTask.getDuration() / 1000 / gonogoTask.getIntervalFrom();
                 for (int i = 0; i < totalStiCount; i++) {
-                    gonogoTask.setStiTypeList(0);
+                    trainingData.setStiTypeList(0);
                     indexList.add(i);
                 }
 
@@ -370,7 +369,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                 float nogoCount = totalStiCount * gonogoTask.getNogoPropotion() / 100;
                 for (int i = 0; i < nogoCount; i++) {
-                    gonogoTask.setStiTypeOn(indexList.get(i), 1);
+                    trainingData.setStiTypeOn(indexList.get(i), 1);
                 }
 
                 // simtimulus
@@ -381,7 +380,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                             float randomVolume = rd.nextFloat() * (gonogoTask.getVolumeTo() - gonogoTask.getVolumeFrom()) + gonogoTask.getVolumeFrom();
                             // get current sti type from stiTypeList
-                            if (gonogoTask.getStiTypeOn(trainingData.getStiCount()) == 0) {
+                            if (trainingData.getStiTypeOn(trainingData.getStiCount()) == 0) {
                                 sh.playBeepSound(randomVolume, randomVolume, 0, 0, 1);
                             } else {
                                 sh.playNogoSound(randomVolume, randomVolume, 0, 0, 1);
@@ -476,7 +475,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                            @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
         switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+            case MapHelper.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
