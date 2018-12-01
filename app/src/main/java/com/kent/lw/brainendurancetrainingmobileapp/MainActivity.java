@@ -49,18 +49,21 @@ import io.flic.lib.FlicManagerInitializedCallback;
 
 public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, OnMapReadyCallback, SensorEventListener {
 
-    // permission
-    //
     public static boolean trainingStarted = false;
+
     // fragments
     public static FragmentManager fragmentManager;
     public static FragmentTransaction transaction;
     public static TaskFragment taskFragment;
     public static TrainingFragment trainingFragment;
+
+    // permission
     public static boolean mLocationPermissionGranted;
+
     // runnable
     public static Handler handler;
     public static Runnable countdownRunnbale, stimulusRunnable, durationRunnable;
+
     // soundpool
     public static SoundHelper sh;
     // data collection
@@ -138,30 +141,24 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
+        keepDisplayOn();
+        hideStatusbar();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dh = new DialogHelper();
-        dh.initDialog(this);
-
-        sh = new SoundHelper();
-        sh.initSoundHelper(this);
+        dh = new DialogHelper(this);
+        sh = new SoundHelper(this);
 
         initFragments();
         initBtns();
 
         // -- map --
         lastLocation = new LatLng(0, 0);
-        initMap();
         polylineList = new ArrayList<Polyline>();
 
-        // acc
-        initAcc();
+        initMap();
+        initSensors();
 
         // runnable
         handler = new Handler();
@@ -190,6 +187,19 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         FlicConfig.setFlicCredentials();
     }
 
+    private void initSensors() {
+        initAcc();
+    }
+
+    private void keepDisplayOn() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    private void hideStatusbar() {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
     private void initTask() {
         apvtTask = new ApvtTask();
         gonogoTask = new GonogoTask();
@@ -208,7 +218,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     private void initBtns() {
         btnProfile = findViewById(R.id.btn_profile);
-
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

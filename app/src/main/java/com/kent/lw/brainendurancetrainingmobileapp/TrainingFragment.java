@@ -44,9 +44,7 @@ public class TrainingFragment extends Fragment {
 
     private void initUIs() {
         trainingCommunicator = (TrainingCommunicator) getActivity();
-        dh = new DialogHelper();
-        dh.initDialog(getActivity());
-
+        dh = new DialogHelper(getActivity());
         btnPause = getActivity().findViewById(R.id.btn_pause);
 
         btnFinish = getActivity().findViewById(R.id.btn_finish);

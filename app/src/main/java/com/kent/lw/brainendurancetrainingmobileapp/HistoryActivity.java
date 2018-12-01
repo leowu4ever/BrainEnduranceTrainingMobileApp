@@ -29,8 +29,7 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        dh = new DialogHelper();
-        dh.initDialog(this);
+        dh = new DialogHelper(this);
 
         initUI();
         initHistory();

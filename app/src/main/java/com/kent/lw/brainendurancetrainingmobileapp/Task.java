@@ -32,7 +32,6 @@ public class Task {
         this.resThreshold = 0;
         minSpeed = 0;
         stiTypeList = new ArrayList<Integer>();
-
     }
 
     public int getDuration() {

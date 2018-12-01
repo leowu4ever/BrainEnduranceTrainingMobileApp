@@ -20,7 +20,7 @@ public class TrainingData {
     public long totalResTime, avgResTime;
 
     public List<Long> stiMiliList, resMiliList, resTimeList;
-    public List<Integer> stiTypeList;   // todo
+    public List<Integer> stiTypeList;
 
     // physical
     public float distance, avgSpeed, avgPace;
@@ -36,6 +36,8 @@ public class TrainingData {
         stiMiliList = new ArrayList<Long>();
         resMiliList = new ArrayList<Long>();
         resTimeList = new ArrayList<Long>();
+        stiTypeList = new ArrayList<Integer>();
+
     }
 
     public Long getId() {
@@ -181,8 +183,16 @@ public class TrainingData {
         return stiTypeList;
     }
 
-    public void setStiTypeList(int type) {
-        stiTypeList.add(type);
+    public void setStiTypeList(int stiType) {
+        this.stiTypeList.add(stiType);
+    }
+
+    public int getStiTypeOn(int index) {
+        return stiTypeList.get(index);
+    }
+
+    public void setStiTypeOn(int index, int stiType) {
+        this.stiTypeList.set(index, stiType);
     }
 
     public List<Long> getResTimeList() {
@@ -301,6 +311,7 @@ public class TrainingData {
         lngList.clear();
 
         stiMiliList.clear();
+        stiTypeList.clear();
         resMiliList.clear();
         resTimeList.clear();
 

@@ -30,8 +30,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
 
 
                 if (MainActivity.trainingData.task.equals("A-PVT")) {
-                    Log.d("tasktest", MainActivity.apvtTask.getStiTypeOn(MainActivity.trainingData.getStiCount()) + "");
-                    if (resTime <= MainActivity.apvtTask.getResThreshold() && resTime > 100 && MainActivity.apvtTask.getStiTypeOn(MainActivity.trainingData.getStiCount() - 1) == 0) {
+                    if (resTime <= MainActivity.apvtTask.getResThreshold() && resTime > 100 && MainActivity.trainingData.getStiTypeOn(MainActivity.trainingData.getStiCount() - 1) == 0) {
 
                         // update hit respon count textview
                         MainActivity.trainingData.incHitResCount();
@@ -51,7 +50,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
 
                 if (MainActivity.trainingData.task.equals("GO/NO-GO")) {
 
-                    if (resTime <= MainActivity.gonogoTask.getResThreshold() && resTime > 100 && MainActivity.gonogoTask.getStiTypeOn(MainActivity.trainingData.getStiCount() - 1) == 0) {
+                    if (resTime <= MainActivity.gonogoTask.getResThreshold() && resTime > 100 && MainActivity.trainingData.getStiTypeOn(MainActivity.trainingData.getStiCount() - 1) == 0) {
 
                         // update hit respon count textview
                         MainActivity.trainingData.incHitResCount();

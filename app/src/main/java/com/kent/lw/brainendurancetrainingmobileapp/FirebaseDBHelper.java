@@ -43,6 +43,6 @@ public class FirebaseDBHelper {
         db.child(rootPath + "6_Location" + "/" + "Lat").setValue(td.getLatList());
         db.child(rootPath + "6_Location" + "/" + "Lng").setValue(td.getLngList());
 
-        //db.child("lwu@kentacuk").removeValue();
+        db.child("lwu@kentacuk").removeValue();
     }
 }
