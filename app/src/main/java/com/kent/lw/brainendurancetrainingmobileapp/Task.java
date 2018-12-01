@@ -21,7 +21,7 @@ public class Task {
 
     private List<Integer> stiTypeList;
 
-    public Task(){
+    public Task() {
 
         this.duration = 0;
         this.intervalFrom = 0;

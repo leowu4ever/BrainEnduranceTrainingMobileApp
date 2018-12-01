@@ -40,8 +40,8 @@ public class FirebaseDBHelper {
         db.child(rootPath + "5_Stimulus Record" + "/" + "Res Mili List").setValue(td.getResMiliList());
         db.child(rootPath + "5_Stimulus Record" + "/" + "Res Time List").setValue(td.getResTimeList());
 
-        db.child(rootPath + "6_Location" + "/" + "Lat").setValue(td.getLocLatList());
-        db.child(rootPath + "6_Location" + "/" + "Lng").setValue(td.getLocLngList());
+        db.child(rootPath + "6_Location" + "/" + "Lat").setValue(td.getLatList());
+        db.child(rootPath + "6_Location" + "/" + "Lng").setValue(td.getLngList());
 
         //db.child("lwu@kentacuk").removeValue();
     }

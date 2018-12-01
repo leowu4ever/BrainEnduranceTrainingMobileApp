@@ -63,4 +63,5 @@ public class SoundHelper extends Application {
 
     public void playNogoSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
         sp.play(nogoSound, leftVolume, rightVolume, priority, loop, rate);
-    }}
+    }
+}

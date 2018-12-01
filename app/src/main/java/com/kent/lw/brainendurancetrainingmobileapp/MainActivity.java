@@ -321,7 +321,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             handler.postDelayed(durationRunnable, 4000);
 
 
-            if (taskSelected.equals("A-PVT")){
+            if (taskSelected.equals("A-PVT")) {
 
                 int totalStiCount = apvtTask.getDuration() / 1000 / apvtTask.getIntervalFrom();
                 for (int i = 0; i < totalStiCount; i++) {
@@ -453,7 +453,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         overallData.setAccuracyList(trainingData.getAccuracy());
         FileHelper.saveOverallDataToLocal();
 
-        trainingData.printAllData();
         hideTrainingFragment();
 
         btnProfile.setVisibility(View.VISIBLE);
@@ -579,8 +578,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                                         // update location
                                         lastLocation = tempLocation;
-                                        trainingData.setLocLatList(lastLocation.latitude);
-                                        trainingData.setLocLngList(lastLocation.longitude);
+                                        trainingData.setLatList(lastLocation.latitude);
+                                        trainingData.setLngList(lastLocation.longitude);
 
                                         // finally do prompt
                                         if (speed < 3) {
