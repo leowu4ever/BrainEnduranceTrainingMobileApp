@@ -67,7 +67,7 @@ public class TrainingFragment extends Fragment {
 
         tvDuration = getActivity().findViewById(R.id.tv_duration);
         tvDistance = getActivity().findViewById(R.id.tv_distance);
-        tvSpeed = getActivity().findViewById(R.id.tv_speed);
+        //tvSpeed = getActivity().findViewById(R.id.tv_speed);
         tvPace = getActivity().findViewById(R.id.tv_pace);
         tvStiCount = getActivity().findViewById(R.id.tv_sti_count);
         tvLapseCount = getActivity().findViewById(R.id.tv_lapse_count);

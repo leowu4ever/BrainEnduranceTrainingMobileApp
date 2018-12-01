@@ -13,7 +13,7 @@
         android:id="@+id/btn_lock"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:adjustViewBounds="true"
         android:background="@drawable/button_circle"
         android:cropToPadding="true"
@@ -48,14 +48,6 @@
             android:textSize="36sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView39"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Time"
-            android:textAlignment="center"
-            android:textSize="14sp" />
     </LinearLayout>
 
     <View
@@ -121,11 +113,12 @@
                 android:id="@+id/textView44"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Avg pace(min/km)"
+                android:text="Pace(min/km)"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textSize="12sp" />
         </LinearLayout>
+
 
         <View
             android:layout_width="1px"
@@ -153,39 +146,7 @@
                 android:id="@+id/textView42"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Avg speed(km/h)"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="1px"
-            android:layout_height="50dp"
-            android:background="@color/colorPrimary" />
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_speed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView42"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Cur speed(km/h)"
+                android:text="Speed(km/h)"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textSize="12sp" />
@@ -317,6 +278,46 @@
                 android:id="@+id/textView42"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Responses"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorPrimary" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_accuracy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView42"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Accuracy(%)"
                 android:textAlignment="center"
                 android:textAllCaps="false"
@@ -349,7 +350,7 @@
                 android:id="@+id/textView42"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Avg RT(ms)"
+                android:text="Average response time(ms)"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textSize="12sp" />

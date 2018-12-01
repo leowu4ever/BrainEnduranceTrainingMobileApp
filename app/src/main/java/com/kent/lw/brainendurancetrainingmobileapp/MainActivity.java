@@ -567,7 +567,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                         // update speed
                                         speed = (distance / time) * 1000 * 60 * 60;
                                         String speedString = String.format("%.1f", speed);
-                                        trainingFragment.setTvSpeed(speedString);
+                                        //trainingFragment.setTvSpeed(speedString);
                                         trainingData.setAvgSpeed(speed);
 
                                         // update pace
