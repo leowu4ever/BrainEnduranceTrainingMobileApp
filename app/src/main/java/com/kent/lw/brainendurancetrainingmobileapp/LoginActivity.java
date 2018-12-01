@@ -28,24 +28,14 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        hideStatusbar();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
 
-        tvEmail = findViewById(R.id.tv_email);
-        tvPassword = findViewById(R.id.tv_password);
-
-        btnLogin = findViewById(R.id.btn_login);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSignIn();
-            }
-        });
+        initUI();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -60,7 +50,25 @@ public class LoginActivity extends AppCompatActivity {
         mh.getLocationPermission(this);
     }
 
-    private void startSignIn() {
+    private void initUI() {
+        tvEmail = findViewById(R.id.tv_email);
+        tvPassword = findViewById(R.id.tv_password);
+
+        btnLogin = findViewById(R.id.btn_login);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doSignin();
+            }
+        });
+    }
+
+    private void hideStatusbar() {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    private void doSignin() {
 
         String email = tvEmail.getText().toString();
         String password = tvPassword.getText().toString();

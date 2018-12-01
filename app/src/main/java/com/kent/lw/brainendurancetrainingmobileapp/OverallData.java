@@ -65,7 +65,6 @@ public class OverallData {
         return total;
     }
 
-
     public float getTotalAccuracy() {
         float total = 0f;
 
@@ -74,6 +73,4 @@ public class OverallData {
         }
         return total;
     }
-
-
 }

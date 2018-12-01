@@ -62,14 +62,14 @@ public class TaskFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initFragmentBtns();
+        initFragBtns();
         initDialogs();
         initAPVTRbs();
         initGonogoRbs();
         initHelpBtns();
     }
 
-    private void initFragmentBtns() {
+    private void initFragBtns() {
         taskCommunicator = (TaskCommunicator) getActivity();
 
         btnTask = getActivity().findViewById(R.id.btn_task);

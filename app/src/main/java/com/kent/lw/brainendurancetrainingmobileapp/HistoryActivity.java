@@ -24,8 +24,7 @@ public class HistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        hideStatusbar();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
@@ -33,6 +32,12 @@ public class HistoryActivity extends AppCompatActivity {
         dh = new DialogHelper();
         dh.initDialog(this);
 
+        initUI();
+        initHistory();
+        initOverall();
+    }
+
+    private void initUI() {
         btnHistoryOk = findViewById(R.id.btn_back);
         btnHistoryOk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,9 +45,6 @@ public class HistoryActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
-        tvOverallAccuracy = findViewById(R.id.tv_overall_accuracy);
-        tvOverallRT = findViewById(R.id.tv_overall_rt);
 
         btnHistoryUpload = findViewById(R.id.btn_upload);
         btnHistoryUpload.setOnClickListener(new View.OnClickListener() {
@@ -52,8 +54,13 @@ public class HistoryActivity extends AppCompatActivity {
             }
         });
 
-        initHistory();
-        initOverall();
+        tvOverallAccuracy = findViewById(R.id.tv_overall_accuracy);
+        tvOverallRT = findViewById(R.id.tv_overall_rt);
+    }
+
+    private void hideStatusbar() {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     private void initOverall() {
@@ -68,11 +75,11 @@ public class HistoryActivity extends AppCompatActivity {
         // reads every file
 
         for (int i = 0; i < files.length; i++) {
-            createUIs(i, files[i]);
+            createHistoryRow(i, files[i]);
         }
     }
 
-    private void createUIs(int id, File file) {
+    private void createHistoryRow(int id, File file) {
 
         // history layout container
         LinearLayout parentLayout = findViewById(R.id.linear_layout_history);
@@ -114,7 +121,6 @@ public class HistoryActivity extends AppCompatActivity {
         btnDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 TrainingData td = FileHelper.readTrainingDataFromLocal(files[btnDetail.getId()].getName());
                 dh.showHistoryDialog(td);
             }
