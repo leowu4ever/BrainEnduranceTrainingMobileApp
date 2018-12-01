@@ -16,8 +16,11 @@ public class DialogHelper {
     public TextView tvFinishDuration, tvFinishDistance, tvFinishSpeed, tvFinishPace, tvFinishART, tvFinishAccuracy, tvCountdown;
     public TextView tvHistoryDate, tvHistoryTime, tvHistoryActivity, tvHistoryTask, tvHistoryDif, tvHistoryDuration, tvHistoryDistance, tvHistorySpeed, tvHistoryPace, tvHistoryART, tvHistoryAccuracy;
 
+    public DialogHelper(Context context) {
+        init(context);
 
-    public void initDialog(Context context) {
+    }
+    public void init(Context context) {
         //dialog
         pauseDialog = new Dialog(context);
         finishDialog = new Dialog(context);

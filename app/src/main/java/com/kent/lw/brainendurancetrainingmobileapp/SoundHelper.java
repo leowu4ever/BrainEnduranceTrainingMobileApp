@@ -15,8 +15,11 @@ public class SoundHelper extends Application {
     public int nogoSound;
     public int noiseSound, noiseplay;
 
+    public SoundHelper (Context context) {
+        init(context);
+    }
 
-    public void initSoundHelper(Context context) {
+    public void init(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
