@@ -1,7 +1,6 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -61,8 +60,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static TrainingData trainingData;
 
     // TASK configuration
-    public static ApvtTask apvtTask;
-    public static GonogoTask gonogoTask;
+    public static com.kent.lw.brainendurancetrainingmobileapp.Task task;
 
     // overall
     public static OverallData overallData;
@@ -75,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private FileHelper fileHelper;
 
 
-    private ImageButton btnProfile, btnFlic, btnMap;
+    private ImageButton btnProfile, btnFlic, btnDiary, btnMap;
 
     // map
     private GoogleMap mMap;
@@ -150,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         // runnable
         handler = new Handler();
+        initRunnables();
 
         // firebase data model
         trainingData = new TrainingData();
@@ -216,6 +215,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             }
         });
 
+        btnDiary = findViewById(R.id.btn_diary);
+        btnDiary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         btnMap = findViewById(R.id.btn_map);
         btnMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,152 +240,34 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         btnProfile.setVisibility(View.GONE);
         btnFlic.setVisibility(View.GONE);
-        // start training
-        // start  map
-        // reset training dat
-        trainingData.reset();
-        trainingData.setTask(taskSelected);
-        trainingData.setDif(difSelected);
+        btnDiary.setVisibility(View.GONE);
+
         trainingData.setId(System.currentTimeMillis());
         resetTrainingData();
 
-        countdownRunnbale = new Runnable() {
-            @Override
-            public void run() {
-                if (countdown > 1000 && countdown <= 4000) {
-                    if (countdown == 4000) {
-                        trainingData.setStartTime(System.currentTimeMillis());
-                        soundHelper.playStartSound(1, 1, 0, 0, 1);
-                        dialogHelper.showCountdownDialog();
-                    }
-                    countdown = countdown - 1000;
-                    dialogHelper.setCountdownText(countdown / 1000 + "");
-                    handler.postDelayed(countdownRunnbale, 1000);
-                } else {
-                    dialogHelper.dismissCountdownDialog();
-                    handler.removeCallbacks(countdownRunnbale);
-                }
-            }
-        };
         handler.postDelayed(countdownRunnbale, 0);
 
 
         if (!difSelected.equals(Dif.DIF_CUSTOM)) {
 
         } else {
-            // CUSTOM
-            // duration
-            durationRunnable = new Runnable() {
-                @Override
-                public void run() {
-
-                    if (time == 0) {
-                        soundHelper.playNoiseSound(apvtTask.getNoise(), apvtTask.getNoise(), 0, -1, 1
-                        );
-                    }
-
-                    if (apvtTask.getDuration() > 0) {
-                        min = (apvtTask.getDuration() / 1000) / 60;
-                        sec = (apvtTask.getDuration() / 1000) % 60;
-                        String durationString = min + "M " + sec + "S";
-                        trainingFragment.setTvDuration(durationString);
-
-                        apvtTask.setDuration(apvtTask.getDuration() - 1000);
-                        time = time + 1000;
-                        trainingData.setTime(time);
-
-                        handler.postDelayed(this, 1000);
-                    } else {
-                        finishTraining();
-                    }
-                }
-            };
             // start after count down
             handler.postDelayed(durationRunnable, 4000);
 
-
-            if (taskSelected.equals("A-PVT")) {
-
-                int totalStiCount = apvtTask.getDuration() / 1000 / apvtTask.getIntervalFrom();
-                for (int i = 0; i < totalStiCount; i++) {
-                    trainingData.setStiTypeList(0);
-                }
-
-                // simtimulus
-                stimulusRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        if (apvtTask.getDuration() > 0) {
-                            Random rd = new Random();
-                            float randomVolume = rd.nextFloat() * (apvtTask.getVolumeTo() - apvtTask.getVolumeFrom()) + apvtTask.getVolumeFrom();
-                            soundHelper.playBeepSound(randomVolume, randomVolume, 0, 0, 1);
-
-                            trainingData.setStiMiliList(System.currentTimeMillis());
-
-                            // update sti count on tv and td
-                            trainingData.incStiCount();
-                            trainingFragment.setTvStiCount(trainingData.getStiCount() + "");
-
-                            // update accuracy
-                            trainingFragment.setTvAccuracy(trainingData.getAccuracy() + "");
-
-
-                            int randomInterval = rd.nextInt(apvtTask.getIntervalTo() - apvtTask.getIntervalFrom() + 1) + apvtTask.getIntervalFrom();
-                            trainingFragment.setTvSti("Next stimulus in " + randomInterval + "s");
-                            handler.postDelayed(this, randomInterval * 1000);
-                        }
-                    }
-                };
-                handler.postDelayed(stimulusRunnable, 4000);
-                trainingStarted = true;
+            ArrayList<Integer> indexList = new ArrayList<Integer>();
+            int totalStiCount = task.getDurationInMili() / 1000 / task.getIntervalFrom();
+            for (int i = 0; i < totalStiCount; i++) {
+                trainingData.setStiTypeList(0);
+                indexList.add(i);
+            }
+            Collections.shuffle(indexList);
+            float nogoCount = totalStiCount * task.getNogoPropotion() / 100;
+            for (int i = 0; i < nogoCount; i++) {
+                trainingData.setStiTypeOn(indexList.get(i), 1);
             }
 
-            if (taskSelected.equals("GO/NO-GO")) {
-                ArrayList<Integer> indexList = new ArrayList<Integer>();
-                int totalStiCount = gonogoTask.getDuration() / 1000 / gonogoTask.getIntervalFrom();
-                for (int i = 0; i < totalStiCount; i++) {
-                    trainingData.setStiTypeList(0);
-                    indexList.add(i);
-                }
-
-                Collections.shuffle(indexList);
-
-                float nogoCount = totalStiCount * gonogoTask.getNogoPropotion() / 100;
-                for (int i = 0; i < nogoCount; i++) {
-                    trainingData.setStiTypeOn(indexList.get(i), 1);
-                }
-
-                // simtimulus
-                stimulusRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        if (apvtTask.getDuration() > 0) {
-                            Random rd = new Random();
-                            float randomVolume = rd.nextFloat() * (gonogoTask.getVolumeTo() - gonogoTask.getVolumeFrom()) + gonogoTask.getVolumeFrom();
-                            // get current sti type from stiTypeList
-                            if (trainingData.getStiTypeOn(trainingData.getStiCount()) == 0) {
-                                soundHelper.playBeepSound(randomVolume, randomVolume, 0, 0, 1);
-                            } else {
-                                soundHelper.playNogoSound(randomVolume, randomVolume, 0, 0, 1);
-                            }
-                            trainingData.setStiMiliList(System.currentTimeMillis());
-
-                            // update sti count on tv and td
-                            trainingData.incStiCount();
-                            trainingFragment.setTvStiCount(trainingData.getStiCount() + "");
-
-                            // update accuracy
-                            trainingFragment.setTvAccuracy(trainingData.getAccuracy() + "");
-
-                            int randomInterval = rd.nextInt(gonogoTask.getIntervalTo() - gonogoTask.getIntervalFrom() + 1) + gonogoTask.getIntervalFrom();
-                            trainingFragment.setTvSti("Next stimulus in " + randomInterval + "s");
-                            handler.postDelayed(this, randomInterval * 1000);
-                        }
-                    }
-                };
-                handler.postDelayed(stimulusRunnable, 4000);
-                trainingStarted = true;
-            }
+            handler.postDelayed(stimulusRunnable, 4000);
+            trainingStarted = true;
         }
     }
 
@@ -398,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         handler.postDelayed(durationRunnable, 1000);
         handler.postDelayed(stimulusRunnable, 0);
         trainingStarted = true;
-        soundHelper.playNoiseSound(apvtTask.getNoise(), apvtTask.getNoise(), 0, -1, 1);
+        soundHelper.playNoiseSound(task.getNoise(), task.getNoise(), 0, -1, 1);
     }
 
     public void finishTraining() {
@@ -434,7 +322,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         btnProfile.setVisibility(View.VISIBLE);
         btnFlic.setVisibility(View.VISIBLE);
-
+        btnDiary.setVisibility(View.VISIBLE);
+        trainingData.reset();
     }
 
     public void resetTrainingData() {

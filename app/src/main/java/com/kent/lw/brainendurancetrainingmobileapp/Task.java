@@ -19,26 +19,31 @@ public class Task {
 
     private float minSpeed;
 
-    private List<Integer> stiTypeList;
+    private float nogoPropotion;
+
 
     public Task() {
 
         this.duration = 0;
+
         this.intervalFrom = 0;
         this.intervalTo = 0;
+
         this.volumeFrom = 0;
         this.volumeTo = 0;
+
         this.noise = 0;
+
         this.resThreshold = 0;
+
         minSpeed = 0;
-        stiTypeList = new ArrayList<Integer>();
     }
 
-    public int getDuration() {
+    public int getDurationInMili() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDurationInMili(int duration) {
         this.duration = duration;
     }
 
@@ -98,21 +103,14 @@ public class Task {
         this.minSpeed = minSpeed;
     }
 
-    public List<Integer> getStiTypeList() {
-        return stiTypeList;
+    public float getNogoPropotion() {
+        return nogoPropotion;
     }
 
-    public void setStiTypeList(int stiType) {
-        this.stiTypeList.add(stiType);
+    public void setNogoPropotion(float nogoPropotion) {
+        this.nogoPropotion = nogoPropotion;
     }
 
-    public int getStiTypeOn(int index) {
-        return stiTypeList.get(index);
-    }
-
-    public void setStiTypeOn(int index, int stiType) {
-        this.stiTypeList.set(index, stiType);
-    }
 
     @Override
     public String toString() {
