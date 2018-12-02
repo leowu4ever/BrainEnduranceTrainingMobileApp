@@ -162,7 +162,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         resetTrainingData();
 
-        trainingData.setId(System.currentTimeMillis());
         trainingData.setStartTime(System.currentTimeMillis());
 
         handler.postDelayed(countdownRunnbale, 0);

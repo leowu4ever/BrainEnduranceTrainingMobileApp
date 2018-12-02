@@ -115,7 +115,7 @@ public class FileHelper {
     public static void saveTrainingDataToLocal() {
         Gson gson = new Gson();
 
-        try (FileWriter writer = new FileWriter(PATH_TRAINING_DATA + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getId()) + ".json")) {
+        try (FileWriter writer = new FileWriter(PATH_TRAINING_DATA + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getStartTime()) + ".json")) {
             gson.toJson(MainActivity.trainingData, writer);
 
         } catch (IOException e) {
@@ -124,7 +124,7 @@ public class FileHelper {
     }
 
     public static void saveStreamMotionDataToLocal(String steamData, String DataType) {
-        File file = new File(PATH_MOTION_DATA + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getId()) + "_" + DataType + ".txt");
+        File file = new File(PATH_MOTION_DATA + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getStartTime()) + "_" + DataType + ".txt");
 
         if (!file.exists()) {
             try {

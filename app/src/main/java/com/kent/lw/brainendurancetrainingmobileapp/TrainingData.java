@@ -6,7 +6,6 @@ import java.util.List;
 public class TrainingData {
 
     // user info
-    public Long id;
     public String name;
 
     // for activity
@@ -24,28 +23,24 @@ public class TrainingData {
 
     // physical
     public float distance, avgSpeed, avgPace;
-    public String startTime;
+    public List<Float> speedList;
+
+    public long startTime;
     public long time;
 
     public List<Double> latList, lngList;
 
     public TrainingData() {
-        latList = new ArrayList<Double>();
-        lngList = new ArrayList<Double>();
 
         stiMiliList = new ArrayList<Long>();
         resMiliList = new ArrayList<Long>();
         resTimeList = new ArrayList<Long>();
         stiTypeList = new ArrayList<Integer>();
 
-    }
+        speedList = new ArrayList<Float>();
 
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        latList = new ArrayList<Double>();
+        lngList = new ArrayList<Double>();
     }
 
     public String getName() {
@@ -235,12 +230,21 @@ public class TrainingData {
         this.avgPace = avgPace;
     }
 
-    public String getStartTime() {
+
+    public List<Float> getSpeedList() {
+        return speedList;
+    }
+
+    public void setSpeedList(float speedList) {
+        this.speedList.add(speedList);
+    }
+
+    public long getStartTime() {
         return startTime;
     }
 
     public void setStartTime(long startTime) {
-        this.startTime = DateHelper.getDateTimeFromMili(startTime);
+        this.startTime = startTime;
     }
 
     public long getTime() {
@@ -289,7 +293,6 @@ public class TrainingData {
 
     public void reset() {
 
-        id = 0l;
         name = "";
 
         task = "";
@@ -319,7 +322,7 @@ public class TrainingData {
         avgSpeed = 0;
         avgPace = 0;
 
-        startTime = "";
+        startTime = 0;
         time = 0;
     }
 }

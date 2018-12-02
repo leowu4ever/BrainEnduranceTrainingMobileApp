@@ -155,8 +155,8 @@ public class DialogHelper {
 
     public void setupHistoryDialog(TrainingData td) {
 
-        tvHistoryDate.setText("Date: " + DateHelper.getDateFromMili(td.getId()));
-        tvHistoryTime.setText("Time: " + DateHelper.getTimeFromMili(td.getId()));
+        tvHistoryDate.setText("Date: " + DateHelper.getDateFromMili(td.getStartTime()));
+        tvHistoryTime.setText("Time: " + DateHelper.getTimeFromMili(td.getStartTime()));
         tvHistoryActivity.setText("Activity: " + td.getActivity());
         tvHistoryTask.setText("Cognitive task: " + td.getTask());
         tvHistoryDif.setText("Difficulty level: " + td.getDif());
