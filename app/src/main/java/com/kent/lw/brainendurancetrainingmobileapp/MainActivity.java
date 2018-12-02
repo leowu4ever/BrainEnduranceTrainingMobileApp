@@ -72,8 +72,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static SoundHelper soundHelper;
     public DialogHelper dialogHelper;
     public MapHelper mapHelper;
-    private FirebaseDBHelper firebaseDBHelper;
-    private FileHelper fileHelper;
 
 
     private ImageButton btnProfile, btnFlic, btnDiary, btnMap;
@@ -96,37 +94,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // distance
     private float distance, speed, pace;
 
-    private void initFragments() {
-        taskFragment = new TaskFragment();
-        trainingFragment = new TrainingFragment();
-        fragmentManager = getSupportFragmentManager();
-        transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-        transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
-        transaction.commit();
-    }
-
-    public static void showTaskFragment() {
-        transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-        transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
-        transaction.commit();
-    }
-
-    public static void hideTrainingFragment() {
-        transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-        transaction.remove(trainingFragment);
-        transaction.commit();
-    }
-
-    public static void showTrainingFragment() {
-        transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-        transaction.remove(taskFragment);
-        transaction.add(R.id.container, trainingFragment, "TRAINING_FRAGMENT");
-        transaction.commit();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,17 +104,15 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dialogHelper = new DialogHelper(this);
-        soundHelper = new SoundHelper(this);
-
-        initFragments();
-        initBtns();
-
-        // -- map --
         lastLocation = new LatLng(0, 0);
         polylineList = new ArrayList<Polyline>();
-
         initMap();
+
+        initBtns();
+        initFragments();
+
+        dialogHelper = new DialogHelper(this);
+        soundHelper = new SoundHelper(this);
 
         // runnable
         handler = new Handler();
@@ -155,24 +120,15 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         // firebase data model
         trainingData = new TrainingData();
-
         overallData = FileHelper.readOverallDataFromLocal();
-        firebaseDBHelper = new FirebaseDBHelper();
 
-        // temp
-        rd = new Random();
+        task = new com.kent.lw.brainendurancetrainingmobileapp.Task();
+
         mapHelper = new MapHelper();
         mLocationRequest = new LocationRequest();
         mapHelper.getLocationPermission(this);
 
-        initTask();
-
-        fileHelper = new FileHelper();
-
-        FlicConfig.setFlicCredentials();
-
         SensorHelper sensorHelper = new SensorHelper(this);
-
     }
 
     private void keepDisplayOn() {
@@ -183,12 +139,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
-
-    private void initTask() {
-        apvtTask = new ApvtTask();
-        gonogoTask = new GonogoTask();
-    }
-
 
     private void initBtns() {
         btnProfile = findViewById(R.id.btn_profile);
@@ -278,15 +228,14 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         trainingData.setName(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""));
 
         // firebase upload
-
-        firebaseDBHelper.uploadAllData(trainingData, apvtTask);
+        FirebaseDBHelper.uploadAllData();
         // FirebaseStorageHelper.uploadFiles();
-        fileHelper.saveTrainingDataToLocal();
+        FileHelper.saveTrainingDataToLocal();
 
         // overall
         overallData.setRtList(trainingData.getAvgResTime());
         overallData.setAccuracyList(trainingData.getAccuracy());
-        fileHelper.saveOverallDataToLocal();
+        FileHelper.saveOverallDataToLocal();
 
         hideTrainingFragment();
 
@@ -410,4 +359,141 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         } catch (SecurityException e) {
         }
     }
+
+    private void initRunnables() {
+        countdownRunnbale = new Runnable() {
+            @Override
+            public void run() {
+                if (countdown > 1000 && countdown <= 4000) {
+                    if (countdown == 4000) {
+                        trainingData.setStartTime(System.currentTimeMillis());
+                        soundHelper.playStartSound(1, 1, 0, 0, 1);
+                        dialogHelper.showCountdownDialog();
+                    }
+                    countdown = countdown - 1000;
+                    dialogHelper.setCountdownText(countdown / 1000 + "");
+                    handler.postDelayed(countdownRunnbale, 1000);
+                } else {
+                    dialogHelper.dismissCountdownDialog();
+                    handler.removeCallbacks(countdownRunnbale);
+                }
+            }
+        };
+
+
+        durationRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (time == 0) {
+                    soundHelper.playNoiseSound(task.getNoise(), task.getNoise(), 0, -1, 1
+                    );
+                }
+
+                if (task.getDurationInMili() > 0) {
+                    min = (task.getDurationInMili() / 1000) / 60;
+                    sec = (task.getDurationInMili() / 1000) % 60;
+                    String durationString = min + "M " + sec + "S";
+                    trainingFragment.setTvDuration(durationString);
+
+                    task.setDurationInMili(task.getDurationInMili() - 1000);
+                    time = time + 1000;
+                    trainingData.setTime(time);
+
+                    handler.postDelayed(this, 1000);
+                } else {
+                    finishTraining();
+                }
+            }
+        };
+
+        stimulusRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (task.getDurationInMili() > 0) {
+                    Random rd = new Random();
+                    float randomVolume = rd.nextFloat() * (task.getVolumeTo() - task.getVolumeFrom()) + task.getVolumeFrom();
+                    // get current sti type from stiTypeList
+                    if (trainingData.getStiTypeOn(trainingData.getStiCount()) == 0) {
+                        soundHelper.playBeepSound(randomVolume, randomVolume, 0, 0, 1);
+                    } else {
+                        soundHelper.playNogoSound(randomVolume, randomVolume, 0, 0, 1);
+                    }
+                    trainingData.setStiMiliList(System.currentTimeMillis());
+
+                    // update sti count on tv and td
+                    trainingData.incStiCount();
+                    trainingFragment.setTvStiCount(trainingData.getStiCount() + "");
+
+                    // update accuracy
+                    trainingFragment.setTvAccuracy(trainingData.getAccuracy() + "");
+
+                    int randomInterval = rd.nextInt(task.getIntervalTo() - task.getIntervalFrom() + 1) + task.getIntervalFrom();
+                    trainingFragment.setTvSti("Next stimulus in " + randomInterval + "s");
+                    handler.postDelayed(this, randomInterval * 1000);
+                }
+            }
+        };
+    }
+
+    private void initFragments() {
+        taskFragment = new TaskFragment();
+        trainingFragment = new TrainingFragment();
+        fragmentManager = getSupportFragmentManager();
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
+        transaction.commit();
+    }
+
+    public static void showTaskFragment() {
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
+        transaction.commit();
+    }
+
+    public static void hideTrainingFragment() {
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.remove(trainingFragment);
+        transaction.commit();
+    }
+
+    public static void showTrainingFragment() {
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.remove(taskFragment);
+        transaction.add(R.id.container, trainingFragment, "TRAINING_FRAGMENT");
+        transaction.commit();
+    }
+
+
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case (R.id.btn_profile):
+              Intent i = new Intent(MainActivity.this, HistoryActivity.class);
+              startActivity(i);
+
+            case (R.id.btn_flic):
+                  try {
+                  FlicManager.getInstance(MainActivity.this, new FlicManagerInitializedCallback() {
+                      @Override
+                      public void onInitialized(FlicManager manager) {
+                          manager.initiateGrabButton(MainActivity.this);
+                      }
+                  });
+
+                  } catch (FlicAppNotInstalledException err) {
+                  Toast.makeText(MainActivity.this, "Flic App is not installed", Toast.LENGTH_SHORT).show();
+                  }
+
+            case (R.id.btn_diary):
+
+            case (R.id.btn_map):
+                updateLocation();
+      }
+    }
+
 }
