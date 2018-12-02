@@ -47,12 +47,10 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static FragmentManager fragmentManager;
     public static FragmentTransaction transaction;
     public static TaskFragment taskFragment;
-
-
     public static TrainingFragment trainingFragment;
 
     // permission
-    public static boolean mLocationPermissionGranted;
+    public static boolean locPermissionEnabled;
 
     // runnable
     public static Handler handler;
@@ -60,18 +58,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     // data collection
     public static TrainingData trainingData;
-
-    // TASK configuration
-    public static com.kent.lw.brainendurancetrainingmobileapp.Task task;
-
-    // overall
     public static OverallData overallData;
+    public static com.kent.lw.brainendurancetrainingmobileapp.Task task;
 
     // helper class
     public static SoundHelper soundHelper;
     public DialogHelper dialogHelper;
     public MapHelper mapHelper;
-
 
     private ImageButton btnProfile, btnFlic, btnDiary, btnMap;
 
@@ -88,8 +81,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     // duration
     private long time, min, sec;
-    // stimulus
-
     // distance
     private float distance, speed, pace;
 
@@ -293,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         // init last location
         try {
-            if (mLocationPermissionGranted) {
+            if (locPermissionEnabled) {
                 Task task = mFusedLocationProviderClient.getLastLocation();
                 task.addOnCompleteListener(this, new OnCompleteListener() {
                     @Override

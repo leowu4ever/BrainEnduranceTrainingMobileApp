@@ -7,10 +7,10 @@ public class TrainingData {
 
     // user info
     public String name;
+    public long startTime, time;
 
     // for activity
     public String activity, duration, task, dif;
-
     public Task taskConfig;
 
     // cognitive task
@@ -24,9 +24,6 @@ public class TrainingData {
     // physical
     public float distance, avgSpeed, avgPace;
     public List<Float> speedList;
-
-    public long startTime;
-    public long time;
 
     public List<Double> latList, lngList;
 

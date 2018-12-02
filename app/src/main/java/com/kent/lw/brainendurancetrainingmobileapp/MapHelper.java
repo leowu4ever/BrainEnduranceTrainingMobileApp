@@ -62,7 +62,7 @@ public class MapHelper {
                 android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(context.getApplicationContext(),
                         android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            MainActivity.mLocationPermissionGranted = true;
+            MainActivity.locPermissionEnabled = true;
         } else {
             ActivityCompat.requestPermissions((Activity) context,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -72,7 +72,7 @@ public class MapHelper {
 
     public void updateLocationUI(GoogleMap mMap, Context context) {
         try {
-            if (MainActivity.mLocationPermissionGranted) {
+            if (MainActivity.locPermissionEnabled) {
                 mMap.setMyLocationEnabled(true);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
                 mMap.getUiSettings().setZoomControlsEnabled(false);
