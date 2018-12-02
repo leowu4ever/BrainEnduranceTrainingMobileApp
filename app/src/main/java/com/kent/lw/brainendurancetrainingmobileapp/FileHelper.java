@@ -41,7 +41,11 @@ public class FileHelper {
         Gson g = new Gson();
         String path = PATH_OVERALL_DATA + FILENAME_OVERALL_DATA;
         String readings = readJsonFile(path);
-        return g.fromJson(readings, OverallData.class);
+        OverallData overallData =  g.fromJson(readings, OverallData.class);
+        if (overallData == null) {
+            overallData = new OverallData();
+        }
+        return overallData;
     }
 
     public static TrainingData readTrainingDataFromLocal(String filename) {

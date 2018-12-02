@@ -64,27 +64,28 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static Handler handler;
     public static Runnable countdownRunnbale, stimulusRunnable, durationRunnable;
 
-    // soundpool
-    public static SoundHelper sh;
     // data collection
     public static TrainingData trainingData;
-    // finish dialog
 
     // TASK configuration
     public static ApvtTask apvtTask;
     public static GonogoTask gonogoTask;
+
     // overall
     public static OverallData overallData;
 
-    private final int accSensor = Sensor.TYPE_LINEAR_ACCELERATION;
-    private final int gryoSensor = Sensor.TYPE_GYROSCOPE;
-
-    // ui
+    // helper class
+    public static SoundHelper sh;
     public DialogHelper dh;
     public MapHelper mh;
+    private FirebaseDBHelper firebaseDBHelper;
+    private FileHelper fh;
+
     // TEMP
     Random rd;
+
     private ImageButton btnProfile, btnFlic, btnMap;
+
     // map
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -92,24 +93,23 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private boolean mapInited = false;
     private LocationRequest mLocationRequest;
     private List<Polyline> polylineList;
-    private LatLng myLatLng;
+    private LatLng tempLocation;
+
     // acc
     private SensorManager sm;
     private Sensor accelerometer, gyroscope;
-    private double x, y, z;
-    private int MAX_DISTANCE_UPDATE_THRESHOLD = 100;
+    private final int accSensor = Sensor.TYPE_LINEAR_ACCELERATION;
+    private final int gryoSensor = Sensor.TYPE_GYROSCOPE;
+
+    //
     private int countdown = 4000;
+
     // duration
-    private long time, hour, min, sec;
+    private long time, min, sec;
     // stimulus
-    private int trainingDuration;
 
     // distance
     private float distance, speed, pace;
-    private LatLng tempLocation;
-    private FirebaseDBHelper firebaseDBHelper;
-    // saveHelper
-    private FileHelper fh;
 
     public static void resumeTraining() {
         handler.postDelayed(durationRunnable, 1000);
@@ -169,10 +169,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         trainingData = new TrainingData();
 
         overallData = FileHelper.readOverallDataFromLocal();
-        if (overallData == null) {
-            overallData = new OverallData();
-        }
-
         firebaseDBHelper = new FirebaseDBHelper();
 
         // temp
@@ -436,7 +432,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         dh.dismissLockDialog();
 
         // update finish dialog
-        hour = (time) / 1000 / 3600;
         min = (time / 1000) / 60;
         sec = (time / 1000) % 60;
         dh.showFinishDialog(trainingData);
@@ -470,9 +465,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     }
 
     public void resetTrainingData() {
-        trainingDuration = 0;
         time = 0;
-        hour = 0;
         min = 0;
         sec = 0;
         distance = 0;
@@ -521,8 +514,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 public void onComplete(@NonNull Task task) {
                     if (task.isSuccessful()) {
                         Location location = (Location) task.getResult();
-                        myLatLng = new LatLng(location.getLatitude() - 0.0035, location.getLongitude());
-                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(myLatLng, 15);
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude() - 0.0035, location.getLongitude()), 15);
                         mMap.animateCamera(cameraUpdate);
 
                     } else {
@@ -563,7 +555,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                 for (Location location : locationResult.getLocations()) {
                                     tempLocation = mh.convertToLatLng(location);
 
-                                    if (mh.getDistance(lastLocation, tempLocation) < MAX_DISTANCE_UPDATE_THRESHOLD) {
+                                    if (mh.getDistance(lastLocation, tempLocation) < mh.MAX_DISTANCE_UPDATE_THRESHOLD) {
 
                                         mh.drawAPolyline(mMap, polylineList, lastLocation, tempLocation, MainActivity.this);
 
@@ -627,17 +619,11 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public void onSensorChanged(SensorEvent event) {
         if (trainingStarted) {
             if (event.sensor.getType() == accSensor) {
-                x = event.values[0];
-                y = event.values[1];
-                z = event.values[2];
-                fh.saveStreamMotionDataToLocal(System.currentTimeMillis() + "__" + x + " " + y + " " + z + "\n", "acc");
+                fh.saveStreamMotionDataToLocal(System.currentTimeMillis() + "__" + event.values[0] + " " + event.values[1] + " " + event.values[2] + "\n", "acc");
             }
 
             if (event.sensor.getType() == gryoSensor) {
-                x = event.values[0];
-                y = event.values[1];
-                z = event.values[2];
-                fh.saveStreamMotionDataToLocal(System.currentTimeMillis() + "__" + x + " " + y + " " + z + "\n", "gyro");
+                fh.saveStreamMotionDataToLocal(System.currentTimeMillis() + "__" + event.values[0] + " " + event.values[1] + " " + event.values[2] + "\n", "gyro");
             }
         }
     }
