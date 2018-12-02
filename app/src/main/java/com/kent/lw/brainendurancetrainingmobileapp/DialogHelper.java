@@ -157,7 +157,6 @@ public class DialogHelper {
 
         tvHistoryDate.setText("Date: " + DateHelper.getDateFromMili(td.getId()));
         tvHistoryTime.setText("Time: " + DateHelper.getTimeFromMili(td.getId()));
-
         tvHistoryActivity.setText("Activity: " + td.getActivity());
         tvHistoryTask.setText("Cognitive task: " + td.getTask());
         tvHistoryDif.setText("Difficulty level: " + td.getDif());
