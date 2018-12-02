@@ -39,7 +39,7 @@ import io.flic.lib.FlicAppNotInstalledException;
 import io.flic.lib.FlicManager;
 import io.flic.lib.FlicManagerInitializedCallback;
 
-public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, OnMapReadyCallback, View.OnClickListener {
 
     public static boolean trainingStarted = false;
 
@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static FragmentManager fragmentManager;
     public static FragmentTransaction transaction;
     public static TaskFragment taskFragment;
+
+
+
     public static TrainingFragment trainingFragment;
 
     // permission
@@ -189,46 +192,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     private void initBtns() {
         btnProfile = findViewById(R.id.btn_profile);
-        btnProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(MainActivity.this, HistoryActivity.class);
-                startActivity(i);
-            }
-        });
-
+        btnProfile.setOnClickListener(this);
         btnFlic = findViewById(R.id.btn_flic);
-        btnFlic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    FlicManager.getInstance(MainActivity.this, new FlicManagerInitializedCallback() {
-                        @Override
-                        public void onInitialized(FlicManager manager) {
-                            manager.initiateGrabButton(MainActivity.this);
-                        }
-                    });
-                } catch (FlicAppNotInstalledException err) {
-                    Toast.makeText(MainActivity.this, "Flic App is not installed", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
+        btnFlic.setOnClickListener(this);
         btnDiary = findViewById(R.id.btn_diary);
-        btnDiary.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        btnDiary.setOnClickListener(this);
         btnMap = findViewById(R.id.btn_map);
-        btnMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateLocation();
-            }
-        });
+        btnMap.setOnClickListener(this);
     }
 
     // fragment
@@ -368,7 +338,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             });
 
         } catch (SecurityException e) {
-
         }
     }
 
@@ -430,18 +399,15 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                         // finally do prompt
                                         if (speed < 3) {
                                             soundHelper.playSpeedupSound(1, 1, 0, 0, 1);
-
                                         }
                                     }
                                 }
                             }
-
                         }
                     }
                 }, null);
             }
         } catch (SecurityException e) {
-
         }
     }
 }
