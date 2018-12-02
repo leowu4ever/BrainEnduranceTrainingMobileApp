@@ -74,8 +74,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private FirebaseDBHelper firebaseDBHelper;
     private FileHelper fileHelper;
 
-    // TEMP
-    Random rd;
 
     private ImageButton btnProfile, btnFlic, btnMap;
 
@@ -313,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     @Override
                     public void run() {
                         if (apvtTask.getDuration() > 0) {
-
+                            Random rd = new Random();
                             float randomVolume = rd.nextFloat() * (apvtTask.getVolumeTo() - apvtTask.getVolumeFrom()) + apvtTask.getVolumeFrom();
                             soundHelper.playBeepSound(randomVolume, randomVolume, 0, 0, 1);
 
@@ -357,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     @Override
                     public void run() {
                         if (apvtTask.getDuration() > 0) {
-
+                            Random rd = new Random();
                             float randomVolume = rd.nextFloat() * (gonogoTask.getVolumeTo() - gonogoTask.getVolumeFrom()) + gonogoTask.getVolumeFrom();
                             // get current sti type from stiTypeList
                             if (trainingData.getStiTypeOn(trainingData.getStiCount()) == 0) {
