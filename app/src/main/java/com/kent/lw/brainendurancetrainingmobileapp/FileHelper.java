@@ -22,6 +22,11 @@ public class FileHelper {
     public static String PATH_OVERALL_DATA = PATH_ROOT + "Overall Data/";
     public static String FILENAME_OVERALL_DATA = "Overall.json";
 
+
+    public FileHelper() {
+        initDir();
+    }
+
     public static void saveOverallDataToLocal() {
         Gson gson = new Gson();
         try (FileWriter writer = new FileWriter(PATH_OVERALL_DATA + FILENAME_OVERALL_DATA)) {

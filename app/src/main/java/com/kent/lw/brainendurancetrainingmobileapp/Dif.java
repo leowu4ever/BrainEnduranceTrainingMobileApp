@@ -1,9 +1,9 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
 public class Dif {
-    private final String DIF_EASY = "Easy";
-    private final String DIF_MEDIUM = "Medium";
-    private final String DIF_HARD = "Hard";
-    private final String DIF_ADAPTIVE = "Adaptive";
-    private final String DIF_CUSTOM = "Custom";
+    public static final String DIF_EASY = "Easy";
+    public static final String DIF_MEDIUM = "Medium";
+    public static final String DIF_HARD = "Hard";
+    public static final String DIF_ADAPTIVE = "Adaptive";
+    public static final String DIF_CUSTOM = "Custom";
 }

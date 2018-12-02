@@ -75,9 +75,10 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static GonogoTask gonogoTask;
     // overall
     public static OverallData overallData;
-    private final String DIF_CUSTOM = "Custom";
+
     private final int accSensor = Sensor.TYPE_LINEAR_ACCELERATION;
     private final int gryoSensor = Sensor.TYPE_GYROSCOPE;
+
     // ui
     public DialogHelper dh;
     public MapHelper mh;
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private long time, hour, min, sec;
     // stimulus
     private int trainingDuration;
+
     // distance
     private float distance, speed, pace;
     private LatLng tempLocation;
@@ -182,7 +184,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         initTask();
 
         fh = new FileHelper();
-        fh.initDir();
 
         FlicConfig.setFlicCredentials();
     }
@@ -294,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         handler.postDelayed(countdownRunnbale, 0);
 
 
-        if (!difSelected.equals(DIF_CUSTOM)) {
+        if (!difSelected.equals(Dif.DIF_CUSTOM)) {
 
         } else {
 

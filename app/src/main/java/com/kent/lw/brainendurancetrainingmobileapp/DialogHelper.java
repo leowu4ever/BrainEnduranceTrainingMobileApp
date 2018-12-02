@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 public class DialogHelper {
 
-
     public Dialog pauseDialog, finishDialog, countdownDialog, lockDialog, detailDialog;
     public Button btnResumeOk, btnFinishOK, btnDetailOk, btnUnlock;
     public TextView tvFinishDuration, tvFinishDistance, tvFinishSpeed, tvFinishPace, tvFinishART, tvFinishAccuracy, tvCountdown;
