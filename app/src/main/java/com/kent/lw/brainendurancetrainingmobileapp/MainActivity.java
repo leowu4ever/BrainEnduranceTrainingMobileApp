@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private List<Polyline> polylineList;
     private LatLng tempLocation;
 
-    //
     private int countdown = 4000;
 
     // duration
