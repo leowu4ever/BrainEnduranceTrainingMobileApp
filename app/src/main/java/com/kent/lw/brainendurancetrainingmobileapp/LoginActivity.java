@@ -48,6 +48,8 @@ public class LoginActivity extends AppCompatActivity {
 
         mh = new MapHelper();
         mh.getLocationPermission(this);
+        FlicConfig.setFlicCredentials();
+
     }
 
     private void initUI() {
