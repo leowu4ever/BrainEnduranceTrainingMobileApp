@@ -105,14 +105,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // distance
     private float distance, speed, pace;
 
-
-    public static void resumeTraining() {
-        handler.postDelayed(durationRunnable, 1000);
-        handler.postDelayed(stimulusRunnable, 0);
-        trainingStarted = true;
-        soundHelper.playNoiseSound(apvtTask.getNoise(), apvtTask.getNoise(), 0, -1, 1);
-    }
-
     private void initFragments() {
         taskFragment = new TaskFragment();
         trainingFragment = new TrainingFragment();
@@ -401,7 +393,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         }
     }
 
-    @Override
     public void pauseTraining() {
 
         // show dialog
@@ -413,7 +404,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         trainingStarted = false;
     }
 
-    @Override
+    public static void resumeTraining() {
+        handler.postDelayed(durationRunnable, 1000);
+        handler.postDelayed(stimulusRunnable, 0);
+        trainingStarted = true;
+        soundHelper.playNoiseSound(apvtTask.getNoise(), apvtTask.getNoise(), 0, -1, 1);
+    }
+
     public void finishTraining() {
         soundHelper.playFinishSound(1, 1, 0, 0, 1);
         soundHelper.stopNoiseSound();
