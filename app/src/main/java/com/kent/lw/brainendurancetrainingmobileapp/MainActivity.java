@@ -493,6 +493,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
             case (R.id.btn_map):
                 updateLocation();
-      }
+        }
     }
 }
