@@ -1,12 +1,7 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,8 +37,6 @@ import java.util.List;
 import java.util.Random;
 
 import io.flic.lib.FlicAppNotInstalledException;
-import io.flic.lib.FlicBroadcastReceiverFlags;
-import io.flic.lib.FlicButton;
 import io.flic.lib.FlicManager;
 import io.flic.lib.FlicManagerInitializedCallback;
 
@@ -247,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         // start training
         // start  map
         // reset training dat
-        trainingData.resetData();
+        trainingData.reset();
         trainingData.setTask(taskSelected);
         trainingData.setDif(difSelected);
         trainingData.setId(System.currentTimeMillis());
@@ -454,22 +447,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         distance = 0;
         speed = 0;
         countdown = 4000;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
-                                           @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case MapHelper.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mLocationPermissionGranted = true;
-                }
-            }
-        }
-        mapHelper.updateLocationUI(mMap, this);
     }
 
     public void initMap() {

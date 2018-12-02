@@ -287,7 +287,7 @@ public class TrainingData {
         totalResTime = totalResTime + resTime;
     }
 
-    public void resetData() {
+    public void reset() {
 
         id = 0l;
         name = "";
