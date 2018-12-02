@@ -83,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "fail to login", Toast.LENGTH_LONG).show();
                     } else {
                         //Toast.makeText(LoginActivity.this, "login successfully", Toast.LENGTH_LONG).show();
+                        FileHelper.initDir();
                     }
                 }
             });

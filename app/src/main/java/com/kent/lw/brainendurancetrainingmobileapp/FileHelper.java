@@ -24,7 +24,6 @@ public class FileHelper {
 
 
     public FileHelper() {
-        initDir();
     }
 
     public static void saveOverallDataToLocal() {
@@ -85,7 +84,7 @@ public class FileHelper {
         return readings;
     }
 
-    public void initDir() {
+    public static void initDir() {
 
         File rootPath = new File(PATH_ROOT);
         if (!rootPath.exists()) {
@@ -113,7 +112,7 @@ public class FileHelper {
         }
     }
 
-    public void saveTrainingDataToLocal() {
+    public static void saveTrainingDataToLocal() {
         Gson gson = new Gson();
 
         try (FileWriter writer = new FileWriter(PATH_TRAINING_DATA + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getId()) + ".json")) {
@@ -124,7 +123,7 @@ public class FileHelper {
         }
     }
 
-    public void saveStreamMotionDataToLocal(String steamData, String DataType) {
+    public static void saveStreamMotionDataToLocal(String steamData, String DataType) {
         File file = new File(PATH_MOTION_DATA + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getId()) + "_" + DataType + ".txt");
 
         if (!file.exists()) {

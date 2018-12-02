@@ -47,7 +47,7 @@ import io.flic.lib.FlicButton;
 import io.flic.lib.FlicManager;
 import io.flic.lib.FlicManagerInitializedCallback;
 
-public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, OnMapReadyCallback, SensorEventListener {
+public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, OnMapReadyCallback {
 
     public static boolean trainingStarted = false;
 
@@ -94,12 +94,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private LocationRequest mLocationRequest;
     private List<Polyline> polylineList;
     private LatLng tempLocation;
-
-    // acc
-    private SensorManager sm;
-    private Sensor accelerometer, gyroscope;
-    private final int accSensor = Sensor.TYPE_LINEAR_ACCELERATION;
-    private final int gryoSensor = Sensor.TYPE_GYROSCOPE;
 
     //
     private int countdown = 4000;
@@ -171,7 +165,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         polylineList = new ArrayList<Polyline>();
 
         initMap();
-        initSensors();
 
         // runnable
         handler = new Handler();
@@ -193,10 +186,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         fileHelper = new FileHelper();
 
         FlicConfig.setFlicCredentials();
-    }
 
-    private void initSensors() {
-        initAcc();
+        SensorHelper sensorHelper = new SensorHelper(this);
+
     }
 
     private void keepDisplayOn() {
@@ -453,7 +445,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         // overall
         overallData.setRtList(trainingData.getAvgResTime());
         overallData.setAccuracyList(trainingData.getAccuracy());
-        FileHelper.saveOverallDataToLocal();
+        fileHelper.saveOverallDataToLocal();
 
         hideTrainingFragment();
 
@@ -596,37 +588,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         } catch (SecurityException e) {
 
         }
-    }
-
-    // acc
-    public void initAcc() {
-        sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-
-        if (sm.getDefaultSensor(accSensor) != null && sm.getDefaultSensor(gryoSensor) != null) {
-            accelerometer = sm.getDefaultSensor(accSensor);
-            gyroscope = sm.getDefaultSensor(gryoSensor);
-
-            sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
-            sm.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_GAME);
-        }
-    }
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        if (trainingStarted) {
-            if (event.sensor.getType() == accSensor) {
-                fileHelper.saveStreamMotionDataToLocal(System.currentTimeMillis() + "__" + event.values[0] + " " + event.values[1] + " " + event.values[2] + "\n", "acc");
-            }
-
-            if (event.sensor.getType() == gryoSensor) {
-                fileHelper.saveStreamMotionDataToLocal(System.currentTimeMillis() + "__" + event.values[0] + " " + event.values[1] + " " + event.values[2] + "\n", "gyro");
-            }
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
 
     @Override
