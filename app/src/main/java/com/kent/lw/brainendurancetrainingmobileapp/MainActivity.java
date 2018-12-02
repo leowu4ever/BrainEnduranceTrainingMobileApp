@@ -253,9 +253,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         btnProfile.setVisibility(View.GONE);
         btnFlic.setVisibility(View.GONE);
         // start training
-
         // start  map
-
         // reset training dat
         trainingData.resetData();
         trainingData.setTask(taskSelected);
@@ -287,7 +285,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         if (!difSelected.equals(Dif.DIF_CUSTOM)) {
 
         } else {
-
             // CUSTOM
             // duration
             durationRunnable = new Runnable() {
@@ -356,7 +353,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             }
 
             if (taskSelected.equals("GO/NO-GO")) {
-
                 ArrayList<Integer> indexList = new ArrayList<Integer>();
                 int totalStiCount = gonogoTask.getDuration() / 1000 / gonogoTask.getIntervalFrom();
                 for (int i = 0; i < totalStiCount; i++) {
@@ -480,7 +476,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     }
 
     public void initMap() {
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -588,21 +583,5 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         } catch (SecurityException e) {
 
         }
-    }
-
-    @Override
-    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
-        FlicManager.getInstance(this, new FlicManagerInitializedCallback() {
-            @Override
-            public void onInitialized(FlicManager manager) {
-                FlicButton button = manager.completeGrabButton(requestCode, resultCode, data);
-                if (button != null) {
-                    button.registerListenForBroadcast(FlicBroadcastReceiverFlags.UP_OR_DOWN | FlicBroadcastReceiverFlags.REMOVED);
-                    Toast.makeText(MainActivity.this, "Flic button connected", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "Flic button not connected", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 }
