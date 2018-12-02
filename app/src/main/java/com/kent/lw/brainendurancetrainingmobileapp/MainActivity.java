@@ -75,11 +75,11 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static OverallData overallData;
 
     // helper class
-    public static SoundHelper sh;
-    public DialogHelper dh;
-    public MapHelper mh;
+    public static SoundHelper soundHelper;
+    public DialogHelper dialogHelper;
+    public MapHelper mapHelper;
     private FirebaseDBHelper firebaseDBHelper;
-    private FileHelper fh;
+    private FileHelper fileHelper;
 
     // TEMP
     Random rd;
@@ -111,11 +111,22 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // distance
     private float distance, speed, pace;
 
+
     public static void resumeTraining() {
         handler.postDelayed(durationRunnable, 1000);
         handler.postDelayed(stimulusRunnable, 0);
         trainingStarted = true;
-        sh.playNoiseSound(apvtTask.getNoise(), apvtTask.getNoise(), 0, -1, 1);
+        soundHelper.playNoiseSound(apvtTask.getNoise(), apvtTask.getNoise(), 0, -1, 1);
+    }
+
+    private void initFragments() {
+        taskFragment = new TaskFragment();
+        trainingFragment = new TrainingFragment();
+        fragmentManager = getSupportFragmentManager();
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
+        transaction.commit();
     }
 
     public static void showTaskFragment() {
@@ -149,8 +160,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dh = new DialogHelper(this);
-        sh = new SoundHelper(this);
+        dialogHelper = new DialogHelper(this);
+        soundHelper = new SoundHelper(this);
 
         initFragments();
         initBtns();
@@ -173,13 +184,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         // temp
         rd = new Random();
-        mh = new MapHelper();
+        mapHelper = new MapHelper();
         mLocationRequest = new LocationRequest();
-        mh.getLocationPermission(this);
+        mapHelper.getLocationPermission(this);
 
         initTask();
 
-        fh = new FileHelper();
+        fileHelper = new FileHelper();
 
         FlicConfig.setFlicCredentials();
     }
@@ -202,16 +213,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         gonogoTask = new GonogoTask();
     }
 
-    private void initFragments() {
-        taskFragment = new TaskFragment();
-        trainingFragment = new TrainingFragment();
-
-        fragmentManager = getSupportFragmentManager();
-        transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-        transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
-        transaction.commit();
-    }
 
     private void initBtns() {
         btnProfile = findViewById(R.id.btn_profile);
@@ -276,14 +277,14 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 if (countdown > 1000 && countdown <= 4000) {
                     if (countdown == 4000) {
                         trainingData.setStartTime(System.currentTimeMillis());
-                        sh.playStartSound(1, 1, 0, 0, 1);
-                        dh.showCountdownDialog();
+                        soundHelper.playStartSound(1, 1, 0, 0, 1);
+                        dialogHelper.showCountdownDialog();
                     }
                     countdown = countdown - 1000;
-                    dh.setCountdownText(countdown / 1000 + "");
+                    dialogHelper.setCountdownText(countdown / 1000 + "");
                     handler.postDelayed(countdownRunnbale, 1000);
                 } else {
-                    dh.dismissCountdownDialog();
+                    dialogHelper.dismissCountdownDialog();
                     handler.removeCallbacks(countdownRunnbale);
                 }
             }
@@ -302,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 public void run() {
 
                     if (time == 0) {
-                        sh.playNoiseSound(apvtTask.getNoise(), apvtTask.getNoise(), 0, -1, 1
+                        soundHelper.playNoiseSound(apvtTask.getNoise(), apvtTask.getNoise(), 0, -1, 1
                         );
                     }
 
@@ -340,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                         if (apvtTask.getDuration() > 0) {
 
                             float randomVolume = rd.nextFloat() * (apvtTask.getVolumeTo() - apvtTask.getVolumeFrom()) + apvtTask.getVolumeFrom();
-                            sh.playBeepSound(randomVolume, randomVolume, 0, 0, 1);
+                            soundHelper.playBeepSound(randomVolume, randomVolume, 0, 0, 1);
 
                             trainingData.setStiMiliList(System.currentTimeMillis());
 
@@ -387,9 +388,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                             float randomVolume = rd.nextFloat() * (gonogoTask.getVolumeTo() - gonogoTask.getVolumeFrom()) + gonogoTask.getVolumeFrom();
                             // get current sti type from stiTypeList
                             if (trainingData.getStiTypeOn(trainingData.getStiCount()) == 0) {
-                                sh.playBeepSound(randomVolume, randomVolume, 0, 0, 1);
+                                soundHelper.playBeepSound(randomVolume, randomVolume, 0, 0, 1);
                             } else {
-                                sh.playNogoSound(randomVolume, randomVolume, 0, 0, 1);
+                                soundHelper.playNogoSound(randomVolume, randomVolume, 0, 0, 1);
                             }
                             trainingData.setStiMiliList(System.currentTimeMillis());
 
@@ -416,8 +417,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public void pauseTraining() {
 
         // show dialog
-        dh.showPauseDialog();
-        sh.stopNoiseSound();
+        dialogHelper.showPauseDialog();
+        soundHelper.stopNoiseSound();
         // resume handler
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
@@ -426,20 +427,20 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     @Override
     public void finishTraining() {
-        sh.playFinishSound(1, 1, 0, 0, 1);
-        sh.stopNoiseSound();
+        soundHelper.playFinishSound(1, 1, 0, 0, 1);
+        soundHelper.stopNoiseSound();
 
-        dh.dismissLockDialog();
+        dialogHelper.dismissLockDialog();
 
         // update finish dialog
         min = (time / 1000) / 60;
         sec = (time / 1000) % 60;
-        dh.showFinishDialog(trainingData);
+        dialogHelper.showFinishDialog(trainingData);
 
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
         trainingStarted = false;
-        mh.removePolylines(polylineList);
+        mapHelper.removePolylines(polylineList);
 
         trainingData.setName(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""));
 
@@ -447,12 +448,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         firebaseDBHelper.uploadAllData(trainingData, apvtTask);
         // FirebaseStorageHelper.uploadFiles();
-        fh.saveTrainingDataToLocal();
+        fileHelper.saveTrainingDataToLocal();
 
-        // read in overall
-        // write overall
-        // close
-
+        // overall
         overallData.setRtList(trainingData.getAvgResTime());
         overallData.setAccuracyList(trainingData.getAccuracy());
         FileHelper.saveOverallDataToLocal();
@@ -486,7 +484,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 }
             }
         }
-        mh.updateLocationUI(mMap, this);
+        mapHelper.updateLocationUI(mMap, this);
     }
 
     public void initMap() {
@@ -501,7 +499,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setPadding(10, 10, 10, 10);
-        mh.updateLocationUI(mMap, this);
+        mapHelper.updateLocationUI(mMap, this);
         createLocationRequest();
         updateLocation();
     }
@@ -528,7 +526,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     }
 
     private void createLocationRequest() {
-        mh.initLocationRequestSettings(mLocationRequest);
+        mapHelper.initLocationRequestSettings(mLocationRequest);
 
         // init last location
         try {
@@ -538,7 +536,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful() && !mapInited) {
-                            lastLocation = mh.convertToLatLng((Location) task.getResult());
+                            lastLocation = mapHelper.convertToLatLng((Location) task.getResult());
                             mapInited = true;
                         }
                     }
@@ -553,14 +551,14 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                             if (locationResult != null) {
 
                                 for (Location location : locationResult.getLocations()) {
-                                    tempLocation = mh.convertToLatLng(location);
+                                    tempLocation = mapHelper.convertToLatLng(location);
 
-                                    if (mh.getDistance(lastLocation, tempLocation) < mh.MAX_DISTANCE_UPDATE_THRESHOLD) {
+                                    if (mapHelper.getDistance(lastLocation, tempLocation) < mapHelper.MAX_DISTANCE_UPDATE_THRESHOLD) {
 
-                                        mh.drawAPolyline(mMap, polylineList, lastLocation, tempLocation, MainActivity.this);
+                                        mapHelper.drawAPolyline(mMap, polylineList, lastLocation, tempLocation, MainActivity.this);
 
                                         // update distance
-                                        distance = distance + mh.getDistance(lastLocation, tempLocation) / 1000;
+                                        distance = distance + mapHelper.getDistance(lastLocation, tempLocation) / 1000;
                                         String distanceString = String.format("%.3f", distance);
                                         trainingFragment.setTvDistance(distanceString);
                                         trainingData.setDistance(distance);
@@ -584,7 +582,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                                         // finally do prompt
                                         if (speed < 3) {
-                                            sh.playSpeedupSound(1, 1, 0, 0, 1);
+                                            soundHelper.playSpeedupSound(1, 1, 0, 0, 1);
 
                                         }
                                     }
@@ -593,7 +591,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                         }
                     }
-                }, null /* Looper */);
+                }, null);
             }
         } catch (SecurityException e) {
 
@@ -610,8 +608,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
             sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
             sm.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_GAME);
-
-        } else {
         }
     }
 
@@ -619,11 +615,11 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public void onSensorChanged(SensorEvent event) {
         if (trainingStarted) {
             if (event.sensor.getType() == accSensor) {
-                fh.saveStreamMotionDataToLocal(System.currentTimeMillis() + "__" + event.values[0] + " " + event.values[1] + " " + event.values[2] + "\n", "acc");
+                fileHelper.saveStreamMotionDataToLocal(System.currentTimeMillis() + "__" + event.values[0] + " " + event.values[1] + " " + event.values[2] + "\n", "acc");
             }
 
             if (event.sensor.getType() == gryoSensor) {
-                fh.saveStreamMotionDataToLocal(System.currentTimeMillis() + "__" + event.values[0] + " " + event.values[1] + " " + event.values[2] + "\n", "gyro");
+                fileHelper.saveStreamMotionDataToLocal(System.currentTimeMillis() + "__" + event.values[0] + " " + event.values[1] + " " + event.values[2] + "\n", "gyro");
             }
         }
     }
