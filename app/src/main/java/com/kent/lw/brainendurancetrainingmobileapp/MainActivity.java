@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static TaskFragment taskFragment;
 
 
-
     public static TrainingFragment trainingFragment;
 
     // permission
@@ -157,13 +156,14 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         // replace task fragment with training fragment
         showTrainingFragment();
-
         btnProfile.setVisibility(View.GONE);
         btnFlic.setVisibility(View.GONE);
         btnDiary.setVisibility(View.GONE);
 
-        trainingData.setId(System.currentTimeMillis());
         resetTrainingData();
+
+        trainingData.setId(System.currentTimeMillis());
+        trainingData.setStartTime(System.currentTimeMillis());
 
         handler.postDelayed(countdownRunnbale, 0);
 
@@ -173,46 +173,46 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         } else {
             // start after count down
             handler.postDelayed(durationRunnable, 4000);
-
-            ArrayList<Integer> indexList = new ArrayList<Integer>();
-            int totalStiCount = task.getDurationInMili() / 1000 / task.getIntervalFrom();
-            for (int i = 0; i < totalStiCount; i++) {
-                trainingData.setStiTypeList(0);
-                indexList.add(i);
-            }
-            Collections.shuffle(indexList);
-            float nogoCount = totalStiCount * task.getNogoPropotion() / 100;
-            for (int i = 0; i < nogoCount; i++) {
-                trainingData.setStiTypeOn(indexList.get(i), 1);
-            }
-
+            createStiTypeList();
             handler.postDelayed(stimulusRunnable, 4000);
             trainingStarted = true;
         }
     }
 
-    public void pauseTraining() {
+    private void createStiTypeList() {
+        ArrayList<Integer> indexList = new ArrayList<Integer>();
+        int totalStiCount = task.getDurationInMili() / 1000 / task.getIntervalFrom();
+        for (int i = 0; i < totalStiCount; i++) {
+            trainingData.setStiTypeList(0);
+            indexList.add(i);
+        }
+        Collections.shuffle(indexList);
+        float nogoCount = totalStiCount * task.getNogoPropotion() / 100;
+        for (int i = 0; i < nogoCount; i++) {
+            trainingData.setStiTypeOn(indexList.get(i), 1);
+        }
+    }
 
-        // show dialog
-        dialogHelper.showPauseDialog();
+    public void pauseTraining() {
+        trainingStarted = false;
         soundHelper.stopNoiseSound();
-        // resume handler
+        dialogHelper.showPauseDialog();
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
-        trainingStarted = false;
     }
 
     public static void resumeTraining() {
-        handler.postDelayed(durationRunnable, 1000);
-        handler.postDelayed(stimulusRunnable, 0);
         trainingStarted = true;
         soundHelper.playNoiseSound(task.getNoise(), task.getNoise(), 0, -1, 1);
+        handler.postDelayed(durationRunnable, 1000);
+        handler.postDelayed(stimulusRunnable, 0);
     }
 
     public void finishTraining() {
-        soundHelper.playFinishSound(1, 1, 0, 0, 1);
-        soundHelper.stopNoiseSound();
 
+        trainingStarted = false;
+        soundHelper.stopNoiseSound();
+        soundHelper.playFinishSound(1, 1, 0, 0, 1);
         dialogHelper.dismissLockDialog();
 
         // update finish dialog
@@ -222,9 +222,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
-        trainingStarted = false;
-        mapHelper.removePolylines(polylineList);
 
+        mapHelper.removePolylines(polylineList);
         trainingData.setName(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""));
 
         // firebase upload
@@ -366,7 +365,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             public void run() {
                 if (countdown > 1000 && countdown <= 4000) {
                     if (countdown == 4000) {
-                        trainingData.setStartTime(System.currentTimeMillis());
                         soundHelper.playStartSound(1, 1, 0, 0, 1);
                         dialogHelper.showCountdownDialog();
                     }
@@ -380,13 +378,11 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             }
         };
 
-
         durationRunnable = new Runnable() {
             @Override
             public void run() {
                 if (time == 0) {
-                    soundHelper.playNoiseSound(task.getNoise(), task.getNoise(), 0, -1, 1
-                    );
+                    soundHelper.playNoiseSound(task.getNoise(), task.getNoise(), 0, -1, 1);
                 }
 
                 if (task.getDurationInMili() > 0) {
@@ -468,26 +464,24 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     }
 
 
-
     @Override
     public void onClick(View v) {
-        switch(v.getId()) {
+        switch (v.getId()) {
             case (R.id.btn_profile):
-              Intent i = new Intent(MainActivity.this, HistoryActivity.class);
-              startActivity(i);
+                Intent i = new Intent(MainActivity.this, HistoryActivity.class);
+                startActivity(i);
 
             case (R.id.btn_flic):
-                  try {
-                  FlicManager.getInstance(MainActivity.this, new FlicManagerInitializedCallback() {
-                      @Override
-                      public void onInitialized(FlicManager manager) {
-                          manager.initiateGrabButton(MainActivity.this);
-                      }
-                  });
-
-                  } catch (FlicAppNotInstalledException err) {
-                  Toast.makeText(MainActivity.this, "Flic App is not installed", Toast.LENGTH_SHORT).show();
-                  }
+                try {
+                    FlicManager.getInstance(MainActivity.this, new FlicManagerInitializedCallback() {
+                        @Override
+                        public void onInitialized(FlicManager manager) {
+                            manager.initiateGrabButton(MainActivity.this);
+                        }
+                    });
+                } catch (FlicAppNotInstalledException err) {
+                    Toast.makeText(MainActivity.this, "Flic App is not installed", Toast.LENGTH_SHORT).show();
+                }
 
             case (R.id.btn_diary):
 
