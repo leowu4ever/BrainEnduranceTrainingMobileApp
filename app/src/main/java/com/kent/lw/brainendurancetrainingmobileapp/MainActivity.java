@@ -460,6 +460,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             case (R.id.btn_profile):
                 Intent i = new Intent(MainActivity.this, HistoryActivity.class);
                 startActivity(i);
+                break;
 
             case (R.id.btn_flic):
                 try {
@@ -472,11 +473,16 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 } catch (FlicAppNotInstalledException err) {
                     Toast.makeText(MainActivity.this, "Flic App is not installed", Toast.LENGTH_SHORT).show();
                 }
+                break;
+
 
             case (R.id.btn_diary):
+                break;
+
 
             case (R.id.btn_map):
                 updateLocation();
+                break;
         }
     }
 }
