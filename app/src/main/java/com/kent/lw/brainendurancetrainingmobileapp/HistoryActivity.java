@@ -112,6 +112,9 @@ public class HistoryActivity extends AppCompatActivity {
         params.setMargins(2, 2, 2, 2);
         params.gravity = Gravity.CENTER;
         btnDetail.setLayoutParams(params);
+        btnDetail.setText(">");
+        btnDetail.setPadding(2,2,2,2);
+
         btnDetail.setTextColor(Color.parseColor("#ffffff"));
 
         // button to launch a history detail dialog
