@@ -325,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                         trainingData.setLngList(lastLocation.longitude);
 
                                         // finally do prompt
-                                        if (speed < 3) {
+                                        if (speed < MainActivity.task.getMinSpeed()) {
                                             soundHelper.playSpeedupSound(1, 1, 0, 0, 1);
                                         }
                                     }
