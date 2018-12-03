@@ -401,14 +401,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     // get current sti type from stiTypeList
                     if (trainingData.getStiTypeOn(trainingData.getStiCount()) == 0) {
                         soundHelper.playBeepSound(randomVolume, randomVolume, 0, 0, 1);
+
                     } else {
                         soundHelper.playNogoSound(randomVolume, randomVolume, 0, 0, 1);
                     }
                     trainingData.setStiMiliList(System.currentTimeMillis());
 
                     // update sti count on tv and td
-                    trainingData.incStiCount();
-                    trainingFragment.setTvStiCount(trainingData.getStiCount() + "");
 
                     // update accuracy
                     trainingFragment.setTvAccuracy(trainingData.getAccuracy() + "");
@@ -474,7 +473,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     Toast.makeText(MainActivity.this, "Flic App is not installed", Toast.LENGTH_SHORT).show();
                 }
                 break;
-
 
             case (R.id.btn_diary):
                 break;

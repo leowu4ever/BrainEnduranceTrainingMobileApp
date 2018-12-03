@@ -29,7 +29,6 @@ public class FlicReceiver extends FlicBroadcastReceiver {
                 MainActivity.trainingData.setResTimeList(resTime);
                 MainActivity.trainingFragment.setTvLogRes("Response time  is " + resTime + "ms");
 
-
                 if (resTime <= MainActivity.task.getResThreshold() && resTime > 100 && MainActivity.trainingData.getStiTypeOn(MainActivity.trainingData.getStiCount() - 1) == 0) {
 
                     // update hit respon count textview

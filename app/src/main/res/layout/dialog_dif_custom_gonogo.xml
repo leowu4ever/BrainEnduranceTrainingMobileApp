@@ -288,9 +288,9 @@
         app:mrb_selectorSize="2dp"
         app:mrb_temporaryPins="false"
         app:mrb_tickColor="@color/cardview_light_background"
-        app:mrb_tickEnd="10"
+        app:mrb_tickEnd="20"
         app:mrb_tickHeight="1dp"
-        app:mrb_tickInterval="0.5"
+        app:mrb_tickInterval="1"
         app:mrb_tickStart="0" />
 
     <TextView
