@@ -15,6 +15,10 @@ public class DialogHelper {
     public TextView tvFinishDuration, tvFinishDistance, tvFinishSpeed, tvFinishPace, tvFinishART, tvFinishAccuracy, tvCountdown;
     public TextView tvHistoryDate, tvHistoryTime, tvHistoryActivity, tvHistoryTask, tvHistoryDif, tvHistoryDuration, tvHistoryDistance, tvHistorySpeed, tvHistoryPace, tvHistoryART, tvHistoryAccuracy;
 
+    public Dialog diaryDialog, trainingDiaryDialog, motiDialog, rpeDialog, nasaDialog;
+    public Button btnTrainingDiary, btnMoti, btnRpe, btnNasa, btnTrainingDiarySave, btnMotiSave, btnRpeSave, btnNasaSave;
+
+
     public DialogHelper(Context context) {
         init(context);
 
@@ -27,11 +31,23 @@ public class DialogHelper {
         lockDialog = new Dialog(context);
         detailDialog = new Dialog(context);
 
+        diaryDialog = new Dialog(context);
+        trainingDiaryDialog = new Dialog(context);
+        motiDialog = new Dialog(context);
+        rpeDialog = new Dialog(context);
+        nasaDialog = new Dialog(context);
+
         setupDialog(pauseDialog, R.layout.dialog_pause);
         setupDialog(finishDialog, R.layout.dialog_finish);
         setupDialog(countdownDialog, R.layout.dialog_countdown);
         setupDialog(lockDialog, R.layout.dialog_lock);
         setupDialog(detailDialog, R.layout.dialog_detail);
+
+        setupDialog(diaryDialog, R.layout.dialog_diary);
+        setupDialog(trainingDiaryDialog, R.layout.dialog_diary_training);
+        setupDialog(motiDialog, R.layout.dialog_diary_moti);
+        setupDialog(rpeDialog, R.layout.dialog_diary_rpe);
+        setupDialog(nasaDialog, R.layout.dialog_diary_nasa);
 
         btnResumeOk = pauseDialog.findViewById(R.id.btn_resume);
         btnResumeOk.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +81,74 @@ public class DialogHelper {
             @Override
             public void onClick(View v) {
                 dismissLockDialog();
+            }
+        });
+
+        btnTrainingDiary = diaryDialog.findViewById(R.id.btn_trainingdiary);
+        btnTrainingDiary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissDiaryDialog();
+                showTrainingDiaryDialog();
+            }
+        });
+
+        btnMoti = diaryDialog.findViewById(R.id.btn_moti);
+        btnMoti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissDiaryDialog();
+                showMotiDialog();
+            }
+        });
+
+        btnRpe = diaryDialog.findViewById(R.id.btn_rpe);
+        btnRpe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissDiaryDialog();
+                showRpeDialog();
+            }
+        });
+
+        btnNasa = diaryDialog.findViewById(R.id.btn_nasa);
+        btnNasa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissDiaryDialog();
+                showNasaDialog();
+            }
+        });
+
+        btnTrainingDiarySave = trainingDiaryDialog.findViewById(R.id.btn_diary_trainingdiary_save);
+        btnTrainingDiarySave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissTrainingDiaryDialog();
+            }
+        });
+
+        btnMotiSave = motiDialog.findViewById(R.id.btn_diary_moti_save);
+        btnMotiSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissMotiDialog();
+            }
+        });
+
+        btnRpeSave = rpeDialog.findViewById(R.id.btn_diary_rpe_save);
+        btnRpeSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissRpeDialog();
+            }
+        });
+
+        btnNasaSave = nasaDialog.findViewById(R.id.btn_diary_nasa_save);
+        btnNasaSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissNasaDialog();
             }
         });
 
@@ -133,6 +217,46 @@ public class DialogHelper {
 
     public void dismissLockDialog() {
         lockDialog.dismiss();
+    }
+
+    public void showDiaryDialog() {
+        diaryDialog.show();
+    }
+
+    public void dismissDiaryDialog() {
+        diaryDialog.dismiss();
+    }
+
+    public void showTrainingDiaryDialog() {
+        trainingDiaryDialog.show();
+    }
+
+    public void dismissTrainingDiaryDialog() {
+        trainingDiaryDialog.dismiss();
+    }
+
+    public void showMotiDialog() {
+        motiDialog.show();
+    }
+
+    public void dismissMotiDialog() {
+        motiDialog.dismiss();
+    }
+
+    public void showRpeDialog() {
+        rpeDialog.show();
+    }
+
+    public void dismissRpeDialog() {
+        rpeDialog.dismiss();
+    }
+
+    public void showNasaDialog() {
+        nasaDialog.show();
+    }
+
+    public void dismissNasaDialog() {
+        nasaDialog.dismiss();
     }
 
     public boolean isLockDialogShowing() {

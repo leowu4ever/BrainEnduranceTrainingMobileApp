@@ -32,17 +32,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Training load = Training duration (min) x session RPE" />
+
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/rpe" />
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Training load = Training duration (min) x session RPE" />
     </LinearLayout>
 
     <View
@@ -56,7 +57,7 @@
         android:background="@color/colorPrimary" />
 
     <Button
-        android:id="@+id/btn_diary_moti_save"
+        android:id="@+id/btn_diary_rpe_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

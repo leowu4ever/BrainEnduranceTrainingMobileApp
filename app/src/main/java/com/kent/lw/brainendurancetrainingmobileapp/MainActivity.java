@@ -463,6 +463,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 break;
 
             case (R.id.btn_diary):
+                dialogHelper.showDiaryDialog();
                 break;
 
             case (R.id.btn_map):
