@@ -21,18 +21,8 @@ public class Task {
 
 
     public Task() {
+        reset();
 
-        this.intervalFrom = 0;
-        this.intervalTo = 0;
-
-        this.volumeFrom = 0;
-        this.volumeTo = 0;
-
-        this.noise = 0;
-
-        this.resThreshold = 0;
-
-        minSpeed = 0;
     }
 
     public int getIntervalFrom() {
@@ -99,6 +89,21 @@ public class Task {
         this.nogoPropotion = nogoPropotion;
     }
 
+    public void reset() {
+        this.intervalFrom = 0;
+        this.intervalTo = 0;
+
+        this.volumeFrom = 0;
+        this.volumeTo = 0;
+
+        this.noise = 0;
+
+        this.resThreshold = 0;
+
+        this.minSpeed = 0;
+
+        this.nogoPropotion = 0;
+    }
 
     @Override
     public String toString() {

@@ -224,6 +224,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         btnFlic.setVisibility(View.VISIBLE);
         btnDiary.setVisibility(View.VISIBLE);
         trainingData.reset();
+        task.reset();
     }
 
     public void resetTrainingData() {
