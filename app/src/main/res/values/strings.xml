@@ -22,4 +22,24 @@
         <item>Hard</item>
     </string-array>
 
+
+    <string-array name="rpe">
+        <item>0 Rest</item>
+        <item>1 Very, very easy</item>
+        <item>2 Easy </item>
+        <item>3 Moderate</item>
+        <item>4 Somewhat hard</item>
+        <item>5 Hard </item>
+        <item>6 </item>
+        <item>7 Very hard </item>
+        <item>8 </item>
+        <item>9 </item>
+        <item>10 Maximal</item>
+    </string-array>
+
+
+    <string-array name="training_types">
+        <item>Cardio</item>
+        <item>Weight lifting</item>
+    </string-array>
 </resources>
