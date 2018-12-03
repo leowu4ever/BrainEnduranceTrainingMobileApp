@@ -26,7 +26,7 @@ public class SensorHelper implements SensorEventListener {
             accelerometer = sm.getDefaultSensor(accSensor);
             gyroscope = sm.getDefaultSensor(gryoSensor);
 
-            sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
+            sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
             sm.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_GAME);
         }
     }
@@ -34,12 +34,13 @@ public class SensorHelper implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (MainActivity.trainingStarted) {
+            long timestamp = System.currentTimeMillis();
             if (event.sensor.getType() == accSensor) {
-                FileHelper.saveStreamMotionDataToLocal(System.currentTimeMillis() + "__" + event.values[0] + " " + event.values[1] + " " + event.values[2] + "\n", "acc");
+                FileHelper.saveStreamMotionDataToLocal(timestamp + "__" + event.values[0] + " " + event.values[1] + " " + event.values[2] + "\n", "acc");
             }
 
             if (event.sensor.getType() == gryoSensor) {
-                FileHelper.saveStreamMotionDataToLocal(System.currentTimeMillis() + "__" + event.values[0] + " " + event.values[1] + " " + event.values[2] + "\n", "gyro");
+                FileHelper.saveStreamMotionDataToLocal(timestamp + "__" + event.values[0] + " " + event.values[1] + " " + event.values[2] + "\n", "gyro");
             }
         }
     }
