@@ -5,8 +5,6 @@ import java.util.List;
 
 public class Task {
 
-    private int duration;
-
     private int intervalFrom;
     private int intervalTo;
 
@@ -24,8 +22,6 @@ public class Task {
 
     public Task() {
 
-        this.duration = 0;
-
         this.intervalFrom = 0;
         this.intervalTo = 0;
 
@@ -37,14 +33,6 @@ public class Task {
         this.resThreshold = 0;
 
         minSpeed = 0;
-    }
-
-    public int getDurationInMili() {
-        return duration;
-    }
-
-    public void setDurationInMili(int duration) {
-        this.duration = duration;
     }
 
     public int getIntervalFrom() {
@@ -115,7 +103,6 @@ public class Task {
     @Override
     public String toString() {
         return "Task{" +
-                "duration=" + duration +
                 ", intervalFrom=" + intervalFrom +
                 ", intervalTo=" + intervalTo +
                 ", volumeFrom=" + volumeFrom +

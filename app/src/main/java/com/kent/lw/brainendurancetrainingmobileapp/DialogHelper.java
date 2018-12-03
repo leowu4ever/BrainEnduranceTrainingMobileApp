@@ -140,7 +140,7 @@ public class DialogHelper {
     }
 
     public void setupFinishDialog(TrainingData td) {
-        tvFinishDuration.setText("Duration: " + DateHelper.getTimeFromMs(td.getTime()));
+        tvFinishDuration.setText("Duration: " + DateHelper.getTimeFromMs(td.getTimeTrained()));
         tvFinishDistance.setText("Distance: " + td.getDistance() + "KM");
         tvFinishSpeed.setText("Avg speed: " + td.getAvgSpeed() + "KM/H");
         tvFinishPace.setText("Avg pace: " + td.getAvgPace() + "MIN/KM");
@@ -160,7 +160,7 @@ public class DialogHelper {
         tvHistoryActivity.setText("Activity: " + td.getActivity());
         tvHistoryTask.setText("Cognitive task: " + td.getTask());
         tvHistoryDif.setText("Difficulty level: " + td.getDif());
-        tvHistoryDuration.setText("Duration: " + DateHelper.getTimeFromMs(td.getTime()));
+        tvHistoryDuration.setText("Duration: " + DateHelper.getTimeFromMs(td.getTimeTrained()));
         tvHistoryDistance.setText("Distance: " + td.getDistance() + "KM");
         tvHistorySpeed.setText("Avg speed: " + td.getAvgSpeed() + "KM/H");
         tvHistoryPace.setText("Avg pace: " + td.getAvgPace() + "MIN/KM");

@@ -120,7 +120,6 @@ public class TaskFragment extends Fragment {
                     difSelected = btnDif.getText().toString();
 
                     MainActivity.trainingData.setActivity(btnActivity.getText() + "");
-                    MainActivity.trainingData.setDuration(btnDuration.getText() + "");
                     MainActivity.trainingData.setTask(btnTask.getText() + "");
                     MainActivity.trainingData.setDif(btnDif.getText() + "");
                     MainActivity.trainingData.setTaskConfig(MainActivity.task);
@@ -188,7 +187,7 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // update duration
-                MainActivity.task.setDurationInMili(Integer.parseInt(rbTaskDuration.getRightPinValue()) * 60 * 1000);
+                MainActivity.trainingData.setDuration(Integer.parseInt(rbTaskDuration.getRightPinValue()) * 60 * 1000);
                 durationDialog.dismiss();
                 btnDuration.setText(rbTaskDuration.getRightPinValue() + " min");
             }

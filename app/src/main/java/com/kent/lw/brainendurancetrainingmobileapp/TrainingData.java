@@ -7,10 +7,11 @@ public class TrainingData {
 
     // user info
     public String name;
-    public long startTime, time;
+    public long startTime, timeTrained;
 
     // for activity
-    public String activity, duration, task, dif;
+    public String activity, task, dif;
+    public int duration;
     public Task taskConfig;
 
     // cognitive task
@@ -56,11 +57,11 @@ public class TrainingData {
         this.activity = activity;
     }
 
-    public String getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 
@@ -244,12 +245,12 @@ public class TrainingData {
         this.startTime = startTime;
     }
 
-    public long getTime() {
-        return time;
+    public long getTimeTrained() {
+        return timeTrained;
     }
 
-    public void setTime(long time) {
-        this.time = time;
+    public void setTimeTrained(long timeTrained) {
+        this.timeTrained = timeTrained;
     }
 
     public List<Double> getLatList() {
@@ -288,6 +289,10 @@ public class TrainingData {
         totalResTime = totalResTime + resTime;
     }
 
+    public int getTimeLeftInMili() {
+        return duration - (int) timeTrained;
+    }
+
     public void reset() {
 
         name = "";
@@ -295,7 +300,7 @@ public class TrainingData {
         task = "";
         dif = "";
         activity = "";
-        duration = "";
+        duration = 0;
 
         stiCount = 0;
         resCount = 0;
@@ -320,6 +325,6 @@ public class TrainingData {
         avgPace = 0;
 
         startTime = 0;
-        time = 0;
+        timeTrained = 0;
     }
 }

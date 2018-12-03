@@ -17,7 +17,7 @@ public class FirebaseDBHelper {
 
         db.child(rootPath + "1_User Info" + "/" + "1_Name").setValue(MainActivity.trainingData.getName());
         db.child(rootPath + "1_User Info" + "/" + "2_Start time").setValue(MainActivity.trainingData.getStartTime());
-        db.child(rootPath + "1_User Info" + "/" + "3_Time").setValue(MainActivity.trainingData.getTime());
+        db.child(rootPath + "1_User Info" + "/" + "3_Time Trained").setValue(MainActivity.trainingData.getTimeTrained());
 
         db.child(rootPath + "2_Training Configuration" + "/" + "1_Activity").setValue(MainActivity.trainingData.getActivity());
         db.child(rootPath + "2_Training Configuration" + "/" + "2_Duration").setValue(MainActivity.trainingData.getDuration());

@@ -79,9 +79,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     private int countdown = 4000;
 
-    // duration
-    private long time, min, sec;
-    // distance
     private float distance, speed, pace;
 
 
@@ -171,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     private void createStiTypeList() {
         ArrayList<Integer> indexList = new ArrayList<Integer>();
-        int totalStiCount = task.getDurationInMili() / 1000 / task.getIntervalFrom();
+        int totalStiCount = trainingData.getDuration() / 1000 / task.getIntervalFrom();
         for (int i = 0; i < totalStiCount; i++) {
             trainingData.setStiTypeList(0);
             indexList.add(i);
@@ -205,9 +202,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         soundHelper.playFinishSound(1, 1, 0, 0, 1);
         dialogHelper.dismissLockDialog();
 
-        // update finish dialog
-        min = (time / 1000) / 60;
-        sec = (time / 1000) % 60;
         dialogHelper.showFinishDialog(trainingData);
 
         handler.removeCallbacks(durationRunnable);
@@ -216,9 +210,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         mapHelper.removePolylines(polylineList);
         trainingData.setName(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""));
 
-        // firebase upload
         FirebaseDBHelper.uploadAllData();
-        // FirebaseStorageHelper.uploadFiles();
         FileHelper.saveTrainingDataToLocal();
 
         // overall
@@ -235,9 +227,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     }
 
     public void resetTrainingData() {
-        time = 0;
-        min = 0;
-        sec = 0;
         distance = 0;
         speed = 0;
         countdown = 4000;
@@ -318,13 +307,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                         trainingData.setDistance(distance);
 
                                         // update speed
-                                        speed = (distance / time) * 1000 * 60 * 60;
+                                        speed = (distance / trainingData.getTimeTrained()) * 1000 * 60 * 60;
                                         String speedString = String.format("%.1f", speed);
                                         //trainingFragment.setTvSpeed(speedString);
                                         trainingData.setAvgSpeed(speed);
 
                                         // update pace
-                                        pace = 1 / ((distance / time) * 1000 * 60);
+                                        pace = 1 / ((distance / trainingData.getTimeTrained()) * 1000 * 60);
                                         String paceString = String.format("%.1f", pace);
                                         trainingFragment.setTvPace(paceString);
                                         trainingData.setAvgPace(pace);
@@ -371,19 +360,17 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         durationRunnable = new Runnable() {
             @Override
             public void run() {
-                if (time == 0) {
+                if (trainingData.getTimeTrained() == 0) {
                     soundHelper.playNoiseSound(task.getNoise(), task.getNoise(), 0, -1, 1);
                 }
 
-                if (task.getDurationInMili() > 0) {
-                    min = (task.getDurationInMili() / 1000) / 60;
-                    sec = (task.getDurationInMili() / 1000) % 60;
+                int timeLeftInMili = trainingData.getTimeLeftInMili();
+                if (timeLeftInMili > 0) {
+                    int min = (timeLeftInMili / 1000) / 60;
+                    int sec = (timeLeftInMili / 1000) % 60;
                     String durationString = min + "M " + sec + "S";
                     trainingFragment.setTvDuration(durationString);
-
-                    task.setDurationInMili(task.getDurationInMili() - 1000);
-                    time = time + 1000;
-                    trainingData.setTime(time);
+                    trainingData.setTimeTrained(trainingData.getTimeTrained() + 1000);
 
                     handler.postDelayed(this, 1000);
                 } else {
@@ -395,7 +382,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         stimulusRunnable = new Runnable() {
             @Override
             public void run() {
-                if (task.getDurationInMili() > 0) {
+                int timeLeftInMili = trainingData.getTimeLeftInMili();
+                if (timeLeftInMili > 0) {
                     Random rd = new Random();
                     float randomVolume = rd.nextFloat() * (task.getVolumeTo() - task.getVolumeFrom()) + task.getVolumeFrom();
                     // get current sti type from stiTypeList
@@ -408,6 +396,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     trainingData.setStiMiliList(System.currentTimeMillis());
 
                     // update sti count on tv and td
+                    trainingData.incStiCount();
+                    trainingFragment.setTvStiCount(trainingData.getStiCount() + "");
 
                     // update accuracy
                     trainingFragment.setTvAccuracy(trainingData.getAccuracy() + "");
@@ -452,7 +442,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         transaction.commit();
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -476,7 +465,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
             case (R.id.btn_diary):
                 break;
-
 
             case (R.id.btn_map):
                 updateLocation();
