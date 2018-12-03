@@ -25,6 +25,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
 
                 MainActivity.trainingData.setResMiliList(resMili);
                 MainActivity.trainingData.incResCount();
+                MainActivity.trainingFragment.setTvResCount(MainActivity.trainingData.getResCount() + "");
                 MainActivity.trainingData.setResTimeList(resTime);
                 MainActivity.trainingFragment.setTvLogRes("Response time  is " + resTime + "ms");
 

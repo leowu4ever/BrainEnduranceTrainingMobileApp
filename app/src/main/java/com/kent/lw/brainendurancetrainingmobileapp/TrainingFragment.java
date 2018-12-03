@@ -24,7 +24,7 @@ public class TrainingFragment extends Fragment {
     private ImageButton btnLock;
     private TextView tvDuration;
     private TextView tvDistance, tvPace, tvSpeed;
-    private TextView tvStiCount, tvHitCount, tvLapseCount, tvAccuracy, tvAvgResTime;
+    private TextView tvStiCount, tvHitCount, tvLapseCount, tvResCount, tvAccuracy, tvAvgResTime;
     private TextView tvLogRes, tvLogSti;
     private DialogHelper dh;
 
@@ -70,6 +70,7 @@ public class TrainingFragment extends Fragment {
         tvStiCount = getActivity().findViewById(R.id.tv_sti_count);
         tvLapseCount = getActivity().findViewById(R.id.tv_lapse_count);
         tvHitCount = getActivity().findViewById(R.id.tv_hit_count);
+        tvResCount = getActivity().findViewById(R.id.tv_res_count);
         tvAccuracy = getActivity().findViewById(R.id.tv_accuracy);
         tvAvgResTime = getActivity().findViewById(R.id.tv_avg_res_time);
 
@@ -127,5 +128,9 @@ public class TrainingFragment extends Fragment {
 
     public void setTvLapseCount(String s) {
         tvLapseCount.setText(s);
+    }
+
+    public void setTvResCount(String s) {
+        tvResCount.setText(s);
     }
 }
