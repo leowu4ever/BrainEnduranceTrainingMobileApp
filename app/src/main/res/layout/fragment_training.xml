@@ -33,21 +33,66 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_duration"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="0M 0S"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:textSize="36sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/tv_distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textSize="36sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView44"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Distance(km)"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view23"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_cur_speed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textSize="36sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView44"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Speed(km/h)"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textSize="14sp" />
+        </LinearLayout>
     </LinearLayout>
 
     <View
@@ -64,28 +109,32 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_distance"
-                android:layout_width="match_parent"
+                android:id="@+id/tv_duration"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:layout_weight="1"
+                android:text="0M 0S"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView44"
+                android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Distance(km)"
+                android:layout_weight="1"
+                android:text="Time"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textSize="12sp" />
+
         </LinearLayout>
 
         <View
@@ -113,7 +162,7 @@
                 android:id="@+id/textView44"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Pace(min/km)"
+                android:text="Avg pace(min/km)"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textSize="12sp" />
@@ -146,7 +195,7 @@
                 android:id="@+id/textView42"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Speed(km/h)"
+                android:text="Avg speed(km/h)"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textSize="12sp" />
@@ -352,7 +401,7 @@
                 android:id="@+id/textView42"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Average response time(ms)"
+                android:text="Avg response time(ms)"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textSize="12sp" />
