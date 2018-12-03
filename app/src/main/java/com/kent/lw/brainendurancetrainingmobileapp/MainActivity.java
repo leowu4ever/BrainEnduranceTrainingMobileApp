@@ -148,12 +148,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         btnFlic.setVisibility(View.GONE);
         btnDiary.setVisibility(View.GONE);
 
-        resetTrainingData();
-
+        resetTempData();
         trainingData.setStartTime(System.currentTimeMillis());
-
         handler.postDelayed(countdownRunnbale, 0);
-
 
         if (!difSelected.equals(Dif.DIF_CUSTOM)) {
 
@@ -178,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         for (int i = 0; i < nogoCount; i++) {
             trainingData.setStiTypeOn(indexList.get(i), 1);
         }
+        trainingData.setStiTypeOn(0,0);
     }
 
     public void pauseTraining() {
@@ -227,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         task.reset();
     }
 
-    public void resetTrainingData() {
+    public void resetTempData() {
         distance = 0;
         speed = 0;
         countdown = 4000;
