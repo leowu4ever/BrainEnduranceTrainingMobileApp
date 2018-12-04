@@ -327,8 +327,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                     trainingData.setAvgPace(pace);
 
                                     // update cur speed
-                                    float curSpeed = newDis/locTimeDif;
-                                    String curSpeedString = String.format("%.1f", curSpeed * 1000 * 60 * 60);
+                                    float curSpeed = newDis/locTimeDif * 1000 * 60 * 60;
+                                    String curSpeedString = String.format("%.1f", curSpeed);
                                     trainingFragment.setTvCurSpeed(curSpeedString);
                                     trainingData.setSpeedList(curSpeed);
 
