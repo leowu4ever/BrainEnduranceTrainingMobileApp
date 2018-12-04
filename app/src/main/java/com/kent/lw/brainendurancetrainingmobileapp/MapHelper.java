@@ -46,6 +46,8 @@ public class MapHelper {
         Polyline polyline = mMap.addPolyline(new PolylineOptions().add(l1, l2));
         polyline.setEndCap(new ButtCap());
         polyline.setWidth(10);
+
+        // alert color here
         polyline.setColor(ContextCompat.getColor(context, R.color.colorAccent));
         polylineList.add(polyline);
     }

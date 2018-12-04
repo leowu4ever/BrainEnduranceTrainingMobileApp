@@ -71,11 +71,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // map
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-    private LatLng lastLocation;
-    private boolean mapInited = false;
+    private LatLng lastLoc;
     private LocationRequest mLocationRequest;
     private List<Polyline> polylineList;
-    private LatLng tempLocation;
 
     private int countdown = 4000;
 
@@ -91,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lastLocation = new LatLng(0, 0);
+        lastLoc = new LatLng(0, 0);
         polylineList = new ArrayList<Polyline>();
         initMap();
 
@@ -147,6 +145,21 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         btnProfile.setVisibility(View.GONE);
         btnFlic.setVisibility(View.GONE);
         btnDiary.setVisibility(View.GONE);
+
+        Task task = mFusedLocationProviderClient.getLastLocation();
+        task.addOnCompleteListener(this, new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()) {
+                    lastLoc = mapHelper.convertToLatLng((Location) task.getResult());
+                    trainingData.setLocUpdateTimeList(System.currentTimeMillis());
+                    trainingData.setLatList(lastLoc.latitude);
+                    trainingData.setLngList(lastLoc.longitude);
+                }
+            }
+        });
+
+
 
         resetTempData();
         trainingData.setStartTime(System.currentTimeMillis());
@@ -273,63 +286,65 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         // init last location
         try {
             if (locPermissionEnabled) {
-                Task task = mFusedLocationProviderClient.getLastLocation();
-                task.addOnCompleteListener(this, new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful() && !mapInited) {
-                            lastLocation = mapHelper.convertToLatLng((Location) task.getResult());
-                            mapInited = true;
-                        }
-                    }
-                });
 
                 mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, new LocationCallback() {
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
-                        if (trainingStarted) {
+                    if (trainingStarted) {
 
-                            // update map
-                            if (locationResult != null) {
+                        if (locationResult != null) {
 
-                                for (Location location : locationResult.getLocations()) {
-                                    tempLocation = mapHelper.convertToLatLng(location);
+                            for (Location location : locationResult.getLocations()) {
+                                LatLng curLoc = mapHelper.convertToLatLng(location);
 
-                                    if (mapHelper.getDistance(lastLocation, tempLocation) < mapHelper.MAX_DISTANCE_UPDATE_THRESHOLD) {
+                                long newLocTime = System.currentTimeMillis();
+                                long lastLocTime = trainingData.getLastLocUpdateTime();
+                                long locTimeDif = newLocTime - lastLocTime;
+                                trainingData.setLocUpdateTimeList(newLocTime);
 
-                                        mapHelper.drawAPolyline(mMap, polylineList, lastLocation, tempLocation, MainActivity.this);
+                                float newDis = mapHelper.getDistance(lastLoc, curLoc);
 
-                                        // update distance
-                                        distance = distance + mapHelper.getDistance(lastLocation, tempLocation) / 1000;
-                                        String distanceString = String.format("%.3f", distance);
-                                        trainingFragment.setTvDistance(distanceString);
-                                        trainingData.setDistance(distance);
+                                if (newDis < mapHelper.MAX_DISTANCE_UPDATE_THRESHOLD) {
+                                    // draw route based on speed
+                                    mapHelper.drawAPolyline(mMap, polylineList, lastLoc, curLoc, MainActivity.this);
 
-                                        // update speed
-                                        speed = (distance / trainingData.getTimeTrained()) * 1000 * 60 * 60;
-                                        String speedString = String.format("%.1f", speed);
-                                        //trainingFragment.setTvSpeed(speedString);
-                                        trainingData.setAvgSpeed(speed);
+                                    // update distance
+                                    distance = distance + newDis / 1000;
+                                    String distanceString = String.format("%.3f", distance);
+                                    trainingFragment.setTvDistance(distanceString);
+                                    trainingData.setDistance(distance);
 
-                                        // update pace
-                                        pace = 1 / ((distance / trainingData.getTimeTrained()) * 1000 * 60);
-                                        String paceString = String.format("%.1f", pace);
-                                        trainingFragment.setTvPace(paceString);
-                                        trainingData.setAvgPace(pace);
+                                    // update speed
+                                    speed = (distance / trainingData.getTimeTrained()) * 1000 * 60 * 60;
+                                    String speedString = String.format("%.1f", speed);
+                                    trainingFragment.setTvSpeed(speedString);
+                                    trainingData.setAvgSpeed(speed);
 
-                                        // update location
-                                        lastLocation = tempLocation;
-                                        trainingData.setLatList(lastLocation.latitude);
-                                        trainingData.setLngList(lastLocation.longitude);
+                                    // update pace
+                                    pace = 1 / ((distance / trainingData.getTimeTrained()) * 1000 * 60);
+                                    String paceString = String.format("%.1f", pace);
+                                    trainingFragment.setTvPace(paceString);
+                                    trainingData.setAvgPace(pace);
 
-                                        // finally do prompt
-                                        if (speed < MainActivity.task.getMinSpeed()) {
-                                            soundHelper.playSpeedupSound(1, 1, 0, 0, 1);
-                                        }
+                                    // update cur speed
+                                    float curSpeed = newDis/locTimeDif;
+                                    String curSpeedString = String.format("%.1f", curSpeed * 1000 * 60 * 60);
+                                    trainingFragment.setTvCurSpeed(curSpeedString);
+                                    trainingData.setSpeedList(curSpeed);
+
+                                    // update location
+                                    lastLoc = curLoc;
+                                    trainingData.setLatList(lastLoc.latitude);
+                                    trainingData.setLngList(lastLoc.longitude);
+
+                                    // finally do prompt
+                                    if (speed < MainActivity.task.getMinSpeed()) {
+                                        soundHelper.playSpeedupSound(1, 1, 0, 0, 1);
                                     }
                                 }
                             }
                         }
+                    }
                     }
                 }, null);
             }
