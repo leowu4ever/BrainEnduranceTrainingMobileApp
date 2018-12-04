@@ -244,10 +244,10 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         mMap.setPadding(10, 10, 10, 10);
         mapHelper.updateLocationUI(mMap, this);
         createLocationRequest();
-        updateLocation();
+        zoomToCurLoc();
     }
 
-    public void updateLocation() {
+    public void zoomToCurLoc() {
         try {
             Task location = mFusedLocationProviderClient.getLastLocation();
             location.addOnCompleteListener(new OnCompleteListener() {
@@ -467,7 +467,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 break;
 
             case (R.id.btn_map):
-                updateLocation();
+                zoomToCurLoc();
                 break;
         }
     }
