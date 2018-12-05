@@ -303,8 +303,8 @@ public class DialogHelper {
 
             tvHistoryNogo.setText("Proportion of NO-GO: " + td.getTaskConfig().getNogoPropotion() + "%");
             tvHistoryInterval.setText("Interstimulus interval: " + td.getTaskConfig().getIntervalFrom() + "s" + " ~ " + td.getTaskConfig().getIntervalTo() + "s");
-            tvHistoryVolume.setText("Tone volume: " + td.getTaskConfig().getVolumeFrom() + "%" + " ~ " + td.getTaskConfig().getVolumeTo() + "%");
-            tvHistoryNoise.setText("Noise volume: " + td.getTaskConfig().getNoise() + "%");
+            tvHistoryVolume.setText("Tone volume: " + td.getTaskConfig().getVolumeFrom() * 100 + "%" + " ~ " + td.getTaskConfig().getVolumeTo() * 100 + "%");
+            tvHistoryNoise.setText("Noise volume: " + td.getTaskConfig().getNoise() * 100 + "%");
             tvHistoryThreshold.setText("Valid response time: " + td.getTaskConfig().getResThreshold() + "ms");
             tvHistoryMinspeed.setText("Minimum speed: " + td.getTaskConfig().getMinSpeed() + "km/h");
 
