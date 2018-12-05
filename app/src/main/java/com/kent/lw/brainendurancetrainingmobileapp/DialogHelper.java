@@ -13,8 +13,8 @@ public class DialogHelper {
     public Dialog pauseDialog, finishDialog, countdownDialog, lockDialog, detailDialog;
     public Button btnResumeOk, btnFinishOK, btnDetailOk, btnUnlock;
     public TextView tvFinishDuration, tvFinishDistance, tvFinishSpeed, tvFinishPace, tvFinishART, tvFinishAccuracy, tvCountdown;
-    public TextView tvHistoryDate, tvHistoryTime, tvHistoryActivity, tvHistoryTask, tvHistoryDif, tvHistoryDuration, tvHistoryDistance, tvHistorySpeed, tvHistoryPace, tvHistoryART, tvHistoryAccuracy;
-
+    public TextView tvHistoryDate, tvHistoryActivity,tvHistoryDuration, tvHistoryTask, tvHistoryDif, tvHistoryTimeTrained, tvHistoryDistance, tvHistorySpeed, tvHistoryPace, tvHistoryART, tvHistoryAccuracy;
+    public TextView tvHistoryNogo, tvHistoryInterval, tvHistoryVolume, tvHistoryNoise, tvHistoryThreshold, tvHistoryMinspeed;
     public Dialog diaryDialog, trainingDiaryDialog, motiDialog, rpeDialog, nasaDialog;
     public Button btnTrainingDiary, btnMoti, btnRpe, btnNasa, btnTrainingDiarySave, btnMotiSave, btnRpeSave, btnNasaSave;
 
@@ -160,17 +160,24 @@ public class DialogHelper {
         tvFinishAccuracy = finishDialog.findViewById(R.id.tv_finish_accuracy);
 
         tvHistoryDate = detailDialog.findViewById(R.id.tv_history_date);
-        tvHistoryTime = detailDialog.findViewById(R.id.tv_history_time);
         tvHistoryActivity = detailDialog.findViewById(R.id.tv_history_activity);
+        tvHistoryDuration = detailDialog.findViewById(R.id.tv_history_duration);
         tvHistoryTask = detailDialog.findViewById(R.id.tv_history_task);
         tvHistoryDif = detailDialog.findViewById(R.id.tv_history_dif);
-        tvHistoryDuration = detailDialog.findViewById(R.id.tv_history_duration);
+        tvHistoryTimeTrained = detailDialog.findViewById(R.id.tv_history_time_trained);
         tvHistoryDistance = detailDialog.findViewById(R.id.tv_history_distance);
         tvHistorySpeed = detailDialog.findViewById(R.id.tv_history_speed);
         tvHistoryPace = detailDialog.findViewById(R.id.tv_history_pace);
         tvHistoryART = detailDialog.findViewById(R.id.tv_history_art);
         tvHistoryAccuracy = detailDialog.findViewById(R.id.tv_history_accuracy);
 
+
+        tvHistoryNogo = detailDialog.findViewById(R.id.tv_history_nogo);
+        tvHistoryInterval = detailDialog.findViewById(R.id.tv_history_interval);
+        tvHistoryVolume = detailDialog.findViewById(R.id.tv_history_volume);
+        tvHistoryNoise = detailDialog.findViewById(R.id.tv_history_noise);
+        tvHistoryThreshold = detailDialog.findViewById(R.id.tv_history_threshold);
+        tvHistoryMinspeed = detailDialog.findViewById(R.id.tv_history_minspeed);
 
     }
 
@@ -264,11 +271,11 @@ public class DialogHelper {
     }
 
     public void setupFinishDialog(TrainingData td) {
-        tvFinishDuration.setText("Duration: " + DateHelper.getTimeFromMs(td.getTimeTrained()));
+        tvFinishDuration.setText("Time Trained: " + DateHelper.getTimeFromMs(td.getTimeTrained()));
         tvFinishDistance.setText("Distance: " + td.getDistance() + "KM");
         tvFinishSpeed.setText("Avg speed: " + td.getAvgSpeed() + "KM/H");
         tvFinishPace.setText("Avg pace: " + td.getAvgPace() + "MIN/KM");
-        tvFinishART.setText("Avg RT: " + td.getAvgResTime() + "ms");
+        tvFinishART.setText("Avg Response time: " + td.getAvgResTime() + "ms");
         tvFinishAccuracy.setText("Accuracy: " + td.getAccuracy() + "%");
     }
 
@@ -279,17 +286,41 @@ public class DialogHelper {
 
     public void setupHistoryDialog(TrainingData td) {
 
-        tvHistoryDate.setText("Date: " + DateHelper.getDateFromMili(td.getStartTime()));
-        tvHistoryTime.setText("Time: " + DateHelper.getTimeFromMili(td.getStartTime()));
+        tvHistoryDate.setText(DateHelper.getDateFromMili(td.getStartTime()) + " " + DateHelper.getTimeFromMili(td.getStartTime()));
         tvHistoryActivity.setText("Activity: " + td.getActivity());
         tvHistoryTask.setText("Cognitive task: " + td.getTask());
         tvHistoryDif.setText("Difficulty level: " + td.getDif());
-        tvHistoryDuration.setText("Duration: " + DateHelper.getTimeFromMs(td.getTimeTrained()));
+        tvHistoryDuration.setText("Duration: " + DateHelper.getTimeFromMs(td.getDuration()));
+
+        tvHistoryTimeTrained.setText("Time trained: " + DateHelper.getTimeFromMs(td.getTimeTrained()));
         tvHistoryDistance.setText("Distance: " + td.getDistance() + "KM");
         tvHistorySpeed.setText("Avg speed: " + td.getAvgSpeed() + "KM/H");
         tvHistoryPace.setText("Avg pace: " + td.getAvgPace() + "MIN/KM");
-        tvHistoryART.setText("Avg RT: " + td.getAvgResTime() + "ms");
+        tvHistoryART.setText("Avg Response time: " + td.getAvgResTime() + "ms");
         tvHistoryAccuracy.setText("Accuracy: " + td.getAccuracy() + "%");
+
+        if(td.getDif().equals("Custom")) {
+
+            tvHistoryNogo.setText("Proportion of NO-GO: " + td.getTaskConfig().getNogoPropotion() + "%");
+            tvHistoryInterval.setText("Interstimulus interval: " + td.getTaskConfig().getIntervalFrom() + "s" + " ~ " + td.getTaskConfig().getIntervalTo() + "s");
+            tvHistoryVolume.setText("Tone volume: " + td.getTaskConfig().getVolumeFrom() + "%" + " ~ " + td.getTaskConfig().getVolumeTo() + "%");
+            tvHistoryNoise.setText("Noise volume: " + td.getTaskConfig().getNoise() + "%");
+            tvHistoryThreshold.setText("Valid response time: " + td.getTaskConfig().getResThreshold() + "ms");
+            tvHistoryMinspeed.setText("Minimum speed: " + td.getTaskConfig().getMinSpeed() + "km/h");
+
+        } else {
+            tvHistoryNogo.setVisibility(View.GONE);
+            tvHistoryInterval.setVisibility(View.GONE);
+            tvHistoryVolume.setVisibility(View.GONE);
+            tvHistoryNoise.setVisibility(View.GONE);
+            tvHistoryThreshold.setVisibility(View.GONE);
+            tvHistoryMinspeed.setVisibility(View.GONE);
+        }
+
+
+        if(td.getTask().equals("A-PVT")){
+            tvHistoryNogo.setVisibility(View.GONE);
+        }
     }
 }
 

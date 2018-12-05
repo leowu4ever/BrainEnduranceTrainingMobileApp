@@ -33,14 +33,7 @@
         android:layout_height="wrap_content"
         android:text="Date"
         android:textAlignment="center"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/tv_history_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Time"
-        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <View
@@ -53,12 +46,23 @@
         android:layout_marginBottom="10dp"
         android:background="@color/colorPrimary" />
 
+
     <TextView
         android:id="@+id/tv_history_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Activity"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_history_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Duration"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <TextView
@@ -67,6 +71,7 @@
         android:layout_height="wrap_content"
         android:text="Cognitive task"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <TextView
@@ -75,6 +80,61 @@
         android:layout_height="wrap_content"
         android:text="Difficulty level"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_history_nogo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Proportion of NO-GO"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_history_interval"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Interstimulus interval"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_history_volume"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tone volume"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_history_noise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Noise volume"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_history_threshold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Valid response time"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_history_minspeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Minimum speed"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <View
@@ -86,13 +146,13 @@
         android:layout_marginBottom="10dp"
         android:background="@color/colorPrimary" />
 
-
     <TextView
-        android:id="@+id/tv_history_duration"
+        android:id="@+id/tv_history_time_trained"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Duration"
+        android:text="Time trained"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <TextView
@@ -101,6 +161,7 @@
         android:layout_height="wrap_content"
         android:text="Distance"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <TextView
@@ -109,6 +170,7 @@
         android:layout_height="wrap_content"
         android:text="Avg speed"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <TextView
@@ -117,14 +179,16 @@
         android:layout_height="wrap_content"
         android:text="Avg pace"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <TextView
         android:id="@+id/tv_history_art"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Avg RT"
+        android:text="Avg response time"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <TextView
@@ -133,6 +197,7 @@
         android:layout_height="wrap_content"
         android:text="Accuracy"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <View

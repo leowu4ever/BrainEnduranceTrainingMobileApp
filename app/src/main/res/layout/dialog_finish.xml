@@ -33,6 +33,7 @@
         android:layout_height="wrap_content"
         android:text="Duration"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <TextView
@@ -41,6 +42,7 @@
         android:layout_height="wrap_content"
         android:text="Distance"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <TextView
@@ -49,6 +51,7 @@
         android:layout_height="wrap_content"
         android:text="Avg speed"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <TextView
@@ -57,14 +60,16 @@
         android:layout_height="wrap_content"
         android:text="Avg pace"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <TextView
         android:id="@+id/tv_finish_art"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Avg RT"
+        android:text="Avg response time"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <TextView
@@ -73,6 +78,7 @@
         android:layout_height="wrap_content"
         android:text="Accuracy"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <View
