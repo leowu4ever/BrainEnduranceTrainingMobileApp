@@ -31,8 +31,9 @@ public class MapHelper {
         return new LatLng(location.getLatitude(), location.getLongitude());
     }
 
-    public float getDistance(LatLng l1, LatLng l2) {
-        return (float) SphericalUtil.computeDistanceBetween(l1, l2);
+    public float getDistanceInKM(LatLng l1, LatLng l2) {
+        float dis = (float) SphericalUtil.computeDistanceBetween(l1, l2);
+        return dis / 1000;
     }
 
     public void removePolylines(List<Polyline> polylineList) {

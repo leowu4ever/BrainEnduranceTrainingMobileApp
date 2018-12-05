@@ -302,14 +302,14 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                 long locTimeDif = newLocTime - lastLocTime;
                                 trainingData.setLocUpdateTimeList(newLocTime);
 
-                                float newDis = mapHelper.getDistance(lastLoc, curLoc);
+                                float newDis = mapHelper.getDistanceInKM(lastLoc, curLoc);
 
                                 if (newDis < mapHelper.MAX_DISTANCE_UPDATE_THRESHOLD) {
                                     // draw route based on speed
                                     mapHelper.drawAPolyline(mMap, polylineList, lastLoc, curLoc, MainActivity.this);
 
                                     // update distance
-                                    distance = distance + newDis / 1000;
+                                    distance = distance + newDis;
                                     String distanceString = String.format("%.3f", distance);
                                     trainingFragment.setTvDistance(distanceString);
                                     trainingData.setDistance(distance);
@@ -327,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                     trainingData.setAvgPace(pace);
 
                                     // update cur speed
-                                    float curSpeed = newDis/locTimeDif * 1000 * 60 * 60;
+                                    float curSpeed = (newDis/locTimeDif) * 1000 * 60 * 60;
                                     String curSpeedString = String.format("%.1f", curSpeed);
                                     trainingFragment.setTvCurSpeed(curSpeedString);
                                     trainingData.setSpeedList(curSpeed);
