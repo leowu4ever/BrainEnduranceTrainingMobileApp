@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private List<Polyline> polylineList;
 
     private int countdown = 4000;
+    private final int COUNTDONW_WAIT = 6000;
 
     private float distance, speed, pace;
 
@@ -169,10 +170,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         } else {
             // start after count down
-            handler.postDelayed(durationRunnable, 4000);
+            handler.postDelayed(durationRunnable, COUNTDONW_WAIT);
             createStiTypeList();
-            handler.postDelayed(stimulusRunnable, 4000);
-            trainingStarted = true;
+            handler.postDelayed(stimulusRunnable, COUNTDONW_WAIT);
         }
     }
 
@@ -366,6 +366,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     handler.postDelayed(countdownRunnbale, 1000);
                 } else {
                     dialogHelper.dismissCountdownDialog();
+                    trainingStarted = true;
                     handler.removeCallbacks(countdownRunnbale);
                 }
             }
@@ -401,16 +402,17 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     Random rd = new Random();
                     float randomVolume = rd.nextFloat() * (task.getVolumeTo() - task.getVolumeFrom()) + task.getVolumeFrom();
                     // get current sti type from stiTypeList
-                    if (trainingData.getStiTypeOn(trainingData.getStiCount()) == 0) {
+                    if (trainingData.getStiTypeOn(trainingData.getStiCount() + trainingData.getNogoCount()) == 0) {
                         soundHelper.playBeepSound(randomVolume, randomVolume, 0, 0, 1);
+                        trainingData.incStiCount();
 
                     } else {
                         soundHelper.playNogoSound(randomVolume, randomVolume, 0, 0, 1);
+                        trainingData.incNogoCount();
                     }
                     trainingData.setStiMiliList(System.currentTimeMillis());
 
                     // update sti count on tv and td
-                    trainingData.incStiCount();
                     trainingFragment.setTvStiCount(trainingData.getStiCount() + "");
 
                     // update accuracy

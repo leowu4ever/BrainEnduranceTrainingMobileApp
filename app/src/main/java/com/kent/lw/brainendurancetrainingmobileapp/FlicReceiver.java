@@ -19,7 +19,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
     public void onButtonUpOrDown(Context context, FlicButton button, boolean wasQueued, int timeDiff, boolean isUp, boolean isDown) {
         Long resMili = System.currentTimeMillis();
         if (isDown) {
-            if (MainActivity.trainingStarted) {
+            if (MainActivity.trainingStarted && MainActivity.trainingData.getStiMiliList().size() > 0) {
                 long lastStiMili = MainActivity.trainingData.getStiMiliList().get(MainActivity.trainingData.getStiMiliList().size() - 1);
                 long resTime = resMili - lastStiMili;
 
@@ -45,6 +45,9 @@ public class FlicReceiver extends FlicBroadcastReceiver {
                     MainActivity.trainingData.incLapseCount();
                     MainActivity.trainingFragment.setTvLapseCount(MainActivity.trainingData.getLapseCount() + "");
                 }
+            } else if (MainActivity.trainingStarted && MainActivity.trainingData.getStiMiliList().size() == 0){
+                MainActivity.trainingData.incLapseCount();
+                MainActivity.trainingFragment.setTvLapseCount(MainActivity.trainingData.getLapseCount() + "");
             }
         }
     }

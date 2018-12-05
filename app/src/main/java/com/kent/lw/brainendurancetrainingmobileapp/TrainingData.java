@@ -15,7 +15,7 @@ public class TrainingData {
     public Task taskConfig;
 
     // cognitive task
-    public int stiCount, resCount, hitResCount, lapseCount;
+    public int nogoCount, stiCount, resCount, hitResCount, lapseCount;
     public float accuracy;
     public long totalResTime, avgResTime;
 
@@ -93,6 +93,17 @@ public class TrainingData {
         this.taskConfig = taskConfig;
     }
 
+    public int getNogoCount() {
+        return nogoCount;
+    }
+
+    public void setNogoCount(int nogoCount) {
+        this.nogoCount = nogoCount;
+    }
+
+    public void incNogoCount() {
+        nogoCount++;
+    }
 
     public int getStiCount() {
         return stiCount;
@@ -318,6 +329,7 @@ public class TrainingData {
         activity = "";
         duration = 0;
 
+        nogoCount = 0;
         stiCount = 0;
         resCount = 0;
         hitResCount = 0;
