@@ -49,7 +49,7 @@ public class HistoryActivity extends AppCompatActivity {
         btnHistoryUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseStorageHelper.uploadAllFileToFirestorage();
+                FirebaseStorageHelper.uploadAllFileToFirestorage(HistoryActivity.this);
             }
         });
 
