@@ -13,6 +13,7 @@ public class FirebaseDBHelper {
 
     public static void uploadAllData() {
         db = FirebaseDatabase.getInstance().getReference();
+
         String rootPath = MainActivity.trainingData.getName() + "/" + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getStartTime()) + "/";
 
         db.child(rootPath + "1_User Info" + "/" + "1_Name").setValue(MainActivity.trainingData.getName());
@@ -26,7 +27,7 @@ public class FirebaseDBHelper {
         db.child(rootPath + "2_Training Configuration" + "/" + "5_Difficulty configuration").setValue(MainActivity.trainingData.getTaskConfig());
 
         db.child(rootPath + "3_Cognitive Performance" + "/" + "1_Stimulus").setValue(MainActivity.trainingData.getStiCount());
-        db.child(rootPath + "3_Cognitive Performance" + "/" + "2_Stimulus").setValue(MainActivity.trainingData.getNogoCount());
+        db.child(rootPath + "3_Cognitive Performance" + "/" + "2_Nogo").setValue(MainActivity.trainingData.getNogoCount());
         db.child(rootPath + "3_Cognitive Performance" + "/" + "3_Responses").setValue(MainActivity.trainingData.getResCount());
         db.child(rootPath + "3_Cognitive Performance" + "/" + "4_Hits").setValue(MainActivity.trainingData.getHitResCount());
         db.child(rootPath + "3_Cognitive Performance" + "/" + "5_Lapses").setValue(MainActivity.trainingData.getLapseCount());
@@ -45,5 +46,8 @@ public class FirebaseDBHelper {
 
         db.child(rootPath + "6_Location" + "/" + "1_Latitude list").setValue(MainActivity.trainingData.getLatList());
         db.child(rootPath + "6_Location" + "/" + "2_Longitude list").setValue(MainActivity.trainingData.getLngList());
+
+       // db.child("lwu@kentacuk").removeValue();
+
     }
 }
