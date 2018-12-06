@@ -63,23 +63,47 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     // helper class
     public static SoundHelper soundHelper;
+    private final int COUNTDONW_WAIT = 6000;
     public DialogHelper dialogHelper;
     public MapHelper mapHelper;
-
     private ImageButton btnProfile, btnFlic, btnDiary, btnMap;
-
     // map
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private LatLng lastLoc;
     private LocationRequest mLocationRequest;
     private List<Polyline> polylineList;
-
     private int countdown = 4000;
-    private final int COUNTDONW_WAIT = 6000;
-
     private float distance, speed, pace;
 
+    public static void resumeTraining() {
+        trainingStarted = true;
+        soundHelper.playNoiseSound(task.getNoise(), task.getNoise(), 0, -1, 1);
+        handler.postDelayed(durationRunnable, 1000);
+        handler.postDelayed(stimulusRunnable, 0);
+    }
+
+    public static void showTaskFragment() {
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
+        transaction.commit();
+    }
+
+    public static void hideTrainingFragment() {
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.remove(trainingFragment);
+        transaction.commit();
+    }
+
+    public static void showTrainingFragment() {
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.remove(taskFragment);
+        transaction.add(R.id.container, trainingFragment, "TRAINING_FRAGMENT");
+        transaction.commit();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,7 +185,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         });
 
 
-
         resetTempData();
         trainingData.setStartTime(System.currentTimeMillis());
         handler.postDelayed(countdownRunnbale, 0);
@@ -188,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         for (int i = 0; i < nogoCount; i++) {
             trainingData.setStiTypeOn(indexList.get(i), 1);
         }
-        trainingData.setStiTypeOn(0,0);
+        trainingData.setStiTypeOn(0, 0);
     }
 
     public void pauseTraining() {
@@ -197,13 +220,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         dialogHelper.showPauseDialog();
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
-    }
-
-    public static void resumeTraining() {
-        trainingStarted = true;
-        soundHelper.playNoiseSound(task.getNoise(), task.getNoise(), 0, -1, 1);
-        handler.postDelayed(durationRunnable, 1000);
-        handler.postDelayed(stimulusRunnable, 0);
     }
 
     public void finishTraining() {
@@ -290,61 +306,61 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, new LocationCallback() {
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
-                    if (trainingStarted) {
+                        if (trainingStarted) {
 
-                        if (locationResult != null) {
+                            if (locationResult != null) {
 
-                            for (Location location : locationResult.getLocations()) {
-                                LatLng curLoc = mapHelper.convertToLatLng(location);
+                                for (Location location : locationResult.getLocations()) {
+                                    LatLng curLoc = mapHelper.convertToLatLng(location);
 
-                                long newLocTime = System.currentTimeMillis();
-                                long lastLocTime = trainingData.getLastLocUpdateTime();
-                                long locTimeDif = newLocTime - lastLocTime;
-                                trainingData.setLocUpdateTimeList(newLocTime);
+                                    long newLocTime = System.currentTimeMillis();
+                                    long lastLocTime = trainingData.getLastLocUpdateTime();
+                                    long locTimeDif = newLocTime - lastLocTime;
+                                    trainingData.setLocUpdateTimeList(newLocTime);
 
-                                float newDis = mapHelper.getDistanceInKM(lastLoc, curLoc);
+                                    float newDis = mapHelper.getDistanceInKM(lastLoc, curLoc);
 
-                                if (newDis < mapHelper.MAX_DISTANCE_UPDATE_THRESHOLD) {
-                                    // draw route based on speed
-                                    mapHelper.drawAPolyline(mMap, polylineList, lastLoc, curLoc, MainActivity.this);
+                                    if (newDis < mapHelper.MAX_DISTANCE_UPDATE_THRESHOLD) {
+                                        // draw route based on speed
+                                        mapHelper.drawAPolyline(mMap, polylineList, lastLoc, curLoc, MainActivity.this);
 
-                                    // update distance
-                                    distance = distance + newDis;
-                                    String distanceString = String.format("%.3f", distance);
-                                    trainingFragment.setTvDistance(distanceString);
-                                    trainingData.setDistance(distance);
+                                        // update distance
+                                        distance = distance + newDis;
+                                        String distanceString = String.format("%.3f", distance);
+                                        trainingFragment.setTvDistance(distanceString);
+                                        trainingData.setDistance(distance);
 
-                                    // update speed
-                                    speed = (distance / trainingData.getTimeTrained()) * 1000 * 60 * 60;
-                                    String speedString = String.format("%.1f", speed);
-                                    trainingFragment.setTvSpeed(speedString);
-                                    trainingData.setAvgSpeed(speed);
+                                        // update speed
+                                        speed = (distance / trainingData.getTimeTrained()) * 1000 * 60 * 60;
+                                        String speedString = String.format("%.1f", speed);
+                                        trainingFragment.setTvSpeed(speedString);
+                                        trainingData.setAvgSpeed(speed);
 
-                                    // update pace
-                                    pace = 1 / ((distance / trainingData.getTimeTrained()) * 1000 * 60);
-                                    String paceString = String.format("%.1f", pace);
-                                    trainingFragment.setTvPace(paceString);
-                                    trainingData.setAvgPace(pace);
+                                        // update pace
+                                        pace = 1 / ((distance / trainingData.getTimeTrained()) * 1000 * 60);
+                                        String paceString = String.format("%.1f", pace);
+                                        trainingFragment.setTvPace(paceString);
+                                        trainingData.setAvgPace(pace);
 
-                                    // update cur speed
-                                    float curSpeed = (newDis/locTimeDif) * 1000 * 60 * 60;
-                                    String curSpeedString = String.format("%.1f", curSpeed);
-                                    trainingFragment.setTvCurSpeed(curSpeedString);
-                                    trainingData.setSpeedList(curSpeed);
+                                        // update cur speed
+                                        float curSpeed = (newDis / locTimeDif) * 1000 * 60 * 60;
+                                        String curSpeedString = String.format("%.1f", curSpeed);
+                                        trainingFragment.setTvCurSpeed(curSpeedString);
+                                        trainingData.setSpeedList(curSpeed);
 
-                                    // update location
-                                    lastLoc = curLoc;
-                                    trainingData.setLatList(lastLoc.latitude);
-                                    trainingData.setLngList(lastLoc.longitude);
+                                        // update location
+                                        lastLoc = curLoc;
+                                        trainingData.setLatList(lastLoc.latitude);
+                                        trainingData.setLngList(lastLoc.longitude);
 
-                                    // finally do prompt
-                                    if (curSpeed < MainActivity.task.getMinSpeed()) {
-                                        soundHelper.playSpeedupSound(1, 1, 0, 0, 1);
+                                        // finally do prompt
+                                        if (curSpeed < MainActivity.task.getMinSpeed()) {
+                                            soundHelper.playSpeedupSound(1, 1, 0, 0, 1);
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
                     }
                 }, null);
             }
@@ -433,28 +449,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
-        transaction.commit();
-    }
-
-    public static void showTaskFragment() {
-        transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-        transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
-        transaction.commit();
-    }
-
-    public static void hideTrainingFragment() {
-        transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-        transaction.remove(trainingFragment);
-        transaction.commit();
-    }
-
-    public static void showTrainingFragment() {
-        transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-        transaction.remove(taskFragment);
-        transaction.add(R.id.container, trainingFragment, "TRAINING_FRAGMENT");
         transaction.commit();
     }
 

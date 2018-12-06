@@ -77,7 +77,7 @@ public class OverallData {
     public int getValidTrainingCount() {
         int c = 0;
         for (long rt : rtList) {
-            if(rt != 0) {
+            if (rt != 0) {
                 c++;
             }
         }

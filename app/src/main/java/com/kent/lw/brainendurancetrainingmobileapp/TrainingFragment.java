@@ -134,6 +134,7 @@ public class TrainingFragment extends Fragment {
     public void setTvResCount(String s) {
         tvResCount.setText(s);
     }
+
     public void setTvCurSpeed(String s) {
         tvCurSpeed.setText(s);
     }

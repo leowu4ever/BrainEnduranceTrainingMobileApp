@@ -45,7 +45,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
                     MainActivity.trainingData.incLapseCount();
                     MainActivity.trainingFragment.setTvLapseCount(MainActivity.trainingData.getLapseCount() + "");
                 }
-            } else if (MainActivity.trainingStarted && MainActivity.trainingData.getStiMiliList().size() == 0){
+            } else if (MainActivity.trainingStarted && MainActivity.trainingData.getStiMiliList().size() == 0) {
                 MainActivity.trainingData.incLapseCount();
                 MainActivity.trainingFragment.setTvLapseCount(MainActivity.trainingData.getLapseCount() + "");
             }

@@ -15,7 +15,7 @@ public class SoundHelper extends Application {
     public int nogoSound;
     public int noiseSound, noiseplay;
 
-    public SoundHelper (Context context) {
+    public SoundHelper(Context context) {
         init(context);
     }
 

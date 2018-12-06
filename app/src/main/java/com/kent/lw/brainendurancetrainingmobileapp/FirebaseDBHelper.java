@@ -5,7 +5,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class FirebaseDBHelper {
 
-    public static  DatabaseReference db;
+    public static DatabaseReference db;
 
     public FirebaseDBHelper() {
 
@@ -47,7 +47,7 @@ public class FirebaseDBHelper {
         db.child(rootPath + "6_Location" + "/" + "1_Latitude list").setValue(MainActivity.trainingData.getLatList());
         db.child(rootPath + "6_Location" + "/" + "2_Longitude list").setValue(MainActivity.trainingData.getLngList());
 
-       // db.child("lwu@kentacuk").removeValue();
+        // db.child("lwu@kentacuk").removeValue();
 
     }
 }

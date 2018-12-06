@@ -113,7 +113,7 @@ public class HistoryActivity extends AppCompatActivity {
         params.gravity = Gravity.CENTER;
         btnDetail.setLayoutParams(params);
         btnDetail.setText(">");
-        btnDetail.setPadding(2,2,2,2);
+        btnDetail.setPadding(2, 2, 2, 2);
 
         btnDetail.setTextColor(Color.parseColor("#ffffff"));
 

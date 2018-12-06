@@ -22,10 +22,9 @@ import java.util.List;
 public class MapHelper {
 
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    public static int MAX_DISTANCE_UPDATE_THRESHOLD = 100;
     private final int MAP_UPDATE_INTERVAL = 3000;
     private int MIN_DISTANCE_UPDATE_THRESHOLD = 10;
-    public static int MAX_DISTANCE_UPDATE_THRESHOLD = 100;
-
 
     public LatLng convertToLatLng(Location location) {
         return new LatLng(location.getLatitude(), location.getLongitude());

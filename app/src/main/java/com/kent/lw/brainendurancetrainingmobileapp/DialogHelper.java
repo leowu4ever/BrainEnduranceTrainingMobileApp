@@ -13,7 +13,7 @@ public class DialogHelper {
     public Dialog pauseDialog, finishDialog, countdownDialog, lockDialog, detailDialog;
     public Button btnResumeOk, btnFinishOK, btnDetailOk, btnUnlock;
     public TextView tvFinishDuration, tvFinishDistance, tvFinishSpeed, tvFinishPace, tvFinishART, tvFinishAccuracy, tvCountdown;
-    public TextView tvHistoryDate, tvHistoryActivity,tvHistoryDuration, tvHistoryTask, tvHistoryDif, tvHistoryTimeTrained, tvHistoryDistance, tvHistorySpeed, tvHistoryPace, tvHistoryART, tvHistoryAccuracy;
+    public TextView tvHistoryDate, tvHistoryActivity, tvHistoryDuration, tvHistoryTask, tvHistoryDif, tvHistoryTimeTrained, tvHistoryDistance, tvHistorySpeed, tvHistoryPace, tvHistoryART, tvHistoryAccuracy;
     public TextView tvHistoryNogo, tvHistoryInterval, tvHistoryVolume, tvHistoryNoise, tvHistoryThreshold, tvHistoryMinspeed;
     public Dialog diaryDialog, trainingDiaryDialog, motiDialog, rpeDialog, nasaDialog;
     public Button btnTrainingDiary, btnMoti, btnRpe, btnNasa, btnTrainingDiarySave, btnMotiSave, btnRpeSave, btnNasaSave;
@@ -23,6 +23,7 @@ public class DialogHelper {
         init(context);
 
     }
+
     public void init(Context context) {
         //dialog
         pauseDialog = new Dialog(context);
@@ -299,7 +300,7 @@ public class DialogHelper {
         tvHistoryART.setText("Avg Response time: " + td.getAvgResTime() + "ms");
         tvHistoryAccuracy.setText("Accuracy: " + td.getAccuracy() + "%");
 
-        if(td.getDif().equals("Custom")) {
+        if (td.getDif().equals("Custom")) {
 
             tvHistoryNogo.setText("Proportion of NO-GO: " + td.getTaskConfig().getNogoPropotion() + "%");
             tvHistoryInterval.setText("Interstimulus interval: " + td.getTaskConfig().getIntervalFrom() + "s" + " ~ " + td.getTaskConfig().getIntervalTo() + "s");
@@ -318,7 +319,7 @@ public class DialogHelper {
         }
 
 
-        if(td.getTask().equals("A-PVT")){
+        if (td.getTask().equals("A-PVT")) {
             tvHistoryNogo.setVisibility(View.GONE);
         }
     }

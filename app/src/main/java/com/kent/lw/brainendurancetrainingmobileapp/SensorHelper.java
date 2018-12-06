@@ -5,19 +5,19 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
 
 public class SensorHelper implements SensorEventListener {
 
+    private final int accSensor = Sensor.TYPE_LINEAR_ACCELERATION;
+    private final int gryoSensor = Sensor.TYPE_GYROSCOPE;
     // acc
     private SensorManager sm;
     private Sensor accelerometer, gyroscope;
-    private final int accSensor = Sensor.TYPE_LINEAR_ACCELERATION;
-    private final int gryoSensor = Sensor.TYPE_GYROSCOPE;
 
     public SensorHelper(Context context) {
         initAcc(context);
     }
+
     // acc
     public void initAcc(Context context) {
         sm = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);

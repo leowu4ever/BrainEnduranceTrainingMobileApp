@@ -62,9 +62,9 @@ public class FirebaseStorageHelper {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     successCount++;
-                    Toast.makeText(context, successCount + "/" +  totalFileCount + " Successful " , Toast.LENGTH_SHORT).show();
-                    if(successCount == totalFileCount) {
-                        Toast.makeText(context,  "Completed " , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, successCount + "/" + totalFileCount + " Successful ", Toast.LENGTH_SHORT).show();
+                    if (successCount == totalFileCount) {
+                        Toast.makeText(context, "Completed ", Toast.LENGTH_SHORT).show();
 
                     }
                 }
