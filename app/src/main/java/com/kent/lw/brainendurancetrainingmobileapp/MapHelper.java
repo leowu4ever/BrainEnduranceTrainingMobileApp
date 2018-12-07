@@ -10,13 +10,18 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.ButtCap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.RoundCap;
 import com.google.maps.android.SphericalUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapHelper {
@@ -25,6 +30,9 @@ public class MapHelper {
     public static int MAX_DISTANCE_UPDATE_THRESHOLD = 100;
     private final int MAP_UPDATE_INTERVAL = 3000;
     private int MIN_DISTANCE_UPDATE_THRESHOLD = 10;
+    public static int MAP_ZOOM = 14;
+    private List<Polyline> polylineList = new ArrayList<Polyline>();
+    private Marker startMarker;
 
     public LatLng convertToLatLng(Location location) {
         return new LatLng(location.getLatitude(), location.getLongitude());
@@ -35,17 +43,18 @@ public class MapHelper {
         return dis / 1000;
     }
 
-    public void removePolylines(List<Polyline> polylineList) {
+    public void removePolylines() {
         for (Polyline polyline : polylineList) {
             polyline.remove();
         }
         polylineList.clear();
+        startMarker.remove();
     }
 
-    public void drawAPolyline(GoogleMap mMap, List<Polyline> polylineList, LatLng l1, LatLng l2, Context context, float curSpeed) {
+    public void drawAPolyline(GoogleMap mMap, LatLng l1, LatLng l2, Context context, float curSpeed) {
         Polyline polyline = mMap.addPolyline(new PolylineOptions().add(l1, l2));
-        polyline.setEndCap(new ButtCap());
-        polyline.setWidth(10);
+        polyline.setEndCap(new RoundCap());
+        polyline.setWidth(13);
 
         // alert color here
 
@@ -112,5 +121,15 @@ public class MapHelper {
         } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
+    }
+
+    public void zoomToLoc(GoogleMap map, LatLng loc) {
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(loc.latitude - 0.009
+                , loc.longitude), MAP_ZOOM);
+        map.animateCamera(cameraUpdate, 100, null);
+    }
+
+    public void addMarker(GoogleMap map, LatLng loc) {
+        startMarker = map.addMarker(new MarkerOptions().position(loc));
     }
 }

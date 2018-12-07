@@ -1,6 +1,7 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,8 +20,6 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -30,6 +29,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,6 +39,8 @@ import java.util.Random;
 import io.flic.lib.FlicAppNotInstalledException;
 import io.flic.lib.FlicManager;
 import io.flic.lib.FlicManagerInitializedCallback;
+
+import com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback;
 
 public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, OnMapReadyCallback, View.OnClickListener {
 
@@ -68,11 +71,10 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public MapHelper mapHelper;
     private ImageButton btnProfile, btnFlic, btnDiary, btnMap;
     // map
-    private GoogleMap mMap;
+    private GoogleMap map;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private LatLng lastLoc;
     private LocationRequest mLocationRequest;
-    private List<Polyline> polylineList;
     private int countdown = 4000;
     private float distance, speed, pace;
 
@@ -115,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         setContentView(R.layout.activity_main);
 
         lastLoc = new LatLng(0, 0);
-        polylineList = new ArrayList<Polyline>();
         initMap();
 
         initBtns();
@@ -177,6 +178,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             public void onComplete(@NonNull Task task) {
                 if (task.isSuccessful()) {
                     lastLoc = mapHelper.convertToLatLng((Location) task.getResult());
+                    mapHelper.zoomToLoc(map, lastLoc);
+                    mapHelper.addMarker(map, lastLoc);
                     trainingData.setLocUpdateTimeList(System.currentTimeMillis());
                     trainingData.setLatList(lastLoc.latitude);
                     trainingData.setLngList(lastLoc.longitude);
@@ -193,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         } else {
             // start after count down
-            handler.postDelayed(durationRunnable, COUNTDONW_WAIT);
+            handler.postDelayed(durationRunnable, 4000);
             createStiTypeList();
             handler.postDelayed(stimulusRunnable, COUNTDONW_WAIT);
         }
@@ -224,6 +227,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     public void finishTraining() {
 
+        hideTrainingFragment();
+
         trainingStarted = false;
         soundHelper.stopNoiseSound();
         soundHelper.playFinishSound(1, 1, 0, 0, 1);
@@ -234,24 +239,43 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
 
-        mapHelper.removePolylines(polylineList);
-        trainingData.setName(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""));
+        SnapshotReadyCallback callback = new SnapshotReadyCallback() {
+            Bitmap bitmap;
 
-        FirebaseDBHelper.uploadAllData();
-        FileHelper.saveTrainingDataToLocal();
+            @Override
+            public void onSnapshotReady(Bitmap snapshot) {
+                // TODO Auto-generated method stub
+                bitmap = snapshot;
+                try {
+                    File file = new File(FileHelper.PATH_ROUTE_DATA + MainActivity.trainingData.getStartTime()  + ".png");
+                    FileOutputStream out = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 
-        // overall
-        overallData.setRtList(trainingData.getAvgResTime());
-        overallData.setAccuracyList(trainingData.getAccuracy());
-        FileHelper.saveOverallDataToLocal();
+                    mapHelper.removePolylines();
+                    trainingData.setName(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""));
+                    FirebaseDBHelper.uploadAllData();
+                    FileHelper.saveTrainingDataToLocal();
 
-        hideTrainingFragment();
+                    // overall
+                    overallData.setRtList(trainingData.getAvgResTime());
+                    overallData.setAccuracyList(trainingData.getAccuracy());
+                    FileHelper.saveOverallDataToLocal();
 
-        btnProfile.setVisibility(View.VISIBLE);
-        btnFlic.setVisibility(View.VISIBLE);
-        btnDiary.setVisibility(View.VISIBLE);
-        trainingData.reset();
-        task.reset();
+                    btnProfile.setVisibility(View.VISIBLE);
+                    btnFlic.setVisibility(View.VISIBLE);
+                    btnDiary.setVisibility(View.VISIBLE);
+                    trainingData.reset();
+                    task.reset();
+
+                    zoomToCurLoc();
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        map.snapshot(callback);
     }
 
     public void resetTempData() {
@@ -269,12 +293,14 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setPadding(10, 10, 10, 10);
-        mapHelper.updateLocationUI(mMap, this);
+        map = googleMap;
+        map.setPadding(10, 10, 10, 10);
+        mapHelper.updateLocationUI(map, this);
         createLocationRequest();
         zoomToCurLoc();
     }
+
+
 
     public void zoomToCurLoc() {
         try {
@@ -284,9 +310,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 public void onComplete(@NonNull Task task) {
                     if (task.isSuccessful()) {
                         Location location = (Location) task.getResult();
-                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude() - 0.0035, location.getLongitude()), 15);
-                        mMap.animateCamera(cameraUpdate);
-
+                        mapHelper.zoomToLoc(map, new LatLng(location.getLatitude(), location.getLongitude()));
                     } else {
                     }
                 }
@@ -312,6 +336,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                                 for (Location location : locationResult.getLocations()) {
                                     LatLng curLoc = mapHelper.convertToLatLng(location);
+                                    mapHelper.zoomToLoc(map, curLoc);
 
                                     long newLocTime = System.currentTimeMillis();
                                     long lastLocTime = trainingData.getLastLocUpdateTime();
@@ -347,7 +372,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                         trainingData.setSpeedList(curSpeed);
 
                                         // draw route based on speed
-                                        mapHelper.drawAPolyline(mMap, polylineList, lastLoc, curLoc, MainActivity.this, curSpeed);
+                                        mapHelper.drawAPolyline(map, lastLoc, curLoc, MainActivity.this, curSpeed);
 
                                         // update location
                                         lastLoc = curLoc;

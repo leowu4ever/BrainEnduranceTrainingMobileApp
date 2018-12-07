@@ -2,10 +2,13 @@ package com.kent.lw.brainendurancetrainingmobileapp;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class DialogHelper {
@@ -17,7 +20,7 @@ public class DialogHelper {
     public TextView tvHistoryNogo, tvHistoryInterval, tvHistoryVolume, tvHistoryNoise, tvHistoryThreshold, tvHistoryMinspeed;
     public Dialog diaryDialog, trainingDiaryDialog, motiDialog, rpeDialog, nasaDialog;
     public Button btnTrainingDiary, btnMoti, btnRpe, btnNasa, btnTrainingDiarySave, btnMotiSave, btnRpeSave, btnNasaSave;
-
+    public ImageView imgRoute;
 
     public DialogHelper(Context context) {
         init(context);
@@ -63,11 +66,10 @@ public class DialogHelper {
         btnFinishOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.showTaskFragment();
                 dismissFinishDialog();
+                MainActivity.showTaskFragment();
             }
         });
-
 
         btnDetailOk = detailDialog.findViewById(R.id.btn_detail_ok);
         btnDetailOk.setOnClickListener(new View.OnClickListener() {
@@ -180,6 +182,7 @@ public class DialogHelper {
         tvHistoryThreshold = detailDialog.findViewById(R.id.tv_history_threshold);
         tvHistoryMinspeed = detailDialog.findViewById(R.id.tv_history_minspeed);
 
+        imgRoute = detailDialog.findViewById(R.id.img_history_route);
     }
 
     public void setupDialog(Dialog d, int layout) {
@@ -318,10 +321,11 @@ public class DialogHelper {
             tvHistoryMinspeed.setVisibility(View.GONE);
         }
 
-
         if (td.getTask().equals("A-PVT")) {
             tvHistoryNogo.setVisibility(View.GONE);
         }
+        Bitmap bmImg = BitmapFactory.decodeFile(FileHelper.PATH_ROUTE_DATA + td.getStartTime() + ".png");
+        imgRoute.setImageBitmap(bmImg);
     }
 }
 

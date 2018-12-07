@@ -15,7 +15,7 @@ public class OverallData {
     }
 
     public long getOverallRT() {
-        if (rtList.size() != 0) {
+        if (getValidTrainingCount() != 0) {
             return getTotalRT() / getValidTrainingCount();
         } else {
             return 0;
@@ -23,7 +23,7 @@ public class OverallData {
     }
 
     public float getOverallAccuracy() {
-        if (accuracyList.size() != 0) {
+        if (getValidTrainingCount() != 0) {
             float a = getTotalAccuracy() / getValidTrainingCount();
             a = Float.parseFloat(String.format("%.1f", a));
             return a;

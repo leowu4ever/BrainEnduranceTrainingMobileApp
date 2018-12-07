@@ -20,6 +20,8 @@ public class FileHelper {
     public static String PATH_TRAINING_DATA = PATH_ROOT + "Training Data/";
     public static String PATH_MOTION_DATA = PATH_ROOT + "Motion Data/";
     public static String PATH_OVERALL_DATA = PATH_ROOT + "Overall Data/";
+    public static String PATH_ROUTE_DATA = PATH_ROOT + "Route Data/";
+
     public static String FILENAME_OVERALL_DATA = "Overall.json";
 
 
@@ -105,6 +107,12 @@ public class FileHelper {
         if (!overallDataPath.exists()) {
             overallDataPath.mkdir();
         }
+
+        File routelDataPath = new File(PATH_ROUTE_DATA);
+        if (!routelDataPath.exists()) {
+            routelDataPath.mkdir();
+        }
+
 
         File file = new File(PATH_OVERALL_DATA + FILENAME_OVERALL_DATA);
         if (!file.exists()) {
