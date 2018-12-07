@@ -321,8 +321,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                     float newDis = mapHelper.getDistanceInKM(lastLoc, curLoc);
 
                                     if (newDis < mapHelper.MAX_DISTANCE_UPDATE_THRESHOLD) {
-                                        // draw route based on speed
-                                        mapHelper.drawAPolyline(mMap, polylineList, lastLoc, curLoc, MainActivity.this);
 
                                         // update distance
                                         distance = distance + newDis;
@@ -347,6 +345,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                         String curSpeedString = String.format("%.1f", curSpeed);
                                         trainingFragment.setTvCurSpeed(curSpeedString);
                                         trainingData.setSpeedList(curSpeed);
+
+                                        // draw route based on speed
+                                        mapHelper.drawAPolyline(mMap, polylineList, lastLoc, curLoc, MainActivity.this, curSpeed);
 
                                         // update location
                                         lastLoc = curLoc;

@@ -42,13 +42,35 @@ public class MapHelper {
         polylineList.clear();
     }
 
-    public void drawAPolyline(GoogleMap mMap, List<Polyline> polylineList, LatLng l1, LatLng l2, Context context) {
+    public void drawAPolyline(GoogleMap mMap, List<Polyline> polylineList, LatLng l1, LatLng l2, Context context, float curSpeed) {
         Polyline polyline = mMap.addPolyline(new PolylineOptions().add(l1, l2));
         polyline.setEndCap(new ButtCap());
         polyline.setWidth(10);
 
         // alert color here
-        polyline.setColor(ContextCompat.getColor(context, R.color.colorAccent));
+
+        int color = 0;
+        if (curSpeed > 0 && curSpeed <= 2) {
+            color = R.color.s1;
+        } else if (curSpeed > 2 && curSpeed <= 4) {
+            color = R.color.s2;
+        } else if (curSpeed > 4 && curSpeed <= 6) {
+            color = R.color.s3;
+        } else if (curSpeed > 6 && curSpeed <= 8) {
+            color = R.color.s4;
+        } else if (curSpeed > 8 && curSpeed <= 10) {
+            color = R.color.s5;
+        } else if (curSpeed > 10 && curSpeed <= 12) {
+            color = R.color.s6;
+        } else if (curSpeed > 12 && curSpeed <= 14) {
+            color = R.color.s7;
+        } else if (curSpeed > 14 && curSpeed <= 16) {
+            color = R.color.s8;
+        } else {
+            color = R.color.s9;
+        }
+
+        polyline.setColor(ContextCompat.getColor(context, color));
         polylineList.add(polyline);
     }
 
