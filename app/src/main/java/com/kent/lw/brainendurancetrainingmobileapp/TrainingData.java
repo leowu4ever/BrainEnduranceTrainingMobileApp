@@ -19,15 +19,15 @@ public class TrainingData {
     public float accuracy;
     public long totalResTime, avgResTime;
 
-    public List<Long> stiMiliList, resMiliList, resTimeList;
-    public List<Integer> stiTypeList;
+    public ArrayList<Long> stiMiliList, resMiliList, resTimeList;
+    public ArrayList<Integer> stiTypeList;
 
     // physical
     public float distance, avgSpeed, avgPace;
-    public List<Float> speedList;
+    public ArrayList<Float> speedList;
 
-    public List<Double> latList, lngList;
-    public List<Long> locUpdateTimeList;
+    public ArrayList<Double> latList, lngList;
+    public ArrayList<Long> locUpdateTimeList;
 
 
     public TrainingData() {
@@ -171,7 +171,7 @@ public class TrainingData {
         this.avgResTime = avgResTime;
     }
 
-    public List<Long> getResMiliList() {
+    public ArrayList<Long> getResMiliList() {
         return resMiliList;
     }
 
@@ -179,7 +179,7 @@ public class TrainingData {
         resMiliList.add(resMili);
     }
 
-    public List<Long> getStiMiliList() {
+    public ArrayList<Long> getStiMiliList() {
         return stiMiliList;
     }
 
@@ -187,7 +187,7 @@ public class TrainingData {
         stiMiliList.add(stiMili);
     }
 
-    public List<Integer> getStiTypeList() {
+    public ArrayList<Integer> getStiTypeList() {
         return stiTypeList;
     }
 
@@ -203,7 +203,7 @@ public class TrainingData {
         this.stiTypeList.set(index, stiType);
     }
 
-    public List<Long> getResTimeList() {
+    public ArrayList<Long> getResTimeList() {
         return resTimeList;
     }
 
@@ -244,7 +244,7 @@ public class TrainingData {
     }
 
 
-    public List<Float> getSpeedList() {
+    public ArrayList<Float> getSpeedList() {
         return speedList;
     }
 
@@ -268,7 +268,7 @@ public class TrainingData {
         this.timeTrained = timeTrained;
     }
 
-    public List<Double> getLatList() {
+    public ArrayList<Double> getLatList() {
         return latList;
     }
 
@@ -276,7 +276,7 @@ public class TrainingData {
         latList.add(lat);
     }
 
-    public List<Double> getLngList() {
+    public ArrayList<Double> getLngList() {
         return lngList;
     }
 
@@ -284,7 +284,7 @@ public class TrainingData {
         lngList.add(lng);
     }
 
-    public List<Long> getLocUpdateTimeList() {
+    public ArrayList<Long> getLocUpdateTimeList() {
         return locUpdateTimeList;
     }
 

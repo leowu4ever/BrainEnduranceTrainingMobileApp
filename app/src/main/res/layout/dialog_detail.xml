@@ -253,6 +253,21 @@
                     android:textAlignment="center"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/colorPrimary" />
+
+                <com.jjoe64.graphview.GraphView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dip"
+                    android:id="@+id/speedGraph" />
+
+
             </LinearLayout>
 
         </LinearLayout>

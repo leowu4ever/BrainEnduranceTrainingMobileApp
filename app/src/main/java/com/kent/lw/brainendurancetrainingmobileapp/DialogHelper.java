@@ -11,6 +11,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class DialogHelper {
 
     public Dialog pauseDialog, finishDialog, countdownDialog, lockDialog, detailDialog;
@@ -326,6 +333,19 @@ public class DialogHelper {
         }
         Bitmap bmImg = BitmapFactory.decodeFile(FileHelper.PATH_ROUTE_DATA + td.getStartTime() + ".png");
         imgRoute.setImageBitmap(bmImg);
+
+        GraphView graph = detailDialog.findViewById(R.id.speedGraph);
+
+        graph.removeAllSeries();
+        ArrayList<Float> speedList = td.getSpeedList();
+        DataPoint[] dataPoints = new DataPoint[speedList.size()];
+
+
+        for(int i = 0; i < speedList.size(); i++) {
+            dataPoints[i] = (new DataPoint(i,speedList.get(i)));
+        }
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints);
+        graph.addSeries(series);
     }
 }
 
