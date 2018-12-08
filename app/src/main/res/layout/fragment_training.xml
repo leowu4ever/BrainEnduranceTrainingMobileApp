@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -46,6 +47,7 @@
                 android:id="@+id/tv_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="0"
                 android:textAlignment="center"
                 android:textAllCaps="true"
@@ -56,6 +58,8 @@
                 android:id="@+id/textView44"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
                 android:text="Distance(km)"
                 android:textAlignment="center"
                 android:textAllCaps="false"
@@ -88,6 +92,7 @@
                 android:id="@+id/textView44"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Speed(km/h)"
                 android:textAlignment="center"
                 android:textAllCaps="false"
@@ -116,7 +121,7 @@
 
             <TextView
                 android:id="@+id/tv_duration"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="0M 0S"
