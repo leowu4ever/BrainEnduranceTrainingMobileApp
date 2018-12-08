@@ -1,11 +1,22 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class FirebaseDBHelper {
 
     public static DatabaseReference db;
+    public static String rootPath = MainActivity.trainingData.getName() + "/" + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getStartTime()) + "/";
+
 
     public FirebaseDBHelper() {
 
@@ -14,7 +25,6 @@ public class FirebaseDBHelper {
     public static void uploadAllData() {
         db = FirebaseDatabase.getInstance().getReference();
 
-        String rootPath = MainActivity.trainingData.getName() + "/" + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getStartTime()) + "/";
 
         db.child(rootPath + "1_User Info" + "/" + "1_Name").setValue(MainActivity.trainingData.getName());
         db.child(rootPath + "1_User Info" + "/" + "2_Start time").setValue(MainActivity.trainingData.getStartTime());
@@ -47,7 +57,11 @@ public class FirebaseDBHelper {
         db.child(rootPath + "6_Location" + "/" + "1_Latitude list").setValue(MainActivity.trainingData.getLatList());
         db.child(rootPath + "6_Location" + "/" + "2_Longitude list").setValue(MainActivity.trainingData.getLngList());
 
-        // db.child("lwu@kentacuk").removeValue();
 
+    }
+
+    public static void updateStorageRef(ArrayList<String> fileList) {
+        db = FirebaseDatabase.getInstance().getReference();
+        db.child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", "") + "/" + "storageRef").setValue(fileList);
     }
 }

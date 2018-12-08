@@ -24,8 +24,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,7 +32,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import io.flic.lib.FlicAppNotInstalledException;
@@ -172,6 +169,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         btnProfile.setVisibility(View.GONE);
         btnFlic.setVisibility(View.GONE);
         btnDiary.setVisibility(View.GONE);
+        btnMap.setVisibility(View.GONE);
+
 
         Task task = mFusedLocationProviderClient.getLastLocation();
         task.addOnCompleteListener(this, new OnCompleteListener() {
@@ -180,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 if (task.isSuccessful()) {
                     lastLoc = mapHelper.convertToLatLng((Location) task.getResult());
                     mapHelper.zoomToLoc(map, lastLoc);
-                    mapHelper.addMarker(map, lastLoc);
+                    mapHelper.addStartMarker(map, lastLoc);
                     trainingData.setLocUpdateTimeList(System.currentTimeMillis());
                     trainingData.setLatList(lastLoc.latitude);
                     trainingData.setLngList(lastLoc.longitude);
@@ -240,6 +239,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
 
+        mapHelper.addEndMarker(map, new LatLng(trainingData.getLastLat(), trainingData.getLastLng()));
+
         SnapshotReadyCallback callback = new SnapshotReadyCallback() {
             Bitmap bitmap;
 
@@ -265,6 +266,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     btnProfile.setVisibility(View.VISIBLE);
                     btnFlic.setVisibility(View.VISIBLE);
                     btnDiary.setVisibility(View.VISIBLE);
+                    btnMap.setVisibility(View.VISIBLE);
+
                     trainingData.reset();
                     task.reset();
 
@@ -336,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                                 for (Location location : locationResult.getLocations()) {
                                     LatLng curLoc = mapHelper.convertToLatLng(location);
-                                    mapHelper.zoomToLoc(map, new LatLng(trainingData.getMidLat(), trainingData.getMidLat()));
+                                    mapHelper.zoomToLoc(map, new LatLng(trainingData.getMidLat(), trainingData.getMidLng()));
 
                                     long newLocTime = System.currentTimeMillis();
                                     long lastLocTime = trainingData.getLastLocUpdateTime();

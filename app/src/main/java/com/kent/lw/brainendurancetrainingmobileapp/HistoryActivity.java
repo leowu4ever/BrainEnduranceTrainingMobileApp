@@ -15,7 +15,7 @@ import java.io.File;
 
 public class HistoryActivity extends AppCompatActivity {
 
-    private Button btnHistoryOk, btnHistoryUpload;
+    private Button btnHistoryOk, btnHistoryUpload, btnHistoryDelete;
     private TextView tvOverallAccuracy, tvOverallRT;
     private DialogHelper dh;
     private File[] files;
@@ -50,6 +50,16 @@ public class HistoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseStorageHelper.uploadAllFileToFirestorage(HistoryActivity.this);
+            }
+        });
+
+        btnHistoryDelete = findViewById(R.id.btn_delete);
+        btnHistoryDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseStorageHelper.deleteAFolderToFirestorage(HistoryActivity.this);
+                onBackPressed();
+
             }
         });
 
