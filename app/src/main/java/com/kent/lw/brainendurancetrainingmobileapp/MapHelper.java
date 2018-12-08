@@ -32,7 +32,7 @@ public class MapHelper {
     private int MIN_DISTANCE_UPDATE_THRESHOLD = 10;
     public static int MAP_ZOOM = 14;
     private List<Polyline> polylineList = new ArrayList<Polyline>();
-    private Marker startMarker;
+    private Marker startMarker,  endMarker;
 
     public LatLng convertToLatLng(Location location) {
         return new LatLng(location.getLatitude(), location.getLongitude());
@@ -49,6 +49,7 @@ public class MapHelper {
         }
         polylineList.clear();
         startMarker.remove();
+        endMarker.remove();
     }
 
     public void drawAPolyline(GoogleMap mMap, LatLng l1, LatLng l2, Context context, float curSpeed) {
@@ -103,19 +104,19 @@ public class MapHelper {
         }
     }
 
-    public void updateLocationUI(GoogleMap mMap, Context context) {
+    public void updateLocationUI(GoogleMap map, Context context) {
         try {
             if (MainActivity.locPermissionEnabled) {
-                mMap.setMyLocationEnabled(true);
-                mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                mMap.getUiSettings().setZoomControlsEnabled(false);
-                mMap.getUiSettings().setCompassEnabled(false);
-                mMap.getUiSettings().setZoomGesturesEnabled(false);
-                mMap.getUiSettings().setTiltGesturesEnabled(false);
-                mMap.getUiSettings().setRotateGesturesEnabled(false);
+                map.setMyLocationEnabled(true);
+                map.getUiSettings().setMyLocationButtonEnabled(false);
+                map.getUiSettings().setZoomControlsEnabled(false);
+                map.getUiSettings().setCompassEnabled(false);
+                map.getUiSettings().setZoomGesturesEnabled(false);
+                map.getUiSettings().setTiltGesturesEnabled(false);
+                map.getUiSettings().setRotateGesturesEnabled(false);
             } else {
-                mMap.setMyLocationEnabled(false);
-                mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                map.setMyLocationEnabled(false);
+                map.getUiSettings().setMyLocationButtonEnabled(false);
                 getLocationPermission(context);
             }
         } catch (SecurityException e) {
@@ -129,7 +130,12 @@ public class MapHelper {
         map.animateCamera(cameraUpdate, 100, null);
     }
 
-    public void addMarker(GoogleMap map, LatLng loc) {
+    public void addStartMarker(GoogleMap map, LatLng loc) {
         startMarker = map.addMarker(new MarkerOptions().position(loc));
     }
+
+    public void addEndMarker(GoogleMap map, LatLng loc) {
+        endMarker = map.addMarker(new MarkerOptions().position(loc));
+    }
+    
 }

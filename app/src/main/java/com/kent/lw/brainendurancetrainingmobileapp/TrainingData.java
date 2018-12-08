@@ -290,6 +290,25 @@ public class TrainingData {
         }
     }
 
+    public double getLastLat() {
+        int size = latList.size();
+        if(size > 0) {
+            return latList.get(size - 1);
+        } else {
+            return 0d;
+        }
+    }
+
+    public double getLastLng() {
+        int size = lngList.size();
+        if(size > 0) {
+            return lngList.get(size - 1);
+        } else {
+            return 0d;
+        }
+    }
+
+
     public void setLatList(Double lat) {
         latList.add(lat);
     }
