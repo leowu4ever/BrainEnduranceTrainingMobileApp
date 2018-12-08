@@ -12,10 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.ValueDependentColor;
+import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class DialogHelper {
@@ -295,29 +298,31 @@ public class DialogHelper {
         detailDialog.show();
     }
 
-    public void setupHistoryDialog(TrainingData td) {
+    public void setupHistoryDialog(final TrainingData td) {
 
         tvHistoryDate.setText(DateHelper.getDateFromMili(td.getStartTime()) + " " + DateHelper.getTimeFromMili(td.getStartTime()));
         tvHistoryActivity.setText("Activity: " + td.getActivity());
-        tvHistoryTask.setText("Cognitive task: " + td.getTask());
-        tvHistoryDif.setText("Difficulty level: " + td.getDif());
+        tvHistoryTask.setText("Task: " + td.getTask());
+        tvHistoryDif.setText("Level: " + td.getDif());
         tvHistoryDuration.setText("Duration: " + DateHelper.getTimeFromMs(td.getDuration()));
 
         tvHistoryTimeTrained.setText("Time trained: " + DateHelper.getTimeFromMs(td.getTimeTrained()));
-        tvHistoryDistance.setText("Distance: " + td.getDistance() + "KM");
-        tvHistorySpeed.setText("Avg speed: " + td.getAvgSpeed() + "KM/H");
-        tvHistoryPace.setText("Avg pace: " + td.getAvgPace() + "MIN/KM");
-        tvHistoryART.setText("Avg Response time: " + td.getAvgResTime() + "ms");
+        tvHistoryDistance.setText("Distance: " + td.getDistance() + "km");
+        tvHistorySpeed.setText("Avg speed: " + td.getAvgSpeed() + "km/h");
+        tvHistoryPace.setText("Avg pace: " + td.getAvgPace() + "min/km");
+        tvHistoryART.setText("Avg res time: " + td.getAvgResTime() + "ms");
         tvHistoryAccuracy.setText("Accuracy: " + td.getAccuracy() + "%");
 
         if (td.getDif().equals("Custom")) {
 
-            tvHistoryNogo.setText("Proportion of NO-GO: " + td.getTaskConfig().getNogoPropotion() + "%");
-            tvHistoryInterval.setText("Interstimulus interval: " + td.getTaskConfig().getIntervalFrom() + "s" + " ~ " + td.getTaskConfig().getIntervalTo() + "s");
-            tvHistoryVolume.setText("Tone volume: " + td.getTaskConfig().getVolumeFrom() * 100 + "%" + " ~ " + td.getTaskConfig().getVolumeTo() * 100 + "%");
-            tvHistoryNoise.setText("Noise volume: " + td.getTaskConfig().getNoise() * 100 + "%");
-            tvHistoryThreshold.setText("Valid response time: " + td.getTaskConfig().getResThreshold() + "ms");
-            tvHistoryMinspeed.setText("Minimum speed: " + td.getTaskConfig().getMinSpeed() + "km/h");
+            tvHistoryNogo.setText("NO-GO: " + td.getTaskConfig().getNogoPropotion() + "%");
+            tvHistoryInterval.setText("Interval: " + td.getTaskConfig().getIntervalFrom() +  "~" + td.getTaskConfig().getIntervalTo() + "s");
+            tvHistoryVolume.setText("Tone vol: " + td.getTaskConfig().getVolumeFrom() * 100 + "~" +
+                    "" + td.getTaskConfig().getVolumeTo() * 100 + "%");
+            tvHistoryNoise.setText("Noise vol" +
+                    ": " + td.getTaskConfig().getNoise() * 100 + "%");
+            tvHistoryThreshold.setText("Valid res time: " + td.getTaskConfig().getResThreshold() + "ms");
+            tvHistoryMinspeed.setText("Min speed: " + td.getTaskConfig().getMinSpeed() + "km/h");
 
         } else {
             tvHistoryNogo.setVisibility(View.GONE);
@@ -331,21 +336,60 @@ public class DialogHelper {
         if (td.getTask().equals("A-PVT")) {
             tvHistoryNogo.setVisibility(View.GONE);
         }
+
+        // update route
         Bitmap bmImg = BitmapFactory.decodeFile(FileHelper.PATH_ROUTE_DATA + td.getStartTime() + ".png");
         imgRoute.setImageBitmap(bmImg);
 
-        GraphView graph = detailDialog.findViewById(R.id.speedGraph);
-
-        graph.removeAllSeries();
+        // update speed graph
+        GraphView speedGraph = detailDialog.findViewById(R.id.graph_speed);
+        speedGraph.removeAllSeries();
         ArrayList<Float> speedList = td.getSpeedList();
-        DataPoint[] dataPoints = new DataPoint[speedList.size()];
-
+        DataPoint[] speedDataPoints = new DataPoint[speedList.size()];
 
         for(int i = 0; i < speedList.size(); i++) {
-            dataPoints[i] = (new DataPoint(i,speedList.get(i)));
+            speedDataPoints[i] = (new DataPoint(i, speedList.get(i)));
         }
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints);
-        graph.addSeries(series);
+
+        LineGraphSeries<DataPoint> speedSeries = new LineGraphSeries<>(speedDataPoints);
+        speedSeries.setColor(Color.rgb(0, 133, 119));
+        speedSeries.setDrawDataPoints(true);
+        speedSeries.setDataPointsRadius(5);
+        speedSeries.setThickness(2);
+        speedGraph.addSeries(speedSeries);
+        speedGraph.setTitle("Speed(km/h)");
+        speedGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+
+
+
+        // update res speed time
+        GraphView resGraph = detailDialog.findViewById(R.id.graph_res);
+        resGraph.removeAllSeries();
+        ArrayList<Long> resList = td.getResTimeList();
+        DataPoint[] resDataPoints = new DataPoint[resList.size()];
+
+        for(int i = 0; i < resList.size(); i++) {
+            resDataPoints[i] = (new DataPoint(i, resList.get(i)));
+        }
+
+        BarGraphSeries<DataPoint> resSeries = new BarGraphSeries<>(resDataPoints);
+        resSeries.setColor(Color.rgb(255, 0, 0));
+
+        resSeries.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+            @Override
+            public int get(DataPoint data) {
+                if(data.getY() > td.getTaskConfig().getResThreshold()) {
+                    return Color.rgb(216, 27, 96);
+                } else {
+                    return Color.rgb(0, 133, 119);
+                }
+            }
+        });
+
+        resGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        resGraph.addSeries(resSeries);
+        resGraph.setTitle("Response time(ms)");
+        resGraph.setPadding(50,50,50,50);
     }
 }
 

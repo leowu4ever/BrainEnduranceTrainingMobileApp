@@ -269,7 +269,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                     zoomToCurLoc();
 
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -21,7 +21,7 @@ public class DateHelper {
     }
 
     public static String getTimeFromMs(long ms) {
-        return (ms / 1000) / 60 + "M " + (ms / 1000) % 60 + "S";
+        return (ms / 1000) / 60 + "m " + (ms / 1000) % 60 + "s";
     }
 
     public static String getDateTimeFromMili(long mili) {
