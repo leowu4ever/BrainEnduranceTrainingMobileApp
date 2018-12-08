@@ -24,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -335,7 +336,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                                 for (Location location : locationResult.getLocations()) {
                                     LatLng curLoc = mapHelper.convertToLatLng(location);
-                                    mapHelper.zoomToLoc(map, curLoc);
+                                    mapHelper.zoomToLoc(map, new LatLng(trainingData.getMidLat(), trainingData.getMidLat()));
 
                                     long newLocTime = System.currentTimeMillis();
                                     long lastLocTime = trainingData.getLastLocUpdateTime();

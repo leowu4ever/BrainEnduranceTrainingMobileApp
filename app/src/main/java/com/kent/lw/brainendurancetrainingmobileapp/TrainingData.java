@@ -272,6 +272,24 @@ public class TrainingData {
         return latList;
     }
 
+    public double getMidLat() {
+        int size = latList.size();
+        if(size > 0) {
+            return latList.get(size / 2);
+        } else {
+            return 0d;
+        }
+    }
+
+    public double getMidLng() {
+        int size = lngList.size();
+        if(size > 0) {
+            return lngList.get(size / 2);
+        } else {
+            return 0d;
+        }
+    }
+
     public void setLatList(Double lat) {
         latList.add(lat);
     }
