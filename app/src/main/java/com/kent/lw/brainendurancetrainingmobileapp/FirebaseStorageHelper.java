@@ -3,7 +3,6 @@ package com.kent.lw.brainendurancetrainingmobileapp;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -87,7 +86,6 @@ public class FirebaseStorageHelper {
 
                     fileList.add(firebaseStoragePath);
                     FirebaseDBHelper.updateStorageRef(fileList);
-
                 }
             });
         }
@@ -101,7 +99,7 @@ public class FirebaseStorageHelper {
         db.child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", "") + "/" + "storageRef").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot data : dataSnapshot.getChildren()){
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
 
                     StorageReference desertRef = storage.getReference().child(data.getValue().toString());
                     desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -128,9 +126,5 @@ public class FirebaseStorageHelper {
         FileHelper.initDir();
         MainActivity.overallData.reset();
         FileHelper.saveOverallDataToLocal();
-
-
-
-
     }
 }

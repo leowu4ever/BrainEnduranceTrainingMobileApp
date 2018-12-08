@@ -21,6 +21,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -37,8 +38,6 @@ import java.util.Random;
 import io.flic.lib.FlicAppNotInstalledException;
 import io.flic.lib.FlicManager;
 import io.flic.lib.FlicManagerInitializedCallback;
-
-import com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback;
 
 public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, OnMapReadyCallback, View.OnClickListener {
 
@@ -249,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 // TODO Auto-generated method stub
                 bitmap = snapshot;
                 try {
-                    File file = new File(FileHelper.PATH_ROUTE_DATA + MainActivity.trainingData.getStartTime()  + ".png");
+                    File file = new File(FileHelper.PATH_ROUTE_DATA + MainActivity.trainingData.getStartTime() + ".png");
                     FileOutputStream out = new FileOutputStream(file);
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 
@@ -302,7 +301,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         createLocationRequest();
         zoomToCurLoc();
     }
-
 
 
     public void zoomToCurLoc() {

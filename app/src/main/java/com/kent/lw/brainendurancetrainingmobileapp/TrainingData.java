@@ -1,7 +1,6 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class TrainingData {
 
@@ -272,9 +271,13 @@ public class TrainingData {
         return latList;
     }
 
+    public void setLatList(Double lat) {
+        latList.add(lat);
+    }
+
     public double getMidLat() {
         int size = latList.size();
-        if(size > 0) {
+        if (size > 0) {
             return latList.get(size / 2);
         } else {
             return 0d;
@@ -283,7 +286,7 @@ public class TrainingData {
 
     public double getMidLng() {
         int size = lngList.size();
-        if(size > 0) {
+        if (size > 0) {
             return lngList.get(size / 2);
         } else {
             return 0d;
@@ -292,7 +295,7 @@ public class TrainingData {
 
     public double getLastLat() {
         int size = latList.size();
-        if(size > 0) {
+        if (size > 0) {
             return latList.get(size - 1);
         } else {
             return 0d;
@@ -301,16 +304,11 @@ public class TrainingData {
 
     public double getLastLng() {
         int size = lngList.size();
-        if(size > 0) {
+        if (size > 0) {
             return lngList.get(size - 1);
         } else {
             return 0d;
         }
-    }
-
-
-    public void setLatList(Double lat) {
-        latList.add(lat);
     }
 
     public ArrayList<Double> getLngList() {

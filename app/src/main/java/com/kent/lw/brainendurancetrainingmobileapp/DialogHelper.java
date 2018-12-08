@@ -12,14 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
 
 public class DialogHelper {
 
@@ -316,7 +313,7 @@ public class DialogHelper {
         if (td.getDif().equals("Custom")) {
 
             tvHistoryNogo.setText("NO-GO: " + td.getTaskConfig().getNogoPropotion() + "%");
-            tvHistoryInterval.setText("Interval: " + td.getTaskConfig().getIntervalFrom() +  "~" + td.getTaskConfig().getIntervalTo() + "s");
+            tvHistoryInterval.setText("Interval: " + td.getTaskConfig().getIntervalFrom() + "~" + td.getTaskConfig().getIntervalTo() + "s");
             tvHistoryVolume.setText("Tone vol: " + td.getTaskConfig().getVolumeFrom() * 100 + "~" +
                     "" + td.getTaskConfig().getVolumeTo() * 100 + "%");
             tvHistoryNoise.setText("Noise vol" +
@@ -347,7 +344,7 @@ public class DialogHelper {
         ArrayList<Float> speedList = td.getSpeedList();
         DataPoint[] speedDataPoints = new DataPoint[speedList.size()];
 
-        for(int i = 0; i < speedList.size(); i++) {
+        for (int i = 0; i < speedList.size(); i++) {
             speedDataPoints[i] = (new DataPoint(i, speedList.get(i)));
         }
 
@@ -361,14 +358,13 @@ public class DialogHelper {
         speedGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
 
 
-
         // update res speed time
         GraphView resGraph = detailDialog.findViewById(R.id.graph_res);
         resGraph.removeAllSeries();
         ArrayList<Long> resList = td.getResTimeList();
         DataPoint[] resDataPoints = new DataPoint[resList.size()];
 
-        for(int i = 0; i < resList.size(); i++) {
+        for (int i = 0; i < resList.size(); i++) {
             resDataPoints[i] = (new DataPoint(i, resList.get(i)));
         }
 
@@ -378,7 +374,7 @@ public class DialogHelper {
         resGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
         resGraph.addSeries(resSeries);
         resGraph.setTitle("Response time(ms)");
-        resGraph.setPadding(50,50,50,50);
+        resGraph.setPadding(50, 50, 50, 50);
     }
 }
 
