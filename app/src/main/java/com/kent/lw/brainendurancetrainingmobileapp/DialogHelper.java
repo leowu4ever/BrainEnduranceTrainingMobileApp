@@ -373,18 +373,7 @@ public class DialogHelper {
         }
 
         BarGraphSeries<DataPoint> resSeries = new BarGraphSeries<>(resDataPoints);
-        resSeries.setColor(Color.rgb(255, 0, 0));
-
-        resSeries.setValueDependentColor(new ValueDependentColor<DataPoint>() {
-            @Override
-            public int get(DataPoint data) {
-                if(data.getY() > td.getTaskConfig().getResThreshold()) {
-                    return Color.rgb(216, 27, 96);
-                } else {
-                    return Color.rgb(0, 133, 119);
-                }
-            }
-        });
+        resSeries.setColor(Color.rgb(0, 133, 119));
 
         resGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
         resGraph.addSeries(resSeries);
