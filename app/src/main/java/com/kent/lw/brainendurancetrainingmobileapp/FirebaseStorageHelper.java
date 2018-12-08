@@ -96,6 +96,8 @@ public class FirebaseStorageHelper {
         final FirebaseStorage storage = FirebaseStorage.getInstance();
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+
+        // get storage ref
         db.child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", "") + "/" + "storageRef").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -122,9 +124,11 @@ public class FirebaseStorageHelper {
             }
         });
 
+        // remove loc data
         FileHelper.deleteDir(new File(FileHelper.PATH_ROOT));
-        FileHelper.initDir();
+
+        // recreate an overall to refresh
         MainActivity.overallData.reset();
-        FileHelper.saveOverallDataToLocal();
+        FileHelper.initDir();
     }
 }
