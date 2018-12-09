@@ -37,7 +37,7 @@
             android:id="@+id/textView11"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Date" />
+            android:text="Date(ddmmyyyy)" />
 
         <EditText
             android:id="@+id/if_td_date"
@@ -60,7 +60,7 @@
             android:id="@+id/textView12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Time" />
+            android:text="Time(hhmm)" />
 
         <EditText
             android:id="@+id/if_td_time"
@@ -80,7 +80,7 @@
             android:id="@+id/textView13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Duration" />
+            android:text="Duration(hhmm)" />
 
         <EditText
             android:id="@+id/if_td_duration"

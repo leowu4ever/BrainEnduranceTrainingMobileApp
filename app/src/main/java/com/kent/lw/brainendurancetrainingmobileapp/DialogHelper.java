@@ -8,15 +8,20 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.appyvet.materialrangebar.RangeBar;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DialogHelper {
 
@@ -44,6 +49,19 @@ public class DialogHelper {
     // diary add dialog
     public Dialog trainingDiaryAddDialog, motiAddDialog, rpeAddDialog, nasaAddDialog;
     public Button btnTrainingDiarySave, btnMotiSave, btnRpeSave, btnNasaSave;
+
+    // training diary add
+    public EditText ifDate, ifTime, ifDuration;
+    public Spinner spType, spLoad;
+
+    // moti dialog add
+    public RangeBar rbMoti;
+
+    // rpe dialog add
+    public Spinner spLoadRpe;
+
+    // nasa dialog add
+    public RangeBar rbTemp, rbMen, rbPhy, rbFrus, rbPerf, rbEff;
 
     public DialogHelper(Context context) {
         init(context);
@@ -226,6 +244,14 @@ public class DialogHelper {
         btnTrainingDiarySave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                MainActivity.trainingDiaryData.setDate(ifDate.getText().toString());
+                MainActivity.trainingDiaryData.setTime(ifTime.getText().toString());
+                MainActivity.trainingDiaryData.setDuration(ifDuration.getText().toString());
+                MainActivity.trainingDiaryData.setType(spType.getSelectedItem().toString());
+                MainActivity.trainingDiaryData.setLoad(spLoad.getSelectedItem().toString());
+                FileHelper.saveTrainingdiaryDataToLocal();
+
                 dismissTrainingDiaryAddDialog();
             }
         });
@@ -234,6 +260,12 @@ public class DialogHelper {
         btnMotiSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                MainActivity.motiData.setDate(DateHelper.getDateFromMili(System.currentTimeMillis()));
+                MainActivity.motiData.setTime(DateHelper.getTimeFromMili(System.currentTimeMillis()));
+                MainActivity.motiData.setMoti(rbMoti.getRightPinValue());
+                FileHelper.saveMotiDataToLocal();
+
                 dismissMotiAddDialog();
             }
         });
@@ -242,6 +274,11 @@ public class DialogHelper {
         btnRpeSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity.rpeData.setDate(DateHelper.getDateFromMili(System.currentTimeMillis()));
+                MainActivity.rpeData.setTime(DateHelper.getTimeFromMili(System.currentTimeMillis()));
+                MainActivity.rpeData.setLoad(spLoadRpe.getSelectedItem().toString());
+                FileHelper.saveRpeDataToLocal();
+
                 dismissRpeAddDialog();
             }
         });
@@ -250,6 +287,17 @@ public class DialogHelper {
         btnNasaSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                MainActivity.nasaData.setDate(DateHelper.getDateFromMili(System.currentTimeMillis()));
+                MainActivity.nasaData.setTime(DateHelper.getTimeFromMili(System.currentTimeMillis()));
+                MainActivity.nasaData.setTemporal(rbTemp.getRightPinValue());
+                MainActivity.nasaData.setMental(rbMen.getRightPinValue());
+                MainActivity.nasaData.setPhysical(rbPhy.getRightPinValue());
+                MainActivity.nasaData.setFrustration(rbFrus.getRightPinValue());
+                MainActivity.nasaData.setPerformance(rbPerf.getRightPinValue());
+                MainActivity.nasaData.setEffort(rbEff.getRightPinValue());
+                FileHelper.saveNasaDataToLocal();
+
                 dismissNasaAddDialog();
             }
         });
@@ -273,7 +321,6 @@ public class DialogHelper {
         tvHistoryART = detailDialog.findViewById(R.id.tv_history_art);
         tvHistoryAccuracy = detailDialog.findViewById(R.id.tv_history_accuracy);
 
-
         tvHistoryNogo = detailDialog.findViewById(R.id.tv_history_nogo);
         tvHistoryInterval = detailDialog.findViewById(R.id.tv_history_interval);
         tvHistoryVolume = detailDialog.findViewById(R.id.tv_history_volume);
@@ -282,6 +329,24 @@ public class DialogHelper {
         tvHistoryMinspeed = detailDialog.findViewById(R.id.tv_history_minspeed);
 
         imgRoute = detailDialog.findViewById(R.id.img_history_route);
+
+        ifDate = trainingDiaryAddDialog.findViewById(R.id.if_td_date);
+        ifTime = trainingDiaryAddDialog.findViewById(R.id.if_td_time);
+        ifDuration = trainingDiaryAddDialog.findViewById(R.id.if_td_duration);
+        spType = trainingDiaryAddDialog.findViewById(R.id.sp_td_type);
+        spLoad = trainingDiaryAddDialog.findViewById(R.id.sp_td_load);
+
+        rbMoti = motiAddDialog.findViewById(R.id.rb_moti_moti);
+
+        spLoadRpe = rpeAddDialog.findViewById(R.id.sp_rpe_load);
+
+        rbTemp = nasaAddDialog.findViewById(R.id.rb_nasa_temp);
+        rbMen = nasaAddDialog.findViewById(R.id.rb_nasa_men);
+        rbPhy = nasaAddDialog.findViewById(R.id.rb_nasa_phy);
+        rbFrus = nasaAddDialog.findViewById(R.id.rb_nasa_fru);
+        rbPerf = nasaAddDialog.findViewById(R.id.rb_nasa_perf);
+        rbEff = nasaAddDialog.findViewById(R.id.rb_nasa_eff);
+
     }
 
     public void setupDialog(Dialog d, int layout) {

@@ -52,7 +52,7 @@
                         android:text="TEMPORAL DEMAND	How hurried or rushed was the pace of the task?" />
 
                     <com.appyvet.materialrangebar.RangeBar
-                        android:id="@+id/rb_nasa_tem"
+                        android:id="@+id/rb_nasa_temp"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="1"
@@ -133,7 +133,7 @@
                         android:text="MENTAL DEMAND	How mentally demanding was the task?" />
 
                     <com.appyvet.materialrangebar.RangeBar
-                        android:id="@+id/rb_nasa_mental"
+                        android:id="@+id/rb_nasa_men"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="1"
@@ -458,7 +458,7 @@
                         android:text="EFFORT	How hard did you have to work to accomplish your 	level of performance?" />
 
                     <com.appyvet.materialrangebar.RangeBar
-                        android:id="@+id/rb_nasa_effort"
+                        android:id="@+id/rb_nasa_eff"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="1"
