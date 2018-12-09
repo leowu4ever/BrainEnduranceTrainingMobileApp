@@ -22,7 +22,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_weight="0"
-            android:text="Training diary"
+            android:text="NASA scales"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textSize="30sp"
