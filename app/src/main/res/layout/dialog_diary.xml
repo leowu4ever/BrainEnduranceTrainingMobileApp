@@ -8,7 +8,7 @@
     android:padding="10dp">
 
     <Button
-        android:id="@+id/btn_trainingdiary"
+        android:id="@+id/btn_diary_trainingdiary"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -20,7 +20,7 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/btn_moti"
+        android:id="@+id/btn_diary_moti"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -32,7 +32,7 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/btn_rpe"
+        android:id="@+id/btn_diary_rpe"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -43,7 +43,7 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/btn_nasa"
+        android:id="@+id/btn_diary_nasa"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
