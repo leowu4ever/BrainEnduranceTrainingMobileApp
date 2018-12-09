@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rb_moti_moti"
     android:layout_width="300dp"
     android:layout_height="match_parent"
     android:background="@drawable/fragment_shape"
@@ -28,7 +29,7 @@
         android:background="@color/colorPrimary" />
 
     <com.appyvet.materialrangebar.RangeBar
-        android:id="@+id/rb_interval_gonogo2"
+        android:id="@+id/rb_moti_moti"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:mrb_connectingLineColor="@color/colorPrimary"

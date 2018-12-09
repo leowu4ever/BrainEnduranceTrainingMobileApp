@@ -52,7 +52,7 @@
                         android:text="TEMPORAL DEMAND	How hurried or rushed was the pace of the task?" />
 
                     <com.appyvet.materialrangebar.RangeBar
-                        android:id="@+id/rb_interval_gonogo3"
+                        android:id="@+id/rb_nasa_tem"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="1"
@@ -133,7 +133,7 @@
                         android:text="MENTAL DEMAND	How mentally demanding was the task?" />
 
                     <com.appyvet.materialrangebar.RangeBar
-                        android:id="@+id/rb_interval_gonogo3"
+                        android:id="@+id/rb_nasa_mental"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="1"
@@ -214,7 +214,7 @@
                         android:text="PHYSICAL DEMAND	How physically demanding was the task?" />
 
                     <com.appyvet.materialrangebar.RangeBar
-                        android:id="@+id/rb_interval_gonogo3"
+                        android:id="@+id/rb_nasa_phy"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="1"
@@ -295,7 +295,7 @@
                         android:text="FRUSTRATION	How insecure, discouraged, irritated, stressed and  	annoyed were you?" />
 
                     <com.appyvet.materialrangebar.RangeBar
-                        android:id="@+id/rb_interval_gonogo3"
+                        android:id="@+id/rb_nasa_fru"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="1"
@@ -376,7 +376,7 @@
                         android:text="PERFORMANCE 	How successful were you in accomplishing what you 		were asked to do? " />
 
                     <com.appyvet.materialrangebar.RangeBar
-                        android:id="@+id/rb_interval_gonogo3"
+                        android:id="@+id/rb_nasa_perf"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="1"
@@ -458,7 +458,7 @@
                         android:text="EFFORT	How hard did you have to work to accomplish your 	level of performance?" />
 
                     <com.appyvet.materialrangebar.RangeBar
-                        android:id="@+id/rb_interval_gonogo3"
+                        android:id="@+id/rb_nasa_effort"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="1"
