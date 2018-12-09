@@ -1,29 +1,38 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
-public class RpeData {
-    public String date, time, load;
+import java.util.ArrayList;
 
-    public String getDate() {
+public class RpeData {
+
+    public ArrayList<String> date, time, load;
+
+    public RpeData() {
+        date = new ArrayList<String>();
+        time = new ArrayList<String>();
+        load = new ArrayList<String>();
+    }
+
+    public ArrayList<String> getDate() {
         return date;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.date.add(date);
     }
 
-    public String getTime() {
+    public ArrayList<String> getTime() {
         return time;
     }
 
     public void setTime(String time) {
-        this.time = time;
+        this.time.add(time);
     }
 
-    public String getLoad() {
+    public ArrayList<String> getLoad() {
         return load;
     }
 
     public void setLoad(String load) {
-        this.load = load;
+        this.load.add(load);
     }
 }

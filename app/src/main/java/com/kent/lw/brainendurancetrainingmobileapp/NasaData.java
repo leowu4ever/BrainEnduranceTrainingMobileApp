@@ -1,72 +1,85 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
+import java.util.ArrayList;
+
 public class NasaData {
 
-    public String date, time;
-    public String temporal, mental, physical, frustration, performance, effort;
+    public ArrayList<String> date, time, temporal, mental, physical, frustration, performance, effort;
 
-    public String getDate() {
+   public NasaData() {
+       date = new ArrayList<String>();
+       time = new ArrayList<String>();
+       temporal = new ArrayList<String>();
+       mental = new ArrayList<String>();
+       physical = new ArrayList<String>();
+       frustration = new ArrayList<String>();
+       performance = new ArrayList<String>();
+       effort = new ArrayList<String>();
+   }
+
+
+    public ArrayList<String> getDate() {
         return date;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.date.add(date);
     }
 
-    public String getTime() {
+    public ArrayList<String> getTime() {
         return time;
     }
 
     public void setTime(String time) {
-        this.time = time;
+        this.time.add(time);
     }
 
-    public String getTemporal() {
+    public ArrayList<String> getTemporal() {
         return temporal;
     }
 
     public void setTemporal(String temporal) {
-        this.temporal = temporal;
+        this.temporal.add(temporal);
     }
 
-    public String getMental() {
+    public ArrayList<String> getMental() {
         return mental;
     }
 
     public void setMental(String mental) {
-        this.mental = mental;
+        this.mental.add(mental);
     }
 
-    public String getPhysical() {
+    public ArrayList<String> getPhysical() {
         return physical;
     }
 
     public void setPhysical(String physical) {
-        this.physical = physical;
+        this.physical.add(physical);
     }
 
-    public String getFrustration() {
+    public ArrayList<String> getFrustration() {
         return frustration;
     }
 
     public void setFrustration(String frustration) {
-        this.frustration = frustration;
+        this.frustration.add(frustration);
     }
 
-    public String getPerformance() {
+    public ArrayList<String> getPerformance() {
         return performance;
     }
 
     public void setPerformance(String performance) {
-        this.performance = performance;
+        this.performance.add(performance);
     }
 
-    public String getEffort() {
+    public ArrayList<String> getEffort() {
         return effort;
     }
 
     public void setEffort(String effort) {
-        this.effort = effort;
+        this.effort.add(effort);
     }
 }
 

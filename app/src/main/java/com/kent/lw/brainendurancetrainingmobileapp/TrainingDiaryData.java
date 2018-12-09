@@ -1,47 +1,56 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
+import java.util.ArrayList;
+
 public class TrainingDiaryData {
 
-    public String date, time, duration, type, load;
+    public ArrayList<String>  date, time, duration, type, load;
 
+    public TrainingDiaryData() {
+        date = new ArrayList<String>();
+        time = new ArrayList<String>();
+        duration = new ArrayList<String>();
+        type = new ArrayList<String>();
+        load = new ArrayList<String>();
+    }
 
-    public String getDate() {
+    public ArrayList<String> getDate() {
         return date;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.date.add(date);
     }
 
-    public String getTime() {
+    public ArrayList<String> getTime() {
         return time;
     }
 
     public void setTime(String time) {
-        this.time = time;
+        this.time.add(time);
     }
 
-    public String getDuration() {
+    public ArrayList<String> getDuration() {
         return duration;
     }
 
     public void setDuration(String duration) {
-        this.duration = duration;
+        this.duration.add(duration);
     }
 
-    public String getType() {
+    public ArrayList<String> getType() {
         return type;
     }
 
     public void setType(String type) {
-        this.type = type;
+        this.type.add(type);
     }
 
-    public String getLoad() {
+    public ArrayList<String> getLoad() {
         return load;
     }
 
     public void setLoad(String load) {
-        this.load = load;
+        this.load.add(load);
     }
 }
