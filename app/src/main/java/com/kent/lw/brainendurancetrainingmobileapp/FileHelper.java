@@ -16,14 +16,27 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 public class FileHelper {
-    public static String PATH_ROOT = Environment.getExternalStorageDirectory() + "/Brain Training Data Folder/";
-    public static String PATH_TRAINING_DATA = PATH_ROOT + "Training Data/";
-    public static String PATH_MOTION_DATA = PATH_ROOT + "Motion Data/";
-    public static String PATH_OVERALL_DATA = PATH_ROOT + "Overall Data/";
-    public static String PATH_ROUTE_DATA = PATH_ROOT + "Route Data/";
+    public static String PATH_ROOT_FOLDER = Environment.getExternalStorageDirectory() + "/Brain Training Data Folder/";
+    public static String PATH_TRAINING_DATA = PATH_ROOT_FOLDER + "Training Data/";
+    public static String PATH_MOTION_DATA = PATH_ROOT_FOLDER + "Motion Data/";
 
+    public static String PATH_OVERALL_DATA = PATH_ROOT_FOLDER + "Overall Data/";
     public static String FILENAME_OVERALL_DATA = "Overall.json";
 
+    public static String PATH_ROUTE_DATA = PATH_ROOT_FOLDER + "Route Data/";
+
+    public static String PATH_TRAININGDIARY_DATA =  PATH_ROOT_FOLDER + "Training Diary Data/";
+    public static String FILENAME_TRAININGDIARY_DATA = "Trainingdiary.json";
+
+    public static String PATH_FEEDBACK_FOLDER = PATH_ROOT_FOLDER + "Feedback Data/";
+    public static String PATH_MOTI_DATA = PATH_FEEDBACK_FOLDER + "Motivation Data/";
+    public static String FILENAME_MOTI_DATA = "Motivation.json";
+
+    public static String PATH_RPE_DATA = PATH_FEEDBACK_FOLDER + "Rpe Data/";
+    public static String FILENAME_RPE_DATA = "Rpe.json";
+
+    public static String PATH_NASA_DATA = PATH_FEEDBACK_FOLDER + "Nasa Data/";
+    public static String FILENAME_NASA_DATA = "Nasa.json";
 
     public FileHelper() {
     }
@@ -48,6 +61,91 @@ public class FileHelper {
         }
         return overallData;
     }
+
+    public static void saveTrainingdiaryDataToLocal() {
+        Gson gson = new Gson();
+        try (FileWriter writer = new FileWriter(PATH_TRAININGDIARY_DATA + FILENAME_TRAININGDIARY_DATA)) {
+            gson.toJson(MainActivity.trainingDiaryData, writer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static TrainingDiaryData readTrainingdiaryDataFromLocal() {
+        Gson g = new Gson();
+        String path = PATH_TRAININGDIARY_DATA + FILENAME_TRAININGDIARY_DATA;
+        String readings = readJsonFile(path);
+        TrainingDiaryData trainingDiaryData = g.fromJson(readings, TrainingDiaryData.class);
+        if (trainingDiaryData == null) {
+            trainingDiaryData = new TrainingDiaryData();
+        }
+        return trainingDiaryData;
+    }
+
+    public static void saveMotiDataToLocal() {
+        Gson gson = new Gson();
+        try (FileWriter writer = new FileWriter(PATH_MOTI_DATA + FILENAME_MOTI_DATA)) {
+            gson.toJson(MainActivity.motiData, writer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static MotiData readMotiDataFromLocal() {
+        Gson g = new Gson();
+        String path = PATH_MOTI_DATA + FILENAME_MOTI_DATA;
+        String readings = readJsonFile(path);
+        MotiData motiData = g.fromJson(readings, MotiData.class);
+        if (motiData == null) {
+            motiData = new MotiData();
+        }
+        return motiData;
+    }
+
+    public static void saveRpeDataToLocal() {
+        Gson gson = new Gson();
+        try (FileWriter writer = new FileWriter(PATH_RPE_DATA + FILENAME_RPE_DATA)) {
+            gson.toJson(MainActivity.rpeData, writer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static RpeData readRpeDataFromLocal() {
+        Gson g = new Gson();
+        String path = PATH_RPE_DATA + FILENAME_RPE_DATA;
+        String readings = readJsonFile(path);
+        RpeData rpeData = g.fromJson(readings, RpeData.class);
+        if (rpeData == null) {
+            rpeData = new RpeData();
+        }
+        return rpeData;
+    }
+
+    public static void saveNasaDataToLocal() {
+        Gson gson = new Gson();
+        try (FileWriter writer = new FileWriter(PATH_NASA_DATA + FILENAME_NASA_DATA)) {
+            gson.toJson(MainActivity.nasaData, writer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static NasaData readNasaDataFromLocal() {
+        Gson g = new Gson();
+        String path = PATH_NASA_DATA + FILENAME_NASA_DATA;
+        String readings = readJsonFile(path);
+        NasaData nasaData = g.fromJson(readings, NasaData.class);
+        if (nasaData == null) {
+            nasaData = new NasaData();
+        }
+        return nasaData;
+    }
+
 
     public static TrainingData readTrainingDataFromLocal(String filename) {
         Gson g = new Gson();
@@ -88,35 +186,80 @@ public class FileHelper {
 
     public static void initDir() {
 
-        File rootPath = new File(PATH_ROOT);
-        if (!rootPath.exists()) {
-            rootPath.mkdir();
+        File rootfolder = new File(PATH_ROOT_FOLDER);
+        if (!rootfolder.exists()) {
+            rootfolder.mkdir();
         }
 
-        File trainingDataPath = new File(PATH_TRAINING_DATA);
-        if (!trainingDataPath.exists()) {
-            trainingDataPath.mkdir();
+        File trainingDataFolder = new File(PATH_TRAINING_DATA);
+        if (!trainingDataFolder.exists()) {
+            trainingDataFolder.mkdir();
         }
 
-        File motionDataPath = new File(PATH_MOTION_DATA);
-        if (!motionDataPath.exists()) {
-            motionDataPath.mkdir();
+        File motionDataFolder = new File(PATH_MOTION_DATA);
+        if (!motionDataFolder.exists()) {
+            motionDataFolder.mkdir();
         }
 
-        File overallDataPath = new File(PATH_OVERALL_DATA);
-        if (!overallDataPath.exists()) {
-            overallDataPath.mkdir();
+        File overallDataFolder = new File(PATH_OVERALL_DATA);
+        if (!overallDataFolder.exists()) {
+            overallDataFolder.mkdir();
         }
 
-        File routelDataPath = new File(PATH_ROUTE_DATA);
-        if (!routelDataPath.exists()) {
-            routelDataPath.mkdir();
+        File routelDataFolder = new File(PATH_ROUTE_DATA);
+        if (!routelDataFolder.exists()) {
+            routelDataFolder.mkdir();
+        }
+
+        File trainingdiaryDataFolder = new File(PATH_TRAININGDIARY_DATA);
+        if (!trainingdiaryDataFolder.exists()) {
+            trainingdiaryDataFolder.mkdir();
         }
 
 
-        File file = new File(PATH_OVERALL_DATA + FILENAME_OVERALL_DATA);
-        if (!file.exists()) {
+        File feedbackFolder = new File(PATH_FEEDBACK_FOLDER);
+        if (!feedbackFolder.exists()) {
+            feedbackFolder.mkdir();
+        }
+
+        File motiDataFolder = new File(PATH_MOTI_DATA);
+        if (!motiDataFolder.exists()) {
+            motiDataFolder.mkdir();
+        }
+
+        File rpeDataFolder = new File(PATH_RPE_DATA);
+        if (!rpeDataFolder.exists()) {
+            rpeDataFolder.mkdir();
+        }
+
+        File nasaDataFolder = new File(PATH_NASA_DATA);
+        if (!nasaDataFolder.exists()) {
+            nasaDataFolder.mkdir();
+        }
+
+        File overallDataFile = new File(PATH_OVERALL_DATA + FILENAME_OVERALL_DATA);
+        if (!overallDataFile.exists()) {
             saveOverallDataToLocal();
+        }
+
+        File trainingdiaryDataFile = new File(PATH_TRAININGDIARY_DATA + FILENAME_TRAININGDIARY_DATA);
+        if (!trainingdiaryDataFile.exists()) {
+            saveTrainingdiaryDataToLocal();
+        }
+
+        File motiDataFile = new File(PATH_MOTI_DATA + FILENAME_MOTI_DATA);
+        if (!motiDataFile.exists()) {
+            saveMotiDataToLocal();
+        }
+
+        File rpeDataFile = new File(PATH_RPE_DATA + FILENAME_RPE_DATA);
+        if (!rpeDataFile.exists()) {
+            saveRpeDataToLocal();
+        }
+
+        File nasaDataFile = new File(PATH_NASA_DATA + FILENAME_NASA_DATA);
+        if (!nasaDataFile.exists()) {
+            saveNasaDataToLocal();
         }
     }
 

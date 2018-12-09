@@ -125,7 +125,7 @@ public class FirebaseStorageHelper {
         });
 
         // remove loc data
-        FileHelper.deleteDir(new File(FileHelper.PATH_ROOT));
+        FileHelper.deleteDir(new File(FileHelper.PATH_ROOT_FOLDER));
 
         // recreate an overall to refresh
         MainActivity.overallData.reset();

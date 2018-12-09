@@ -59,6 +59,11 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // data collection
     public static TrainingData trainingData;
     public static OverallData overallData;
+    public static TrainingDiaryData trainingDiaryData;
+    public static MotiData motiData;
+    public static RpeData rpeData;
+    public static NasaData nasaData;
+
     public static com.kent.lw.brainendurancetrainingmobileapp.Task task;
 
     // helper class
@@ -74,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private LocationRequest mLocationRequest;
     private int countdown = 4000;
     private float distance, speed, pace;
+
+
+
 
     public static void resumeTraining() {
         trainingStarted = true;
@@ -129,6 +137,12 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         // firebase data model
         trainingData = new TrainingData();
         overallData = FileHelper.readOverallDataFromLocal();
+
+        trainingDiaryData = FileHelper.readTrainingdiaryDataFromLocal();
+        motiData = FileHelper.readMotiDataFromLocal();
+        rpeData = FileHelper.readRpeDataFromLocal();
+        nasaData = FileHelper.readNasaDataFromLocal();
+
 
         task = new com.kent.lw.brainendurancetrainingmobileapp.Task();
 
@@ -248,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 // TODO Auto-generated method stub
                 bitmap = snapshot;
                 try {
-                    File file = new File(FileHelper.PATH_ROUTE_DATA + MainActivity.trainingData.getStartTime() + ".png");
+                    File file = new File(FileHelper.PATH_ROUTE_DATA + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getStartTime()) + ".png");
                     FileOutputStream out = new FileOutputStream(file);
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 
