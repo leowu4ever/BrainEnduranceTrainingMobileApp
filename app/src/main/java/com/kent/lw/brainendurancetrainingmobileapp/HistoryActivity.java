@@ -96,7 +96,7 @@ public class HistoryActivity extends AppCompatActivity {
         parentLayout.addView(containerLayout);
 
         // date tv  1111-11-11@11:11:11
-        final TextView tvDate = new TextView(this);
+        TextView tvDate = new TextView(this);
         tvDate.setText(file.getName().subSequence(0, 10));
         tvDate.setGravity(Gravity.CENTER);
         tvDate.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));

@@ -6,10 +6,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -142,6 +144,46 @@ public class DialogHelper {
             public void onClick(View v) {
                 dismissDiaryDialog();
                 showTrainingDiaryDialog();
+
+                LinearLayout parentLayout = trainingDiaryDialog.findViewById(R.id.linear_layout_td);
+                parentLayout.removeAllViews();
+
+                for (int i = 0; i < MainActivity.trainingDiaryData.getDate().size(); i++) {
+                    // history layout container
+                    LinearLayout containerLayout = new LinearLayout(trainingDiaryDialog.getContext());
+                    parentLayout.addView(containerLayout);
+
+                    TextView tvDate = new TextView(trainingDiaryDialog.getContext());
+                    tvDate.setText(MainActivity.trainingDiaryData.getDate().get(i));
+                    tvDate.setGravity(Gravity.CENTER);
+                    tvDate.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvDate);
+
+                    // time tv
+                    TextView tvTime = new TextView(trainingDiaryDialog.getContext());
+                    tvTime.setText(MainActivity.trainingDiaryData.getTime().get(i));
+                    tvTime.setGravity(Gravity.CENTER);
+                    tvTime.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvTime);
+
+                    TextView tvDuration = new TextView(trainingDiaryDialog.getContext());
+                    tvDuration.setText(MainActivity.trainingDiaryData.getDuration().get(i));
+                    tvDuration.setGravity(Gravity.CENTER);
+                    tvDuration.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvDuration);
+
+                    TextView tvType = new TextView(trainingDiaryDialog.getContext());
+                    tvType.setText(MainActivity.trainingDiaryData.getType().get(i));
+                    tvType.setGravity(Gravity.CENTER);
+                    tvType.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvType);
+
+                    TextView tvLoad = new TextView(trainingDiaryDialog.getContext());
+                    tvLoad.setText(MainActivity.trainingDiaryData.getLoad().get(i));
+                    tvLoad.setGravity(Gravity.CENTER);
+                    tvLoad.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvLoad);
+                }
             }
         });
 
@@ -151,6 +193,36 @@ public class DialogHelper {
             public void onClick(View v) {
                 dismissDiaryDialog();
                 showMotiDialog();
+
+                // init rows
+                LinearLayout parentLayout = motiDialog.findViewById(R.id.linear_layout_moti);
+                parentLayout.removeAllViews();
+
+                for (int i = 0; i < MainActivity.motiData.getDate().size(); i++) {
+                    // history layout container
+                    LinearLayout containerLayout = new LinearLayout(motiDialog.getContext());
+                    parentLayout.addView(containerLayout);
+
+                    TextView tvDate = new TextView(motiDialog.getContext());
+                    tvDate.setText(MainActivity.motiData.getDate().get(i));
+                    tvDate.setGravity(Gravity.CENTER);
+                    tvDate.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvDate);
+
+                    // time tv
+                    TextView tvTime = new TextView(motiDialog.getContext());
+                    tvTime.setText(MainActivity.motiData.getTime().get(i));
+                    tvTime.setGravity(Gravity.CENTER);
+                    tvTime.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvTime);
+
+
+                    TextView tvMoti = new TextView(motiDialog.getContext());
+                    tvMoti.setText(MainActivity.motiData.getMoti().get(i));
+                    tvMoti.setGravity(Gravity.CENTER);
+                    tvMoti.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvMoti);
+                }
             }
         });
 
@@ -160,6 +232,38 @@ public class DialogHelper {
             public void onClick(View v) {
                 dismissDiaryDialog();
                 showRpeDialog();
+
+                // init rows
+                // init rows
+                LinearLayout parentLayout = rpeDialog.findViewById(R.id.linear_layout_rpe);
+                parentLayout.removeAllViews();
+
+                for (int i = 0; i < MainActivity.rpeData.getDate().size(); i++) {
+                    // history layout container
+                    LinearLayout containerLayout = new LinearLayout(rpeDialog.getContext());
+                    parentLayout.addView(containerLayout);
+
+                    TextView tvDate = new TextView(rpeDialog.getContext());
+                    tvDate.setText(MainActivity.rpeData.getDate().get(i));
+                    tvDate.setGravity(Gravity.CENTER);
+                    tvDate.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvDate);
+
+                    // time tv
+                    TextView tvTime = new TextView(rpeDialog.getContext());
+                    tvTime.setText(MainActivity.rpeData.getTime().get(i));
+                    tvTime.setGravity(Gravity.CENTER);
+                    tvTime.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvTime);
+
+
+                    TextView tvLoad = new TextView(rpeDialog.getContext());
+                    tvLoad.setText(MainActivity.rpeData.getLoad().get(i));
+                    tvLoad.setGravity(Gravity.CENTER);
+                    tvLoad.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvLoad);
+                }
+
             }
         });
 
@@ -169,6 +273,66 @@ public class DialogHelper {
             public void onClick(View v) {
                 dismissDiaryDialog();
                 showNasaDialog();
+
+                // init rows
+                LinearLayout parentLayout = nasaDialog.findViewById(R.id.linear_layout_nasa);
+                parentLayout.removeAllViews();
+
+                for (int i = 0; i < MainActivity.nasaData.getDate().size(); i++) {
+                    // history layout container
+                    LinearLayout containerLayout = new LinearLayout(nasaDialog.getContext());
+                    parentLayout.addView(containerLayout);
+
+                    TextView tvDate = new TextView(nasaDialog.getContext());
+                    tvDate.setText(MainActivity.nasaData.getDate().get(i));
+                    tvDate.setGravity(Gravity.CENTER);
+                    tvDate.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvDate);
+
+                    TextView tvTime = new TextView(nasaDialog.getContext());
+                    tvTime.setText(MainActivity.nasaData.getTime().get(i));
+                    tvTime.setGravity(Gravity.CENTER);
+                    tvTime.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvTime);
+
+                    TextView tvTemp = new TextView(nasaDialog.getContext());
+                    tvTemp.setText(MainActivity.nasaData.getTemporal().get(i));
+                    tvTemp.setGravity(Gravity.CENTER);
+                    tvTemp.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvTemp);
+
+                    TextView tvMen = new TextView(nasaDialog.getContext());
+                    tvMen.setText(MainActivity.nasaData.getMental().get(i));
+                    tvMen.setGravity(Gravity.CENTER);
+                    tvMen.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvMen);
+
+                    TextView tvPhy = new TextView(nasaDialog.getContext());
+                    tvPhy.setText(MainActivity.nasaData.getPhysical().get(i));
+                    tvPhy.setGravity(Gravity.CENTER);
+                    tvPhy.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvPhy);
+
+                    TextView tvFrus = new TextView(nasaDialog.getContext());
+                    tvFrus.setText(MainActivity.nasaData.getFrustration().get(i));
+                    tvFrus.setGravity(Gravity.CENTER);
+                    tvFrus.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvFrus);
+
+                    TextView tvPerf = new TextView(nasaDialog.getContext());
+                    tvPerf.setText(MainActivity.nasaData.getPerformance().get(i));
+                    tvPerf.setGravity(Gravity.CENTER);
+                    tvPerf.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvPerf);
+
+                    TextView tvEff = new TextView(nasaDialog.getContext());
+                    tvEff.setText(MainActivity.nasaData.getEffort().get(i));
+                    tvEff.setGravity(Gravity.CENTER);
+                    tvEff.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+                    containerLayout.addView(tvEff);
+                }
+
+
             }
         });
 
