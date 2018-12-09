@@ -428,7 +428,7 @@ public class DialogHelper {
         }
 
         // update route
-        Bitmap bmImg = BitmapFactory.decodeFile(FileHelper.PATH_ROUTE_DATA + td.getStartTime() + ".png");
+        Bitmap bmImg = BitmapFactory.decodeFile(FileHelper.PATH_ROUTE_DATA + DateHelper.getDateTimeFromMili(td.getStartTime()) + ".png");
         imgRoute.setImageBitmap(bmImg);
 
         // update speed graph

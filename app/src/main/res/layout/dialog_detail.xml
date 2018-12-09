@@ -206,8 +206,8 @@
                 android:adjustViewBounds="false"
                 android:cropToPadding="false"
                 android:scaleType="matrix"
-                android:scrollX="20dp"
-                android:scrollY="50dp"
+                android:scrollX="60dp"
+                android:scrollY="80dp"
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <LinearLayout
