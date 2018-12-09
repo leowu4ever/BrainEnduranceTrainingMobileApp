@@ -38,6 +38,7 @@ public class DialogHelper {
 
     // entry list dialog
     public Dialog trainingDiaryDialog, motiDialog, rpeDialog, nasaDialog;
+    public Button btnTrainingDiaryBack,btnMotiDialogBack, btnRpeDialogBack, btnNasaDialogBack;
     public Button btnTrainingDiaryAdd, btnMotiAdd, btnRpeAdd, btnNasaAdd;
 
     // diary add dialog
@@ -185,6 +186,38 @@ public class DialogHelper {
             @Override
             public void onClick(View v) {
                 showNasaAddDialog();
+                dismissNasaDialog();
+            }
+        });
+
+        btnTrainingDiaryBack = trainingDiaryDialog.findViewById(R.id.btn_diary_trainingdiary_back);
+        btnTrainingDiaryBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissTrainingDiaryDialog();
+            }
+        });
+
+        btnMotiDialogBack = motiDialog.findViewById(R.id.btn_diary_moti_back);
+        btnMotiDialogBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissMotiDialog();
+            }
+        });
+
+        btnRpeDialogBack = rpeDialog.findViewById(R.id.btn_diary_rpe_back);
+        btnRpeDialogBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissRpeDialog();
+            }
+        });
+
+        btnNasaDialogBack = nasaDialog.findViewById(R.id.btn_diary_nasa_back);
+        btnNasaDialogBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 dismissNasaDialog();
             }
         });
