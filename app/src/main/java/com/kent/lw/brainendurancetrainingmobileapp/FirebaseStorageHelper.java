@@ -22,14 +22,18 @@ import java.util.ArrayList;
 
 public class FirebaseStorageHelper {
 
-    public static int successCount;
-    public static int totalFileCount;
+    public static int uploadCount;
+    public static int deleteCount;
+
+    public static int totalUploadCount;
+    public static int totalDeleteCount;
+
     public static ArrayList<String> fileList = new ArrayList<>();
 
 
     public static void uploadAllFileToFirestorage(Context context) {
-        successCount = 0;
-        totalFileCount = 0;
+        uploadCount = 0;
+        totalUploadCount = 0;
         setTotalFileCount();
         FirebaseDBHelper.deleteStorageRef();
         uploadAFolderToFirestorage(context, FileHelper.PATH_TRAINING_DATA, "Training Data/");
@@ -46,39 +50,41 @@ public class FirebaseStorageHelper {
     public static void setTotalFileCount() {
         File f = new File(FileHelper.PATH_TRAINING_DATA);
         File[] files = f.listFiles();
-        totalFileCount = totalFileCount + files.length;
+        totalUploadCount = totalUploadCount + files.length;
 
         f = new File(FileHelper.PATH_MOTION_DATA);
         files = f.listFiles();
-        totalFileCount = totalFileCount + files.length;
+        totalUploadCount = totalUploadCount + files.length;
 
         f = new File(FileHelper.PATH_OVERALL_DATA);
         files = f.listFiles();
-        totalFileCount = totalFileCount + files.length;
+        totalUploadCount = totalUploadCount + files.length;
 
         f = new File(FileHelper.PATH_ROUTE_DATA);
         files = f.listFiles();
-        totalFileCount = totalFileCount + files.length;
+        totalUploadCount = totalUploadCount + files.length;
 
         f = new File(FileHelper.PATH_TRAININGDIARY_DATA);
         files = f.listFiles();
-        totalFileCount = totalFileCount + files.length;
+        totalUploadCount = totalUploadCount + files.length;
 
         f = new File(FileHelper.PATH_MOTI_DATA);
         files = f.listFiles();
-        totalFileCount = totalFileCount + files.length;
+        totalUploadCount = totalUploadCount + files.length;
 
         f = new File(FileHelper.PATH_RPE_DATA);
         files = f.listFiles();
-        totalFileCount = totalFileCount + files.length;
+        totalUploadCount = totalUploadCount + files.length;
 
         f = new File(FileHelper.PATH_NASA_DATA);
         files = f.listFiles();
-        totalFileCount = totalFileCount + files.length;
+        totalUploadCount = totalUploadCount + files.length;
 
     }
 
     public static void uploadAFolderToFirestorage(final Context context, String folderPath, String firestorageFolderName) {
+
+        fileList.clear();
         FirebaseStorage storage = FirebaseStorage.getInstance();
 
         File f = new File(folderPath);
@@ -99,10 +105,10 @@ public class FirebaseStorageHelper {
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    successCount++;
-                    Toast.makeText(context, successCount + "/" + totalFileCount + " Successful ", Toast.LENGTH_SHORT).show();
-                    if (successCount == totalFileCount) {
-                        Toast.makeText(context, "Completed ", Toast.LENGTH_SHORT).show();
+                    uploadCount++;
+                    Toast.makeText(context, "Uploading... (" + uploadCount + "/" + totalUploadCount + ")" , Toast.LENGTH_SHORT).show();
+                    if (uploadCount == totalUploadCount) {
+                        Toast.makeText(context, "All uploading completed.", Toast.LENGTH_SHORT).show();
                     }
 
                     fileList.add(firebaseStoragePath);
@@ -115,31 +121,34 @@ public class FirebaseStorageHelper {
     public static void deleteAFolderToFirestorage(final Context context) {
 
         final FirebaseStorage storage = FirebaseStorage.getInstance();
-
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+
+        deleteCount = 0;
 
         // get storage ref
         db.child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", "") + "/" + "storageRef").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                totalDeleteCount = (int) dataSnapshot.getChildrenCount();
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
 
                     StorageReference desertRef = storage.getReference().child(data.getValue().toString());
                     desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Toast.makeText(context, "y ", Toast.LENGTH_SHORT).show();
+                            deleteCount++;
+                            Toast.makeText(context, "Deleting... (" + deleteCount + "/" + totalDeleteCount + ")" , Toast.LENGTH_SHORT).show();
+                            if (deleteCount == totalDeleteCount) {
+                                Toast.makeText(context, "All deleting completed.", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
-                            Toast.makeText(context, "n ", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
-
                 FirebaseDBHelper.deleteTdFromDb();
-
             }
 
             @Override
