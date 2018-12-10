@@ -3,6 +3,7 @@ package com.kent.lw.brainendurancetrainingmobileapp;
 import android.os.Environment;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -17,18 +18,19 @@ import java.io.OutputStreamWriter;
 
 public class FileHelper {
     public static String PATH_ROOT_FOLDER = Environment.getExternalStorageDirectory() + "/Brain Training Data Folder/";
-    public static String PATH_TRAINING_DATA = PATH_ROOT_FOLDER + "Training Data/";
-    public static String PATH_MOTION_DATA = PATH_ROOT_FOLDER + "Motion Data/";
+    public static String PATH_USER_FOLDER = Environment.getExternalStorageDirectory() + "/Brain Training Data Folder/" + FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", "") + "/";
+    public static String PATH_TRAINING_DATA = PATH_USER_FOLDER + "Training Data/";
+    public static String PATH_MOTION_DATA = PATH_USER_FOLDER + "Motion Data/";
 
-    public static String PATH_OVERALL_DATA = PATH_ROOT_FOLDER + "Overall Data/";
+    public static String PATH_OVERALL_DATA = PATH_USER_FOLDER + "Overall Data/";
     public static String FILENAME_OVERALL_DATA = "Overall.json";
 
-    public static String PATH_ROUTE_DATA = PATH_ROOT_FOLDER + "Route Data/";
+    public static String PATH_ROUTE_DATA = PATH_USER_FOLDER + "Route Data/";
 
-    public static String PATH_TRAININGDIARY_DATA =  PATH_ROOT_FOLDER + "Training Diary Data/";
+    public static String PATH_TRAININGDIARY_DATA =  PATH_USER_FOLDER + "Training Diary Data/";
     public static String FILENAME_TRAININGDIARY_DATA = "Trainingdiary.json";
 
-    public static String PATH_FEEDBACK_FOLDER = PATH_ROOT_FOLDER + "Feedback Data/";
+    public static String PATH_FEEDBACK_FOLDER = PATH_USER_FOLDER + "Feedback Data/";
     public static String PATH_MOTI_DATA = PATH_FEEDBACK_FOLDER + "Motivation Data/";
     public static String FILENAME_MOTI_DATA = "Motivation.json";
 
@@ -185,10 +187,14 @@ public class FileHelper {
     }
 
     public static void initDir() {
-
         File rootfolder = new File(PATH_ROOT_FOLDER);
         if (!rootfolder.exists()) {
             rootfolder.mkdir();
+        }
+
+        File userFolder = new File(PATH_USER_FOLDER);
+        if (!userFolder.exists()) {
+            userFolder.mkdir();
         }
 
         File trainingDataFolder = new File(PATH_TRAINING_DATA);
