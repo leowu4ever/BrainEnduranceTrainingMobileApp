@@ -202,17 +202,18 @@
             android:gravity="center"
             android:orientation="horizontal">
 
+
             <Button
-                android:id="@+id/btn_delete"
+                android:id="@+id/btn_upload2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/button_rounded_corner_negative"
-                android:text="Delete"
-                android:textAllCaps="true"
+                android:background="@drawable/button_rounded_corner"
+                android:gravity="center"
+                android:text="Log out"
                 android:textColor="@color/common_google_signin_btn_text_dark_default"
                 android:textStyle="bold" />
-
 
             <Button
                 android:id="@+id/btn_upload"
