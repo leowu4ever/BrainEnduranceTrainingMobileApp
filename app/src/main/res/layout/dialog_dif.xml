@@ -46,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="@drawable/button_rounded_corner_negative"
+        android:background="@drawable/button_rounded_corner"
         android:text="Adaptive"
         android:textAllCaps="false"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
@@ -57,8 +57,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="@drawable/button_rounded_corner_negative"
+        android:background="@drawable/button_rounded_corner"
+        android:backgroundTint="@color/colorAccent"
         android:text="Custom"
+        android:textAllCaps="false"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_dif_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/button_rounded_corner"
+        android:text="Back"
         android:textAllCaps="false"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textStyle="bold" />

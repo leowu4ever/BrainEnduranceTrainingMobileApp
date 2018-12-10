@@ -467,6 +467,7 @@
             android:layout_weight="1"
             android:background="@drawable/button_rounded_corner_negative"
             android:text="Pause"
+            android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
@@ -478,6 +479,7 @@
             android:layout_weight="1"
             android:background="@drawable/button_rounded_corner"
             android:text="Finish"
+            android:textAllCaps="false"
             android:textColor="@color/common_google_signin_btn_text_dark_default"
             android:textStyle="bold" />
 

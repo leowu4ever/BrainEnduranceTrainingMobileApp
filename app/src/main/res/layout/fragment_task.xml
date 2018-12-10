@@ -267,7 +267,7 @@
         android:background="@drawable/button_rounded_corner"
         android:elevation="0dp"
         android:text="Start"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textStyle="bold" />
 
