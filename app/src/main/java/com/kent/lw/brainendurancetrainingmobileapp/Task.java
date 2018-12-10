@@ -47,7 +47,7 @@ public class Task {
     }
 
     public float getVolumeTo() {
-        return volumeTo;
+        return Float.parseFloat(String.format("%.1f", volumeTo));
     }
 
     public void setVolumeTo(float volumeTo) {
@@ -55,7 +55,7 @@ public class Task {
     }
 
     public float getNoise() {
-        return noise;
+        return Float.parseFloat(String.format("%.1f", noise));
     }
 
     public void setNoise(float noise) {

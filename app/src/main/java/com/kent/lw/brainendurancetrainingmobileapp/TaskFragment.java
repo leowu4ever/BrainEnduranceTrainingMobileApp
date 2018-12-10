@@ -124,6 +124,9 @@ public class TaskFragment extends Fragment {
                     MainActivity.trainingData.setDif(btnDif.getText() + "");
                     MainActivity.trainingData.setTaskConfig(MainActivity.task);
 
+                    if(btnTask.getText().equals("A-PVT")) {
+                        MainActivity.trainingData.getTaskConfig().setNogoPropotion(0);
+                    }
                     taskCommunicator.startTraining(taskSelected, difSelected);
                 } else {
                     promptDialog.show();
