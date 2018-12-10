@@ -179,7 +179,7 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/button_rounded_corner"
         android:text="SAve"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textStyle="bold" />
 

@@ -21,9 +21,7 @@ import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class DialogHelper {
 
@@ -41,7 +39,7 @@ public class DialogHelper {
 
     // main entry dialog
     public Dialog diaryDialog;
-    public Button btnTrainingDiary, btnMoti, btnRpe, btnNasa;
+    public Button btnTrainingDiary, btnMoti, btnRpe, btnNasa, btnDiaryBack;
 
     // entry list dialog
     public Dialog trainingDiaryDialog, motiDialog, rpeDialog, nasaDialog;
@@ -51,6 +49,7 @@ public class DialogHelper {
     // diary add dialog
     public Dialog trainingDiaryAddDialog, motiAddDialog, rpeAddDialog, nasaAddDialog;
     public Button btnTrainingDiarySave, btnMotiSave, btnRpeSave, btnNasaSave;
+    public Button btnTrainingDiaryAddBack, btnMotiAddBack, btnRpeAddBack, btnNasaAddBack;
 
     // training diary add
     public EditText ifDate, ifTime, ifDuration;
@@ -336,6 +335,14 @@ public class DialogHelper {
             }
         });
 
+        btnDiaryBack = diaryDialog.findViewById(R.id.btn_diary_back);
+        btnDiaryBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissDiaryDialog();
+            }
+        });
+
         btnTrainingDiaryAdd = trainingDiaryDialog.findViewById(R.id.btn_diary_trainingdiary_add);
         btnTrainingDiaryAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -462,6 +469,38 @@ public class DialogHelper {
                 MainActivity.nasaData.setEffort(rbEff.getRightPinValue());
                 FileHelper.saveNasaDataToLocal();
 
+                dismissNasaAddDialog();
+            }
+        });
+
+        btnTrainingDiaryAddBack = trainingDiaryAddDialog.findViewById(R.id.btn_diary_trainingdiary_add_back);
+        btnTrainingDiaryAddBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissTrainingDiaryAddDialog();
+            }
+        });
+
+        btnMotiAddBack = motiAddDialog.findViewById(R.id.btn_diary_moti_add_back);
+        btnMotiAddBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissMotiAddDialog();
+            }
+        });
+
+        btnRpeAddBack = rpeAddDialog.findViewById(R.id.btn_diary_rpe_add_back);
+        btnRpeAddBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissRpeAddDialog();
+            }
+        });
+
+        btnNasaAddBack = nasaAddDialog.findViewById(R.id.btn_diary_nasa_add_back);
+        btnNasaAddBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 dismissNasaAddDialog();
             }
         });

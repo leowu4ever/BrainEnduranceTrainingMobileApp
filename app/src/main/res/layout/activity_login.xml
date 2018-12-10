@@ -50,10 +50,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@drawable/button_rounded_corner"
-        android:text="LOG IN"
+        android:text="Log in"
 
         android:textAlignment="center"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textSize="14sp"
         android:textStyle="bold" />

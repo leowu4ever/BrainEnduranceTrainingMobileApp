@@ -27,31 +27,31 @@ public class TaskFragment extends Fragment {
     private Button btnStart;
     // task dialog
     private Dialog taskDialog;
-    private Button btnTask, btnAPVT, btnGonono, btnVisual, btnHelpApvt, btnHelpGonogo;
+    private Button btnTask, btnAPVT, btnGonono, btnVisual, btnHelpApvt, btnHelpGonogo, btnTaskBack;
     // dif dialog
     private Dialog difDialog;
-    private Button btnDif, btnEasy, btnMedium, btnHard, btnAdaptive, btnCustom;
+    private Button btnDif, btnEasy, btnMedium, btnHard, btnAdaptive, btnCustom, btnDifBack;
     // dif prompt dialog
     private Dialog promptDialog;
     private Button btnDifPromptOk;
     private TextView tvPrompt;
     // activity dialog
     private Dialog activityDialog;
-    private Button btnWalking, btnMarching, btnRunning, btnActivity;
+    private Button btnWalking, btnMarching, btnRunning, btnActivity, btnActivityBack;
     // duration dialog
     private Dialog durationDialog;
-    private Button btnDuration, btnDurationSave;
+    private Button btnDuration, btnDurationSave, btnDurationBack;
     private RangeBar rbTaskDuration;
     // help dialog
     private Dialog helpApvtDialog, helpGonogoDialog;
     private Button btnHelpApvtOK, btnHelpGonogoOK;
     // apvt custom dialog
     private Dialog difCustomAPVTDialog;
-    private Button btnCustomSaveApvt;
+    private Button btnCustomSaveApvt, btnCustomBackApvt;
     private RangeBar rbIntervalApvt, rbVolumeApvt, rbNoiseApvt, rbThresholdApvt, rbMinspeedApvt;
     //gonogo dialog
     private Dialog difCustomGonogoDialog;
-    private Button btnCustomSaveGonogo;
+    private Button btnCustomSaveGonogo, btnCustomBackGonogo;
     private RangeBar rbNogo, rbIntervalGonogo, rbVolumeGonogo, rbNoiseGonogo, rbThresholdGonogo, rbMinspeedGonogo;
 
     @Override
@@ -195,6 +195,14 @@ public class TaskFragment extends Fragment {
                 btnDuration.setText(rbTaskDuration.getRightPinValue() + " min");
             }
         });
+
+        btnDurationBack = durationDialog.findViewById(R.id.btn_duration_back);
+        btnDurationBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                durationDialog.dismiss();
+            }
+        });
     }
 
     private void initCustomSaveBtns() {
@@ -218,12 +226,11 @@ public class TaskFragment extends Fragment {
             }
         });
 
-        btnCustomSaveGonogo = difCustomGonogoDialog.findViewById(R.id.btn_gonogo_save);
-        btnCustomSaveGonogo.setOnClickListener(new View.OnClickListener() {
+        btnCustomBackApvt = difCustomAPVTDialog.findViewById(R.id.btn_apvt_back);
+        btnCustomBackApvt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                difCustomGonogoDialog.dismiss();
-                btnDuration.setText(btnCustom.getText());
+                difCustomAPVTDialog.dismiss();
             }
         });
 
@@ -244,6 +251,14 @@ public class TaskFragment extends Fragment {
 
                 difCustomGonogoDialog.dismiss();
                 btnDif.setText(btnCustom.getText());
+            }
+        });
+
+        btnCustomBackGonogo = difCustomGonogoDialog.findViewById(R.id.btn_gonogo_back);
+        btnCustomBackGonogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                difCustomGonogoDialog.dismiss();
             }
         });
     }
@@ -302,6 +317,14 @@ public class TaskFragment extends Fragment {
                 }
             }
         });
+
+        btnDifBack = difDialog.findViewById(R.id.btn_dif_back);
+        btnDifBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                difDialog.dismiss();
+            }
+        });
     }
 
     private void initTaskBtns() {
@@ -331,6 +354,14 @@ public class TaskFragment extends Fragment {
                 taskDialog.dismiss();
             }
         });
+
+        btnTaskBack = taskDialog.findViewById(R.id.btn_task_back);
+        btnTaskBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                taskDialog.dismiss();
+            }
+        });
     }
 
     private void initActivityBtns() {
@@ -357,6 +388,14 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 btnActivity.setText(btnMarching.getText());
+                activityDialog.dismiss();
+            }
+        });
+
+        btnActivityBack = activityDialog.findViewById(R.id.btn_activity_back);
+        btnActivityBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 activityDialog.dismiss();
             }
         });

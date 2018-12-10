@@ -27,26 +27,29 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_resume2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginRight="10dp"
-            android:layout_weight="0"
-            android:background="@drawable/button_rounded_corner"
-            android:text="No"
-            android:textColor="@color/common_google_signin_btn_text_dark_default"
-            android:textStyle="bold" />
-
-        <Button
             android:id="@+id/btn_resume"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginRight="10dp"
             android:background="@drawable/button_rounded_corner"
             android:text="Yes"
+            android:textAllCaps="false"
             android:textColor="@color/common_google_signin_btn_text_dark_default"
             android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_resume2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0"
+            android:background="@drawable/button_rounded_corner"
+            android:text="No"
+            android:textAllCaps="false"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
 </LinearLayout>

@@ -54,7 +54,7 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/btn_diary_nasa2"
+        android:id="@+id/btn_diary_back"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"

@@ -27,7 +27,8 @@
         android:layout_gravity="center"
         android:layout_weight="0"
         android:background="@drawable/button_rounded_corner"
-        android:text="UNLOCK"
+        android:text="Unlock"
+        android:textAllCaps="false"
         android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
 </LinearLayout>
