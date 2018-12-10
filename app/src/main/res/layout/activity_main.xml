@@ -53,6 +53,17 @@
                 android:orientation="vertical">
 
                 <ImageButton
+                    android:id="@+id/btn_flic"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/button_circle"
+                    android:elevation="0dp"
+                    android:padding="5dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_flic" />
+
+                <ImageButton
                     android:id="@+id/btn_profile"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
@@ -64,16 +75,6 @@
                     android:padding="5dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_profile" />
-
-                <ImageButton
-                    android:id="@+id/btn_flic"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/button_circle"
-                    android:padding="5dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_setting" />
 
                 <ImageButton
                     android:id="@+id/btn_diary"
