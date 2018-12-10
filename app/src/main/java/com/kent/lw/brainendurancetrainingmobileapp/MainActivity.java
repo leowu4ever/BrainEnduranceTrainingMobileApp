@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     trainingData.setName(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""));
 
                     // upload to db
-                    FirebaseDBHelper.uploadAllData(trainingData);
+                    FirebaseDBHelper.uploadTdToDb(trainingData);
                     FileHelper.saveTrainingDataToLocal();
 
                     // overall

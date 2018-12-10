@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class FirebaseDBHelper {
@@ -15,7 +16,7 @@ public class FirebaseDBHelper {
 
     }
 
-    public static void uploadAllData(TrainingData trainingData) {
+    public static void uploadTdToDb(TrainingData trainingData) {
         db = FirebaseDatabase.getInstance().getReference();
         rootPath = trainingData.getName() + "/" + DateHelper.getDateTimeFromMili(trainingData.getStartTime()) + "/";
 
@@ -54,5 +55,16 @@ public class FirebaseDBHelper {
     public static void updateStorageRef(ArrayList<String> fileList) {
         db = FirebaseDatabase.getInstance().getReference();
         db.child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", "") + "/" + "storageRef").setValue(fileList);
+    }
+
+
+    public static void uploadTdFromLocToDb() {
+        File f = new File(FileHelper.PATH_TRAINING_DATA);
+        File[] files = f.listFiles();
+        // reads every file
+        for (int i = 0; i < files.length; i++) {
+            TrainingData td = FileHelper.readTrainingDataFromLocal(files[i].getName());
+            FirebaseDBHelper.uploadTdToDb(td);
+        }
     }
 }
