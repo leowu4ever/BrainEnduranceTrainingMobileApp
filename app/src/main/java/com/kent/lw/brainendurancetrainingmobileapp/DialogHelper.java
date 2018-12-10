@@ -2,10 +2,12 @@ package com.kent.lw.brainendurancetrainingmobileapp;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +25,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.ArrayList;
 
-public class DialogHelper {
+public class DialogHelper{
 
     // training fragment
     public Dialog pauseDialog, finishDialog, countdownDialog, lockDialog;
@@ -64,11 +66,15 @@ public class DialogHelper {
     // nasa dialog add
     public RangeBar rbTemp, rbMen, rbPhy, rbFrus, rbPerf, rbEff;
 
+    public Dialog uploadCheckDialog, deleteCheckDialog, finishCheckDialog;
+    public Button btnUploadCheckYes, btnUploadCheckNo, btnDeleteCheckYes, btnDeleteCheckNo, btnFinishCheckYes, btnFinishCheckNo;
+
+
     public DialogHelper(Context context) {
         init(context);
     }
 
-    public void init(Context context) {
+    public void init(final Context context) {
         pauseDialog = new Dialog(context);
         finishDialog = new Dialog(context);
         countdownDialog = new Dialog(context);
@@ -83,6 +89,10 @@ public class DialogHelper {
         motiDialog = new Dialog(context);
         rpeDialog = new Dialog(context);
         nasaDialog = new Dialog(context);
+
+        uploadCheckDialog = new Dialog(context);
+        deleteCheckDialog = new Dialog(context);
+        finishCheckDialog = new Dialog(context);
 
         setupDialog(pauseDialog, R.layout.dialog_pause);
         setupDialog(finishDialog, R.layout.dialog_finish);
@@ -102,6 +112,10 @@ public class DialogHelper {
         setupDialog(motiDialog, R.layout.dialog_diary_moti);
         setupDialog(rpeDialog, R.layout.dialog_diary_rpe);
         setupDialog(nasaDialog, R.layout.dialog_diary_nasa);
+
+        setupDialog(uploadCheckDialog, R.layout.dialog_upload_check);
+        setupDialog(deleteCheckDialog, R.layout.dialog_delete_check);
+        setupDialog(finishCheckDialog, R.layout.dialog_finish_check);
 
         btnResumeOk = pauseDialog.findViewById(R.id.btn_resume);
         btnResumeOk.setOnClickListener(new View.OnClickListener() {
@@ -330,8 +344,6 @@ public class DialogHelper {
                     tvEff.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
                     containerLayout.addView(tvEff);
                 }
-
-
             }
         });
 
@@ -505,6 +517,62 @@ public class DialogHelper {
             }
         });
 
+        btnFinishCheckYes = finishCheckDialog.findViewById(R.id.btn_finish_yes);
+        btnFinishCheckYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // finish
+
+            }
+        });
+        btnFinishCheckNo = finishCheckDialog.findViewById(R.id.btn_finish_no);
+        btnFinishCheckNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissFinishCheckDialog();
+                // resume training
+            }
+        });
+
+
+        btnUploadCheckYes = uploadCheckDialog.findViewById(R.id.btn_upload_yes);
+        btnUploadCheckYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseStorageHelper.uploadAllFileToFirestorage(context);
+                FirebaseDBHelper.uploadTdFromLocToDb();
+                dismissUploadCheckDialog();
+            }
+        });
+
+        btnUploadCheckNo = uploadCheckDialog.findViewById(R.id.btn_upload_no);
+        btnUploadCheckNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissUploadCheckDialog();
+            }
+        });
+
+        btnDeleteCheckYes = deleteCheckDialog.findViewById(R.id.btn_delete_yes);
+        btnDeleteCheckYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseStorageHelper.deleteAFolderToFirestorage(context);
+                dismissDeleteCheckDialog();
+
+                Intent intent = new Intent(context, MainActivity.class);
+                context.startActivity(intent);
+            }
+        });
+        btnDeleteCheckNo = deleteCheckDialog.findViewById(R.id.btn_delete_no);
+        btnDeleteCheckNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissDeleteCheckDialog();
+            }
+        });
+
+
         tvFinishDuration = finishDialog.findViewById(R.id.tv_finish_duration);
         tvFinishDistance = finishDialog.findViewById(R.id.tv_finish_distance);
         tvFinishSpeed = finishDialog.findViewById(R.id.tv_finish_speed);
@@ -667,6 +735,30 @@ public class DialogHelper {
 
     public void dismissNasaDialog() {
         nasaDialog.dismiss();
+    }
+
+    public void showFinishCheckDialog() {
+        finishCheckDialog.show();
+    }
+
+    public void dismissFinishCheckDialog() {
+        finishCheckDialog.dismiss();
+    }
+
+    public void showUploadCheckDialog() {
+        uploadCheckDialog.show();
+    }
+
+    public void dismissUploadCheckDialog() {
+        uploadCheckDialog.dismiss();
+    }
+
+    public void showDeleteCheckDialog() {
+        deleteCheckDialog.show();
+    }
+
+    public void dismissDeleteCheckDialog() {
+        deleteCheckDialog.dismiss();
     }
 
     public boolean isLockDialogShowing() {

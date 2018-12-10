@@ -49,10 +49,7 @@ public class HistoryActivity extends AppCompatActivity {
         btnHistoryUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseStorageHelper.uploadAllFileToFirestorage(HistoryActivity.this);
-
-                // upload to db too
-                FirebaseDBHelper.uploadTdFromLocToDb();
+                dh.showUploadCheckDialog();
             }
         });
 
@@ -60,10 +57,8 @@ public class HistoryActivity extends AppCompatActivity {
         btnHistoryDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseStorageHelper.deleteAFolderToFirestorage(HistoryActivity.this);
-                // remove db entry
-                onBackPressed();
-
+//                onBackPressed();
+                dh.showDeleteCheckDialog();
             }
         });
 
