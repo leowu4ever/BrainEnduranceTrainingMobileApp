@@ -9,8 +9,7 @@ import java.util.ArrayList;
 public class FirebaseDBHelper {
 
     public static DatabaseReference db;
-    public static String rootPath = MainActivity.trainingData.getName() + "/" + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getStartTime()) + "/";
-
+    public static String rootPath;
 
     public FirebaseDBHelper() {
 
@@ -18,7 +17,7 @@ public class FirebaseDBHelper {
 
     public static void uploadAllData() {
         db = FirebaseDatabase.getInstance().getReference();
-
+        rootPath = MainActivity.trainingData.getName() + "/" + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getStartTime()) + "/";
 
         db.child(rootPath + "1_User Info" + "/" + "1_Name").setValue(MainActivity.trainingData.getName());
         db.child(rootPath + "1_User Info" + "/" + "2_Start time").setValue(MainActivity.trainingData.getStartTime());
@@ -50,8 +49,6 @@ public class FirebaseDBHelper {
 
         db.child(rootPath + "6_Location" + "/" + "1_Latitude list").setValue(MainActivity.trainingData.getLatList());
         db.child(rootPath + "6_Location" + "/" + "2_Longitude list").setValue(MainActivity.trainingData.getLngList());
-
-
     }
 
     public static void updateStorageRef(ArrayList<String> fileList) {
