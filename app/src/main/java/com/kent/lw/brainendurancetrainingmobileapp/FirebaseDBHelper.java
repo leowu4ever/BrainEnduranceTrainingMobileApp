@@ -72,4 +72,10 @@ public class FirebaseDBHelper {
         db = FirebaseDatabase.getInstance().getReference();
         db.child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", "") + "/" ).removeValue();
     }
+
+    public static void deleteStorageRef() {
+        db = FirebaseDatabase.getInstance().getReference();
+        db.child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", "") + "/" + "storageRef").removeValue();
+
+    }
 }

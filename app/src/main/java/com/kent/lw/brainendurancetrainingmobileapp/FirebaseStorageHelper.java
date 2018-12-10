@@ -31,6 +31,7 @@ public class FirebaseStorageHelper {
         successCount = 0;
         totalFileCount = 0;
         setTotalFileCount();
+        FirebaseDBHelper.deleteStorageRef();
         uploadAFolderToFirestorage(context, FileHelper.PATH_TRAINING_DATA, "Training Data/");
         uploadAFolderToFirestorage(context, FileHelper.PATH_MOTION_DATA, "Motion Data/");
         uploadAFolderToFirestorage(context, FileHelper.PATH_OVERALL_DATA, "Overall Data/");
