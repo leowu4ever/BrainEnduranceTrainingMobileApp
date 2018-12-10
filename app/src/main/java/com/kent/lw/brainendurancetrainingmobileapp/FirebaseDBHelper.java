@@ -64,7 +64,12 @@ public class FirebaseDBHelper {
         // reads every file
         for (int i = 0; i < files.length; i++) {
             TrainingData td = FileHelper.readTrainingDataFromLocal(files[i].getName());
-            FirebaseDBHelper.uploadTdToDb(td);
+            uploadTdToDb(td);
         }
+    }
+
+    public static void deleteTdFromDb() {
+        db = FirebaseDatabase.getInstance().getReference();
+        db.child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", "") + "/" ).removeValue();
     }
 }

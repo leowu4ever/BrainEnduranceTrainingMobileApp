@@ -136,6 +136,9 @@ public class FirebaseStorageHelper {
                         }
                     });
                 }
+
+                FirebaseDBHelper.deleteTdFromDb();
+
             }
 
             @Override

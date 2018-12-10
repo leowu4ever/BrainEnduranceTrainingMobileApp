@@ -61,6 +61,7 @@ public class HistoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseStorageHelper.deleteAFolderToFirestorage(HistoryActivity.this);
+                // remove db entry
                 onBackPressed();
 
             }
