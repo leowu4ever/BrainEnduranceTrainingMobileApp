@@ -15,7 +15,7 @@ import java.io.File;
 
 public class HistoryActivity extends AppCompatActivity {
 
-    private Button btnHistoryOk, btnHistoryUpload;
+    private Button btnHistoryOk, btnHistoryUpload, btnHistoryDelete;
     private TextView tvOverallAccuracy, tvOverallRT;
     private DialogHelper dh;
     private File[] files;
@@ -56,15 +56,15 @@ public class HistoryActivity extends AppCompatActivity {
             }
         });
 
-//        btnHistoryDelete = findViewById(R.id.btn_delete);
-//        btnHistoryDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FirebaseStorageHelper.deleteAFolderToFirestorage(HistoryActivity.this);
-//                onBackPressed();
-//
-//            }
-//        });
+        btnHistoryDelete = findViewById(R.id.btn_delete);
+        btnHistoryDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseStorageHelper.deleteAFolderToFirestorage(HistoryActivity.this);
+                onBackPressed();
+
+            }
+        });
 
         tvOverallAccuracy = findViewById(R.id.tv_overall_accuracy);
         tvOverallRT = findViewById(R.id.tv_overall_rt);

@@ -204,8 +204,21 @@
 
 
             <Button
-                android:id="@+id/btn_upload2"
-                android:layout_width="wrap_content"
+                android:id="@+id/btn_delete"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/button_rounded_corner_negative"
+                android:gravity="center"
+                android:text="Delete"
+                android:textAllCaps="false"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_logout"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="10dp"
@@ -218,7 +231,7 @@
 
             <Button
                 android:id="@+id/btn_upload"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="10dp"
@@ -232,7 +245,7 @@
 
             <Button
                 android:id="@+id/btn_back"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/button_rounded_corner"
