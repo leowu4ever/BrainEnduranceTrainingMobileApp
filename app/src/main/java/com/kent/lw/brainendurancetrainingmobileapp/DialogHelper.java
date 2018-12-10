@@ -561,6 +561,7 @@ public class DialogHelper{
                 dismissDeleteCheckDialog();
 
                 Intent intent = new Intent(context, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intent);
             }
         });
@@ -571,7 +572,6 @@ public class DialogHelper{
                 dismissDeleteCheckDialog();
             }
         });
-
 
         tvFinishDuration = finishDialog.findViewById(R.id.tv_finish_duration);
         tvFinishDistance = finishDialog.findViewById(R.id.tv_finish_distance);
