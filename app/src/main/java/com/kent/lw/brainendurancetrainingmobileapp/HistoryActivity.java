@@ -50,6 +50,8 @@ public class HistoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseStorageHelper.uploadAllFileToFirestorage(HistoryActivity.this);
+                // upload to db too
+
             }
         });
 

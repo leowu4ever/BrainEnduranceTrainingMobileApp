@@ -35,6 +35,10 @@ public class FirebaseStorageHelper {
         uploadAFolderToFirestorage(context, FileHelper.PATH_MOTION_DATA, "Motion Data/");
         uploadAFolderToFirestorage(context, FileHelper.PATH_OVERALL_DATA, "Overall Data/");
         uploadAFolderToFirestorage(context, FileHelper.PATH_ROUTE_DATA, "Route Data/");
+        uploadAFolderToFirestorage(context, FileHelper.PATH_TRAININGDIARY_DATA, "Training Diary Data/");
+        uploadAFolderToFirestorage(context, FileHelper.PATH_MOTI_DATA, "Feedback Data/Motivation Data/");
+        uploadAFolderToFirestorage(context, FileHelper.PATH_RPE_DATA, "Feedback Data/Rpe Data/");
+        uploadAFolderToFirestorage(context, FileHelper.PATH_NASA_DATA, "Feedback Data/Nasa Data/");
 
     }
 
@@ -52,6 +56,22 @@ public class FirebaseStorageHelper {
         totalFileCount = totalFileCount + files.length;
 
         f = new File(FileHelper.PATH_ROUTE_DATA);
+        files = f.listFiles();
+        totalFileCount = totalFileCount + files.length;
+
+        f = new File(FileHelper.PATH_TRAININGDIARY_DATA);
+        files = f.listFiles();
+        totalFileCount = totalFileCount + files.length;
+
+        f = new File(FileHelper.PATH_MOTI_DATA);
+        files = f.listFiles();
+        totalFileCount = totalFileCount + files.length;
+
+        f = new File(FileHelper.PATH_RPE_DATA);
+        files = f.listFiles();
+        totalFileCount = totalFileCount + files.length;
+
+        f = new File(FileHelper.PATH_NASA_DATA);
         files = f.listFiles();
         totalFileCount = totalFileCount + files.length;
 

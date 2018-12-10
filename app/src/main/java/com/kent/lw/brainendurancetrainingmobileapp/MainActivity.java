@@ -268,7 +268,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
                     mapHelper.removePolylines();
                     trainingData.setName(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""));
-                    FirebaseDBHelper.uploadAllData();
+
+                    // upload to db
+                    FirebaseDBHelper.uploadAllData(trainingData);
                     FileHelper.saveTrainingDataToLocal();
 
                     // overall
