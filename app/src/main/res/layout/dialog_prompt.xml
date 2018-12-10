@@ -13,11 +13,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="0"
-        android:paddingBottom="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:text="Please select a cognitive task."
         android:textAlignment="center"
         android:textAllCaps="false"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 
     <Button
         android:id="@+id/btn_dif_prompt_ok"
