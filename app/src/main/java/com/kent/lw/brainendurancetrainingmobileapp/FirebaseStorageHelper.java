@@ -114,6 +114,11 @@ public class FirebaseStorageHelper {
                     fileList.add(firebaseStoragePath);
                     FirebaseDBHelper.updateStorageRef(fileList);
                 }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(context, "Uploading failed", Toast.LENGTH_SHORT).show();
+                }
             });
         }
     }
@@ -145,6 +150,7 @@ public class FirebaseStorageHelper {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
+                            Toast.makeText(context, "Deleting failed", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
