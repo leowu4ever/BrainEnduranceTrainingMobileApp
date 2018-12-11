@@ -210,14 +210,14 @@ public class Task {
     }
 
     public void setupForApvtMedium() {
-        setNogoProportion(APVT_EASY_NOGO_PROPORTION);
-        setIntervalFrom(APVT_EASY_INTERVAL_FROM);
-        setIntervalTo(APVT_EASY_INTERVAL_TO);
-        setVolumeFrom(APVT_EASY_VOLUME_FROM);
-        setVolumeTo(APVT_EASY_VOLUME_TO);
-        setNoise(APVT_EASY_NOISE);
-        setResThreshold(APVT_EASY_RES_THRESHOLD);
-        setMinSpeed(APVT_EASY_MIN_SPEED);
+        setNogoProportion(APVT_MEDIUM_NOGO_PROPORTION);
+        setIntervalFrom(APVT_MEDIUM_INTERVAL_FROM);
+        setIntervalTo(APVT_MEDIUM_INTERVAL_TO);
+        setVolumeFrom(APVT_MEDIUM_VOLUME_FROM);
+        setVolumeTo(APVT_MEDIUM_VOLUME_TO);
+        setNoise(APVT_MEDIUM_NOISE);
+        setResThreshold(APVT_MEDIUM_RES_THRESHOLD);
+        setMinSpeed(APVT_MEDIUM_MIN_SPEED);
     }
 
     public void setupForApvtHard() {
@@ -243,14 +243,14 @@ public class Task {
     }
 
     public void setupForGonogoMedium() {
-        setNogoProportion(GONOGO_EASY_NOGO_PROPORTION);
-        setIntervalFrom(GONOGO_EASY_INTERVAL_FROM);
-        setIntervalTo(GONOGO_EASY_INTERVAL_TO);
-        setVolumeFrom(GONOGO_EASY_VOLUME_FROM);
-        setVolumeTo(GONOGO_EASY_VOLUME_TO);
-        setNoise(GONOGO_EASY_NOISE);
-        setResThreshold(GONOGO_EASY_RES_THRESHOLD);
-        setMinSpeed(GONOGO_EASY_MIN_SPEED);
+        setNogoProportion(GONOGO_MEDIUM_NOGO_PROPORTION);
+        setIntervalFrom(GONOGO_MEDIUM_INTERVAL_FROM);
+        setIntervalTo(GONOGO_MEDIUM_INTERVAL_TO);
+        setVolumeFrom(GONOGO_MEDIUM_VOLUME_FROM);
+        setVolumeTo(GONOGO_MEDIUM_VOLUME_TO);
+        setNoise(GONOGO_MEDIUM_NOISE);
+        setResThreshold(GONOGO_MEDIUM_RES_THRESHOLD);
+        setMinSpeed(GONOGO_MEDIUM_MIN_SPEED);
     }
 
     public void setupForGonogoHard() {
