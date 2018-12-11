@@ -146,6 +146,9 @@ public class FirebaseStorageHelper {
                                 // remove loc data
                                 FileHelper.deleteDir(new File(FileHelper.PATH_USER_FOLDER));
                                 FirebaseDBHelper.deleteTdFromDb();
+                                // recreate an overall to refresh
+                                MainActivity.overallData.reset();
+                                FileHelper.initDir();
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -165,8 +168,6 @@ public class FirebaseStorageHelper {
 
 
 
-        // recreate an overall to refresh
-        MainActivity.overallData.reset();
-        FileHelper.initDir();
+
     }
 }
