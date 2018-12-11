@@ -81,8 +81,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private float distance, speed, pace;
 
 
-
-
     public static void resumeTraining() {
         trainingStarted = true;
         soundHelper.playNoiseSound(task.getNoise(), task.getNoise(), 0, -1, 1);

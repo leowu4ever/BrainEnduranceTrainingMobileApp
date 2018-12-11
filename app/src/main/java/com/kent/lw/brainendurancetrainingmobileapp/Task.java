@@ -181,7 +181,7 @@ public class Task {
         final float APVT_HARD_NOISE = 1;
         final int APVT_HARD_RES_THRESHOLD = 1500;
         final float APVT_HARD_MIN_SPEED = 5;
-         final float APVT_HARD_NOGO_PROPORTION = 0;
+        final float APVT_HARD_NOGO_PROPORTION = 0;
 
         setNogoProportion(APVT_HARD_NOGO_PROPORTION);
         setIntervalFrom(APVT_HARD_INTERVAL_FROM);

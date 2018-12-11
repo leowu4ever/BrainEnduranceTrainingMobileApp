@@ -6,16 +6,16 @@ public class NasaData {
 
     public ArrayList<String> date, time, temporal, mental, physical, frustration, performance, effort;
 
-   public NasaData() {
-       date = new ArrayList<String>();
-       time = new ArrayList<String>();
-       temporal = new ArrayList<String>();
-       mental = new ArrayList<String>();
-       physical = new ArrayList<String>();
-       frustration = new ArrayList<String>();
-       performance = new ArrayList<String>();
-       effort = new ArrayList<String>();
-   }
+    public NasaData() {
+        date = new ArrayList<String>();
+        time = new ArrayList<String>();
+        temporal = new ArrayList<String>();
+        mental = new ArrayList<String>();
+        physical = new ArrayList<String>();
+        frustration = new ArrayList<String>();
+        performance = new ArrayList<String>();
+        effort = new ArrayList<String>();
+    }
 
 
     public ArrayList<String> getDate() {

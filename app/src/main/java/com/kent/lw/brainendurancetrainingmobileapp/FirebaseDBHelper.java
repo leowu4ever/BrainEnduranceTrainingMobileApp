@@ -70,7 +70,7 @@ public class FirebaseDBHelper {
 
     public static void deleteTdFromDb() {
         db = FirebaseDatabase.getInstance().getReference();
-        db.child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", "") + "/" ).removeValue();
+        db.child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", "") + "/").removeValue();
     }
 
     public static void deleteStorageRef() {

@@ -124,7 +124,7 @@ public class TaskFragment extends Fragment {
                     MainActivity.trainingData.setDif(btnDif.getText() + "");
                     MainActivity.trainingData.setTaskConfig(MainActivity.task);
 
-                    if(btnTask.getText().equals("A-PVT")) {
+                    if (btnTask.getText().equals("A-PVT")) {
                         MainActivity.trainingData.getTaskConfig().setNogoProportion(0);
                     }
                     taskCommunicator.startTraining(taskSelected, difSelected);
@@ -275,7 +275,7 @@ public class TaskFragment extends Fragment {
                 btnDif.setText(btnEasy.getText());
                 difDialog.dismiss();
 
-                if(btnTask.getText().equals("A-PVT")) {
+                if (btnTask.getText().equals("A-PVT")) {
                     MainActivity.task.setupForApvtEasy();
                 } else if (btnTask.getText().equals("GO/NO-GO")) {
                     MainActivity.task.setupForGonogoEasy();
@@ -290,7 +290,7 @@ public class TaskFragment extends Fragment {
                 btnDif.setText(btnMedium.getText());
                 difDialog.dismiss();
 
-                if(btnTask.getText().equals("A-PVT")) {
+                if (btnTask.getText().equals("A-PVT")) {
                     MainActivity.task.setupForApvtMedium();
                 } else if (btnTask.getText().equals("GO/NO-GO")) {
                     MainActivity.task.setupForGonogoMedium();
@@ -305,7 +305,7 @@ public class TaskFragment extends Fragment {
                 btnDif.setText(btnHard.getText());
                 difDialog.dismiss();
 
-                if(btnTask.getText().equals("A-PVT")) {
+                if (btnTask.getText().equals("A-PVT")) {
                     MainActivity.task.setupForApvtHard();
                 } else if (btnTask.getText().equals("GO/NO-GO")) {
                     MainActivity.task.setupForGonogoHard();
@@ -320,12 +320,12 @@ public class TaskFragment extends Fragment {
                 btnDif.setText(btnAdaptive.getText());
                 difDialog.dismiss();
 
-                if(btnTask.getText().equals("A-PVT")) {
+                if (btnTask.getText().equals("A-PVT")) {
                     //
 
                 } else if (btnTask.getText().equals("GO/NO-GO")) {
                     //
-               }
+                }
             }
         });
 

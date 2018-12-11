@@ -24,12 +24,12 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.ArrayList;
 
-public class DialogHelper{
+public class DialogHelper {
 
     // training fragment
     public Dialog pauseDialog, finishDialog, countdownDialog, lockDialog;
     public TextView tvFinishDuration, tvFinishDistance, tvFinishSpeed, tvFinishPace, tvFinishART, tvFinishAccuracy, tvCountdown;
-    public Button btnResumeOk, btnFinishOK,  btnUnlock;
+    public Button btnResumeOk, btnFinishOK, btnUnlock;
 
     // for history
     public Dialog detailDialog;
@@ -44,7 +44,7 @@ public class DialogHelper{
 
     // entry list dialog
     public Dialog trainingDiaryDialog, motiDialog, rpeDialog, nasaDialog;
-    public Button btnTrainingDiaryBack,btnMotiDialogBack, btnRpeDialogBack, btnNasaDialogBack;
+    public Button btnTrainingDiaryBack, btnMotiDialogBack, btnRpeDialogBack, btnNasaDialogBack;
     public Button btnTrainingDiaryAdd, btnMotiAdd, btnRpeAdd, btnNasaAdd;
 
     // diary add dialog
@@ -776,7 +776,6 @@ public class DialogHelper{
         setupHistoryDialog(td);
         detailDialog.show();
     }
-
 
 
     public void setupHistoryDialog(final TrainingData td) {

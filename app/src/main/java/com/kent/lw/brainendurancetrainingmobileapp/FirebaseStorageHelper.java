@@ -101,7 +101,7 @@ public class FirebaseStorageHelper {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     uploadCount++;
-                    Toast.makeText(context, "Uploading... (" + uploadCount + "/" + totalUploadCount + ")" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Uploading... (" + uploadCount + "/" + totalUploadCount + ")", Toast.LENGTH_SHORT).show();
                     if (uploadCount == totalUploadCount) {
                         Toast.makeText(context, "All uploading completed.", Toast.LENGTH_SHORT).show();
                         FirebaseDBHelper.uploadTdFromLocToDb();
@@ -138,12 +138,11 @@ public class FirebaseStorageHelper {
                         @Override
                         public void onSuccess(Void aVoid) {
                             deleteCount++;
-                            Toast.makeText(context, "Deleting... (" + deleteCount + "/" + totalDeleteCount + ")" , Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Deleting... (" + deleteCount + "/" + totalDeleteCount + ")", Toast.LENGTH_SHORT).show();
                             if (deleteCount == totalDeleteCount) {
                                 Toast.makeText(context, "All deleting completed.", Toast.LENGTH_SHORT).show();
                                 // remove loc data
-                                FileHelper.deleteDir(new File(FileHelper.PATH_USER_FOLDER));
-                                FirebaseDBHelper.deleteTdFromDb();
+
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -161,7 +160,8 @@ public class FirebaseStorageHelper {
             }
         });
 
-
+        FileHelper.deleteDir(new File(FileHelper.PATH_USER_FOLDER));
+        FirebaseDBHelper.deleteTdFromDb();
 
         // recreate an overall to refresh
         MainActivity.overallData.reset();

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class TrainingDiaryData {
 
-    public ArrayList<String>  date, time, duration, type, load;
+    public ArrayList<String> date, time, duration, type, load;
 
     public TrainingDiaryData() {
         date = new ArrayList<String>();

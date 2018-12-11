@@ -27,7 +27,7 @@ public class FileHelper {
 
     public static String PATH_ROUTE_DATA = PATH_USER_FOLDER + "Route Data/";
 
-    public static String PATH_TRAININGDIARY_DATA =  PATH_USER_FOLDER + "Training Diary Data/";
+    public static String PATH_TRAININGDIARY_DATA = PATH_USER_FOLDER + "Training Diary Data/";
     public static String FILENAME_TRAININGDIARY_DATA = "Trainingdiary.json";
 
     public static String PATH_FEEDBACK_FOLDER = PATH_USER_FOLDER + "Feedback Data/";
