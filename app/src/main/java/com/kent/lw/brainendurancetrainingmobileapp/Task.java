@@ -125,8 +125,8 @@ public class Task {
     public void setupForApvtEasy() {
 
         // apvt easy
-        final int APVT_EASY_INTERVAL_FROM = 9;
-        final int APVT_EASY_INTERVAL_TO = 9;
+        final int APVT_EASY_INTERVAL_FROM = 7;
+        final int APVT_EASY_INTERVAL_TO = 7;
 
         final float APVT_EASY_VOLUME_FROM = 1;
         final float APVT_EASY_VOLUME_TO = 1;
@@ -148,8 +148,8 @@ public class Task {
 
     public void setupForApvtMedium() {
         // apvt medium
-        final int APVT_MEDIUM_INTERVAL_FROM = 6;
-        final int APVT_MEDIUM_INTERVAL_TO = 6;
+        final int APVT_MEDIUM_INTERVAL_FROM = 5;
+        final int APVT_MEDIUM_INTERVAL_TO = 5;
 
         final float APVT_MEDIUM_VOLUME_FROM = 0.7f;
         final float APVT_MEDIUM_VOLUME_TO = 0.7f;
@@ -196,8 +196,8 @@ public class Task {
     public void setupForGonogoEasy() {
 
         // gonogo easy
-        final int GONOGO_EASY_INTERVAL_FROM = 9;
-        final int GONOGO_EASY_INTERVAL_TO = 9;
+        final int GONOGO_EASY_INTERVAL_FROM = 7;
+        final int GONOGO_EASY_INTERVAL_TO = 7;
 
         final float GONOGO_EASY_VOLUME_FROM = 1;
         final float GONOGO_EASY_VOLUME_TO = 1;
@@ -220,8 +220,8 @@ public class Task {
     public void setupForGonogoMedium() {
 
         // gonogo medium
-        final int GONOGO_MEDIUM_INTERVAL_FROM = 6;
-        final int GONOGO_MEDIUM_INTERVAL_TO = 6;
+        final int GONOGO_MEDIUM_INTERVAL_FROM = 5;
+        final int GONOGO_MEDIUM_INTERVAL_TO = 5;
 
         final float GONOGO_MEDIUM_VOLUME_FROM = 0.7f;
         final float GONOGO_MEDIUM_VOLUME_TO = 0.7f;
