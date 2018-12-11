@@ -14,80 +14,76 @@ public class Task {
     private float nogoProportion;
 
     // apvt easy
-    public final int APVT_EASY_INTERVAL_FROM = 0;
-    public final int APVT_EASY_INTERVAL_TO = 0;
+    public final int APVT_EASY_INTERVAL_FROM = 9;
+    public final int APVT_EASY_INTERVAL_TO = 9;
 
-    public final float APVT_EASY_VOLUME_FROM = 0;
-    public final float APVT_EASY_VOLUME_TO = 0;
+    public final float APVT_EASY_VOLUME_FROM = 1;
+    public final float APVT_EASY_VOLUME_TO = 1;
 
     public final float APVT_EASY_NOISE = 0;
-    public final int APVT_EASY_RES_THRESHOLD = 0;
-    public final float APVT_EASY_MIN_SPEED = 0;
+    public final int APVT_EASY_RES_THRESHOLD = 1500;
+    public final float APVT_EASY_MIN_SPEED = 5;
     public final float APVT_EASY_NOGO_PROPORTION = 0;
 
-
-
     // apvt medium
-    public final int APVT_MEDIUM_INTERVAL_FROM = 0;
-    public final int APVT_MEDIUM_INTERVAL_TO = 0;
+    public final int APVT_MEDIUM_INTERVAL_FROM = 6;
+    public final int APVT_MEDIUM_INTERVAL_TO = 6;
 
-    public final float APVT_MEDIUM_VOLUME_FROM = 0;
-    public final float APVT_MEDIUM_VOLUME_TO = 0;
+    public final float APVT_MEDIUM_VOLUME_FROM = 0.7f;
+    public final float APVT_MEDIUM_VOLUME_TO = 0.7f;
 
-    public final float APVT_MEDIUM_NOISE = 0;
-    public final int APVT_MEDIUM_RES_THRESHOLD = 0;
-    public final float APVT_MEDIUM_MIN_SPEED = 0;
+    public final float APVT_MEDIUM_NOISE = 0.5f;
+    public final int APVT_MEDIUM_RES_THRESHOLD = 1500;
+    public final float APVT_MEDIUM_MIN_SPEED = 5;
     public final float APVT_MEDIUM_NOGO_PROPORTION = 0;
 
     // apvt hard
-    public final int APVT_HARD_INTERVAL_FROM = 0;
-    public final int APVT_HARD_INTERVAL_TO = 0;
+    public final int APVT_HARD_INTERVAL_FROM = 3;
+    public final int APVT_HARD_INTERVAL_TO = 3;
 
-    public final float APVT_HARD_VOLUME_FROM = 0;
-    public final float APVT_HARD_VOLUME_TO = 0;
+    public final float APVT_HARD_VOLUME_FROM = 0.5f;
+    public final float APVT_HARD_VOLUME_TO = 0.5f;
 
-    public final float APVT_HARD_NOISE = 0;
-    public final int APVT_HARD_RES_THRESHOLD = 0;
-    public final float APVT_HARD_MIN_SPEED = 0;
+    public final float APVT_HARD_NOISE = 1;
+    public final int APVT_HARD_RES_THRESHOLD = 1500;
+    public final float APVT_HARD_MIN_SPEED = 5;
     public final float APVT_HARD_NOGO_PROPORTION = 0;
 
-
-
     // gonogo easy
-    public final int GONOGO_EASY_INTERVAL_FROM = 0;
-    public final int GONOGO_EASY_INTERVAL_TO = 0;
+    public final int GONOGO_EASY_INTERVAL_FROM = 9;
+    public final int GONOGO_EASY_INTERVAL_TO = 9;
 
-    public final float GONOGO_EASY_VOLUME_FROM = 0;
-    public final float GONOGO_EASY_VOLUME_TO = 0;
+    public final float GONOGO_EASY_VOLUME_FROM = 1;
+    public final float GONOGO_EASY_VOLUME_TO = 1;
 
     public final float GONOGO_EASY_NOISE = 0;
-    public final int GONOGO_EASY_RES_THRESHOLD = 0;
-    public final float GONOGO_EASY_MIN_SPEED = 0;
-    public final float GONOGO_EASY_NOGO_PROPORTION = 0;
+    public final int GONOGO_EASY_RES_THRESHOLD = 1500;
+    public final float GONOGO_EASY_MIN_SPEED = 5;
+    public final float GONOGO_EASY_NOGO_PROPORTION = 0.1f;
 
     // gonogo medium
-    public final int GONOGO_MEDIUM_INTERVAL_FROM = 0;
-    public final int GONOGO_MEDIUM_INTERVAL_TO = 0;
+    public final int GONOGO_MEDIUM_INTERVAL_FROM = 6;
+    public final int GONOGO_MEDIUM_INTERVAL_TO = 6;
 
-    public final float GONOGO_MEDIUM_VOLUME_FROM = 0;
-    public final float GONOGO_MEDIUM_VOLUME_TO = 0;
+    public final float GONOGO_MEDIUM_VOLUME_FROM = 0.7f;
+    public final float GONOGO_MEDIUM_VOLUME_TO = 0.7f;
 
-    public final float GONOGO_MEDIUM_NOISE = 0;
-    public final int GONOGO_MEDIUM_RES_THRESHOLD = 0;
-    public final float GONOGO_MEDIUM_MIN_SPEED = 0;
-    public final float GONOGO_MEDIUM_NOGO_PROPORTION = 0;
+    public final float GONOGO_MEDIUM_NOISE = 0.5f;
+    public final int GONOGO_MEDIUM_RES_THRESHOLD = 1500;
+    public final float GONOGO_MEDIUM_MIN_SPEED = 5;
+    public final float GONOGO_MEDIUM_NOGO_PROPORTION = 0.2f;
 
     // gonogo hard
-    public final int GONOGO_HARD_INTERVAL_FROM = 0;
-    public final int GONOGO_HARD_INTERVAL_TO = 0;
+    public final int GONOGO_HARD_INTERVAL_FROM = 3;
+    public final int GONOGO_HARD_INTERVAL_TO = 3;
 
-    public final float GONOGO_HARD_VOLUME_FROM = 0;
-    public final float GONOGO_HARD_VOLUME_TO = 0;
+    public final float GONOGO_HARD_VOLUME_FROM = 0.5f;
+    public final float GONOGO_HARD_VOLUME_TO = 0.5f;
 
-    public final float GONOGO_HARD_NOISE = 0;
-    public final int GONOGO_HARD_RES_THRESHOLD = 0;
-    public final float GONOGO_HARD_MIN_SPEED = 0;
-    public final float GONOGO_HARD_NOGO_PROPORTION = 0;
+    public final float GONOGO_HARD_NOISE = 1;
+    public final int GONOGO_HARD_RES_THRESHOLD = 1500;
+    public final float GONOGO_HARD_MIN_SPEED = 5;
+    public final float GONOGO_HARD_NOGO_PROPORTION = 0.3f;
 
     public Task() {
         reset();
