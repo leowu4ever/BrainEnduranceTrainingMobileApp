@@ -203,19 +203,16 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         trainingData.setStartTime(System.currentTimeMillis());
         handler.postDelayed(countdownRunnbale, 0);
 
-        if (!difSelected.equals(Dif.DIF_CUSTOM)) {
-
-        } else {
             // start after count down
             handler.postDelayed(durationRunnable, 4000);
             createStiTypeList();
             handler.postDelayed(stimulusRunnable, COUNTDONW_WAIT);
-        }
+
     }
 
     private void createStiTypeList() {
         ArrayList<Integer> indexList = new ArrayList<Integer>();
-        int totalStiCount = trainingData.getDuration() / 1000 / task.getIntervalFrom();
+        int totalStiCount = trainingData.getDuration() / 1000 / task.getIntervalFrom() + 1;
         for (int i = 0; i < totalStiCount; i++) {
             trainingData.setStiTypeList(0);
             indexList.add(i);
