@@ -144,7 +144,8 @@ public class FirebaseStorageHelper {
                             if (deleteCount == totalDeleteCount) {
                                 Toast.makeText(context, "All deleting completed.", Toast.LENGTH_SHORT).show();
                                 // remove loc data
-
+                                FileHelper.deleteDir(new File(FileHelper.PATH_USER_FOLDER));
+                                FirebaseDBHelper.deleteTdFromDb();
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -162,8 +163,7 @@ public class FirebaseStorageHelper {
             }
         });
 
-        FileHelper.deleteDir(new File(FileHelper.PATH_USER_FOLDER));
-        FirebaseDBHelper.deleteTdFromDb();
+
 
         // recreate an overall to refresh
         MainActivity.overallData.reset();
