@@ -80,6 +80,12 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private int countdown = 4000;
     private float distance, speed, pace;
 
+    // for adaptive
+    //TO-DO should reset everytime
+    public static int hitStreak;
+    public static final int ADAPTIVE_HIT_STREAK_LIMIT  = 5;
+    public static int lapseStreak;
+    public static final int APDATIVE_LAPSE_STREAK_LIMIT = 2;
 
     public static void resumeTraining() {
         trainingStarted = true;
@@ -210,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     }
 
-    private void createStiTypeList() {
+    public static void createStiTypeList() {
         ArrayList<Integer> indexList = new ArrayList<Integer>();
         int totalStiCount = trainingData.getDuration() / 1000 / task.getIntervalFrom() + 1;
         for (int i = 0; i < totalStiCount; i++) {
@@ -295,6 +301,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         distance = 0;
         speed = 0;
         countdown = 4000;
+
+        hitStreak = 0;
+        lapseStreak = 0;
     }
 
     public void initMap() {
@@ -478,6 +487,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 }
             }
         };
+
     }
 
     private void initFragments() {
