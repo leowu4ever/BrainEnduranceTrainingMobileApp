@@ -97,18 +97,14 @@ public class FirebaseStorageHelper {
             StorageReference storageRef = storage.getReference(firebaseStoragePath);
 
             final UploadTask uploadTask = storageRef.putFile(fileLocPath);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     uploadCount++;
                     Toast.makeText(context, "Uploading... (" + uploadCount + "/" + totalUploadCount + ")" , Toast.LENGTH_SHORT).show();
                     if (uploadCount == totalUploadCount) {
                         Toast.makeText(context, "All uploading completed.", Toast.LENGTH_SHORT).show();
+                        FirebaseDBHelper.uploadTdFromLocToDb();
                     }
 
                     fileList.add(firebaseStoragePath);
@@ -145,6 +141,9 @@ public class FirebaseStorageHelper {
                             Toast.makeText(context, "Deleting... (" + deleteCount + "/" + totalDeleteCount + ")" , Toast.LENGTH_SHORT).show();
                             if (deleteCount == totalDeleteCount) {
                                 Toast.makeText(context, "All deleting completed.", Toast.LENGTH_SHORT).show();
+                                // remove loc data
+                                FileHelper.deleteDir(new File(FileHelper.PATH_USER_FOLDER));
+                                FirebaseDBHelper.deleteTdFromDb();
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -154,7 +153,6 @@ public class FirebaseStorageHelper {
                         }
                     });
                 }
-                FirebaseDBHelper.deleteTdFromDb();
             }
 
             @Override
@@ -163,8 +161,7 @@ public class FirebaseStorageHelper {
             }
         });
 
-        // remove loc data
-        FileHelper.deleteDir(new File(FileHelper.PATH_USER_FOLDER));
+
 
         // recreate an overall to refresh
         MainActivity.overallData.reset();

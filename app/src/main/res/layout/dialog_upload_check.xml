@@ -13,9 +13,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
+        android:layout_margin="20dp"
+        android:layout_marginBottom="0dp"
         android:layout_weight="0"
-        android:text="You are going to upload your training data to the database."
+        android:text="You are going to upload your training data to the database. Please connect to the internet."
         android:textAllCaps="false"
         android:textSize="14sp" />
 

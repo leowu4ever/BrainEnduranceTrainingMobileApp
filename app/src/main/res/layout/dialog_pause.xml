@@ -16,8 +16,8 @@
         android:layout_marginBottom="20dp"
         android:layout_weight="0"
         android:text="Paused"
-        android:textAllCaps="true"
-        android:textSize="30sp"
+        android:textAllCaps="false"
+        android:textSize="36sp"
         android:textStyle="bold" />
 
     <Button

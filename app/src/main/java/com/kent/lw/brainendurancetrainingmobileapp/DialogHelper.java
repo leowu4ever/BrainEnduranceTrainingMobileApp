@@ -539,7 +539,6 @@ public class DialogHelper{
             @Override
             public void onClick(View v) {
                 FirebaseStorageHelper.uploadAllFileToFirestorage(context);
-                FirebaseDBHelper.uploadTdFromLocToDb();
                 dismissUploadCheckDialog();
             }
         });
