@@ -11,7 +11,7 @@ public class Task {
     private float noise;
     private int resThreshold;
     private float minSpeed;
-    private float nogoProportion;
+    private int nogoProportion;
 
     public Task() {
         reset();
@@ -74,11 +74,11 @@ public class Task {
         this.minSpeed = minSpeed;
     }
 
-    public float getNogoProportion() {
+    public int getNogoProportion() {
         return nogoProportion;
     }
 
-    public void setNogoProportion(float nogoProportion) {
+    public void setNogoProportion(int nogoProportion) {
         this.nogoProportion = nogoProportion;
     }
 
@@ -134,7 +134,7 @@ public class Task {
         final float APVT_EASY_NOISE = 0;
         final int APVT_EASY_RES_THRESHOLD = 1500;
         final float APVT_EASY_MIN_SPEED = 5;
-        final float APVT_EASY_NOGO_PROPORTION = 0;
+        final int APVT_EASY_NOGO_PROPORTION = 0;
 
         setNogoProportion(APVT_EASY_NOGO_PROPORTION);
         setIntervalFrom(APVT_EASY_INTERVAL_FROM);
@@ -157,7 +157,7 @@ public class Task {
         final float APVT_MEDIUM_NOISE = 0.5f;
         final int APVT_MEDIUM_RES_THRESHOLD = 1500;
         final float APVT_MEDIUM_MIN_SPEED = 5;
-        final float APVT_MEDIUM_NOGO_PROPORTION = 0;
+        final int APVT_MEDIUM_NOGO_PROPORTION = 0;
 
         setNogoProportion(APVT_MEDIUM_NOGO_PROPORTION);
         setIntervalFrom(APVT_MEDIUM_INTERVAL_FROM);
@@ -181,7 +181,7 @@ public class Task {
         final float APVT_HARD_NOISE = 1;
         final int APVT_HARD_RES_THRESHOLD = 1500;
         final float APVT_HARD_MIN_SPEED = 5;
-        final float APVT_HARD_NOGO_PROPORTION = 0;
+        final int APVT_HARD_NOGO_PROPORTION = 0;
 
         setNogoProportion(APVT_HARD_NOGO_PROPORTION);
         setIntervalFrom(APVT_HARD_INTERVAL_FROM);
@@ -205,7 +205,7 @@ public class Task {
         final float GONOGO_EASY_NOISE = 0;
         final int GONOGO_EASY_RES_THRESHOLD = 1500;
         final float GONOGO_EASY_MIN_SPEED = 5;
-        final float GONOGO_EASY_NOGO_PROPORTION = 0.1f;
+        final int GONOGO_EASY_NOGO_PROPORTION = 10;
 
         setNogoProportion(GONOGO_EASY_NOGO_PROPORTION);
         setIntervalFrom(GONOGO_EASY_INTERVAL_FROM);
@@ -229,7 +229,7 @@ public class Task {
         final float GONOGO_MEDIUM_NOISE = 0.5f;
         final int GONOGO_MEDIUM_RES_THRESHOLD = 1500;
         final float GONOGO_MEDIUM_MIN_SPEED = 5;
-        final float GONOGO_MEDIUM_NOGO_PROPORTION = 0.2f;
+        final int GONOGO_MEDIUM_NOGO_PROPORTION = 20;
 
         setNogoProportion(GONOGO_MEDIUM_NOGO_PROPORTION);
         setIntervalFrom(GONOGO_MEDIUM_INTERVAL_FROM);
@@ -253,7 +253,7 @@ public class Task {
         final float GONOGO_HARD_NOISE = 1;
         final int GONOGO_HARD_RES_THRESHOLD = 1500;
         final float GONOGO_HARD_MIN_SPEED = 5;
-        final float GONOGO_HARD_NOGO_PROPORTION = 0.3f;
+        final int GONOGO_HARD_NOGO_PROPORTION = 30;
         setNogoProportion(GONOGO_HARD_NOGO_PROPORTION);
         setIntervalFrom(GONOGO_HARD_INTERVAL_FROM);
         setIntervalTo(GONOGO_HARD_INTERVAL_TO);

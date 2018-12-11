@@ -104,7 +104,6 @@ public class FirebaseStorageHelper {
                     Toast.makeText(context, "Uploading... (" + uploadCount + "/" + totalUploadCount + ")", Toast.LENGTH_SHORT).show();
                     if (uploadCount == totalUploadCount) {
                         Toast.makeText(context, "All uploading completed.", Toast.LENGTH_SHORT).show();
-                        FirebaseDBHelper.uploadTdFromLocToDb();
                     }
 
                     fileList.add(firebaseStoragePath);
@@ -117,6 +116,9 @@ public class FirebaseStorageHelper {
                 }
             });
         }
+
+        FirebaseDBHelper.uploadTdFromLocToDb();
+
     }
 
     public static void deleteAFolderToFirestorage(final Context context) {
