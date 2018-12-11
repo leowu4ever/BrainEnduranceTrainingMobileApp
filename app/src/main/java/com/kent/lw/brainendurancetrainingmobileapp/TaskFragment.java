@@ -321,10 +321,9 @@ public class TaskFragment extends Fragment {
                 difDialog.dismiss();
 
                 if (btnTask.getText().equals("A-PVT")) {
-                    //
-
+                    MainActivity.task.setupForApvtEasy();
                 } else if (btnTask.getText().equals("GO/NO-GO")) {
-                    //
+                    MainActivity.task.setupForGonogoEasy();
                 }
             }
         });
