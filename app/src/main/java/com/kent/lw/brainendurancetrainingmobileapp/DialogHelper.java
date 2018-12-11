@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -798,7 +797,7 @@ public class DialogHelper{
 
         if (td.getDif().equals("Custom")) {
 
-            tvHistoryNogo.setText("NO-GO: " + td.getTaskConfig().getNogoPropotion() + "%");
+            tvHistoryNogo.setText("NO-GO: " + td.getTaskConfig().getNogoProportion() + "%");
             tvHistoryInterval.setText("Interval: " + td.getTaskConfig().getIntervalFrom() + "~" + td.getTaskConfig().getIntervalTo() + "s");
             tvHistoryVolume.setText("Tone vol: " + td.getTaskConfig().getVolumeFrom() * 100 + "~" +
                     "" + td.getTaskConfig().getVolumeTo() * 100 + "%");

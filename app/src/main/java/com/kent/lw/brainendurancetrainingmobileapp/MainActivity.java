@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             indexList.add(i);
         }
         Collections.shuffle(indexList);
-        float nogoCount = totalStiCount * task.getNogoPropotion() / 100;
+        float nogoCount = totalStiCount * task.getNogoProportion() / 100;
         for (int i = 0; i < nogoCount; i++) {
             trainingData.setStiTypeOn(indexList.get(i), 1);
         }

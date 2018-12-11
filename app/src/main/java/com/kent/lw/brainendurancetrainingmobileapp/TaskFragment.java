@@ -125,7 +125,7 @@ public class TaskFragment extends Fragment {
                     MainActivity.trainingData.setTaskConfig(MainActivity.task);
 
                     if(btnTask.getText().equals("A-PVT")) {
-                        MainActivity.trainingData.getTaskConfig().setNogoPropotion(0);
+                        MainActivity.trainingData.getTaskConfig().setNogoProportion(0);
                     }
                     taskCommunicator.startTraining(taskSelected, difSelected);
                 } else {
@@ -212,17 +212,19 @@ public class TaskFragment extends Fragment {
             public void onClick(View v) {
 
                 // no need to set nogo proportion
-                MainActivity.task.setIntervalFrom(Integer.parseInt(rbIntervalApvt.getLeftPinValue()));
-                MainActivity.task.setIntervalTo(Integer.parseInt(rbIntervalApvt.getRightPinValue()));
-                MainActivity.task.setVolumeFrom(Float.parseFloat(rbVolumeApvt.getLeftPinValue()) / 100);
-                MainActivity.task.setVolumeTo(Float.parseFloat(rbVolumeApvt.getRightPinValue()) / 100);
-                MainActivity.task.setNoise(Float.parseFloat(rbNoiseApvt.getRightPinValue()) / 100);
-                MainActivity.task.setResThreshold(Integer.parseInt(rbThresholdApvt.getRightPinValue()));
-                MainActivity.task.setMinSpeed(Float.parseFloat(rbMinspeedApvt.getRightPinValue()));
+                MainActivity.task.setNogoProportion(0);
+                int intervalFrom = Integer.parseInt(rbIntervalApvt.getLeftPinValue());
+                int intervalTo = Integer.parseInt(rbIntervalApvt.getRightPinValue());
+                float volumeFrom = (Float.parseFloat(rbVolumeApvt.getLeftPinValue()) / 100);
+                float volumeTo = (Float.parseFloat(rbVolumeApvt.getRightPinValue()) / 100);
+                float noise = (Float.parseFloat(rbNoiseApvt.getRightPinValue()) / 100);
+                int resThreshold = Integer.parseInt(rbThresholdApvt.getRightPinValue());
+                float minSpeed = Float.parseFloat(rbMinspeedApvt.getRightPinValue());
+
+                MainActivity.task.setupForCustom(0, intervalFrom, intervalTo, volumeFrom, volumeTo, noise, resThreshold, minSpeed);
 
                 difCustomAPVTDialog.dismiss();
                 btnDif.setText(btnCustom.getText());
-                // show task configuration
             }
         });
 
@@ -239,15 +241,17 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                // set parameters
-                MainActivity.task.setNogoPropotion(Integer.parseInt(rbNogo.getRightPinValue()));
-                MainActivity.task.setIntervalFrom(Integer.parseInt(rbIntervalGonogo.getLeftPinValue()));
-                MainActivity.task.setIntervalTo(Integer.parseInt(rbIntervalGonogo.getRightPinValue()));
-                MainActivity.task.setVolumeFrom(Float.parseFloat(rbVolumeGonogo.getLeftPinValue()) / 100);
-                MainActivity.task.setVolumeTo(Float.parseFloat(rbVolumeGonogo.getRightPinValue()) / 100);
-                MainActivity.task.setNoise(Float.parseFloat(rbNoiseGonogo.getRightPinValue()) / 100);
-                MainActivity.task.setResThreshold(Integer.parseInt(rbThresholdGonogo.getRightPinValue()));
-                MainActivity.task.setMinSpeed(Float.parseFloat(rbMinspeedGonogo.getRightPinValue()));
+                // no need to set nogo proportion
+                int nogoProportion = Integer.parseInt(rbNogo.getRightPinValue());
+                int intervalFrom = Integer.parseInt(rbIntervalGonogo.getLeftPinValue());
+                int intervalTo = Integer.parseInt(rbIntervalGonogo.getRightPinValue());
+                float volumeFrom = (Float.parseFloat(rbVolumeGonogo.getLeftPinValue()) / 100);
+                float volumeTo = (Float.parseFloat(rbVolumeGonogo.getRightPinValue()) / 100);
+                float noise = (Float.parseFloat(rbNoiseGonogo.getRightPinValue()) / 100);
+                int resThreshold = Integer.parseInt(rbThresholdGonogo.getRightPinValue());
+                float minSpeed = Float.parseFloat(rbMinspeedGonogo.getRightPinValue());
+
+                MainActivity.task.setupForCustom(nogoProportion, intervalFrom, intervalTo, volumeFrom, volumeTo, noise, resThreshold, minSpeed);
 
                 difCustomGonogoDialog.dismiss();
                 btnDif.setText(btnCustom.getText());
@@ -270,6 +274,12 @@ public class TaskFragment extends Fragment {
             public void onClick(View v) {
                 btnDif.setText(btnEasy.getText());
                 difDialog.dismiss();
+
+                if(btnTask.getText().equals("A-PVT")) {
+                    MainActivity.task.setupForApvtEasy();
+                } else if (btnTask.getText().equals("GO/NO-GO")) {
+                    MainActivity.task.setupForGonogoEasy();
+                }
             }
         });
 
@@ -279,6 +289,12 @@ public class TaskFragment extends Fragment {
             public void onClick(View v) {
                 btnDif.setText(btnMedium.getText());
                 difDialog.dismiss();
+
+                if(btnTask.getText().equals("A-PVT")) {
+                    MainActivity.task.setupForApvtMedium();
+                } else if (btnTask.getText().equals("GO/NO-GO")) {
+                    MainActivity.task.setupForGonogoMedium();
+                }
             }
         });
 
@@ -289,6 +305,11 @@ public class TaskFragment extends Fragment {
                 btnDif.setText(btnHard.getText());
                 difDialog.dismiss();
 
+                if(btnTask.getText().equals("A-PVT")) {
+                    MainActivity.task.setupForApvtHard();
+                } else if (btnTask.getText().equals("GO/NO-GO")) {
+                    MainActivity.task.setupForGonogoHard();
+                }
             }
         });
 
@@ -299,6 +320,12 @@ public class TaskFragment extends Fragment {
                 btnDif.setText(btnAdaptive.getText());
                 difDialog.dismiss();
 
+                if(btnTask.getText().equals("A-PVT")) {
+                    //
+
+                } else if (btnTask.getText().equals("GO/NO-GO")) {
+                    //
+               }
             }
         });
 
