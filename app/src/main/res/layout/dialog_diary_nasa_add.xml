@@ -77,7 +77,7 @@
                         app:mrb_tickEnd="20"
                         app:mrb_tickHeight="1dp"
                         app:mrb_tickInterval="1"
-                        app:mrb_tickStart="1" />
+                        app:mrb_tickStart="0" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -90,7 +90,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="0dp"
                             android:layout_weight="1"
-                            android:text="Not at all"
+                            android:text="Very low"
                             android:textAlignment="viewStart"
                             android:textAllCaps="false"
                             android:textColor="@color/colorPrimary"
@@ -102,7 +102,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="0dp"
                             android:layout_weight="1"
-                            android:text="Extremely"
+                            android:text="Very high"
                             android:textAlignment="textEnd"
                             android:textAllCaps="false"
                             android:textColor="@color/colorPrimary"
@@ -158,7 +158,7 @@
                         app:mrb_tickEnd="20"
                         app:mrb_tickHeight="1dp"
                         app:mrb_tickInterval="1"
-                        app:mrb_tickStart="1" />
+                        app:mrb_tickStart="0" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -171,7 +171,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="0dp"
                             android:layout_weight="1"
-                            android:text="Not at all"
+                            android:text="Very low"
                             android:textAlignment="viewStart"
                             android:textAllCaps="false"
                             android:textColor="@color/colorPrimary"
@@ -183,7 +183,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="0dp"
                             android:layout_weight="1"
-                            android:text="Extremely"
+                            android:text="Very high"
                             android:textAlignment="textEnd"
                             android:textAllCaps="false"
                             android:textColor="@color/colorPrimary"
@@ -239,7 +239,7 @@
                         app:mrb_tickEnd="20"
                         app:mrb_tickHeight="1dp"
                         app:mrb_tickInterval="1"
-                        app:mrb_tickStart="1" />
+                        app:mrb_tickStart="0" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -252,7 +252,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="0dp"
                             android:layout_weight="1"
-                            android:text="Not at all"
+                            android:text="Very low"
                             android:textAlignment="viewStart"
                             android:textAllCaps="false"
                             android:textColor="@color/colorPrimary"
@@ -264,7 +264,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="0dp"
                             android:layout_weight="1"
-                            android:text="Extremely"
+                            android:text="Very high"
                             android:textAlignment="textEnd"
                             android:textAllCaps="false"
                             android:textColor="@color/colorPrimary"
@@ -320,7 +320,7 @@
                         app:mrb_tickEnd="20"
                         app:mrb_tickHeight="1dp"
                         app:mrb_tickInterval="1"
-                        app:mrb_tickStart="1" />
+                        app:mrb_tickStart="0" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -333,7 +333,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="0dp"
                             android:layout_weight="1"
-                            android:text="Not at all"
+                            android:text="Very low"
                             android:textAlignment="viewStart"
                             android:textAllCaps="false"
                             android:textColor="@color/colorPrimary"
@@ -345,7 +345,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="0dp"
                             android:layout_weight="1"
-                            android:text="Extremely"
+                            android:text="Very high"
                             android:textAlignment="textEnd"
                             android:textAllCaps="false"
                             android:textColor="@color/colorPrimary"
@@ -401,7 +401,7 @@
                         app:mrb_tickEnd="20"
                         app:mrb_tickHeight="1dp"
                         app:mrb_tickInterval="1"
-                        app:mrb_tickStart="1" />
+                        app:mrb_tickStart="0" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -414,7 +414,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="0dp"
                             android:layout_weight="1"
-                            android:text="Not at all"
+                            android:text="Perfect"
                             android:textAlignment="viewStart"
                             android:textAllCaps="false"
                             android:textColor="@color/colorPrimary"
@@ -426,7 +426,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="0dp"
                             android:layout_weight="1"
-                            android:text="Extremely"
+                            android:text="Failure"
                             android:textAlignment="textEnd"
                             android:textAllCaps="false"
                             android:textColor="@color/colorPrimary"
@@ -496,7 +496,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="0dp"
                             android:layout_weight="1"
-                            android:text="Not at all"
+                            android:text="Very low"
                             android:textAlignment="viewStart"
                             android:textAllCaps="false"
                             android:textColor="@color/colorPrimary"
@@ -508,7 +508,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="0dp"
                             android:layout_weight="1"
-                            android:text="Extremely"
+                            android:text="Very high"
                             android:textAlignment="textEnd"
                             android:textAllCaps="false"
                             android:textColor="@color/colorPrimary"
