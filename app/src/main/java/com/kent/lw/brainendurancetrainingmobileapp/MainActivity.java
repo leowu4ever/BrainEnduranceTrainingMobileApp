@@ -36,6 +36,8 @@ import java.util.Collections;
 import java.util.Random;
 
 import io.flic.lib.FlicAppNotInstalledException;
+import io.flic.lib.FlicBroadcastReceiverFlags;
+import io.flic.lib.FlicButton;
 import io.flic.lib.FlicManager;
 import io.flic.lib.FlicManagerInitializedCallback;
 
@@ -529,5 +531,21 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 zoomToCurLoc();
                 break;
         }
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        FlicManager.getInstance(this, new FlicManagerInitializedCallback() {
+            @Override
+            public void onInitialized(FlicManager manager) {
+                FlicButton button = manager.completeGrabButton(requestCode, resultCode, data);
+                if (button != null) {
+                    button.registerListenForBroadcast(FlicBroadcastReceiverFlags.UP_OR_DOWN | FlicBroadcastReceiverFlags.REMOVED);
+                    Toast.makeText(MainActivity.this, "Flic button connected", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Flic button not connected", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }
