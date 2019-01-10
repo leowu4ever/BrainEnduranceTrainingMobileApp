@@ -22,7 +22,6 @@ public class TaskFragment extends Fragment {
     // btn default text
     private final String btnDefaultText = "Please select";
     private TaskCommunicator taskCommunicator;
-    private String taskSelected, difSelected;
     // fragment
     private Button btnStart;
     // task dialog
@@ -116,8 +115,6 @@ public class TaskFragment extends Fragment {
             public void onClick(View v) {
 
                 if (!btnTask.getText().equals(btnDefaultText) && !btnDuration.getText().equals(btnDefaultText) && !btnActivity.getText().equals(btnDefaultText) && !btnDif.getText().equals(btnDefaultText)) {
-                    taskSelected = btnTask.getText().toString();
-                    difSelected = btnDif.getText().toString();
 
                     MainActivity.trainingData.setActivity(btnActivity.getText() + "");
                     MainActivity.trainingData.setTask(btnTask.getText() + "");
