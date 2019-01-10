@@ -61,6 +61,7 @@ public class DialogHelper {
 
     // rpe dialog add
     public Spinner spLoadRpe;
+    public TextView tfDurRpe;
 
     // nasa dialog add
     public RangeBar rbTemp, rbMen, rbPhy, rbFrus, rbPerf, rbEff;
@@ -268,7 +269,6 @@ public class DialogHelper {
                     tvTime.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
                     containerLayout.addView(tvTime);
 
-
                     TextView tvLoad = new TextView(rpeDialog.getContext());
                     tvLoad.setText(MainActivity.rpeData.getLoad().get(i));
                     tvLoad.setGravity(Gravity.CENTER);
@@ -458,9 +458,8 @@ public class DialogHelper {
             public void onClick(View v) {
                 MainActivity.rpeData.setDate(DateHelper.getDateFromMili(System.currentTimeMillis()));
                 MainActivity.rpeData.setTime(DateHelper.getTimeFromMili(System.currentTimeMillis()));
-                MainActivity.rpeData.setLoad(spLoadRpe.getSelectedItem().toString());
+                MainActivity.rpeData.setLoad(Integer.parseInt(spLoadRpe.getSelectedItem().toString().substring(0,1)) * Integer.parseInt(tfDurRpe.getText().toString()) + "");
                 FileHelper.saveRpeDataToLocal();
-
                 dismissRpeAddDialog();
             }
         });
@@ -608,6 +607,7 @@ public class DialogHelper {
         rbMoti = motiAddDialog.findViewById(R.id.rb_moti_moti);
 
         spLoadRpe = rpeAddDialog.findViewById(R.id.sp_rpe_load);
+        tfDurRpe = rpeAddDialog.findViewById(R.id.tf_rpe_dur);
 
         rbTemp = nasaAddDialog.findViewById(R.id.rb_nasa_temp);
         rbMen = nasaAddDialog.findViewById(R.id.rb_nasa_men);

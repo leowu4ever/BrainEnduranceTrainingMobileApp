@@ -38,6 +38,14 @@
             android:layout_height="wrap_content"
             android:text="Training load = Training duration (min) x session RPE" />
 
+        <EditText
+            android:id="@+id/tf_rpe_dur"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Training duration"
+            android:inputType="number" />
+
         <Spinner
             android:id="@+id/sp_rpe_load"
             android:layout_width="match_parent"
