@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     // fragment
     @Override
-    public void startTraining(String taskSelected, String difSelected) {
+    public void startTraining() {
 
         // replace task fragment with training fragment
         showTrainingFragment();
@@ -211,10 +211,10 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         trainingData.setStartTime(System.currentTimeMillis());
         handler.postDelayed(countdownRunnbale, 0);
 
-            // start after count down
-            handler.postDelayed(durationRunnable, 4000);
-            createStiTypeList();
-            handler.postDelayed(stimulusRunnable, COUNTDONW_WAIT);
+        // start after count down
+        handler.postDelayed(durationRunnable, 4000);
+        createStiTypeList();
+        handler.postDelayed(stimulusRunnable, COUNTDONW_WAIT);
 
     }
 
@@ -440,7 +440,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         durationRunnable = new Runnable() {
             @Override
             public void run() {
-                if (trainingData.getTimeTrained() == 0) {
+                if (trainingData.getTimeTrained() == 0 && task.getNoise() != 0) {
                     soundHelper.playNoiseSound(task.getNoise(), task.getNoise(), 0, -1, 1);
                 }
 
