@@ -121,6 +121,33 @@
         android:layout_marginBottom="5dp"
         android:background="@color/colorPrimary" />
 
+    <Spinner
+        android:id="@+id/sp_noise_type_apvt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/noise_type" />
+
+    <TextView
+        android:id="@+id/tv_noise_type_apvt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:text="Noise type"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+
+    <View
+        android:id="@+id/view24"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/colorPrimary" />
+
     <com.appyvet.materialrangebar.RangeBar
         android:id="@+id/rb_noise_apvt"
         android:layout_width="match_parent"

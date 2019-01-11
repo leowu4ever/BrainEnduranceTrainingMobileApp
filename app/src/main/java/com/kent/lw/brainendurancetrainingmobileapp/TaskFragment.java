@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.appyvet.materialrangebar.RangeBar;
@@ -48,10 +49,12 @@ public class TaskFragment extends Fragment {
     private Dialog difCustomAPVTDialog;
     private Button btnCustomSaveApvt, btnCustomBackApvt;
     private RangeBar rbIntervalApvt, rbVolumeApvt, rbNoiseApvt, rbThresholdApvt, rbMinspeedApvt;
+    private Spinner spNoiseTypeApvt;
     //gonogo dialog
     private Dialog difCustomGonogoDialog;
     private Button btnCustomSaveGonogo, btnCustomBackGonogo;
     private RangeBar rbNogo, rbIntervalGonogo, rbVolumeGonogo, rbNoiseGonogo, rbThresholdGonogo, rbMinspeedGonogo;
+    private Spinner spNoiseTypeGonogo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -215,10 +218,11 @@ public class TaskFragment extends Fragment {
                 float volumeFrom = (Float.parseFloat(rbVolumeApvt.getLeftPinValue()) / 100);
                 float volumeTo = (Float.parseFloat(rbVolumeApvt.getRightPinValue()) / 100);
                 float noise = (Float.parseFloat(rbNoiseApvt.getRightPinValue()) / 100);
+                int noiseType = spNoiseTypeApvt.getSelectedItemPosition();
                 int resThreshold = Integer.parseInt(rbThresholdApvt.getRightPinValue());
                 float minSpeed = Float.parseFloat(rbMinspeedApvt.getRightPinValue());
 
-                MainActivity.task.setupForCustom(0, intervalFrom, intervalTo, volumeFrom, volumeTo, noise, resThreshold, minSpeed);
+                MainActivity.task.setupForCustom(0, intervalFrom, intervalTo, volumeFrom, volumeTo, noise, noiseType, resThreshold, minSpeed);
 
                 difCustomAPVTDialog.dismiss();
                 btnDif.setText(btnCustom.getText());
@@ -245,10 +249,11 @@ public class TaskFragment extends Fragment {
                 float volumeFrom = (Float.parseFloat(rbVolumeGonogo.getLeftPinValue()) / 100);
                 float volumeTo = (Float.parseFloat(rbVolumeGonogo.getRightPinValue()) / 100);
                 float noise = (Float.parseFloat(rbNoiseGonogo.getRightPinValue()) / 100);
+                int noiseType = spNoiseTypeGonogo.getSelectedItemPosition();
                 int resThreshold = Integer.parseInt(rbThresholdGonogo.getRightPinValue());
                 float minSpeed = Float.parseFloat(rbMinspeedGonogo.getRightPinValue());
 
-                MainActivity.task.setupForCustom(nogoProportion, intervalFrom, intervalTo, volumeFrom, volumeTo, noise, resThreshold, minSpeed);
+                MainActivity.task.setupForCustom(nogoProportion, intervalFrom, intervalTo, volumeFrom, volumeTo, noise, noiseType, resThreshold, minSpeed);
 
                 difCustomGonogoDialog.dismiss();
                 btnDif.setText(btnCustom.getText());
@@ -429,6 +434,7 @@ public class TaskFragment extends Fragment {
         rbIntervalApvt = difCustomAPVTDialog.findViewById(R.id.rb_interval_apvt);
         rbVolumeApvt = difCustomAPVTDialog.findViewById(R.id.rb_volume_apvt);
         rbNoiseApvt = difCustomAPVTDialog.findViewById(R.id.rb_noise_apvt);
+        spNoiseTypeApvt = difCustomAPVTDialog.findViewById(R.id.sp_noise_type_apvt);
         rbThresholdApvt = difCustomAPVTDialog.findViewById(R.id.rb_threshold_apvt);
         rbMinspeedApvt = difCustomAPVTDialog.findViewById(R.id.rb_minspeed_apvt);
     }
@@ -439,6 +445,7 @@ public class TaskFragment extends Fragment {
         rbIntervalGonogo = difCustomGonogoDialog.findViewById(R.id.rb_interval_gonogo);
         rbVolumeGonogo = difCustomGonogoDialog.findViewById(R.id.rb_volume_gonogo);
         rbNoiseGonogo = difCustomGonogoDialog.findViewById(R.id.rb_noise_gonogo);
+        spNoiseTypeGonogo = difCustomGonogoDialog.findViewById(R.id.sp_noise_type_gonogo);
         rbThresholdGonogo = difCustomGonogoDialog.findViewById(R.id.rb_threshold_gonogo);
         rbMinspeedGonogo = difCustomGonogoDialog.findViewById(R.id.rb_minspeed_gonogo);
     }

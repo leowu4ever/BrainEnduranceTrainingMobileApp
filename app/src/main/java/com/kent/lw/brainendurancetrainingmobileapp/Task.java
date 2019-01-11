@@ -9,6 +9,7 @@ public class Task {
     private float volumeTo;
 
     private float noise;
+    private int noiseType;
     private int resThreshold;
     private float minSpeed;
     private int nogoProportion;
@@ -57,6 +58,10 @@ public class Task {
     public void setNoise(float noise) {
         this.noise = noise;
     }
+
+    public int getNoiseType() { return noiseType; }
+
+    public void setNoiseType(int noiseType) { this.noiseType = noiseType; }
 
     public int getResThreshold() {
         return resThreshold;
@@ -111,13 +116,14 @@ public class Task {
     }
 
 
-    public void setupForCustom(int nogoProp, int interFrom, int interTo, float volFrom, float volTo, float noi, int thresh, float minspd) {
+    public void setupForCustom(int nogoProp, int interFrom, int interTo, float volFrom, float volTo, float noi, int noiseType, int thresh, float minspd) {
         setNogoProportion(nogoProp);
         setIntervalFrom(interFrom);
         setIntervalTo(interTo);
         setVolumeFrom(volFrom);
         setVolumeTo(volTo);
         setNoise(noi);
+        setNoiseType(noiseType);
         setResThreshold(thresh);
         setMinSpeed(minspd);
     }

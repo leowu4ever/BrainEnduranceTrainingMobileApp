@@ -13,7 +13,9 @@ public class SoundHelper extends Application {
     public SoundPool sp;
     public int beepSound, speedupSound, startSound, finishSound;
     public int nogoSound;
-    public int noiseSound, noiseplay;
+    public int kidPlayingSound, musicSound;
+    // noise sound playing ref used when pause and resume
+    public int noiseplay;
 
     public SoundHelper(Context context) {
         init(context);
@@ -35,7 +37,8 @@ public class SoundHelper extends Application {
         speedupSound = sp.load(context, R.raw.speedup, 1);
         startSound = sp.load(context, R.raw.start, 1);
         finishSound = sp.load(context, R.raw.finish, 1);
-        noiseSound = sp.load(context, R.raw.kidsplaying, 1);
+        kidPlayingSound = sp.load(context, R.raw.kidsplaying, 1);
+        musicSound = sp.load(context, R.raw.music, 1);
         nogoSound = sp.load(context, R.raw.nogo, 1);
     }
 
@@ -55,9 +58,14 @@ public class SoundHelper extends Application {
         sp.play(finishSound, leftVolume, rightVolume, priority, loop, rate);
     }
 
-
     public void playNoiseSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
-        noiseplay = sp.play(noiseSound, leftVolume, rightVolume, priority, loop, rate);
+
+        // do noise type check switch here
+        if (MainActivity.task.getNoiseType() == 0) {
+            noiseplay = sp.play(kidPlayingSound, leftVolume, rightVolume, priority, loop, rate);
+        } else if (MainActivity.task.getNoiseType() == 1) {
+            noiseplay = sp.play(musicSound, leftVolume, rightVolume, priority, loop, rate);
+        }
     }
 
     public void stopNoiseSound() {
