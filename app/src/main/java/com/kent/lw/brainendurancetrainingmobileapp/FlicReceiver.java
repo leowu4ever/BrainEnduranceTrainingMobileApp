@@ -23,13 +23,14 @@ public class FlicReceiver extends FlicBroadcastReceiver {
             if (MainActivity.trainingStarted && MainActivity.trainingData.getStiMiliList().size() > 0) {
 
                 long lastStiMili = MainActivity.trainingData.getStiMiliList().get(MainActivity.trainingData.getStiMiliList().size() - 1);
+                // TODO 37ms
                 long resTime = resMili - lastStiMili;
 
                 MainActivity.trainingData.setResMiliList(resMili);
                 MainActivity.trainingData.incResCount();
                 MainActivity.trainingFragment.setTvResCount(MainActivity.trainingData.getResCount() + "");
                 MainActivity.trainingData.setResTimeList(resTime);
-                MainActivity.trainingFragment.setTvLogRes("Response time  is " + resTime + "ms");
+                MainActivity.trainingFragment.setTvLogRes("Response time is " + resTime + "ms");
 
                 // valid res
                 if (resTime <= MainActivity.task.getResThreshold() && resTime > 100 && MainActivity.trainingData.getStiTypeOn(MainActivity.trainingData.getStiCount() + MainActivity.trainingData.getNogoCount() - 1) == 0) {
@@ -44,7 +45,6 @@ public class FlicReceiver extends FlicBroadcastReceiver {
 
                     // update accuracy
                     MainActivity.trainingFragment.setTvAccuracy(MainActivity.trainingData.getAccuracy() + "");
-
 
                     if(MainActivity.trainingData.getDif().equals("Adaptive")) {
 
