@@ -132,10 +132,12 @@ public class MapHelper {
 
     public void addStartMarker(GoogleMap map, LatLng loc) {
         startMarker = map.addMarker(new MarkerOptions().position(loc));
+        startMarker.setTitle("START");
     }
 
     public void addEndMarker(GoogleMap map, LatLng loc) {
         endMarker = map.addMarker(new MarkerOptions().position(loc));
+        endMarker.setTitle("END");
     }
 
 }
