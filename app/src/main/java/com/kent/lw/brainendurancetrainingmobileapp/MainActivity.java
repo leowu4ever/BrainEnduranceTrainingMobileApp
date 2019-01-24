@@ -333,7 +333,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 public void onComplete(@NonNull Task task) {
                     if (task.isSuccessful()) {
                         Location location = (Location) task.getResult();
-                        mapHelper.zoomToLoc(map, new LatLng(location.getLatitude(), location.getLongitude()));
+                        if(location != null) {
+                            mapHelper.zoomToLoc(map, new LatLng(location.getLatitude(), location.getLongitude()));
+                        }
                     } else {
                     }
                 }
