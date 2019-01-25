@@ -281,7 +281,7 @@ public class FileHelper {
     }
 
     public static void saveStreamMotionDataToLocal(String steamData, String DataType) {
-        File file = new File(PATH_MOTION_DATA + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getStartTime()) + "_" + DataType + ".txt");
+        File file = new File(PATH_MOTION_DATA + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getStartTime()) + "_" + DataType + ".csv");
 
         if (!file.exists()) {
             try {
