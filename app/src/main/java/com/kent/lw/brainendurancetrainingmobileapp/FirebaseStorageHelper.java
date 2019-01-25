@@ -152,7 +152,7 @@ public class FirebaseStorageHelper {
                                 MainActivity.motiData.reset();
                                 MainActivity.rpeData.reset();
                                 MainActivity.nasaData.reset();
-                                
+
                                 FileHelper.initDir();
                             }
                         }
@@ -170,8 +170,6 @@ public class FirebaseStorageHelper {
 
             }
         });
-
-
 
 
     }

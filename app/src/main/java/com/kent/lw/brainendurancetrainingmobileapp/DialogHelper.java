@@ -458,7 +458,7 @@ public class DialogHelper {
             public void onClick(View v) {
                 MainActivity.rpeData.setDate(DateHelper.getDateFromMili(System.currentTimeMillis()));
                 MainActivity.rpeData.setTime(DateHelper.getTimeFromMili(System.currentTimeMillis()));
-                MainActivity.rpeData.setLoad(Integer.parseInt(spLoadRpe.getSelectedItem().toString().substring(0,1)) * Integer.parseInt(tfDurRpe.getText().toString()) + "");
+                MainActivity.rpeData.setLoad(Integer.parseInt(spLoadRpe.getSelectedItem().toString().substring(0, 1)) * Integer.parseInt(tfDurRpe.getText().toString()) + "");
                 FileHelper.saveRpeDataToLocal();
                 dismissRpeAddDialog();
             }

@@ -46,11 +46,11 @@ public class FlicReceiver extends FlicBroadcastReceiver {
                     // update accuracy
                     MainActivity.trainingFragment.setTvAccuracy(MainActivity.trainingData.getAccuracy() + "");
 
-                    if(MainActivity.trainingData.getDif().equals("Adaptive")) {
+                    if (MainActivity.trainingData.getDif().equals("Adaptive")) {
 
                         // for adaptive
                         MainActivity.hitStreak++;
-                        switch(MainActivity.hitStreak) {
+                        switch (MainActivity.hitStreak) {
                             case 1 * MainActivity.ADAPTIVE_HIT_STREAK_LIMIT:
                                 // upgrade apvt ot gonogo
                                 Log.d("apdative", "upgrade to med" + " hitstreak: " + MainActivity.hitStreak + " lapseStreak: " + MainActivity.lapseStreak);
@@ -87,22 +87,22 @@ public class FlicReceiver extends FlicBroadcastReceiver {
                         }
 
                     }
-                    Log.d("apdative",  " hitstreak: " + MainActivity.hitStreak + " lapseStreak: " + MainActivity.lapseStreak);
+                    Log.d("apdative", " hitstreak: " + MainActivity.hitStreak + " lapseStreak: " + MainActivity.lapseStreak);
 
 
                 } else { // lapse
                     MainActivity.trainingData.incLapseCount();
                     MainActivity.trainingFragment.setTvLapseCount(MainActivity.trainingData.getLapseCount() + "");
 
-                    if(MainActivity.trainingData.getDif().equals("Adaptive")) {
+                    if (MainActivity.trainingData.getDif().equals("Adaptive")) {
 
                         // for adaptive
                         MainActivity.lapseStreak++;
-                        if(MainActivity.lapseStreak == MainActivity.APDATIVE_LAPSE_STREAK_LIMIT) {
+                        if (MainActivity.lapseStreak == MainActivity.APDATIVE_LAPSE_STREAK_LIMIT) {
                             MainActivity.lapseStreak = 0;
                             MainActivity.hitStreak -= MainActivity.ADAPTIVE_HIT_STREAK_LIMIT;
 
-                            if(MainActivity.hitStreak < 0) {
+                            if (MainActivity.hitStreak < 0) {
                                 MainActivity.hitStreak = 0;
                             }
 
@@ -110,9 +110,9 @@ public class FlicReceiver extends FlicBroadcastReceiver {
 
                             // for adaptive
                             int lv = MainActivity.hitStreak / MainActivity.ADAPTIVE_HIT_STREAK_LIMIT;
-                            Log.d("apdative",  "lv: " + lv);
+                            Log.d("apdative", "lv: " + lv);
 
-                            switch(lv) {
+                            switch (lv) {
                                 case 0:
                                     // upgrade apvt ot gonogo
                                     Log.d("apdative", "down to easy" + " hitstreak: " + MainActivity.hitStreak + " lapseStreak: " + MainActivity.lapseStreak);
@@ -161,7 +161,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
                                     break;
                             }
                         }
-                        Log.d("apdative",  " hitstreak: " + MainActivity.hitStreak + " lapseStreak: " + MainActivity.lapseStreak);
+                        Log.d("apdative", " hitstreak: " + MainActivity.hitStreak + " lapseStreak: " + MainActivity.lapseStreak);
 
                     }
                 }

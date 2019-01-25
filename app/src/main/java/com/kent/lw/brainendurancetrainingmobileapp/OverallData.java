@@ -85,11 +85,8 @@ public class OverallData {
     }
 
     public void reset() {
-
-
         rtList.clear();
         accuracyList.clear();
         miliList.clear();
     }
-
 }

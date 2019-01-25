@@ -59,9 +59,13 @@ public class Task {
         this.noise = noise;
     }
 
-    public int getNoiseType() { return noiseType; }
+    public int getNoiseType() {
+        return noiseType;
+    }
 
-    public void setNoiseType(int noiseType) { this.noiseType = noiseType; }
+    public void setNoiseType(int noiseType) {
+        this.noiseType = noiseType;
+    }
 
     public int getResThreshold() {
         return resThreshold;

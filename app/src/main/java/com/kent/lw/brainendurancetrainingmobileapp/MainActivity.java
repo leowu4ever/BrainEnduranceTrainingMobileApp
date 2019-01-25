@@ -43,21 +43,19 @@ import io.flic.lib.FlicManagerInitializedCallback;
 
 public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, OnMapReadyCallback, View.OnClickListener {
 
+    public static final int ADAPTIVE_HIT_STREAK_LIMIT = 5;
+    public static final int APDATIVE_LAPSE_STREAK_LIMIT = 2;
     public static boolean trainingStarted = false;
-
     // fragments
     public static FragmentManager fragmentManager;
     public static FragmentTransaction transaction;
     public static TaskFragment taskFragment;
     public static TrainingFragment trainingFragment;
-
     // permission
     public static boolean locPermissionEnabled;
-
     // runnable
     public static Handler handler;
     public static Runnable countdownRunnbale, stimulusRunnable, durationRunnable;
-
     // data collection
     public static TrainingData trainingData;
     public static OverallData overallData;
@@ -65,11 +63,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static MotiData motiData;
     public static RpeData rpeData;
     public static NasaData nasaData;
-
     public static com.kent.lw.brainendurancetrainingmobileapp.Task task;
-
     // helper class
     public static SoundHelper soundHelper;
+    // for adaptive
+    //TO-DO should reset everytime
+    public static int hitStreak;
+    public static int lapseStreak;
     private final int COUNTDONW_WAIT = 6000;
     public DialogHelper dialogHelper;
     public MapHelper mapHelper;
@@ -81,13 +81,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private LocationRequest mLocationRequest;
     private int countdown = 4000;
     private float distance, speed, pace;
-
-    // for adaptive
-    //TO-DO should reset everytime
-    public static int hitStreak;
-    public static final int ADAPTIVE_HIT_STREAK_LIMIT  = 5;
-    public static int lapseStreak;
-    public static final int APDATIVE_LAPSE_STREAK_LIMIT = 2;
 
     public static void resumeTraining() {
         trainingStarted = true;
@@ -116,6 +109,21 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         transaction.remove(taskFragment);
         transaction.add(R.id.container, trainingFragment, "TRAINING_FRAGMENT");
         transaction.commit();
+    }
+
+    public static void createStiTypeList() {
+        ArrayList<Integer> indexList = new ArrayList<Integer>();
+        int totalStiCount = trainingData.getDuration() / 1000 / task.getIntervalFrom() + 1;
+        for (int i = 0; i < totalStiCount; i++) {
+            trainingData.setStiTypeList(0);
+            indexList.add(i);
+        }
+        Collections.shuffle(indexList);
+        float nogoCount = totalStiCount * task.getNogoProportion() / 100;
+        for (int i = 0; i < nogoCount; i++) {
+            trainingData.setStiTypeOn(indexList.get(i), 1);
+        }
+        trainingData.setStiTypeOn(0, 0);
     }
 
     @Override
@@ -218,21 +226,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     }
 
-    public static void createStiTypeList() {
-        ArrayList<Integer> indexList = new ArrayList<Integer>();
-        int totalStiCount = trainingData.getDuration() / 1000 / task.getIntervalFrom() + 1;
-        for (int i = 0; i < totalStiCount; i++) {
-            trainingData.setStiTypeList(0);
-            indexList.add(i);
-        }
-        Collections.shuffle(indexList);
-        float nogoCount = totalStiCount * task.getNogoProportion() / 100;
-        for (int i = 0; i < nogoCount; i++) {
-            trainingData.setStiTypeOn(indexList.get(i), 1);
-        }
-        trainingData.setStiTypeOn(0, 0);
-    }
-
     public void pauseTraining() {
         trainingStarted = false;
         soundHelper.stopNoiseSound();
@@ -333,7 +326,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 public void onComplete(@NonNull Task task) {
                     if (task.isSuccessful()) {
                         Location location = (Location) task.getResult();
-                        if(location != null) {
+                        if (location != null) {
                             mapHelper.zoomToLoc(map, new LatLng(location.getLatitude(), location.getLongitude()));
                         }
                     } else {
