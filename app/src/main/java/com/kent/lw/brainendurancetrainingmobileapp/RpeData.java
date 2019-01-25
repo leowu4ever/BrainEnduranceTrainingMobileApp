@@ -35,4 +35,10 @@ public class RpeData {
     public void setLoad(String load) {
         this.load.add(load);
     }
+
+    public void reset() {
+        date.clear();
+        time.clear();
+        load.clear();
+    }
 }

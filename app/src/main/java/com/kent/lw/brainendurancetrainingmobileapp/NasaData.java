@@ -81,5 +81,16 @@ public class NasaData {
     public void setEffort(String effort) {
         this.effort.add(effort);
     }
+
+    public void reset() {
+        date.clear();
+        time.clear();
+        temporal.clear();
+        mental.clear();
+        physical.clear();
+        frustration.clear();
+        performance.clear();
+        effort.clear();
+    }
 }
 

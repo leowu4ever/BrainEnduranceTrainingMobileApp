@@ -53,4 +53,12 @@ public class TrainingDiaryData {
     public void setLoad(String load) {
         this.load.add(load);
     }
+
+    public void reset() {
+        date.clear();
+        time.clear();
+        duration.clear();
+        type.clear();
+        load.clear();
+    }
 }

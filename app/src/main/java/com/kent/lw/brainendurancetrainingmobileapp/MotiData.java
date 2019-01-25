@@ -35,4 +35,10 @@ public class MotiData {
     public void setMoti(String moti) {
         this.moti.add(moti);
     }
+
+    public void reset() {
+        date.clear();
+        time.clear();
+        moti.clear();
+    }
 }
