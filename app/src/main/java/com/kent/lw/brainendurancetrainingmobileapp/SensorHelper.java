@@ -36,11 +36,11 @@ public class SensorHelper implements SensorEventListener {
         if (MainActivity.trainingStarted) {
             long timestamp = System.currentTimeMillis();
             if (event.sensor.getType() == accSensor) {
-                FileHelper.saveStreamMotionDataToLocal(timestamp + "_" + event.values[0] + "," + event.values[1] + "," + event.values[2] + "\n", "acc");
+                FileHelper.saveStreamMotionDataToLocal(timestamp + "," + event.values[0] + "," + event.values[1] + "," + event.values[2] + "\n", "acc");
             }
 
             if (event.sensor.getType() == gryoSensor) {
-                FileHelper.saveStreamMotionDataToLocal(timestamp + "_" + event.values[0] + "," + event.values[1] + "," + event.values[2] + "\n", "gyro");
+                FileHelper.saveStreamMotionDataToLocal(timestamp + "," + event.values[0] + "," + event.values[1] + "," + event.values[2] + "\n", "gyro");
             }
         }
     }
