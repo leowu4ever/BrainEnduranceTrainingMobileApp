@@ -148,6 +148,11 @@ public class FirebaseStorageHelper {
                                 FirebaseDBHelper.deleteTdFromDb();
                                 // recreate an overall to refresh
                                 MainActivity.overallData.reset();
+                                MainActivity.trainingDiaryData.reset();
+                                MainActivity.motiData.reset();
+                                MainActivity.rpeData.reset();
+                                MainActivity.nasaData.reset();
+                                
                                 FileHelper.initDir();
                             }
                         }
