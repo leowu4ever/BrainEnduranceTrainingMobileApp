@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "743227343146",
+    "firebase_url": "https://brain-training-app-81a81.firebaseio.com",
+    "project_id": "brain-training-app-81a81",
+    "storage_bucket": "brain-training-app-81a81.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:743227343146:android:0658ae09f4777cdd",
+        "android_client_info": {
+          "package_name": "com.kent.lw.brainendurancetrainingmobileapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "743227343146-1te3l6lq8ptam35ukr0cs8cqqvae9mbc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kent.lw.brainendurancetrainingmobileapp",
+            "certificate_hash": "fe4d318f5b01b5519d38868db912509d1358cc93"
+          }
+        },
+        {
+          "client_id": "743227343146-f2ctbhjiln5p2i2nmjavqulsvc27cpiu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1mrHwtcQkptQa4Zghehtz-Uo5KBHv_dA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "743227343146-f2ctbhjiln5p2i2nmjavqulsvc27cpiu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
