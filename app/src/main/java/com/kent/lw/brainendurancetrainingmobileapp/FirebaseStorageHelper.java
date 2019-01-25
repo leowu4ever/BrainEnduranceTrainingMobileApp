@@ -121,7 +121,7 @@ public class FirebaseStorageHelper {
 
     }
 
-    public static void deleteAFolderToFirestorage(final Context context) {
+    public static void deleteAFolderOnFirestorage(final Context context) {
 
         final FirebaseStorage storage = FirebaseStorage.getInstance();
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();

@@ -554,7 +554,7 @@ public class DialogHelper {
         btnDeleteCheckYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseStorageHelper.deleteAFolderToFirestorage(context);
+                FirebaseStorageHelper.deleteAFolderOnFirestorage(context);
                 dismissDeleteCheckDialog();
 
                 Intent intent = new Intent(context, MainActivity.class);
