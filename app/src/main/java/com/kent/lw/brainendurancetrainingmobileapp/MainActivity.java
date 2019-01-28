@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     lastLoc = mapHelper.convertToLatLng((Location) task.getResult());
                     mapHelper.zoomToLoc(map, lastLoc);
                     mapHelper.addStartMarker(map, lastLoc);
-                    trainingData.setLocUpdateTimeList(System.currentTimeMillis());
+                    trainingData.setLocUpdateMiliList(System.currentTimeMillis());
                     trainingData.setLatList(lastLoc.latitude);
                     trainingData.setLngList(lastLoc.longitude);
                 }
@@ -357,9 +357,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                     mapHelper.zoomToLoc(map, new LatLng(trainingData.getMidLat(), trainingData.getMidLng()));
 
                                     long newLocTime = System.currentTimeMillis();
-                                    long lastLocTime = trainingData.getLastLocUpdateTime();
+                                    long lastLocTime = trainingData.getLastLocUpdateMili();
                                     long locTimeDif = newLocTime - lastLocTime;
-                                    trainingData.setLocUpdateTimeList(newLocTime);
+                                    trainingData.setLocUpdateMiliList(newLocTime);
 
                                     float newDis = mapHelper.getDistanceInKM(lastLoc, curLoc);
 
