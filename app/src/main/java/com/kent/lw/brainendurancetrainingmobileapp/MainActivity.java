@@ -49,8 +49,11 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // fragments
     public static FragmentManager fragmentManager;
     public static FragmentTransaction transaction;
+    public static SupportMapFragment mapFragment;
+
     public static TaskFragment taskFragment;
     public static TrainingFragment trainingFragment;
+    public static VisualFragment visualFragment;
     // permission
     public static boolean locPermissionEnabled;
     // runnable
@@ -108,6 +111,15 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.remove(taskFragment);
         transaction.add(R.id.container, trainingFragment, "TRAINING_FRAGMENT");
+        transaction.commit();
+    }
+
+    public static void showVisualFragment() {
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.remove(taskFragment);
+        mapFragment.getView().setVisibility(View.GONE);
+        transaction.add(R.id.container, visualFragment, "VISUAL_FREGAMENT");
         transaction.commit();
     }
 
@@ -230,14 +242,15 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public void startVisualTraining() {
         //task fragment disappear
 
-
         //map fragment disappear
 
-
+        showVisualFragment();
         //hide button
 
 
         //show visual fragment
+
+
 
 
         // we dont need location services here
@@ -331,7 +344,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     public void initMap() {
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
@@ -518,6 +531,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private void initFragments() {
         taskFragment = new TaskFragment();
         trainingFragment = new TrainingFragment();
+        visualFragment =  new VisualFragment();
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
