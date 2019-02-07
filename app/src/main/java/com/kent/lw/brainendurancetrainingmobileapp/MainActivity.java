@@ -226,6 +226,34 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     }
 
+    @Override
+    public void startVisualTraining() {
+        //task fragment disappear
+
+
+        //map fragment disappear
+
+
+        //hide button
+
+
+        //show visual fragment
+
+
+        // we dont need location services here
+
+        // reset temp data
+
+        //set the start time
+
+        //start countdown
+
+        //start duration
+
+        //start visual task runnable
+
+    }
+
     public void pauseTraining() {
         trainingStarted = false;
         soundHelper.stopNoiseSound();
