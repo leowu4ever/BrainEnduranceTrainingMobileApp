@@ -26,7 +26,7 @@ public class TrainingData {
     public ArrayList<Float> speedList;
 
     public ArrayList<Double> latList, lngList;
-    public ArrayList<Long> locUpdateTimeList;
+    public ArrayList<Long> locUpdateMiliList;
 
 
     public TrainingData() {
@@ -40,7 +40,7 @@ public class TrainingData {
 
         latList = new ArrayList<Double>();
         lngList = new ArrayList<Double>();
-        locUpdateTimeList = new ArrayList<Long>();
+        locUpdateMiliList = new ArrayList<Long>();
 
     }
 
@@ -319,16 +319,16 @@ public class TrainingData {
         lngList.add(lng);
     }
 
-    public ArrayList<Long> getLocUpdateTimeList() {
-        return locUpdateTimeList;
+    public ArrayList<Long> getLocUpdateMiliList() {
+        return locUpdateMiliList;
     }
 
-    public void setLocUpdateTimeList(long locUpdateTime) {
-        this.locUpdateTimeList.add(locUpdateTime);
+    public void setLocUpdateMiliList(long locUpdateTime) {
+        this.locUpdateMiliList.add(locUpdateTime);
     }
 
-    public long getLastLocUpdateTime() {
-        return locUpdateTimeList.get(locUpdateTimeList.size() - 1);
+    public long getLastLocUpdateMili() {
+        return locUpdateMiliList.get(locUpdateMiliList.size() - 1);
     }
 
     public void incStiCount() {
@@ -391,7 +391,7 @@ public class TrainingData {
 
         latList.clear();
         lngList.clear();
-        locUpdateTimeList.clear();
+        locUpdateMiliList.clear();
 
 
     }

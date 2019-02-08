@@ -49,8 +49,11 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // fragments
     public static FragmentManager fragmentManager;
     public static FragmentTransaction transaction;
+    public static SupportMapFragment mapFragment;
+
     public static TaskFragment taskFragment;
     public static TrainingFragment trainingFragment;
+    public static VisualFragment visualFragment;
     // permission
     public static boolean locPermissionEnabled;
     // runnable
@@ -108,6 +111,15 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.remove(taskFragment);
         transaction.add(R.id.container, trainingFragment, "TRAINING_FRAGMENT");
+        transaction.commit();
+    }
+
+    public static void showVisualFragment() {
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.remove(taskFragment);
+        mapFragment.getView().setVisibility(View.GONE);
+        transaction.add(R.id.container, visualFragment, "VISUAL_FREGAMENT");
         transaction.commit();
     }
 
@@ -207,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     lastLoc = mapHelper.convertToLatLng((Location) task.getResult());
                     mapHelper.zoomToLoc(map, lastLoc);
                     mapHelper.addStartMarker(map, lastLoc);
-                    trainingData.setLocUpdateTimeList(System.currentTimeMillis());
+                    trainingData.setLocUpdateMiliList(System.currentTimeMillis());
                     trainingData.setLatList(lastLoc.latitude);
                     trainingData.setLngList(lastLoc.longitude);
                 }
@@ -223,6 +235,35 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         handler.postDelayed(durationRunnable, 4000);
         createStiTypeList();
         handler.postDelayed(stimulusRunnable, COUNTDONW_WAIT);
+
+    }
+
+    @Override
+    public void startVisualTraining() {
+        //task fragment disappear
+
+        //map fragment disappear
+
+        showVisualFragment();
+        //hide button
+
+
+        //show visual fragment
+
+
+
+
+        // we dont need location services here
+
+        // reset temp data
+
+        //set the start time
+
+        //start countdown
+
+        //start duration
+
+        //start visual task runnable
 
     }
 
@@ -303,7 +344,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     public void initMap() {
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
@@ -357,9 +398,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                     mapHelper.zoomToLoc(map, new LatLng(trainingData.getMidLat(), trainingData.getMidLng()));
 
                                     long newLocTime = System.currentTimeMillis();
-                                    long lastLocTime = trainingData.getLastLocUpdateTime();
+                                    long lastLocTime = trainingData.getLastLocUpdateMili();
                                     long locTimeDif = newLocTime - lastLocTime;
-                                    trainingData.setLocUpdateTimeList(newLocTime);
+                                    trainingData.setLocUpdateMiliList(newLocTime);
 
                                     float newDis = mapHelper.getDistanceInKM(lastLoc, curLoc);
 
@@ -490,6 +531,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private void initFragments() {
         taskFragment = new TaskFragment();
         trainingFragment = new TrainingFragment();
+        visualFragment =  new VisualFragment();
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);

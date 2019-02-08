@@ -127,7 +127,13 @@ public class TaskFragment extends Fragment {
                     if (btnTask.getText().equals("A-PVT")) {
                         MainActivity.trainingData.getTaskConfig().setNogoProportion(0);
                     }
-                    taskCommunicator.startTraining();
+
+                    if (btnTask.getText().equals("Visual")) {
+                        taskCommunicator.startVisualTraining();
+                    } else {
+                        taskCommunicator.startTraining();
+                    }
+
                 } else {
                     promptDialog.show();
                     tvPrompt.setText("Please complete all sections.");

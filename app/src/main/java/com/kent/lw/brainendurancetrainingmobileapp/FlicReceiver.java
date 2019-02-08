@@ -24,7 +24,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
 
                 long lastStiMili = MainActivity.trainingData.getStiMiliList().get(MainActivity.trainingData.getStiMiliList().size() - 1);
                 // TODO 37ms
-                long resTime = resMili - lastStiMili;
+                long resTime = resMili - lastStiMili - 37;
 
                 MainActivity.trainingData.setResMiliList(resMili);
                 MainActivity.trainingData.incResCount();
