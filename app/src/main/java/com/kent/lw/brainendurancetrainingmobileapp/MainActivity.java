@@ -245,8 +245,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         //map fragment disappear
 
         showVisualFragment();
-        //hide button
 
+
+        //hide button
+        btnProfile.setVisibility(View.GONE);
+        btnFlic.setVisibility(View.GONE);
+        btnDiary.setVisibility(View.GONE);
+        btnMap.setVisibility(View.GONE);
 
         //show visual fragment
 
