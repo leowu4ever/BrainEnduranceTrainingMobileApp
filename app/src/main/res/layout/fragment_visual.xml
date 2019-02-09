@@ -66,7 +66,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_duration"
+                    android:id="@+id/tv_visual_duration"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -144,7 +144,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_accuracy"
+                    android:id="@+id/tv_visual_res_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0"
@@ -176,7 +176,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_avg_res_time"
+                    android:id="@+id/tv_visual_avg_res_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0"
@@ -218,7 +218,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_sti_count"
+                    android:id="@+id/tv_visual_sti_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0"
@@ -249,7 +249,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_hit_count"
+                    android:id="@+id/tv_visual_hit_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0"
@@ -281,7 +281,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_lapse_count"
+                    android:id="@+id/tv_visual_lapse_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0"
@@ -313,7 +313,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_res_count"
+                    android:id="@+id/tv_visual_res_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0"
