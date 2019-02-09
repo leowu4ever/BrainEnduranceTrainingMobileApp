@@ -41,7 +41,7 @@ import io.flic.lib.FlicButton;
 import io.flic.lib.FlicManager;
 import io.flic.lib.FlicManagerInitializedCallback;
 
-public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, OnMapReadyCallback, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, VisualCommunicator, OnMapReadyCallback, View.OnClickListener {
 
     public static final int ADAPTIVE_HIT_STREAK_LIMIT = 5;
     public static final int APDATIVE_LAPSE_STREAK_LIMIT = 2;
@@ -258,6 +258,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
 
 
+
+
         // we dont need location services here
 
         // reset temp data
@@ -336,6 +338,15 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             }
         };
         map.snapshot(callback);
+    }
+
+
+
+    public void finishVisualTraining() {
+        // for the finish button in visual fragment
+
+
+
     }
 
     public void resetTempData() {

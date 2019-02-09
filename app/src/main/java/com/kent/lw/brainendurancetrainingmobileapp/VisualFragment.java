@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
 import java.util.Random;
 
 public class VisualFragment extends Fragment {
@@ -25,6 +27,12 @@ public class VisualFragment extends Fragment {
     private Runnable showVisualStimulusRunnable, hideVisualStimulusRunnable;
 
     Random random;
+
+    // uis for performance
+    private TextView tvDuration;
+    private TextView tvStiCount, tvHitCount, tvLapseCount, tvResCount, tvAccuracy, tvAvgResTime;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,20 +76,19 @@ public class VisualFragment extends Fragment {
                 //finish visual training
             }
         });
+
+        // performance info uis
+        tvDuration = getActivity().findViewById(R.id.tv_visual_duration);
+        tvStiCount = getActivity().findViewById(R.id.tv_visual_sti_count);
+        tvHitCount = getActivity().findViewById(R.id.tv_visual_hit_count);
+        tvLapseCount = getActivity().findViewById(R.id.tv_visual_lapse_count);
+        tvResCount = getActivity().findViewById(R.id.tv_visual_res_count);
+        tvAccuracy = getActivity().findViewById(R.id.tv_visual_accuracy);
+        tvAvgResTime = getActivity().findViewById(R.id.tv_visual_avg_res_time);
     }
 
-    private void showVisualStimulus() {
-        Log.d("visualtest", "showing");
-
-        btnImgBullseye.setVisibility(View.VISIBLE); }
-
-    private void hideVisualStimulus() {
-        Log.d("visualtest", "hiding");
-
-        btnImgBullseye.setVisibility(View.INVISIBLE); }
 
     private void responseToVisualStimulus() {
-
         handler.removeCallbacks(hideVisualStimulusRunnable);
         handler.removeCallbacks(showVisualStimulusRunnable);
         hideVisualStimulus();
@@ -92,7 +99,7 @@ public class VisualFragment extends Fragment {
 
     private void initRunnables() {
 
-        showVisualStimulusRunnable  = new Runnable() {
+        showVisualStimulusRunnable = new Runnable() {
             @Override
             public void run() {
                 showVisualStimulus();
@@ -110,5 +117,44 @@ public class VisualFragment extends Fragment {
                 handler.postDelayed(showVisualStimulusRunnable, waits);
             }
         };
+    }
+
+    private void showVisualStimulus() {
+        Log.d("visualtest", "showing");
+        btnImgBullseye.setVisibility(View.VISIBLE);
+    }
+
+    private void hideVisualStimulus() {
+        Log.d("visualtest", "hiding");
+        btnImgBullseye.setVisibility(View.INVISIBLE);
+    }
+
+
+    public void setTvDuration(String s) {
+        tvDuration.setText(s);
+    }
+
+    public void setTvStiCount(String s) {
+        tvStiCount.setText(s);
+    }
+
+    public void setTvHitCount(String s) {
+        tvHitCount.setText(s);
+    }
+
+    public void setTvAccuracy(String s) {
+        tvAccuracy.setText(s);
+    }
+
+    public void setTvAvgResTime(String s) {
+        tvAvgResTime.setText(s);
+    }
+
+    public void setTvLapseCount(String s) {
+        tvLapseCount.setText(s);
+    }
+
+    public void setTvResCount(String s) {
+        tvResCount.setText(s);
     }
 }

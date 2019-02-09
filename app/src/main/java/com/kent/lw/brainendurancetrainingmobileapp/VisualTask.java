@@ -13,6 +13,11 @@ public class VisualTask {
 
     private final int STIMULUS_DISAPPEAR_TIME = 30*1000;
 
+    private final int TASK_VISUAL_DURATION = 10*60*1000;
+
+    private final int TASK_VISUAL_VALID_RES_THRESHOLD = 500;
+    private final int TASK_VISUAL_FALSE_START_THRESHOLD = 100;
+
     private Random random = new Random();
 
     public int getStimulusDisappearTime () {
