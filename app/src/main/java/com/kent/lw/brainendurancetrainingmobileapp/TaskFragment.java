@@ -128,11 +128,9 @@ public class TaskFragment extends Fragment {
                         MainActivity.trainingData.getTaskConfig().setNogoProportion(0);
                     }
 
-                    if (btnTask.getText().equals("Visual")) {
-                        taskCommunicator.startVisualTraining();
-                    } else {
-                        taskCommunicator.startTraining();
-                    }
+
+                    taskCommunicator.startTraining();
+
 
                 } else {
                     promptDialog.show();
@@ -386,6 +384,14 @@ public class TaskFragment extends Fragment {
             public void onClick(View v) {
                 btnTask.setText(btnVisual.getText());
                 taskDialog.dismiss();
+
+                taskCommunicator.startVisualTraining();
+
+
+
+
+
+
             }
         });
 
