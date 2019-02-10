@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private final int COUNTDONW_WAIT = 6000;
     public DialogHelper dialogHelper;
     public MapHelper mapHelper;
-    private ImageButton btnProfile, btnFlic, btnDiary, btnMap;
+    private ImageButton btnProfile, btnFlic, btnDiary, btnMap, btnFeedback;
     // map
     private GoogleMap map;
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -197,6 +197,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         btnDiary.setOnClickListener(this);
         btnMap = findViewById(R.id.btn_map);
         btnMap.setOnClickListener(this);
+        btnFeedback = findViewById(R.id.btn_feedback);
+        btnFeedback.setOnClickListener(this);
     }
 
     // fragment
@@ -582,6 +584,10 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
             case (R.id.btn_map):
                 zoomToCurLoc();
+                break;
+
+            case (R.id.btn_feedback):
+                dialogHelper.showFeedbackDialog();
                 break;
         }
     }

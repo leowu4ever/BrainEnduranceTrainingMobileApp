@@ -69,6 +69,8 @@ public class DialogHelper {
     public Dialog uploadCheckDialog, deleteCheckDialog, finishCheckDialog;
     public Button btnUploadCheckYes, btnUploadCheckNo, btnDeleteCheckYes, btnDeleteCheckNo, btnFinishCheckYes, btnFinishCheckNo;
 
+    //for feedback
+    public Dialog feedbackDialog;
 
     public DialogHelper(Context context) {
         init(context);
@@ -89,6 +91,7 @@ public class DialogHelper {
         motiDialog = new Dialog(context);
         rpeDialog = new Dialog(context);
         nasaDialog = new Dialog(context);
+        feedbackDialog = new Dialog(context);
 
         uploadCheckDialog = new Dialog(context);
         deleteCheckDialog = new Dialog(context);
@@ -116,6 +119,8 @@ public class DialogHelper {
         setupDialog(uploadCheckDialog, R.layout.dialog_upload_check);
         setupDialog(deleteCheckDialog, R.layout.dialog_delete_check);
         setupDialog(finishCheckDialog, R.layout.dialog_finish_check);
+
+        setupDialog(feedbackDialog, R.layout.dialog_feedback);
 
         btnResumeOk = pauseDialog.findViewById(R.id.btn_resume);
         btnResumeOk.setOnClickListener(new View.OnClickListener() {
@@ -758,6 +763,10 @@ public class DialogHelper {
     public void dismissDeleteCheckDialog() {
         deleteCheckDialog.dismiss();
     }
+
+    public void showFeedbackDialog() { feedbackDialog.show(); }
+
+    public void dismissFeedbackDialog() { feedbackDialog.dismiss(); }
 
     public boolean isLockDialogShowing() {
         return lockDialog.isShowing();
