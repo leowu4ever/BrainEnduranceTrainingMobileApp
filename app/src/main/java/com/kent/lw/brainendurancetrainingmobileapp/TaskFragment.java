@@ -385,12 +385,13 @@ public class TaskFragment extends Fragment {
                 btnTask.setText(btnVisual.getText());
                 taskDialog.dismiss();
 
+                MainActivity.trainingData.setTask("Visual");
+
+                // hard code visual task configuration
+                MainActivity.trainingData.setDuration(VisualTask.TASK_VISUAL_DURATION);
+
+                // start countdown and duration
                 taskCommunicator.startVisualTraining();
-
-
-
-
-
 
             }
         });

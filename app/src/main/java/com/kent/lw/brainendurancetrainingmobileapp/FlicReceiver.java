@@ -4,11 +4,12 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import io.flic.lib.FlicBroadcastReceiver;
 import io.flic.lib.FlicButton;
 
 public class FlicReceiver extends FlicBroadcastReceiver {
-
 
     @Override
     protected void onRequestAppCredentials(Context context) {
@@ -17,13 +18,15 @@ public class FlicReceiver extends FlicBroadcastReceiver {
 
     @Override
     public void onButtonUpOrDown(Context context, FlicButton button, boolean wasQueued, int timeDiff, boolean isUp, boolean isDown) {
+
+
         Long resMili = System.currentTimeMillis();
         if (isDown) {
 
             if (MainActivity.trainingStarted && MainActivity.trainingData.getStiMiliList().size() > 0) {
 
                 long lastStiMili = MainActivity.trainingData.getStiMiliList().get(MainActivity.trainingData.getStiMiliList().size() - 1);
-                // TODO 37ms
+                // TODO 37ms, button travel 100, rubber 100ms
                 long resTime = resMili - lastStiMili - 37;
 
                 MainActivity.trainingData.setResMiliList(resMili);
@@ -41,6 +44,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
 
                     // update avg res time
                     MainActivity.trainingData.addResTime(resTime);
+                    // can get res time directly
                     MainActivity.trainingFragment.setTvAvgResTime(MainActivity.trainingData.getTotalResTime() / MainActivity.trainingData.getHitResCount() + "");
 
                     // update accuracy

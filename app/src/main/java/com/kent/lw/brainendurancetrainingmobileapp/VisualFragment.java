@@ -30,7 +30,10 @@ public class VisualFragment extends Fragment {
 
     // uis for performance
     private TextView tvDuration;
-    private TextView tvStiCount, tvHitCount, tvLapseCount, tvResCount, tvAccuracy, tvAvgResTime;
+    private TextView tvStiCount, tvHitCount, tvLapseCount, tvResCount, tvAccuracy, tvAvgResTime, tvResTime;
+
+    private VisualCommunicator visualCommunicator;
+
 
 
 
@@ -55,10 +58,13 @@ public class VisualFragment extends Fragment {
 
         int waits = visualTask.getRandomInterval();
         Log.d("visualtest", "show after" + waits + "s");
-        handler.postDelayed(showVisualStimulusRunnable, waits);
+        handler.postDelayed(showVisualStimulusRunnable, waits + 4000);
     }
 
     private void initUIs() {
+
+        visualCommunicator = (VisualCommunicator) getActivity();
+
         btnImgBullseye = getActivity().findViewById(R.id.btn_img_bullseye);
         btnVisualRes = getActivity().findViewById(R.id.btn_visual_res);
         btnFinish = getActivity().findViewById(R.id.btn_visual_finish);
@@ -74,6 +80,7 @@ public class VisualFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //finish visual training
+                visualCommunicator.finishVisualTraining();
             }
         });
 
@@ -85,16 +92,67 @@ public class VisualFragment extends Fragment {
         tvResCount = getActivity().findViewById(R.id.tv_visual_res_count);
         tvAccuracy = getActivity().findViewById(R.id.tv_visual_accuracy);
         tvAvgResTime = getActivity().findViewById(R.id.tv_visual_avg_res_time);
+        tvResTime = getActivity().findViewById(R.id.tv_visual_res_time);
     }
 
 
     private void responseToVisualStimulus() {
-        handler.removeCallbacks(hideVisualStimulusRunnable);
-        handler.removeCallbacks(showVisualStimulusRunnable);
-        hideVisualStimulus();
-        int waits = visualTask.getRandomInterval();
-        Log.d("visualtest", "show after" + waits + "s");
-        handler.postDelayed(showVisualStimulusRunnable, waits);
+
+        if(btnImgBullseye.getVisibility() == View.VISIBLE) {
+
+            handler.removeCallbacks(hideVisualStimulusRunnable);
+            handler.removeCallbacks(showVisualStimulusRunnable);
+            hideVisualStimulus();
+
+            int waits = visualTask.getRandomInterval();
+            Log.d("visualtest", "show after" + waits + "s");
+            handler.postDelayed(showVisualStimulusRunnable, waits);
+
+            // update accuracy, response time, avg response time
+
+            // update hits, lapses, responses
+
+            // cal res time
+            Long resMili = System.currentTimeMillis();
+
+            if (MainActivity.trainingStarted && MainActivity.trainingData.getStiMiliList().size() > 0) {
+
+                long lastStiMili = MainActivity.trainingData.getStiMiliList().get(MainActivity.trainingData.getStiMiliList().size() - 1);
+                long resTime = resMili - lastStiMili;
+
+                MainActivity.trainingData.setResMiliList(resMili);
+                setTvResTime(resTime + "");
+
+                MainActivity.trainingData.incResCount();
+                setTvResCount(MainActivity.trainingData.getResCount() + "");
+
+                MainActivity.trainingData.setResTimeList(resTime);
+
+                if (resTime <= visualTask.getValidResThreshold() && resTime > visualTask.getFalseStartThreshold()) {
+
+                    MainActivity.trainingData.incHitResCount();
+                    setTvHitCount(MainActivity.trainingData.getHitResCount() + "");
+
+                    // update avg res time
+                    MainActivity.trainingData.addResTime(resTime);
+                    setTvAvgResTime(MainActivity.trainingData.getAvgResTime() + "");
+
+                    // update accuracy
+                    setTvAccuracy(MainActivity.trainingData.getAccuracy() + "");
+
+                } else {
+                    MainActivity.trainingData.incLapseCount();
+                    setTvLapseCount(MainActivity.trainingData.getLapseCount() + "");
+                }
+            }
+
+            setTvLapseCount(MainActivity.trainingData.getLapseCount() + "");
+        } else {
+            MainActivity.trainingData.incLapseCount();
+            setTvLapseCount(MainActivity.trainingData.getLapseCount() + "");
+            MainActivity.trainingData.incResCount();
+            setTvResCount(MainActivity.trainingData.getResCount() + "");
+        }
     }
 
     private void initRunnables() {
@@ -122,6 +180,17 @@ public class VisualFragment extends Fragment {
     private void showVisualStimulus() {
         Log.d("visualtest", "showing");
         btnImgBullseye.setVisibility(View.VISIBLE);
+
+        MainActivity.trainingData.incStiCount();
+
+        // update sti mili
+
+        MainActivity.trainingData.setStiMiliList(System.currentTimeMillis());
+
+        // update stimulus count
+        setTvStiCount(MainActivity.trainingData.getStiCount() + "");
+
+        setTvAccuracy(MainActivity.trainingData.getAccuracy() + "");
     }
 
     private void hideVisualStimulus() {
@@ -157,4 +226,6 @@ public class VisualFragment extends Fragment {
     public void setTvResCount(String s) {
         tvResCount.setText(s);
     }
+
+    public void setTvResTime(String s) {tvResTime.setText(s);}
 }

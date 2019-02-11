@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static boolean locPermissionEnabled;
     // runnable
     public static Handler handler;
-    public static Runnable countdownRunnbale, stimulusRunnable, durationRunnable;
+    public static Runnable countdownRunnbale, stimulusRunnable, durationRunnable, visualDurationRunnable;
     // data collection
     public static TrainingData trainingData;
     public static OverallData overallData;
@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static void hideTrainingFragment() {
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
         transaction.remove(trainingFragment);
         transaction.commit();
     }
@@ -120,6 +121,15 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         transaction.remove(taskFragment);
         mapFragment.getView().setVisibility(View.GONE);
         transaction.add(R.id.container, visualFragment, "VISUAL_FREGAMENT");
+        transaction.commit();
+    }
+
+    public static void hideVisualFragment() {
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.remove(visualFragment);
+        mapFragment.getView().setVisibility(View.VISIBLE);
+        transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
         transaction.commit();
     }
 
@@ -228,7 +238,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             }
         });
 
-
         resetTempData();
         trainingData.setStartTime(System.currentTimeMillis());
         handler.postDelayed(countdownRunnbale, 0);
@@ -248,7 +257,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         showVisualFragment();
 
-
         //hide button
         btnProfile.setVisibility(View.GONE);
         btnFlic.setVisibility(View.GONE);
@@ -257,20 +265,21 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         //show visual fragment
 
-
-
-
-
-
         // we dont need location services here
 
         // reset temp data
+        resetTempData();
 
         //set the start time
+        trainingData.setStartTime(System.currentTimeMillis());
 
         //start countdown
 
         //start duration
+
+        handler.postDelayed(countdownRunnbale, 0);
+
+        handler.postDelayed(visualDurationRunnable, 4000);
 
         //start visual task runnable
 
@@ -305,7 +314,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
             @Override
             public void onSnapshotReady(Bitmap snapshot) {
-                // TODO Auto-generated method stub
                 bitmap = snapshot;
                 try {
                     File file = new File(FileHelper.PATH_ROUTE_DATA + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getStartTime()) + ".png");
@@ -342,12 +350,40 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         map.snapshot(callback);
     }
 
-
-
     public void finishVisualTraining() {
+
         // for the finish button in visual fragment
+        // hide visual fragment
+        hideVisualFragment();
+        trainingStarted = false;
+
+        // play finish sound
+        soundHelper.playFinishSound(1, 1, 0, 0, 1);
+
+        // show finsih dialog
+        dialogHelper.showFinishDialog(trainingData);
+        // remove runnable of visual duration
+
+        handler.removeCallbacks(visualDurationRunnable);
 
 
+        trainingData.setName(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""));
+        FileHelper.saveTrainingDataToLocal();
+
+        // update overall data
+        overallData.setRtList(trainingData.getAvgResTime());
+        overallData.setAccuracyList(trainingData.getAccuracy());
+        FileHelper.saveOverallDataToLocal();
+
+        // show circle button
+        btnProfile.setVisibility(View.VISIBLE);
+        btnFlic.setVisibility(View.VISIBLE);
+        btnDiary.setVisibility(View.VISIBLE);
+        btnMap.setVisibility(View.VISIBLE);
+        // reset training data
+        // reset task
+        trainingData.reset();
+        task.reset();
 
     }
 
@@ -494,9 +530,11 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         durationRunnable = new Runnable() {
             @Override
             public void run() {
+                // play noise when starts
                 if (trainingData.getTimeTrained() == 0 && task.getNoise() != 0) {
                     soundHelper.playNoiseSound(task.getNoise(), task.getNoise(), 0, -1, 1);
                 }
+
 
                 int timeLeftInMili = trainingData.getTimeLeftInMili();
                 if (timeLeftInMili > 0) {
@@ -509,6 +547,27 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     handler.postDelayed(this, 1000);
                 } else {
                     finishTraining();
+                }
+            }
+        };
+
+        visualDurationRunnable = new Runnable() {
+            @Override
+            public void run() {
+
+                // start count down
+                // check if it finishes
+                int timeLeftInMili = trainingData.getTimeLeftInMili();
+                if (timeLeftInMili > 0) {
+                    int min = (timeLeftInMili / 1000) / 60;
+                    int sec = (timeLeftInMili / 1000) % 60;
+                    String durationString = min + "M " + sec + "S";
+                    visualFragment.setTvDuration(durationString);
+                    trainingData.setTimeTrained(trainingData.getTimeTrained() + 1000);
+
+                    handler.postDelayed(this, 1000);
+                } else {
+                    finishVisualTraining();
                 }
             }
         };
