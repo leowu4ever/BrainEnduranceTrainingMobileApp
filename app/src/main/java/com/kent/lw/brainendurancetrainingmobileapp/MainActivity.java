@@ -312,7 +312,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
             @Override
             public void onSnapshotReady(Bitmap snapshot) {
-                // TODO Auto-generated method stub
                 bitmap = snapshot;
                 try {
                     File file = new File(FileHelper.PATH_ROUTE_DATA + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getStartTime()) + ".png");
@@ -350,7 +349,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     }
 
     public void finishVisualTraining() {
-        // TODO
 
         // for the finish button in visual fragment
         // hide visual fragment
