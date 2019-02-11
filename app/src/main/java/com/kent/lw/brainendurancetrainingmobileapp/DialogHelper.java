@@ -661,7 +661,7 @@ public class DialogHelper {
         btnFeedbackSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FeedbackData feedback = new FeedbackData();
+                FeedbackData feedback = MainActivity.feedbackData;
                 feedback.setAnsQ1(((RadioButton)feedbackDialog.findViewById(rgFeedbackQ1.getCheckedRadioButtonId())).getText().toString());
                 feedback.setAnsQ2(((RadioButton)feedbackDialog.findViewById(rgFeedbackQ2.getCheckedRadioButtonId())).getText().toString());
                 feedback.setAnsQ3(((RadioButton)feedbackDialog.findViewById(rgFeedbackQ3.getCheckedRadioButtonId())).getText().toString());
@@ -679,18 +679,9 @@ public class DialogHelper {
                 feedback.setAnsQ10(etFeedbackQ10.getText().toString());
                 feedback.setAnsQ11(etFeedbackQ11.getText().toString());
 
-                //TO-DO for submitting
-                Toast.makeText(context, feedback.getAnsQ1() + "\n"
-                        + feedback.getAnsQ2() + "\n"
-                        + feedback.getAnsQ3() + "\n"
-                        + feedback.getAnsQ4() + "\n"
-                        + feedback.getAnsQ5() + "\n"
-                        + feedback.getAnsQ6() + "\n"
-                        + feedback.getAnsQ7() + "\n"
-                        + feedback.getAnsQ8() + "\n"
-                        + feedback.getAnsQ9() + "\n"
-                        + feedback.getAnsQ10() + "\n"
-                        + feedback.getAnsQ11(), Toast.LENGTH_LONG).show();
+                //submit
+                FileHelper.saveSurveyDataToLocal();
+
             }
         });
         btnFeedbackBack = feedbackDialog.findViewById(R.id.btn_feedback_back);

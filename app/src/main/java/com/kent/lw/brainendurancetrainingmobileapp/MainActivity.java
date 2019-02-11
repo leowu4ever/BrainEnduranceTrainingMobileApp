@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static MotiData motiData;
     public static RpeData rpeData;
     public static NasaData nasaData;
+    public static FeedbackData feedbackData;
     public static com.kent.lw.brainendurancetrainingmobileapp.Task task;
     // helper class
     public static SoundHelper soundHelper;
@@ -178,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         motiData = FileHelper.readMotiDataFromLocal();
         rpeData = FileHelper.readRpeDataFromLocal();
         nasaData = FileHelper.readNasaDataFromLocal();
-
+        feedbackData = FileHelper.readSurveyDataFromLocal();
 
         task = new com.kent.lw.brainendurancetrainingmobileapp.Task();
 
