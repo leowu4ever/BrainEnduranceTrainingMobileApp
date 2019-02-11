@@ -13,7 +13,7 @@ public class VisualTask {
 
     private final int STIMULUS_DISAPPEAR_TIME = 30*1000;
 
-    private final int TASK_VISUAL_DURATION = 10*60*1000;
+    public static final int TASK_VISUAL_DURATION = 1*60*1000; //10mins
 
     private final int TASK_VISUAL_VALID_RES_THRESHOLD = 500;
     private final int TASK_VISUAL_FALSE_START_THRESHOLD = 100;
@@ -28,4 +28,11 @@ public class VisualTask {
     public int getRandomInterval () {
         return (random.nextInt(INTERVAL_MAX)+1) * INTERVAL_INCREMENT;
     }
+
+    public int getValidResThreshold() {
+        return TASK_VISUAL_VALID_RES_THRESHOLD;
+    }
+
+    public int getFalseStartThreshold() { return TASK_VISUAL_FALSE_START_THRESHOLD; }
+
 }

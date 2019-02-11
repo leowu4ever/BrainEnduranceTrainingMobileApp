@@ -131,7 +131,7 @@ public class DialogHelper {
             @Override
             public void onClick(View v) {
                 dismissFinishDialog();
-                MainActivity.showTaskFragment();
+                //MainActivity.showTaskFragment();
             }
         });
 

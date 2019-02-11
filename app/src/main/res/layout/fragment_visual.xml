@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:background="@drawable/fragment_shape"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -28,8 +28,7 @@
         <Button
             android:id="@+id/btn_visual_res"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="10dp"
+            android:layout_height="80dp"
             android:text="Response Button"
             android:textAllCaps="false" />
 
