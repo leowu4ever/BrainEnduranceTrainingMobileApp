@@ -681,6 +681,8 @@ public class DialogHelper {
 
                 //submit
                 FileHelper.saveSurveyDataToLocal();
+                Toast.makeText(context, "Your feedback is submitted", Toast.LENGTH_SHORT).show();
+                dismissFeedbackDialog();
 
             }
         });
