@@ -136,12 +136,15 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     }
 
     public static void createStiTypeList() {
+        // create sti list with 0
         ArrayList<Integer> indexList = new ArrayList<Integer>();
         int totalStiCount = trainingData.getDuration() / 1000 / task.getIntervalFrom() + 1;
         for (int i = 0; i < totalStiCount; i++) {
             trainingData.setStiTypeList(0);
             indexList.add(i);
         }
+
+        // modify the list for nogo.
         Collections.shuffle(indexList);
         float nogoCount = totalStiCount * task.getNogoProportion() / 100;
         for (int i = 0; i < nogoCount; i++) {
