@@ -382,6 +382,12 @@ public class TaskFragment extends Fragment {
         btnVisual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                MainActivity.trainingData.setActivity("-");
+                MainActivity.trainingData.setTask("-");
+                MainActivity.trainingData.setDif("-");
+                MainActivity.trainingData.setTaskConfig(MainActivity.task);
+
                 btnTask.setText(btnVisual.getText());
                 taskDialog.dismiss();
 

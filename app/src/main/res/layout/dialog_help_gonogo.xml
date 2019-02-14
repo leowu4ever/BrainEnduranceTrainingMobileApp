@@ -26,7 +26,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
         android:layout_weight="0"
-        android:text="You will hear .."
+        android:text="This is a Go No-Go Task. You will hear two different beep sounds at random intervals. To complete the task you must press the button as quickly as possible when you hear the higher sound and not press the button when you hear the lower sound. When you are ready to start press..."
         android:textAllCaps="false"
         android:textSize="12sp" />
 

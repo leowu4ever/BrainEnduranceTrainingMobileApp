@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
         android:layout_weight="0"
-        android:text="GO/NO-GO"
+        android:text="Visual"
         android:textAllCaps="true"
         android:textSize="30sp"
         android:textStyle="bold" />
@@ -26,7 +26,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
         android:layout_weight="0"
-        android:text="You will hear .."
+        android:text="This is the Psychomotor Vigilance Task. On the current screen you will see a blank screen before a bullseye appears.   To complete the task you must press the button as quickly as possible once the bullseye appears. You will be given feedback on how fast you respond.  When you are ready to start press..."
         android:textAllCaps="false"
         android:textSize="12sp" />
 

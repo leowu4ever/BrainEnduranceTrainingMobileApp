@@ -3,6 +3,7 @@ package com.kent.lw.brainendurancetrainingmobileapp;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -135,12 +137,15 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     }
 
     public static void createStiTypeList() {
+        // create sti list with 0
         ArrayList<Integer> indexList = new ArrayList<Integer>();
         int totalStiCount = trainingData.getDuration() / 1000 / task.getIntervalFrom() + 1;
         for (int i = 0; i < totalStiCount; i++) {
             trainingData.setStiTypeList(0);
             indexList.add(i);
         }
+
+        // modify the list for nogo.
         Collections.shuffle(indexList);
         float nogoCount = totalStiCount * task.getNogoProportion() / 100;
         for (int i = 0; i < nogoCount; i++) {
@@ -216,38 +221,44 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     @Override
     public void startTraining() {
 
-        // replace task fragment with training fragment
-        showTrainingFragment();
-        btnProfile.setVisibility(View.GONE);
-        btnFlic.setVisibility(View.GONE);
-        btnDiary.setVisibility(View.GONE);
-        btnMap.setVisibility(View.GONE);
 
-
-        Task task = mFusedLocationProviderClient.getLastLocation();
-        task.addOnCompleteListener(this, new OnCompleteListener() {
+        Task locationTask = mFusedLocationProviderClient.getLastLocation();
+        locationTask.addOnCompleteListener(this, new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
                 if (task.isSuccessful()) {
-                    lastLoc = mapHelper.convertToLatLng((Location) task.getResult());
-                    mapHelper.zoomToLoc(map, lastLoc);
-                    mapHelper.addStartMarker(map, lastLoc);
-                    trainingData.setLocUpdateMiliList(System.currentTimeMillis());
-                    trainingData.setLatList(lastLoc.latitude);
-                    trainingData.setLngList(lastLoc.longitude);
+                    Location locationResult = (Location) task.getResult();
+                    if (locationResult != null) {
+                        lastLoc = mapHelper.convertToLatLng(locationResult);
+                        mapHelper.zoomToLoc(map, lastLoc);
+                        mapHelper.addStartMarker(map, lastLoc);
+                        trainingData.setLocUpdateMiliList(System.currentTimeMillis());
+                        trainingData.setLatList(lastLoc.latitude);
+                        trainingData.setLngList(lastLoc.longitude);
+
+                        // replace task fragment with training fragment
+                        showTrainingFragment();
+                        btnProfile.setVisibility(View.GONE);
+                        btnFlic.setVisibility(View.GONE);
+                        btnDiary.setVisibility(View.GONE);
+                        btnMap.setVisibility(View.GONE);
+
+                        resetTempData();
+                        trainingData.setStartTime(System.currentTimeMillis());
+                        handler.postDelayed(countdownRunnbale, 0);
+
+                        // start after count down
+                        handler.postDelayed(durationRunnable, 4000);
+                        createStiTypeList();
+                        handler.postDelayed(stimulusRunnable, COUNTDONW_WAIT);
+
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this,"Unable to start your task because the location service is unavailable now. Please connect to the internet with your Sim card or WIFI.", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
-
-        resetTempData();
-        trainingData.setStartTime(System.currentTimeMillis());
-        handler.postDelayed(countdownRunnbale, 0);
-
-        // start after count down
-        handler.postDelayed(durationRunnable, 4000);
-        createStiTypeList();
-        handler.postDelayed(stimulusRunnable, COUNTDONW_WAIT);
-
     }
 
     @Override
@@ -415,21 +426,43 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
 
     public void zoomToCurLoc() {
-        try {
-            Task location = mFusedLocationProviderClient.getLastLocation();
-            location.addOnCompleteListener(new OnCompleteListener() {
-                @Override
-                public void onComplete(@NonNull Task task) {
-                    if (task.isSuccessful()) {
-                        Location location = (Location) task.getResult();
-                        if (location != null) {
-                            mapHelper.zoomToLoc(map, new LatLng(location.getLatitude(), location.getLongitude()));
-                        }
-                    } else {
-                    }
-                }
-            });
+//        try {
+//            Task locationTask = mFusedLocationProviderClient.getLastLocation();
+//            locationTask.addOnCompleteListener(new OnCompleteListener() {
+//                @Override
+//                public void onComplete(@NonNull Task task) {
+//                    if (task.isSuccessful()) {
+//                        Location locationResult = (Location) task.getResult();
+//                        if (locationResult != null) {
+//                            mapHelper.zoomToLoc(map, new LatLng(locationResult.getLatitude(), locationResult.getLongitude()));
+//                        } else {
+//                            Toast.makeText(MainActivity.this,"Please connect to the internet to use location service.", Toast.LENGTH_LONG).show();
+//                        }
+//                    } else {
+//                    }
+//                }
+//            });
+//
+//        } catch (SecurityException e) {
+//        }
 
+        try {
+            if (locPermissionEnabled) {
+
+                mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, new LocationCallback() {
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+
+                            if (locationResult != null) {
+                                for (Location location : locationResult.getLocations()) {
+                                    mapHelper.zoomToLoc(map, new LatLng(location.getLatitude(), location.getLongitude()));
+                                    mFusedLocationProviderClient.removeLocationUpdates(this);
+                                }
+                            }
+                    }
+
+                }, null);
+            }
         } catch (SecurityException e) {
         }
     }
