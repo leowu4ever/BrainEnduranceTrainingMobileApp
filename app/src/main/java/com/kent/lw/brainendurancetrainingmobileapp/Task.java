@@ -260,7 +260,7 @@ public class Task {
         final float GONOGO_HARD_VOLUME_FROM = 0.3f;
         final float GONOGO_HARD_VOLUME_TO = 0.8f;
 
-        final float GONOGO_HARD_NOISE = 0.8fß;
+        final float GONOGO_HARD_NOISE = 0.8f;
         final int GONOGO_HARD_RES_THRESHOLD = 1000;
         final float GONOGO_HARD_MIN_SPEED = 0;
         final int GONOGO_HARD_NOGO_PROPORTION = 30;
