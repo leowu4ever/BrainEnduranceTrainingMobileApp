@@ -81,6 +81,8 @@ public class VisualFragment extends Fragment {
             public void onClick(View v) {
                 //finish visual training
                 visualCommunicator.finishVisualTraining();
+                handler.removeCallbacks(hideVisualStimulusRunnable);
+                handler.removeCallbacks(showVisualStimulusRunnable);
             }
         });
 
