@@ -698,4 +698,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }
