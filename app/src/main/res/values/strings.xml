@@ -45,7 +45,24 @@
     </string-array>
 
     <string-array name="noise_type">
-        <item>Kids playing</item>
-        <item>Music</item>
+        <item>White Noise-Relaxing</item>
+        <item>White Noise-Rain Sound</item>
+        <item>White Noise-Wind Sound</item>
+
+        <item>bpm110-124-Run Baby Run</item>
+        <item>bpm110-124-Runaway</item>
+        <item>bpm110-124-Running with the Night</item>
+
+        <item>bpm125-134-Day \'N\' Nite</item>
+        <item>bpm125-134-Run To You</item>
+        <item>bpm125-134-Where are we Runnin</item>
+
+        <item>bmp135-150-Burn To Run</item>
+        <item>bpm135-150-Heaven</item>
+        <item>bpm135-150-I don\'t wanna Stop</item>
+        <item>bpm135-150-Runnin\' (Loose it all)</item>
+
+        <item>bpm151-175-Running Free</item>
+        <item>bpm151-175-Run with the Wolves</item>
     </string-array>
 </resources>
