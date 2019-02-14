@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
 
@@ -17,7 +18,14 @@ public class SoundHelper extends Application {
     // noise sound playing ref used when pause and resume
     public int noiseplay;
 
+    public MediaPlayer noiseMP;
+
+    public Context c;
+
+
     public SoundHelper(Context context) {
+
+        c = context;
         init(context);
     }
 
@@ -34,12 +42,53 @@ public class SoundHelper extends Application {
         }
 
         beepSound = sp.load(context, R.raw.beep, 1);
+        nogoSound = sp.load(context, R.raw.nogo, 1);
+
         speedupSound = sp.load(context, R.raw.speedup, 1);
         startSound = sp.load(context, R.raw.start, 1);
         finishSound = sp.load(context, R.raw.finish, 1);
+
+        // for init noise sound
+
         kidPlayingSound = sp.load(context, R.raw.kidsplaying, 1);
         musicSound = sp.load(context, R.raw.music, 1);
-        nogoSound = sp.load(context, R.raw.nogo, 1);
+
+
+
+    }
+
+    private int getNoiseRawId(int noiseTypeIndexSelected) {
+        switch (noiseTypeIndexSelected){
+            case 0:
+                return R.raw.whitenoise_relaxing;
+            case 1:
+                return R.raw.whitenoise_rainsound;
+            case 2:
+                return R.raw.whitenoise_windsound;
+            case 3:
+                return R.raw.bpm110_124_runbabyrun;
+            case 4:
+                return R.raw.bpm110_124_runaway;
+            case 5:
+                return R.raw.bpm110_124_runningwiththenight;
+            case 6:
+                return R.raw.bpm125_134_daynnite;
+            case 7:
+                return R.raw.bpm125_134_runtoyou;
+            case 8:
+                return R.raw.bpm125_134_wherearewerunnin;
+            case 9:
+                return R.raw.bpm135_150_burntorun;
+            case 10:
+                return R.raw.bpm135_150_heaven;
+            case 12:
+                return R.raw.bpm135_150_runnin;
+            case 13:
+                return R.raw.bpm151_175_runningfree;
+            case 14:
+                return R.raw.bpm151_175_runwiththewolve;
+        }
+        return R.raw.whitenoise_relaxing;
     }
 
     public void playBeepSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
@@ -59,20 +108,49 @@ public class SoundHelper extends Application {
     }
 
     public void playNoiseSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
+//
+//        // do noise type check switch here
+//        if (MainActivity.task.getNoiseType() == 0) {
+//            noiseplay = sp.play(kidPlayingSound, leftVolume, rightVolume, priority, loop, rate);
+//        } else if (MainActivity.task.getNoiseType() == 1) {
+//            noiseplay = sp.play(musicSound, leftVolume, rightVolume, priority, loop, rate);
+//        }
 
-        // do noise type check switch here
-        if (MainActivity.task.getNoiseType() == 0) {
-            noiseplay = sp.play(kidPlayingSound, leftVolume, rightVolume, priority, loop, rate);
-        } else if (MainActivity.task.getNoiseType() == 1) {
-            noiseplay = sp.play(musicSound, leftVolume, rightVolume, priority, loop, rate);
+
+        noiseMP = MediaPlayer.create(c, getNoiseRawId(MainActivity.task.getNoiseType()));
+
+        if(noiseMP != null){
+            noiseMP.setLooping(true);
+            noiseMP.setVolume(leftVolume, rightVolume);
+            noiseMP.start();
         }
     }
 
     public void stopNoiseSound() {
-        sp.stop(noiseplay);
+//        sp.stop(noiseplay);
+        if(noiseMP != null) {
+            noiseMP.release();
+            noiseMP = null;
+        }
     }
 
     public void playNogoSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
         sp.play(nogoSound, leftVolume, rightVolume, priority, loop, rate);
+    }
+
+    public void play(float leftVolume, float rightVolume, int priority, int loop, float rate) {
+
+        if(noiseMP != null){
+            noiseMP.setLooping(true);
+            noiseMP.setVolume(leftVolume, rightVolume);
+            noiseMP.start();
+        }
+    }
+
+    public void stopNoiseMP () {
+        if(noiseMP != null) {
+            noiseMP.release();
+            noiseMP = null;
+        }
     }
 }
