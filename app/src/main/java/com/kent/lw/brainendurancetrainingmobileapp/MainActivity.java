@@ -138,7 +138,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static void createStiTypeList() {
         // create sti list with 0
         ArrayList<Integer> indexList = new ArrayList<Integer>();
+
         int totalStiCount = trainingData.getDuration() / 1000 / task.getIntervalFrom() + 1;
+
+        if (trainingData.getDif().equals("Adaptive")) {
+            totalStiCount = trainingData.getDuration() / 1000 / 2;
+        }
+
         for (int i = 0; i < totalStiCount; i++) {
             trainingData.setStiTypeList(0);
             indexList.add(i);
@@ -217,7 +223,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     // fragment
     @Override
     public void startTraining() {
-
 
         Task locationTask = mFusedLocationProviderClient.getLastLocation();
         locationTask.addOnCompleteListener(this, new OnCompleteListener() {
