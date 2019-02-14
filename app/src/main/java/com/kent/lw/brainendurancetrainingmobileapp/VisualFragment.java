@@ -13,6 +13,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.Random;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class VisualFragment extends Fragment {
 
@@ -83,6 +86,7 @@ public class VisualFragment extends Fragment {
                 visualCommunicator.finishVisualTraining();
                 handler.removeCallbacks(hideVisualStimulusRunnable);
                 handler.removeCallbacks(showVisualStimulusRunnable);
+
             }
         });
 
@@ -100,10 +104,10 @@ public class VisualFragment extends Fragment {
 
     private void responseToVisualStimulus() {
 
+
         if(btnImgBullseye.getVisibility() == View.VISIBLE) {
 
             handler.removeCallbacks(hideVisualStimulusRunnable);
-            handler.removeCallbacks(showVisualStimulusRunnable);
             hideVisualStimulus();
 
             int waits = visualTask.getRandomInterval();
@@ -180,19 +184,22 @@ public class VisualFragment extends Fragment {
     }
 
     private void showVisualStimulus() {
-        Log.d("visualtest", "showing");
-        btnImgBullseye.setVisibility(View.VISIBLE);
 
-        MainActivity.trainingData.incStiCount();
+        if (MainActivity.trainingStarted) {
+            Log.d("visualtest", "showing");
+            btnImgBullseye.setVisibility(View.VISIBLE);
 
-        // update sti mili
+            MainActivity.trainingData.incStiCount();
 
-        MainActivity.trainingData.setStiMiliList(System.currentTimeMillis());
+            // update sti mili
 
-        // update stimulus count
-        setTvStiCount(MainActivity.trainingData.getStiCount() + "");
+            MainActivity.trainingData.setStiMiliList(System.currentTimeMillis());
 
-        setTvAccuracy(MainActivity.trainingData.getAccuracy() + "");
+            // update stimulus count
+            setTvStiCount(MainActivity.trainingData.getStiCount() + "");
+
+            setTvAccuracy(MainActivity.trainingData.getAccuracy() + "");
+        }
     }
 
     private void hideVisualStimulus() {
