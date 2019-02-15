@@ -80,15 +80,15 @@
             android:id="@+id/textView13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Duration(hhmm)" />
+            android:text="Duration(min)" />
 
         <EditText
             android:id="@+id/if_td_duration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="time"
-            tools:text="@tools:sample/date/hhmm" />
+            android:inputType="number"
+             />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -118,7 +118,7 @@
             android:id="@+id/textView8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Training load = Training duration (min) x session RPE" />
+            android:text="Session RPE" />
 
         <Spinner
             android:id="@+id/sp_td_load"

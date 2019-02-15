@@ -431,7 +431,7 @@ public class DialogHelper {
                 MainActivity.trainingDiaryData.setTime(ifTime.getText().toString());
                 MainActivity.trainingDiaryData.setDuration(ifDuration.getText().toString());
                 MainActivity.trainingDiaryData.setType(spType.getSelectedItem().toString());
-                MainActivity.trainingDiaryData.setLoad(spLoad.getSelectedItem().toString());
+                MainActivity.trainingDiaryData.setLoad(Integer.parseInt(spLoad.getSelectedItem().toString().substring(0, 1)) * Integer.parseInt(ifDuration.getText().toString()) + "");
                 FileHelper.saveTrainingdiaryDataToLocal();
 
                 dismissTrainingDiaryAddDialog();
