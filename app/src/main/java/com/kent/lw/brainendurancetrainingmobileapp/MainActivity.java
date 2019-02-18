@@ -247,6 +247,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                         btnFlic.setVisibility(View.GONE);
                         btnDiary.setVisibility(View.GONE);
                         btnMap.setVisibility(View.GONE);
+                        btnFeedback.setVisibility(View.GONE);
 
                         resetTempData();
                         trainingData.setStartTime(System.currentTimeMillis());
@@ -279,6 +280,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         btnFlic.setVisibility(View.GONE);
         btnDiary.setVisibility(View.GONE);
         btnMap.setVisibility(View.GONE);
+        btnFeedback.setVisibility(View.GONE);
 
         //show visual fragment
 
@@ -353,6 +355,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     btnFlic.setVisibility(View.VISIBLE);
                     btnDiary.setVisibility(View.VISIBLE);
                     btnMap.setVisibility(View.VISIBLE);
+                    btnFeedback.setVisibility(View.VISIBLE);
 
                     trainingData.reset();
                     task.reset();
@@ -397,6 +400,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         btnFlic.setVisibility(View.VISIBLE);
         btnDiary.setVisibility(View.VISIBLE);
         btnMap.setVisibility(View.VISIBLE);
+        btnFeedback.setVisibility(View.VISIBLE);
         // reset training data
         // reset task
         trainingData.reset();
