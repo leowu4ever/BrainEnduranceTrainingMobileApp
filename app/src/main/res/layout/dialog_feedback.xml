@@ -61,20 +61,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="1. Do you find the application intuiti?" />
+                        android:text="1. Do you find the application intuitive?" />
 
                     <RadioGroup
                         android:id="@+id/rg_feedback_q1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1">
-
-                        <RadioButton
-                            android:id="@+id/radioButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Terrible" />
 
                         <RadioButton
                             android:id="@+id/radioButton2"
@@ -98,12 +91,6 @@
                             android:layout_weight="1"
                             android:text="Good" />
 
-                        <RadioButton
-                            android:id="@+id/radioButton5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Wonderful" />
                     </RadioGroup>
                 </LinearLayout>
 
