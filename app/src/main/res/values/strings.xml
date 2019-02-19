@@ -40,7 +40,7 @@
 
     <string-array name="training_types">
         <item>Cardio</item>
-        <item>Weight liftin</item>
+        <item>Weight lifting</item>
         <item>Circuit</item>
     </string-array>
 
