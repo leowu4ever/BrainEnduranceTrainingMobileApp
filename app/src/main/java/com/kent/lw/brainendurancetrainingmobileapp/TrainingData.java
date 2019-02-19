@@ -380,6 +380,7 @@ public class TrainingData {
         stiTypeList.clear();
         resMiliList.clear();
         resTimeList.clear();
+        speedList.clear();
 
         distance = 0;
         avgSpeed = 0;
