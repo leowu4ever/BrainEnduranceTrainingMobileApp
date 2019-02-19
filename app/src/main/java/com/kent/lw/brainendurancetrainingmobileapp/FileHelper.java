@@ -40,6 +40,9 @@ public class FileHelper {
     public static String PATH_NASA_DATA = PATH_FEEDBACK_FOLDER + "Nasa Data/";
     public static String FILENAME_NASA_DATA = "Nasa.json";
 
+    public static String PATH_SURVEY_DATA = PATH_FEEDBACK_FOLDER + "Survey Data/";
+    public static String FILENAME_SURVEY_DATA = "FeedbackData.json";
+
     public FileHelper() {
     }
 
@@ -156,6 +159,26 @@ public class FileHelper {
         return g.fromJson(readings, TrainingData.class);
     }
 
+    public static void saveSurveyDataToLocal() {
+        Gson gson = new Gson();
+        try (FileWriter writer = new FileWriter(PATH_SURVEY_DATA + FILENAME_SURVEY_DATA)) {
+            gson.toJson(MainActivity.feedbackData, writer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static FeedbackData readSurveyDataFromLocal() {
+        Gson g = new Gson();
+        String path = PATH_SURVEY_DATA + FILENAME_SURVEY_DATA;
+        String readings = readJsonFile(path);
+        FeedbackData feedbackData = g.fromJson(readings, FeedbackData.class);
+        if(feedbackData == null) {
+            feedbackData = new FeedbackData();
+        }
+        return feedbackData;
+    }
+
     private static String readJsonFile(String filePath) {
         String readings = "";
         FileInputStream fis = null;
@@ -243,6 +266,11 @@ public class FileHelper {
             nasaDataFolder.mkdir();
         }
 
+        File surveyFolder = new File(PATH_SURVEY_DATA);
+        if(!surveyFolder.exists()) {
+            surveyFolder.mkdir();
+        }
+
         File overallDataFile = new File(PATH_OVERALL_DATA + FILENAME_OVERALL_DATA);
         if (!overallDataFile.exists()) {
             saveOverallDataToLocal();
@@ -266,6 +294,11 @@ public class FileHelper {
         File nasaDataFile = new File(PATH_NASA_DATA + FILENAME_NASA_DATA);
         if (!nasaDataFile.exists()) {
             saveNasaDataToLocal();
+        }
+
+        File surveyDataFile = new File(PATH_SURVEY_DATA + FILENAME_SURVEY_DATA);
+        if(!surveyDataFile.exists()) {
+            saveSurveyDataToLocal();
         }
     }
 

@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static MotiData motiData;
     public static RpeData rpeData;
     public static NasaData nasaData;
+    public static FeedbackData feedbackData;
     public static com.kent.lw.brainendurancetrainingmobileapp.Task task;
     // helper class
     public static SoundHelper soundHelper;
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private final int COUNTDONW_WAIT = 6000;
     public DialogHelper dialogHelper;
     public MapHelper mapHelper;
-    private ImageButton btnProfile, btnFlic, btnDiary, btnMap;
+    private ImageButton btnProfile, btnFlic, btnDiary, btnMap, btnFeedback;
     // map
     private GoogleMap map;
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         motiData = FileHelper.readMotiDataFromLocal();
         rpeData = FileHelper.readRpeDataFromLocal();
         nasaData = FileHelper.readNasaDataFromLocal();
-
+        feedbackData = FileHelper.readSurveyDataFromLocal();
 
         task = new com.kent.lw.brainendurancetrainingmobileapp.Task();
 
@@ -218,6 +219,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         btnDiary.setOnClickListener(this);
         btnMap = findViewById(R.id.btn_map);
         btnMap.setOnClickListener(this);
+        btnFeedback = findViewById(R.id.btn_feedback);
+        btnFeedback.setOnClickListener(this);
     }
 
     // fragment
@@ -244,6 +247,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                         btnFlic.setVisibility(View.GONE);
                         btnDiary.setVisibility(View.GONE);
                         btnMap.setVisibility(View.GONE);
+                        btnFeedback.setVisibility(View.GONE);
 
                         resetTempData();
                         trainingData.setStartTime(System.currentTimeMillis());
@@ -276,6 +280,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         btnFlic.setVisibility(View.GONE);
         btnDiary.setVisibility(View.GONE);
         btnMap.setVisibility(View.GONE);
+        btnFeedback.setVisibility(View.GONE);
 
         //show visual fragment
 
@@ -350,6 +355,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     btnFlic.setVisibility(View.VISIBLE);
                     btnDiary.setVisibility(View.VISIBLE);
                     btnMap.setVisibility(View.VISIBLE);
+                    btnFeedback.setVisibility(View.VISIBLE);
 
                     trainingData.reset();
                     task.reset();
@@ -394,6 +400,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         btnFlic.setVisibility(View.VISIBLE);
         btnDiary.setVisibility(View.VISIBLE);
         btnMap.setVisibility(View.VISIBLE);
+        btnFeedback.setVisibility(View.VISIBLE);
         // reset training data
         // reset task
         trainingData.reset();
@@ -679,6 +686,10 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
             case (R.id.btn_map):
                 zoomToCurLoc();
+                break;
+
+            case (R.id.btn_feedback):
+                dialogHelper.showFeedbackDialog();
                 break;
         }
     }

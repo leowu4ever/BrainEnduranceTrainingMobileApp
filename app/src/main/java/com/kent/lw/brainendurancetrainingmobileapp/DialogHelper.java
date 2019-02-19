@@ -7,17 +7,25 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appyvet.materialrangebar.RangeBar;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -69,10 +77,16 @@ public class DialogHelper {
     public Dialog uploadCheckDialog, deleteCheckDialog, finishCheckDialog;
     public Button btnUploadCheckYes, btnUploadCheckNo, btnDeleteCheckYes, btnDeleteCheckNo, btnFinishCheckYes, btnFinishCheckNo;
 
+    //for feedback
+    public Dialog feedbackDialog;
+    public RadioGroup rgFeedbackQ1, rgFeedbackQ2, rgFeedbackQ3, rgFeedbackQ4, rgFeedbackQ9;
+    public ArrayList<CheckBox> cbFeedbackQ5List;
+    public EditText etFeedbackQ5, etFeedbackQ6, etFeedbackQ7, etFeedbackQ10, etFeedbackQ11;
+    public RatingBar rbFeecbackQ8;
+    public Button btnFeedbackSubmit, btnFeedbackBack;
 
-    public DialogHelper(Context context) {
-        init(context);
-    }
+
+    public DialogHelper(Context context) { init(context); }
 
     public void init(final Context context) {
         pauseDialog = new Dialog(context);
@@ -89,6 +103,7 @@ public class DialogHelper {
         motiDialog = new Dialog(context);
         rpeDialog = new Dialog(context);
         nasaDialog = new Dialog(context);
+        feedbackDialog = new Dialog(context);
 
         uploadCheckDialog = new Dialog(context);
         deleteCheckDialog = new Dialog(context);
@@ -116,6 +131,8 @@ public class DialogHelper {
         setupDialog(uploadCheckDialog, R.layout.dialog_upload_check);
         setupDialog(deleteCheckDialog, R.layout.dialog_delete_check);
         setupDialog(finishCheckDialog, R.layout.dialog_finish_check);
+
+        setupDialog(feedbackDialog, R.layout.dialog_feedback);
 
         btnResumeOk = pauseDialog.findViewById(R.id.btn_resume);
         btnResumeOk.setOnClickListener(new View.OnClickListener() {
@@ -616,6 +633,68 @@ public class DialogHelper {
         rbPerf = nasaAddDialog.findViewById(R.id.rb_nasa_perf);
         rbEff = nasaAddDialog.findViewById(R.id.rb_nasa_eff);
 
+        rgFeedbackQ1 = feedbackDialog.findViewById(R.id.rg_feedback_q1);
+        rgFeedbackQ2 = feedbackDialog.findViewById(R.id.rg_feedback_q2);
+        rgFeedbackQ3 = feedbackDialog.findViewById(R.id.rg_feedback_q3);
+        rgFeedbackQ4 = feedbackDialog.findViewById(R.id.rg_feedback_q4);
+        rgFeedbackQ9 = feedbackDialog.findViewById(R.id.rg_feedback_q9);
+        etFeedbackQ5 = feedbackDialog.findViewById(R.id.et_feedback_q5_5);
+        etFeedbackQ6 = feedbackDialog.findViewById(R.id.et_feedback_q6);
+        etFeedbackQ7 = feedbackDialog.findViewById(R.id.et_feedback_q7);
+        etFeedbackQ10 = feedbackDialog.findViewById(R.id.et_feedback_q10);
+        etFeedbackQ11 = feedbackDialog.findViewById(R.id.et_feedback_q11);
+        cbFeedbackQ5List = new ArrayList<CheckBox>();
+        cbFeedbackQ5List.add((CheckBox) feedbackDialog.findViewById(R.id.cb_feedback_q5_1));
+        cbFeedbackQ5List.add((CheckBox) feedbackDialog.findViewById(R.id.cb_feedback_q5_2));
+        cbFeedbackQ5List.add((CheckBox) feedbackDialog.findViewById(R.id.cb_feedback_q5_3));
+        cbFeedbackQ5List.add((CheckBox) feedbackDialog.findViewById(R.id.cb_feedback_q5_4));
+        final CheckBox cbQ5Other = feedbackDialog.findViewById(R.id.cb_feedback_q5_5);
+        cbQ5Other.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) { etFeedbackQ5.setVisibility(View.VISIBLE); }
+                else { etFeedbackQ5.setVisibility(View.GONE); }
+            }
+        });
+        //cbFeedbackQ5List.add(cbQ5Other);
+        rbFeecbackQ8 = feedbackDialog.findViewById(R.id.rb_feedback_q8);
+
+        btnFeedbackSubmit = feedbackDialog.findViewById(R.id.btn_feedback_submit);
+        btnFeedbackSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FeedbackData feedback = MainActivity.feedbackData;
+                feedback.setAnsQ1(((RadioButton)feedbackDialog.findViewById(rgFeedbackQ1.getCheckedRadioButtonId())).getText().toString());
+                feedback.setAnsQ2(((RadioButton)feedbackDialog.findViewById(rgFeedbackQ2.getCheckedRadioButtonId())).getText().toString());
+                feedback.setAnsQ3(((RadioButton)feedbackDialog.findViewById(rgFeedbackQ3.getCheckedRadioButtonId())).getText().toString());
+                feedback.setAnsQ4(((RadioButton)feedbackDialog.findViewById(rgFeedbackQ4.getCheckedRadioButtonId())).getText().toString());
+                String ansQ5 = "";
+                for(CheckBox cb : cbFeedbackQ5List) {
+                    if(cb.isChecked()) { ansQ5 = ansQ5 + cb.getText().toString() + " "; }
+                }
+                if(cbQ5Other.isChecked()) { ansQ5 = ansQ5 + etFeedbackQ5.getText().toString(); }
+                feedback.setAnsQ5(ansQ5);
+                feedback.setAnsQ6(etFeedbackQ6.getText().toString());
+                feedback.setAnsQ7(etFeedbackQ7.getText().toString());
+                feedback.setAnsQ8(String.valueOf(rbFeecbackQ8.getRating()));
+                feedback.setAnsQ9(((RadioButton)feedbackDialog.findViewById(rgFeedbackQ9.getCheckedRadioButtonId())).getText().toString());
+                feedback.setAnsQ10(etFeedbackQ10.getText().toString());
+                feedback.setAnsQ11(etFeedbackQ11.getText().toString());
+
+                //submit
+                FileHelper.saveSurveyDataToLocal();
+                Toast.makeText(context, "Your feedback is submitted", Toast.LENGTH_SHORT).show();
+                dismissFeedbackDialog();
+
+            }
+        });
+        btnFeedbackBack = feedbackDialog.findViewById(R.id.btn_feedback_back);
+        btnFeedbackBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissFeedbackDialog();
+            }
+        });
     }
 
     public void setupDialog(Dialog d, int layout) {
@@ -759,6 +838,10 @@ public class DialogHelper {
         deleteCheckDialog.dismiss();
     }
 
+    public void showFeedbackDialog() { feedbackDialog.show(); }
+
+    public void dismissFeedbackDialog() { feedbackDialog.dismiss(); }
+
     public boolean isLockDialogShowing() {
         return lockDialog.isShowing();
     }
@@ -839,7 +922,12 @@ public class DialogHelper {
         speedGraph.addSeries(speedSeries);
         speedGraph.setTitle("Speed(km/h)");
         speedGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
-
+        speedGraph.getViewport().setXAxisBoundsManual(true);
+        speedGraph.getViewport().setMaxX(speedList.size());
+        speedGraph.getViewport().setYAxisBoundsManual(true);
+        speedGraph.getViewport().setMinY(0);
+        speedGraph.getViewport().calcCompleteRange();
+        speedGraph.getViewport().setMaxY(speedGraph.getViewport().getMaxY(true));
 
         // update res speed time
         GraphView resGraph = detailDialog.findViewById(R.id.graph_res);
