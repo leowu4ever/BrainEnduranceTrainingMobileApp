@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -486,8 +487,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, new LocationCallback() {
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
-                        if (trainingStarted) {
-
+                        if (trainingStarted && !trainingData.getTask().equals("Visual")) {
                             if (locationResult != null) {
 
                                 for (Location location : locationResult.getLocations()) {
