@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.appyvet.materialrangebar.RangeBar;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -920,7 +922,12 @@ public class DialogHelper {
         speedGraph.addSeries(speedSeries);
         speedGraph.setTitle("Speed(km/h)");
         speedGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
-
+        speedGraph.getViewport().setXAxisBoundsManual(true);
+        speedGraph.getViewport().setMaxX(speedList.size());
+        speedGraph.getViewport().setYAxisBoundsManual(true);
+        speedGraph.getViewport().setMinY(0);
+        speedGraph.getViewport().calcCompleteRange();
+        speedGraph.getViewport().setMaxY(speedGraph.getViewport().getMaxY(true));
 
         // update res speed time
         GraphView resGraph = detailDialog.findViewById(R.id.graph_res);
