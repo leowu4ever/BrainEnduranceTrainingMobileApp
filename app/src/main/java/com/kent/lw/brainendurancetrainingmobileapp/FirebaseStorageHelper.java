@@ -44,7 +44,7 @@ public class FirebaseStorageHelper {
         uploadAFolderToFirestorage(context, FileHelper.PATH_MOTI_DATA, "Feedback Data/Motivation Data/");
         uploadAFolderToFirestorage(context, FileHelper.PATH_RPE_DATA, "Feedback Data/Rpe Data/");
         uploadAFolderToFirestorage(context, FileHelper.PATH_NASA_DATA, "Feedback Data/Nasa Data/");
-
+        uploadAFolderToFirestorage(context, FileHelper.PATH_SURVEY_DATA, "Feedback Data/Survey Data/");
     }
 
     public static void setTotalFileCount() {
@@ -77,6 +77,10 @@ public class FirebaseStorageHelper {
         totalUploadCount = totalUploadCount + files.length;
 
         f = new File(FileHelper.PATH_NASA_DATA);
+        files = f.listFiles();
+        totalUploadCount = totalUploadCount + files.length;
+
+        f = new File(FileHelper.PATH_SURVEY_DATA);
         files = f.listFiles();
         totalUploadCount = totalUploadCount + files.length;
 
