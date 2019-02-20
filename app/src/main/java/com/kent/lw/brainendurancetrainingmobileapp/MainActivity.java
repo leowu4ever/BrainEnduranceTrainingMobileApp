@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -713,5 +714,23 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     @Override
     public void onBackPressed() {
 
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        switch( event.getKeyCode() ) {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                // do something
+                break;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                // do something
+                break;
+
+            default:
+                super.dispatchKeyEvent(event);
+                break;
+        }
+
+        return true;
     }
 }

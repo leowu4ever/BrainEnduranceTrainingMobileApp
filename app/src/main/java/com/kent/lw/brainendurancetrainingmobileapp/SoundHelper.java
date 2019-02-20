@@ -27,6 +27,11 @@ public class SoundHelper extends Application {
 
         c = context;
         init(context);
+
+        AudioManager audioManager =
+                (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)/3, 0);
     }
 
     public void init(Context context) {
