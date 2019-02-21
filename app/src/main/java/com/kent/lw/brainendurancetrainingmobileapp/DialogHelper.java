@@ -946,6 +946,12 @@ public class DialogHelper {
         resGraph.addSeries(resSeries);
         resGraph.setTitle("Response time(ms)");
         resGraph.setPadding(50, 50, 50, 50);
+        resGraph.getViewport().setXAxisBoundsManual(true);
+        resGraph.getViewport().setMaxX(resList.size());
+        resGraph.getViewport().setYAxisBoundsManual(true);
+        resGraph.getViewport().setMinY(0);
+        resGraph.getViewport().calcCompleteRange();
+        resGraph.getViewport().setMaxY(resGraph.getViewport().getMaxY(true));
     }
 }
 
