@@ -27,7 +27,7 @@ public class TaskFragment extends Fragment {
     private Button btnStart;
     // task dialog
     private Dialog taskDialog;
-    private Button btnTask, btnAPVT, btnGonono, btnVisual, btnHelpApvt, btnHelpGonogo, btnTaskBack;
+    private Button btnTask, btnAPVT, btnGonono, btnLang, btnVisual, btnHelpApvt, btnHelpGonogo, btnTaskBack;
     // dif dialog
     private Dialog difDialog;
     private Button btnDif, btnEasy, btnMedium, btnHard, btnAdaptive, btnCustom, btnDifBack;
@@ -374,6 +374,15 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 btnTask.setText(btnGonono.getText());
+                taskDialog.dismiss();
+            }
+        });
+
+        btnLang =  taskDialog.findViewById(R.id.btn_language);
+        btnLang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnTask.setText(btnLang.getText());
                 taskDialog.dismiss();
             }
         });
