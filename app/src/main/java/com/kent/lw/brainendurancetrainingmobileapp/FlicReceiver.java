@@ -60,7 +60,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
                                 Log.d("apdative", "upgrade to med" + " hitstreak: " + MainActivity.hitStreak + " lapseStreak: " + MainActivity.lapseStreak);
                                 if (MainActivity.trainingData.getTask().equals("A-PVT")) {
                                     MainActivity.task.setupForApvtMedium();
-                                } else if (MainActivity.trainingData.getTask().equals("GO/NO-GO")) {
+                                } else if (MainActivity.trainingData.getTask().equals("GO/NO-GO") || MainActivity.trainingData.getTask().equals("Language")) {
                                     MainActivity.task.setupForGonogoMedium();
                                     MainActivity.createStiTypeList();
                                 }
@@ -78,7 +78,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
                                 Log.d("apdative", "upgrade to hard" + " hitstreak: " + MainActivity.hitStreak + " lapseStreak: " + MainActivity.lapseStreak);
                                 if (MainActivity.trainingData.getTask().equals("A-PVT")) {
                                     MainActivity.task.setupForApvtHard();
-                                } else if (MainActivity.trainingData.getTask().equals("GO/NO-GO")) {
+                                } else if (MainActivity.trainingData.getTask().equals("GO/NO-GO") || MainActivity.trainingData.getTask().equals("Language")) {
                                     MainActivity.task.setupForGonogoHard();
                                     MainActivity.createStiTypeList();
                                 }
@@ -122,7 +122,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
                                     Log.d("apdative", "down to easy" + " hitstreak: " + MainActivity.hitStreak + " lapseStreak: " + MainActivity.lapseStreak);
                                     if (MainActivity.trainingData.getTask().equals("A-PVT")) {
                                         MainActivity.task.setupForApvtEasy();
-                                    } else if (MainActivity.trainingData.getTask().equals("GO/NO-GO")) {
+                                    } else if (MainActivity.trainingData.getTask().equals("GO/NO-GO") || MainActivity.trainingData.getTask().equals("Language")) {
                                         MainActivity.task.setupForGonogoEasy();
                                         MainActivity.createStiTypeList();
                                     }
@@ -138,7 +138,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
                                     Log.d("apdative", "down to med" + " hitstreak: " + MainActivity.hitStreak + " lapseStreak: " + MainActivity.lapseStreak);
                                     if (MainActivity.trainingData.getTask().equals("A-PVT")) {
                                         MainActivity.task.setupForApvtMedium();
-                                    } else if (MainActivity.trainingData.getTask().equals("GO/NO-GO")) {
+                                    } else if (MainActivity.trainingData.getTask().equals("GO/NO-GO") || MainActivity.trainingData.getTask().equals("Language")) {
                                         MainActivity.task.setupForGonogoMedium();
                                         MainActivity.createStiTypeList();
                                     }
@@ -153,7 +153,7 @@ public class FlicReceiver extends FlicBroadcastReceiver {
                                     Log.d("apdative", "down to hard" + " hitstreak: " + MainActivity.hitStreak + " lapseStreak: " + MainActivity.lapseStreak);
                                     if (MainActivity.trainingData.getTask().equals("A-PVT")) {
                                         MainActivity.task.setupForApvtHard();
-                                    } else if (MainActivity.trainingData.getTask().equals("GO/NO-GO")) {
+                                    } else if (MainActivity.trainingData.getTask().equals("GO/NO-GO") || MainActivity.trainingData.getTask().equals("Language")) {
                                         MainActivity.task.setupForGonogoHard();
                                         MainActivity.createStiTypeList();
                                     }

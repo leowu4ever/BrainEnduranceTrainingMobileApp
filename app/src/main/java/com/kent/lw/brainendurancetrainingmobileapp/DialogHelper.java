@@ -81,6 +81,7 @@ public class DialogHelper {
     public Dialog feedbackDialog;
     public RadioGroup rgFeedbackQ1, rgFeedbackQ2, rgFeedbackQ3, rgFeedbackQ4, rgFeedbackQ9;
     public ArrayList<CheckBox> cbFeedbackQ5List;
+    public CheckBox cbQ5Other;
     public EditText etFeedbackQ5, etFeedbackQ6, etFeedbackQ7, etFeedbackQ10, etFeedbackQ11;
     public RatingBar rbFeecbackQ8;
     public Button btnFeedbackSubmit, btnFeedbackBack;
@@ -648,7 +649,7 @@ public class DialogHelper {
         cbFeedbackQ5List.add((CheckBox) feedbackDialog.findViewById(R.id.cb_feedback_q5_2));
         cbFeedbackQ5List.add((CheckBox) feedbackDialog.findViewById(R.id.cb_feedback_q5_3));
         cbFeedbackQ5List.add((CheckBox) feedbackDialog.findViewById(R.id.cb_feedback_q5_4));
-        final CheckBox cbQ5Other = feedbackDialog.findViewById(R.id.cb_feedback_q5_5);
+        cbQ5Other = feedbackDialog.findViewById(R.id.cb_feedback_q5_5);
         cbQ5Other.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -838,9 +839,28 @@ public class DialogHelper {
         deleteCheckDialog.dismiss();
     }
 
-    public void showFeedbackDialog() { feedbackDialog.show(); }
+    public void showFeedbackDialog() {
+        setupFeedbackDialog();
+        feedbackDialog.show();
+    }
 
     public void dismissFeedbackDialog() { feedbackDialog.dismiss(); }
+
+    public void setupFeedbackDialog() {
+        rgFeedbackQ1.check(R.id.radioButton3);
+        rgFeedbackQ2.check(R.id.radioButton7);
+        rgFeedbackQ3.check(R.id.radioButton10);
+        rgFeedbackQ4.check(R.id.radioButton12);
+        for(CheckBox cb : cbFeedbackQ5List) { cb.setChecked(false); }
+        cbQ5Other.setChecked(false);
+        etFeedbackQ5.setText("");
+        etFeedbackQ6.setText("");
+        etFeedbackQ7.setText("");
+        rbFeecbackQ8.setRating(3f);
+        rgFeedbackQ9.check(R.id.radioButton17);
+        etFeedbackQ10.setText("");
+        etFeedbackQ11.setText("");
+    }
 
     public boolean isLockDialogShowing() {
         return lockDialog.isShowing();

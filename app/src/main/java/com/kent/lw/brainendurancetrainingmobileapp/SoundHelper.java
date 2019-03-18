@@ -12,8 +12,8 @@ public class SoundHelper extends Application {
 
     // soundpool
     public SoundPool sp;
-    public int beepSound, speedupSound, startSound, finishSound;
-    public int nogoSound;
+    public int beepSound, beepSoundLanguage, speedupSound, startSound, finishSound;
+    public int nogoSound, nogoSoundLangEasy, nogoSoundLangMedium, nogoSoundLangHard;
     public int kidPlayingSound, musicSound;
     // noise sound playing ref used when pause and resume
     public int noiseplay;
@@ -48,6 +48,11 @@ public class SoundHelper extends Application {
 
         beepSound = sp.load(context, R.raw.beep, 1);
         nogoSound = sp.load(context, R.raw.nogo, 1);
+        //for language task
+        beepSoundLanguage = sp.load(context, R.raw.language_go, 1);
+        nogoSoundLangEasy = sp.load(context, R.raw.language_nogo_easy, 1);
+        nogoSoundLangMedium = sp.load(context, R.raw.language_nogo_medium, 1);
+        nogoSoundLangHard = sp.load(context, R.raw.language_nogo_hard, 1);
 
         speedupSound = sp.load(context, R.raw.speedup, 1);
         startSound = sp.load(context, R.raw.start, 1);
@@ -97,7 +102,10 @@ public class SoundHelper extends Application {
     }
 
     public void playBeepSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
-        sp.play(beepSound, leftVolume, rightVolume, priority, loop, rate);
+        if(MainActivity.trainingData.getTask().equals("Language")) {
+            sp.play(beepSoundLanguage, leftVolume, rightVolume, priority, loop, rate);
+        }
+        else { sp.play(beepSound, leftVolume, rightVolume, priority, loop, rate); }
     }
 
     public void playSpeedupSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
@@ -140,7 +148,21 @@ public class SoundHelper extends Application {
     }
 
     public void playNogoSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
-        sp.play(nogoSound, leftVolume, rightVolume, priority, loop, rate);
+        if(MainActivity.trainingData.getTask().equals("Language")) {
+            switch(MainActivity.task.getCurDif()){
+                case "Easy":
+                    sp.play(nogoSoundLangEasy, leftVolume, rightVolume, priority, loop, rate);
+                    break;
+                case "Custom":
+                case "Medium":
+                    sp.play(nogoSoundLangMedium, leftVolume, rightVolume, priority, loop, rate);
+                    break;
+                case "Hard":
+                    sp.play(nogoSoundLangHard, leftVolume, rightVolume, priority, loop, rate);
+                    break;
+            }
+        }
+        else { sp.play(nogoSound, leftVolume, rightVolume, priority, loop, rate); }
     }
 
     public void play(float leftVolume, float rightVolume, int priority, int loop, float rate) {
