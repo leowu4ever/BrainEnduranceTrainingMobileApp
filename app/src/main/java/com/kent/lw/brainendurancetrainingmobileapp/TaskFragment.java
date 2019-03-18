@@ -283,7 +283,7 @@ public class TaskFragment extends Fragment {
 
                 if (btnTask.getText().equals("A-PVT")) {
                     MainActivity.task.setupForApvtEasy();
-                } else if (btnTask.getText().equals("GO/NO-GO")) {
+                } else if (btnTask.getText().equals("GO/NO-GO") || btnTask.getText().equals("Language")) {
                     MainActivity.task.setupForGonogoEasy();
                 }
             }
@@ -298,7 +298,7 @@ public class TaskFragment extends Fragment {
 
                 if (btnTask.getText().equals("A-PVT")) {
                     MainActivity.task.setupForApvtMedium();
-                } else if (btnTask.getText().equals("GO/NO-GO")) {
+                } else if (btnTask.getText().equals("GO/NO-GO") || btnTask.getText().equals("Language")) {
                     MainActivity.task.setupForGonogoMedium();
                 }
             }
@@ -313,7 +313,7 @@ public class TaskFragment extends Fragment {
 
                 if (btnTask.getText().equals("A-PVT")) {
                     MainActivity.task.setupForApvtHard();
-                } else if (btnTask.getText().equals("GO/NO-GO")) {
+                } else if (btnTask.getText().equals("GO/NO-GO") || btnTask.getText().equals("Language")) {
                     MainActivity.task.setupForGonogoHard();
                 }
             }
@@ -328,7 +328,7 @@ public class TaskFragment extends Fragment {
 
                 if (btnTask.getText().equals("A-PVT")) {
                     MainActivity.task.setupForApvtEasy();
-                } else if (btnTask.getText().equals("GO/NO-GO")) {
+                } else if (btnTask.getText().equals("GO/NO-GO") || btnTask.getText().equals("Language")) {
                     MainActivity.task.setupForGonogoEasy();
                 }
             }
@@ -343,7 +343,7 @@ public class TaskFragment extends Fragment {
                     difCustomAPVTDialog.show();
                 }
 
-                if (btnTask.getText().equals(btnGonono.getText())) {
+                if (btnTask.getText().equals(btnGonono.getText()) || btnTask.getText().equals("Language")) {
                     difDialog.dismiss();
                     difCustomGonogoDialog.show();
                 }
