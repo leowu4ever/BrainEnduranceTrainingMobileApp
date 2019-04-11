@@ -14,6 +14,8 @@ public class Task {
     private float minSpeed;
     private int nogoProportion;
 
+    private String curDif;
+
     public Task() {
         reset();
 
@@ -91,6 +93,12 @@ public class Task {
         this.nogoProportion = nogoProportion;
     }
 
+    public String getCurDif(){ return this.curDif; }
+
+    public void setCurDif(String curDif){
+        this.curDif = curDif;
+    }
+
     public void reset() {
         this.intervalFrom = 0;
         this.intervalTo = 0;
@@ -105,6 +113,8 @@ public class Task {
         this.minSpeed = 0;
 
         this.nogoProportion = 0;
+
+        this.curDif = "";
     }
 
     @Override
@@ -130,6 +140,7 @@ public class Task {
         setNoiseType(noiseType);
         setResThreshold(thresh);
         setMinSpeed(minspd);
+        setCurDif("Custom");
     }
 
     public void setupForApvtEasy() {
@@ -154,7 +165,8 @@ public class Task {
         setNoise(APVT_EASY_NOISE);
         setResThreshold(APVT_EASY_RES_THRESHOLD);
         setMinSpeed(APVT_EASY_MIN_SPEED);
-        setNoiseType(0);
+        setNoiseType(1);
+        setCurDif("Easy");
     }
 
     public void setupForApvtMedium() {
@@ -178,8 +190,8 @@ public class Task {
         setNoise(APVT_MEDIUM_NOISE);
         setResThreshold(APVT_MEDIUM_RES_THRESHOLD);
         setMinSpeed(APVT_MEDIUM_MIN_SPEED);
-        setNoiseType(0);
-
+        setNoiseType(1);
+        setCurDif("Medium");
     }
 
     public void setupForApvtHard() {
@@ -204,8 +216,8 @@ public class Task {
         setNoise(APVT_HARD_NOISE);
         setResThreshold(APVT_HARD_RES_THRESHOLD);
         setMinSpeed(APVT_HARD_MIN_SPEED);
-        setNoiseType(0);
-
+        setNoiseType(1);
+        setCurDif("Hard");
     }
 
     public void setupForGonogoEasy() {
@@ -230,8 +242,8 @@ public class Task {
         setNoise(GONOGO_EASY_NOISE);
         setResThreshold(GONOGO_EASY_RES_THRESHOLD);
         setMinSpeed(GONOGO_EASY_MIN_SPEED);
-        setNoiseType(0);
-
+        setNoiseType(1);
+        setCurDif("Easy");
     }
 
     public void setupForGonogoMedium() {
@@ -256,8 +268,8 @@ public class Task {
         setNoise(GONOGO_MEDIUM_NOISE);
         setResThreshold(GONOGO_MEDIUM_RES_THRESHOLD);
         setMinSpeed(GONOGO_MEDIUM_MIN_SPEED);
-        setNoiseType(0);
-
+        setNoiseType(1);
+        setCurDif("Medium");
     }
 
     public void setupForGonogoHard() {
@@ -281,8 +293,8 @@ public class Task {
         setNoise(GONOGO_HARD_NOISE);
         setResThreshold(GONOGO_HARD_RES_THRESHOLD);
         setMinSpeed(GONOGO_HARD_MIN_SPEED);
-        setNoiseType(0);
-
+        setNoiseType(1);
+        setCurDif("Hard");
     }
 }
 
