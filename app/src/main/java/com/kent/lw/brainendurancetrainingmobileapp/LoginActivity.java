@@ -46,8 +46,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
-        mh = new MapHelper();
-        mh.getLocationPermission(this);
+        //mh = new MapHelper();
+        //mh.getLocationPermission(this);
+        MapHelper.getLocationPermission(this);
         FlicConfig.setFlicCredentials();
 
     }
