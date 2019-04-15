@@ -2,7 +2,6 @@ package com.kent.lw.brainendurancetrainingmobileapp;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -18,35 +16,21 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.maps.GoogleMap;
-
 import com.google.android.gms.maps.SupportMapFragment;
-//import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
 import com.mapbox.android.core.location.LocationEngineProvider;
 import com.mapbox.android.core.location.LocationEngineRequest;
 import com.mapbox.android.core.location.LocationEngineResult;
-import com.mapbox.geojson.Feature;
-import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
-import com.mapbox.mapboxsdk.location.modes.CameraMode;
-import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.style.layers.Property;
-import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
-import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
-import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -97,11 +81,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public DialogHelper dialogHelper;
     public MapHelper mapHelper;
     private ImageButton btnProfile, btnFlic, btnDiary, btnMap, btnFeedback;
-    // map
-    //private GoogleMap map;
-    //private FusedLocationProviderClient mFusedLocationProviderClient;
-    private LatLng lastLoc;
-    //private LocationRequest mLocationRequest;
+
     private int countdown = 4000;
     private float distance, speed, pace;
 
@@ -110,8 +90,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private MapboxMap mapboxMap;
     private LocationEngine mLocationEngine;
     private LocationEngineRequest mLocationEngineRequest;
-    String a = "a";
-    String b = "b";
+    private LatLng lastLoc;
 
     public static void resumeTraining() {
         trainingStarted = true;
