@@ -4,60 +4,152 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.maps.model.RoundCap;
-import com.google.maps.android.SphericalUtil;
+import com.mapbox.android.core.location.LocationEngineRequest;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.LineString;
+import com.mapbox.geojson.Point;
+import com.mapbox.mapboxsdk.camera.CameraUpdate;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.layers.LineLayer;
+import com.mapbox.mapboxsdk.style.layers.Property;
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MapHelper {
 
+
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     public static int MAX_DISTANCE_UPDATE_THRESHOLD = 100;
-    public static int MAP_ZOOM = 14;
+    public static float MAP_ZOOM = 15f;
     private final int MAP_UPDATE_INTERVAL = 3000;
     private int MIN_DISTANCE_UPDATE_THRESHOLD = 10;
-    private List<Polyline> polylineList = new ArrayList<Polyline>();
-    private Marker startMarker, endMarker;
 
-    public LatLng convertToLatLng(Location location) {
-        return new LatLng(location.getLatitude(), location.getLongitude());
+    private static final String ID_START_MARKER_SOURCE = "ID_START_MARKER_SOURCE";
+    private static final String ID_START_MARKER_LAYER = "ID_START_MARKER_LAYER";
+    private static final String IMG_START_MARKER = "IMG_START_MARKER";
+    private static final String ID_FINISH_MARKER_SOURCE = "ID_FINISH_MARKER_SOURCE";
+    private static final String ID_FINISH_MARKER_LAYER = "ID_FINISH_MARKER_LAYER";
+    private static final String IMG_FINISH_MARKER = "IMG_FINISH_MARKER";
+    private static final float ICON_SIZE = 0.15f;
+
+    private List<LineLayer> polylineLayerList = new ArrayList<LineLayer>();
+    private List<GeoJsonSource> polylineSourceList = new ArrayList<GeoJsonSource>();
+    private String srcStart, srcEnd;
+    private String lyrStart, lyrEnd;
+
+    public MapHelper(MapboxMap mapboxMap, Context context){
+        Style style =  mapboxMap.getStyle();
+        style.addImage(IMG_START_MARKER, BitmapFactory.decodeResource(
+                context.getResources(), R.drawable.ic_marker_start));
+
+        style.addImage(IMG_FINISH_MARKER, BitmapFactory.decodeResource(
+                context.getResources(), R.drawable.ic_marker_finish));
     }
 
-    public float getDistanceInKM(LatLng l1, LatLng l2) {
-        float dis = (float) SphericalUtil.computeDistanceBetween(l1, l2);
-        return dis / 1000;
+    public LocationEngineRequest initLocationRequestSettings() {
+        return new LocationEngineRequest.Builder(MAP_UPDATE_INTERVAL)
+                .setMaxWaitTime(MAP_UPDATE_INTERVAL)
+                .setFastestInterval(MAP_UPDATE_INTERVAL)
+                .setDisplacement(MIN_DISTANCE_UPDATE_THRESHOLD)
+                .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
+                .build();
     }
 
-    public void removePolylines() {
-        for (Polyline polyline : polylineList) {
-            polyline.remove();
+    public static void getLocationPermission(Context context) {
+        if (ContextCompat.checkSelfPermission(context.getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(context.getApplicationContext(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(context.getApplicationContext(),
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            MainActivity.locPermissionEnabled = true;
+        } else {
+            ActivityCompat.requestPermissions((Activity) context,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
-        polylineList.clear();
-        startMarker.remove();
-        endMarker.remove();
     }
 
-    public void drawAPolyline(GoogleMap mMap, LatLng l1, LatLng l2, Context context, float curSpeed) {
-        Polyline polyline = mMap.addPolyline(new PolylineOptions().add(l1, l2));
-        polyline.setEndCap(new RoundCap());
-        polyline.setWidth(13);
+    public void updateLocationUI(MapboxMap map, Context context) {
+        try {
+            if (MainActivity.locPermissionEnabled) {
+                //map.getUiSettings().setScrollGesturesEnabled(false);
+                map.getUiSettings().setCompassEnabled(false);
+                map.getUiSettings().setZoomGesturesEnabled(false);
+                map.getUiSettings().setTiltGesturesEnabled(false);
+                map.getUiSettings().setRotateGesturesEnabled(false);
+            } else {
+                //map.setMyLocationEnabled(false);
+                //map.getUiSettings().setMyLocationButtonEnabled(false);
+                getLocationPermission(context);
+            }
+        } catch (SecurityException e) {
+            Log.e("Exception: %s", e.getMessage());
+        }
+    }
 
-        // alert color here
+    public void zoomToLoc(MapboxMap mapboxMap, LatLng loc) {
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(loc.getLatitude()-0.0025
+                , loc.getLongitude()), MAP_ZOOM);
+        mapboxMap.animateCamera(cameraUpdate, 1200);
+    }
+
+
+    public void addStartMarker(MapboxMap mapboxMap, LatLng loc) {
+        Style style = mapboxMap.getStyle();
+        String unique = String.valueOf(System.currentTimeMillis());
+
+        srcStart = ID_START_MARKER_SOURCE + unique;
+        lyrStart = ID_START_MARKER_LAYER + unique;
+        GeoJsonSource source = new GeoJsonSource(srcStart, Feature.fromGeometry(Point.fromLngLat(loc.getLongitude(), loc.getLatitude())));
+        SymbolLayer layer = new SymbolLayer(lyrStart, srcStart)
+                .withProperties(
+                        PropertyFactory.iconImage(IMG_START_MARKER),
+                        PropertyFactory.iconSize(ICON_SIZE),
+                        PropertyFactory.iconAnchor(Property.ICON_ANCHOR_BOTTOM),
+                        PropertyFactory.iconIgnorePlacement(true),
+                        PropertyFactory.iconAllowOverlap(true)
+                );
+
+        style.addSource(source);
+        style.addLayer(layer);
+    }
+
+    public void addEndMarker(MapboxMap mapboxMap, LatLng loc) {
+        Style style = mapboxMap.getStyle();
+        String unique = String.valueOf(System.currentTimeMillis());
+
+        srcEnd = ID_FINISH_MARKER_SOURCE + unique;
+        lyrEnd = ID_FINISH_MARKER_LAYER + unique;
+        GeoJsonSource source = new GeoJsonSource(srcEnd, Feature.fromGeometry(Point.fromLngLat(loc.getLongitude(), loc.getLatitude())));
+        SymbolLayer layer = new SymbolLayer(lyrEnd, srcEnd)
+                .withProperties(
+                        PropertyFactory.iconImage(IMG_FINISH_MARKER),
+                        PropertyFactory.iconSize(ICON_SIZE),
+                        PropertyFactory.iconAnchor(Property.ICON_ANCHOR_BOTTOM),
+                        PropertyFactory.iconIgnorePlacement(true),
+                        PropertyFactory.iconAllowOverlap(true)
+                );
+
+        style.addSource(source);
+        style.addLayer(layer);
+
+    }
+
+    public void drawAPolyline(MapboxMap mapboxMap, LatLng l1, LatLng l2, Context context, float curSpeed) {
 
         int color = 0;
         if (curSpeed > 0 && curSpeed <= 2) {
@@ -80,67 +172,55 @@ public class MapHelper {
             color = R.color.s9;
         }
 
-        polyline.setColor(ContextCompat.getColor(context, color));
-        polylineList.add(polyline);
+        ArrayList route = new ArrayList();
+        route.add(Point.fromLngLat(l1.getLongitude(), l1.getLatitude()));
+        route.add(Point.fromLngLat(l2.getLongitude(), l2.getLatitude()));
+        String sourceId = "line-source"+polylineSourceList.size();
+        GeoJsonSource source = new GeoJsonSource(sourceId, Feature.fromGeometry(LineString.fromLngLats(route)));
+        LineLayer layer = new LineLayer("layerId"+polylineSourceList.size(), sourceId).withProperties(
+                PropertyFactory.lineWidth(5f),
+                PropertyFactory.lineGapWidth(0f),
+                PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
+                PropertyFactory.lineColor(ContextCompat.getColor(context, color)));
+
+        Style style = mapboxMap.getStyle();
+        style.addSource(source);
+        style.addLayer(layer);
+        polylineSourceList.add(source);
+        polylineLayerList.add(layer);
     }
 
-    public void initLocationRequestSettings(LocationRequest mLocationRequest) {
-        mLocationRequest.setInterval(MAP_UPDATE_INTERVAL);
-        mLocationRequest.setFastestInterval(MAP_UPDATE_INTERVAL);
-        mLocationRequest.setSmallestDisplacement(MIN_DISTANCE_UPDATE_THRESHOLD);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
+    public void removePolylines(MapboxMap mapboxMap) {
+        Style style = mapboxMap.getStyle();
 
-    public void getLocationPermission(Context context) {
-        if (ContextCompat.checkSelfPermission(context.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(context.getApplicationContext(),
-                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(context.getApplicationContext(),
-                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            MainActivity.locPermissionEnabled = true;
-        } else {
-            ActivityCompat.requestPermissions((Activity) context,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        for (LineLayer layer : polylineLayerList) {
+            style.removeLayer(layer);
         }
-    }
-
-    public void updateLocationUI(GoogleMap map, Context context) {
-        try {
-            if (MainActivity.locPermissionEnabled) {
-                map.setMyLocationEnabled(true);
-                map.getUiSettings().setMyLocationButtonEnabled(false);
-                map.getUiSettings().setZoomControlsEnabled(false);
-                map.getUiSettings().setCompassEnabled(false);
-                map.getUiSettings().setZoomGesturesEnabled(false);
-                map.getUiSettings().setTiltGesturesEnabled(false);
-                map.getUiSettings().setRotateGesturesEnabled(false);
-            } else {
-                map.setMyLocationEnabled(false);
-                map.getUiSettings().setMyLocationButtonEnabled(false);
-                getLocationPermission(context);
-            }
-        } catch (SecurityException e) {
-            Log.e("Exception: %s", e.getMessage());
+        for (GeoJsonSource source : polylineSourceList) {
+            style.removeSource(source);
         }
+        polylineSourceList.clear();
+        polylineLayerList.clear();
+
+        //remove start marker
+        style.removeSource(srcStart);
+        style.removeLayer(lyrStart);
+        //style.removeImage(IMG_START_MARKER);
+
+        //remove end marker
+        style.removeSource(srcEnd);
+        style.removeLayer(lyrEnd);
+        //style.removeImage(IMG_FINISH_MARKER);
+
     }
 
-    public void zoomToLoc(GoogleMap map, LatLng loc) {
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(loc.latitude - 0.009
-                , loc.longitude), MAP_ZOOM);
-        map.animateCamera(cameraUpdate, 100, null);
+    public LatLng convertToLatLng(Location location) {
+        return new LatLng(location.getLatitude(), location.getLongitude());
     }
 
-    public void addStartMarker(GoogleMap map, LatLng loc) {
-        startMarker = map.addMarker(new MarkerOptions().position(loc));
-        startMarker.setTitle("start");
-        startMarker.showInfoWindow();
-    }
+    public float getDistanceInKM(LatLng l1, LatLng l2) {
+        float dis = (float) l1.distanceTo(l2);
 
-    public void addEndMarker(GoogleMap map, LatLng loc) {
-        endMarker = map.addMarker(new MarkerOptions().position(loc));
-        endMarker.setTitle("end");
-        endMarker.showInfoWindow();
+        return dis / 1000;
     }
 }

@@ -3,14 +3,12 @@ package com.kent.lw.brainendurancetrainingmobileapp;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -18,20 +16,21 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationAvailability;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mapbox.android.core.location.LocationEngine;
+import com.mapbox.android.core.location.LocationEngineCallback;
+import com.mapbox.android.core.location.LocationEngineProvider;
+import com.mapbox.android.core.location.LocationEngineRequest;
+import com.mapbox.android.core.location.LocationEngineResult;
+import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,7 +44,7 @@ import io.flic.lib.FlicButton;
 import io.flic.lib.FlicManager;
 import io.flic.lib.FlicManagerInitializedCallback;
 
-public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, VisualCommunicator, OnMapReadyCallback, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, VisualCommunicator, View.OnClickListener, OnMapReadyCallback {
 
     public static final int ADAPTIVE_HIT_STREAK_LIMIT = 5;
     public static final int APDATIVE_LAPSE_STREAK_LIMIT = 2;
@@ -82,13 +81,16 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public DialogHelper dialogHelper;
     public MapHelper mapHelper;
     private ImageButton btnProfile, btnFlic, btnDiary, btnMap, btnFeedback;
-    // map
-    private GoogleMap map;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
-    private LatLng lastLoc;
-    private LocationRequest mLocationRequest;
+
     private int countdown = 4000;
     private float distance, speed, pace;
+
+    //OSM
+    private MapView mapView;
+    private MapboxMap mapboxMap;
+    private LocationEngine mLocationEngine;
+    private LocationEngineRequest mLocationEngineRequest;
+    private LatLng lastLoc;
 
     public static void resumeTraining() {
         trainingStarted = true;
@@ -124,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.remove(taskFragment);
-        mapFragment.getView().setVisibility(View.GONE);
+        //mapFragment.getView().setVisibility(View.GONE);
         transaction.add(R.id.container, visualFragment, "VISUAL_FREGAMENT");
         transaction.commit();
     }
@@ -133,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.remove(visualFragment);
-        mapFragment.getView().setVisibility(View.VISIBLE);
+        //mapFragment.getView().setVisibility(View.VISIBLE);
         transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
         transaction.commit();
     }
@@ -169,10 +171,15 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         hideStatusbar();
 
         super.onCreate(savedInstanceState);
+
+        Mapbox.getInstance(this, getString(R.string.open_street_maps_key));
         setContentView(R.layout.activity_main);
 
         lastLoc = new LatLng(0, 0);
-        initMap();
+        //Initialize Map
+        MapHelper.getLocationPermission(this);
+        initMap(savedInstanceState);
+
 
         initBtns();
         initFragments();
@@ -196,9 +203,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         task = new com.kent.lw.brainendurancetrainingmobileapp.Task();
 
-        mapHelper = new MapHelper();
-        mLocationRequest = new LocationRequest();
-        mapHelper.getLocationPermission(this);
 
         SensorHelper sensorHelper = new SensorHelper(this);
     }
@@ -210,6 +214,15 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private void hideStatusbar() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    private void initMap(Bundle savedInstanceState) {
+        //OSM
+        mapView = findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+        mapView.setVisibility(View.INVISIBLE);
+
     }
 
     private void initBtns() {
@@ -225,46 +238,178 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         btnFeedback.setOnClickListener(this);
     }
 
-    // fragment
+    @Override
+    public void onMapReady(@NonNull MapboxMap mapboxMap) {
+        this.mapboxMap = mapboxMap;
+
+        mapboxMap.setPadding(10, 10, 10, 10);
+        mapboxMap.setMinZoomPreference(11d);
+        mapboxMap.setMaxZoomPreference(mapHelper.MAP_ZOOM);
+
+        mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
+            @Override
+            public void onStyleLoaded(@NonNull Style style) {
+                MapboxMap mapboxMap = MainActivity.this.mapboxMap;
+
+                mapHelper = new MapHelper(mapboxMap, getApplicationContext());
+                mLocationEngine = LocationEngineProvider.getBestLocationEngine(getApplicationContext());
+                mLocationEngineRequest = mapHelper.initLocationRequestSettings();
+                mapHelper.updateLocationUI(mapboxMap, MainActivity.this);
+                createLocationRequest();
+                zoomToCurLoc();
+
+                LocationComponent locationComponent = mapboxMap.getLocationComponent();
+                locationComponent.activateLocationComponent(LocationComponentActivationOptions.builder(MainActivity.this, style).build());
+                locationComponent.setLocationComponentEnabled(true);
+
+                //locationComponent.setCameraMode(CameraMode.TRACKING);
+                //locationComponent.setRenderMode(RenderMode.COMPASS);
+            }
+        });
+    }
+
+    public void zoomToCurLoc() {
+        try {
+            if (locPermissionEnabled) {
+                mLocationEngine.requestLocationUpdates(mLocationEngineRequest, new LocationEngineCallback<LocationEngineResult>() {
+                    @Override
+                    public void onSuccess(LocationEngineResult locationResult) {
+                        if (locationResult != null) {
+                            for (Location location : locationResult.getLocations()) {
+                                mapHelper.zoomToLoc(mapboxMap, new LatLng(location.getLatitude(), location.getLongitude()));
+                                mLocationEngine.removeLocationUpdates(this);
+                                mapView.setVisibility(View.VISIBLE);
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Exception exception) { }
+                }, null);
+            }
+        }
+        catch (SecurityException e) { }
+    }
+
+    private void createLocationRequest() {
+        try {
+            if (locPermissionEnabled) {
+                mLocationEngine.requestLocationUpdates(mLocationEngineRequest, new LocationEngineCallback<LocationEngineResult>() {
+                    @Override
+                    public void onSuccess(LocationEngineResult locationResult) {
+                        if (trainingStarted && !trainingData.getTask().equals("Visual")) {
+                            if (locationResult != null) {
+                                for(Location location : locationResult.getLocations()){
+                                    LatLng curLoc = mapHelper.convertToLatLng(location);
+                                    mapHelper.zoomToLoc(mapboxMap, new LatLng(trainingData.getMidLat(), trainingData.getMidLng()));
+
+                                    long newLocTime = System.currentTimeMillis();
+                                    long lastLocTime = trainingData.getLastLocUpdateMili();
+                                    long locTimeDif = newLocTime - lastLocTime;
+                                    trainingData.setLocUpdateMiliList(newLocTime);
+
+                                    float newDis = mapHelper.getDistanceInKM(lastLoc, curLoc);
+
+                                    if (newDis < mapHelper.MAX_DISTANCE_UPDATE_THRESHOLD) {
+
+                                        // update distance
+                                        distance = distance + newDis;
+                                        String distanceString = String.format("%.3f", distance);
+                                        trainingFragment.setTvDistance(distanceString);
+                                        trainingData.setDistance(distance);
+
+                                        // update speed
+                                        speed = (distance / trainingData.getTimeTrained()) * 1000 * 60 * 60;
+                                        String speedString = String.format("%.1f", speed);
+                                        trainingFragment.setTvSpeed(speedString);
+                                        trainingData.setAvgSpeed(speed);
+
+                                        // update pace
+                                        pace = 1 / ((distance / trainingData.getTimeTrained()) * 1000 * 60);
+                                        String paceString = String.format("%.1f", pace);
+                                        trainingFragment.setTvPace(paceString);
+                                        trainingData.setAvgPace(pace);
+
+                                        // update cur speed
+                                        float curSpeed = (newDis / locTimeDif) * 1000 * 60 * 60;
+                                        String curSpeedString = String.format("%.1f", curSpeed);
+                                        trainingFragment.setTvCurSpeed(curSpeedString);
+                                        trainingData.setSpeedList(curSpeed);
+
+                                        // draw route based on speed
+                                        mapHelper.drawAPolyline(mapboxMap, lastLoc, curLoc, MainActivity.this, curSpeed);
+
+                                        // update location
+                                        lastLoc = curLoc;
+                                        trainingData.setLatList(lastLoc.getLatitude());
+                                        trainingData.setLngList(lastLoc.getLongitude());
+
+                                        // finally do prompt
+                                        if (curSpeed < MainActivity.task.getMinSpeed()) {
+                                            soundHelper.playSpeedupSound(1, 1, 0, 0, 1);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else{
+                            Location location = locationResult.getLastLocation();
+                            mapHelper.zoomToLoc(mapboxMap, new LatLng(location.getLatitude(), location.getLongitude()));
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Exception exception) { }
+                }, null);
+
+            }
+            else {
+                mapHelper.getLocationPermission(this);
+            }
+        }
+        catch (SecurityException e) { }
+
+    }
+
     @Override
     public void startTraining() {
-
-        Task locationTask = mFusedLocationProviderClient.getLastLocation();
-        locationTask.addOnCompleteListener(this, new OnCompleteListener() {
+        mLocationEngine.getLastLocation(new LocationEngineCallback<LocationEngineResult>() {
             @Override
-            public void onComplete(@NonNull Task task) {
-                if (task.isSuccessful()) {
-                    Location locationResult = (Location) task.getResult();
-                    if (locationResult != null) {
-                        lastLoc = mapHelper.convertToLatLng(locationResult);
-                        mapHelper.zoomToLoc(map, lastLoc);
-                        mapHelper.addStartMarker(map, lastLoc);
-                        trainingData.setLocUpdateMiliList(System.currentTimeMillis());
-                        trainingData.setLatList(lastLoc.latitude);
-                        trainingData.setLngList(lastLoc.longitude);
+            public void onSuccess(LocationEngineResult locationResult) {
+                //Location locationResult = (Location) task.getResult();
+                if (locationResult != null) {
+                    lastLoc = mapHelper.convertToLatLng(locationResult.getLastLocation());
+                    mapHelper.zoomToLoc(mapboxMap, lastLoc);
+                    mapHelper.addStartMarker(mapboxMap, lastLoc);
+                    trainingData.setLocUpdateMiliList(System.currentTimeMillis());
+                    trainingData.setLatList(lastLoc.getLatitude());
+                    trainingData.setLngList(lastLoc.getLongitude());
 
-                        // replace task fragment with training fragment
-                        showTrainingFragment();
-                        btnProfile.setVisibility(View.GONE);
-                        btnFlic.setVisibility(View.GONE);
-                        btnDiary.setVisibility(View.GONE);
-                        btnMap.setVisibility(View.GONE);
-                        btnFeedback.setVisibility(View.GONE);
+                    // replace task fragment with training fragment
+                    showTrainingFragment();
+                    btnProfile.setVisibility(View.GONE);
+                    btnFlic.setVisibility(View.GONE);
+                    btnDiary.setVisibility(View.GONE);
+                    btnMap.setVisibility(View.GONE);
+                    btnFeedback.setVisibility(View.GONE);
 
-                        resetTempData();
-                        trainingData.setStartTime(System.currentTimeMillis());
-                        handler.postDelayed(countdownRunnbale, 0);
+                    resetTempData();
+                    trainingData.setStartTime(System.currentTimeMillis());
+                    handler.postDelayed(countdownRunnbale, 0);
 
-                        // start after count down
-                        handler.postDelayed(durationRunnable, 4000);
-                        createStiTypeList();
-                        handler.postDelayed(stimulusRunnable, COUNTDONW_WAIT);
+                    // start after count down
+                    handler.postDelayed(durationRunnable, 4000);
+                    createStiTypeList();
+                    handler.postDelayed(stimulusRunnable, COUNTDONW_WAIT);
 
-                    }
-                    else {
-                        Toast.makeText(MainActivity.this,"Unable to start your task because the location service is unavailable now. Please connect to the internet with your Sim card or WIFI.", Toast.LENGTH_LONG).show();
-                    }
                 }
+            }
+
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(MainActivity.this,"Unable to start your task because the location service is unavailable now. Please connect to the internet with your Sim card or WIFI.", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -274,7 +419,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         //task fragment disappear
 
         //map fragment disappear
-
+        mapView.setVisibility(View.GONE);
         showVisualFragment();
 
         //hide button
@@ -316,6 +461,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     public void finishTraining() {
 
+        mapHelper.addEndMarker(mapboxMap, new LatLng(trainingData.getLastLat(), trainingData.getLastLng()));
+
         hideTrainingFragment();
 
         trainingStarted = false;
@@ -328,54 +475,64 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
 
-        mapHelper.addEndMarker(map, new LatLng(trainingData.getLastLat(), trainingData.getLastLng()));
+        new Handler().postDelayed(new Runnable()
+        {
+            MapboxMap.SnapshotReadyCallback callback = new MapboxMap.SnapshotReadyCallback() {
+                Bitmap bitmap;
 
-        SnapshotReadyCallback callback = new SnapshotReadyCallback() {
-            Bitmap bitmap;
+                @Override
+                public void onSnapshotReady(Bitmap snapshot) {
+                    bitmap = snapshot;
+                    try {
+                        File file = new File(FileHelper.PATH_ROUTE_DATA + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getStartTime()) + ".png");
+                        FileOutputStream out = new FileOutputStream(file);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+
+                        mapHelper.removePolylines(mapboxMap);
+
+                        trainingData.setName(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""));
+
+                        // upload to db
+                        //FirebaseDBHelper.uploadTdToDb(trainingData);
+                        FileHelper.saveTrainingDataToLocal();
+
+                        // overall
+                        overallData.setRtList(trainingData.getAvgResTime());
+                        overallData.setAccuracyList(trainingData.getAccuracy());
+                        FileHelper.saveOverallDataToLocal();
+
+                        btnProfile.setVisibility(View.VISIBLE);
+                        btnFlic.setVisibility(View.VISIBLE);
+                        btnDiary.setVisibility(View.VISIBLE);
+                        btnMap.setVisibility(View.VISIBLE);
+                        btnFeedback.setVisibility(View.VISIBLE);
+
+                        trainingData.reset();
+                        task.reset();
+
+                        zoomToCurLoc();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
 
             @Override
-            public void onSnapshotReady(Bitmap snapshot) {
-                bitmap = snapshot;
-                try {
-                    File file = new File(FileHelper.PATH_ROUTE_DATA + DateHelper.getDateTimeFromMili(MainActivity.trainingData.getStartTime()) + ".png");
-                    FileOutputStream out = new FileOutputStream(file);
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-
-                    mapHelper.removePolylines();
-                    trainingData.setName(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""));
-
-                    // upload to db
-                    //FirebaseDBHelper.uploadTdToDb(trainingData);
-                    FileHelper.saveTrainingDataToLocal();
-
-                    // overall
-                    overallData.setRtList(trainingData.getAvgResTime());
-                    overallData.setAccuracyList(trainingData.getAccuracy());
-                    FileHelper.saveOverallDataToLocal();
-
-                    btnProfile.setVisibility(View.VISIBLE);
-                    btnFlic.setVisibility(View.VISIBLE);
-                    btnDiary.setVisibility(View.VISIBLE);
-                    btnMap.setVisibility(View.VISIBLE);
-                    btnFeedback.setVisibility(View.VISIBLE);
-
-                    trainingData.reset();
-                    task.reset();
-
-                    zoomToCurLoc();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            public void run()
+            {
+                mapboxMap.snapshot(callback);
             }
-        };
-        map.snapshot(callback);
+        }, 2500);
+
+
     }
 
     public void finishVisualTraining() {
 
         // for the finish button in visual fragment
         // hide visual fragment
+        mapView.setVisibility(View.VISIBLE);
         hideVisualFragment();
         trainingStarted = false;
 
@@ -419,137 +576,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         lapseStreak = 0;
     }
 
-    public void initMap() {
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        map = googleMap;
-        map.setPadding(10, 10, 10, 10);
-        mapHelper.updateLocationUI(map, this);
-        createLocationRequest();
-        zoomToCurLoc();
-    }
-
-
-    public void zoomToCurLoc() {
-//        try {
-//            Task locationTask = mFusedLocationProviderClient.getLastLocation();
-//            locationTask.addOnCompleteListener(new OnCompleteListener() {
-//                @Override
-//                public void onComplete(@NonNull Task task) {
-//                    if (task.isSuccessful()) {
-//                        Location locationResult = (Location) task.getResult();
-//                        if (locationResult != null) {
-//                            mapHelper.zoomToLoc(map, new LatLng(locationResult.getLatitude(), locationResult.getLongitude()));
-//                        } else {
-//                            Toast.makeText(MainActivity.this,"Please connect to the internet to use location service.", Toast.LENGTH_LONG).show();
-//                        }
-//                    } else {
-//                    }
-//                }
-//            });
-//
-//        } catch (SecurityException e) {
-//        }
-
-        try {
-            if (locPermissionEnabled) {
-
-                mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, new LocationCallback() {
-                    @Override
-                    public void onLocationResult(LocationResult locationResult) {
-
-                            if (locationResult != null) {
-                                for (Location location : locationResult.getLocations()) {
-                                    mapHelper.zoomToLoc(map, new LatLng(location.getLatitude(), location.getLongitude()));
-                                    mFusedLocationProviderClient.removeLocationUpdates(this);
-                                }
-                            }
-                    }
-
-                }, null);
-            }
-        } catch (SecurityException e) {
-        }
-    }
-
-    private void createLocationRequest() {
-        mapHelper.initLocationRequestSettings(mLocationRequest);
-
-        // init last location
-        try {
-            if (locPermissionEnabled) {
-
-                mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, new LocationCallback() {
-                    @Override
-                    public void onLocationResult(LocationResult locationResult) {
-                        if (trainingStarted && !trainingData.getTask().equals("Visual")) {
-                            if (locationResult != null) {
-
-                                for (Location location : locationResult.getLocations()) {
-                                    LatLng curLoc = mapHelper.convertToLatLng(location);
-                                    mapHelper.zoomToLoc(map, new LatLng(trainingData.getMidLat(), trainingData.getMidLng()));
-
-                                    long newLocTime = System.currentTimeMillis();
-                                    long lastLocTime = trainingData.getLastLocUpdateMili();
-                                    long locTimeDif = newLocTime - lastLocTime;
-                                    trainingData.setLocUpdateMiliList(newLocTime);
-
-                                    float newDis = mapHelper.getDistanceInKM(lastLoc, curLoc);
-
-                                    if (newDis < mapHelper.MAX_DISTANCE_UPDATE_THRESHOLD) {
-
-                                        // update distance
-                                        distance = distance + newDis;
-                                        String distanceString = String.format("%.3f", distance);
-                                        trainingFragment.setTvDistance(distanceString);
-                                        trainingData.setDistance(distance);
-
-                                        // update speed
-                                        speed = (distance / trainingData.getTimeTrained()) * 1000 * 60 * 60;
-                                        String speedString = String.format("%.1f", speed);
-                                        trainingFragment.setTvSpeed(speedString);
-                                        trainingData.setAvgSpeed(speed);
-
-                                        // update pace
-                                        pace = 1 / ((distance / trainingData.getTimeTrained()) * 1000 * 60);
-                                        String paceString = String.format("%.1f", pace);
-                                        trainingFragment.setTvPace(paceString);
-                                        trainingData.setAvgPace(pace);
-
-                                        // update cur speed
-                                        float curSpeed = (newDis / locTimeDif) * 1000 * 60 * 60;
-                                        String curSpeedString = String.format("%.1f", curSpeed);
-                                        trainingFragment.setTvCurSpeed(curSpeedString);
-                                        trainingData.setSpeedList(curSpeed);
-
-                                        // draw route based on speed
-                                        mapHelper.drawAPolyline(map, lastLoc, curLoc, MainActivity.this, curSpeed);
-
-                                        // update location
-                                        lastLoc = curLoc;
-                                        trainingData.setLatList(lastLoc.latitude);
-                                        trainingData.setLngList(lastLoc.longitude);
-
-                                        // finally do prompt
-                                        if (curSpeed < MainActivity.task.getMinSpeed()) {
-                                            soundHelper.playSpeedupSound(1, 1, 0, 0, 1);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }, null);
-            }
-        } catch (SecurityException e) {
-        }
-    }
 
     private void initRunnables() {
         countdownRunnbale = new Runnable() {
@@ -733,4 +759,5 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         return true;
     }
+
 }
