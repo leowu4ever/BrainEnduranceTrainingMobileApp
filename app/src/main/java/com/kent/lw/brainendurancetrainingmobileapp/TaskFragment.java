@@ -403,7 +403,9 @@ public class TaskFragment extends Fragment {
                 MainActivity.trainingData.setTask("Visual");
 
                 // hard code visual task configuration
-                MainActivity.trainingData.setDuration(VisualTask.TASK_VISUAL_DURATION);
+                rbTaskDuration = durationDialog.findViewById(R.id.rb_task_duration);
+
+                MainActivity.trainingData.setDuration(Integer.parseInt(rbTaskDuration.getRightPinValue()) * 60 * 1000);
 
                 // start countdown and duration
                 taskCommunicator.startVisualTraining();
