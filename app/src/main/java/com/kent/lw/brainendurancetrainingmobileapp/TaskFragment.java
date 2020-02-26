@@ -62,7 +62,7 @@ public class TaskFragment extends Fragment {
     private RangeBar rbNogo, rbIntervalGonogo, rbVolumeGonogo, rbNoiseGonogo, rbThresholdGonogo, rbMinspeedGonogo;
     private Spinner spNoiseTypeGonogo;
     //memory switch dialog
-    private Dialog memoryTaskDialog;
+    private Dialog memorySwitchDialog;
     private Button btnMemoryTestConfirm;
     private RadioGroup rgMemoryTest;
     private int chosenWordSet;
@@ -167,7 +167,7 @@ public class TaskFragment extends Fragment {
         helpGonogoDialog = new Dialog(getActivity());
         helpMemoryDialog = new Dialog(getActivity());
         promptDialog = new Dialog(getActivity());
-        memoryTaskDialog = new Dialog(getActivity());
+        memorySwitchDialog = new Dialog(getActivity());
 
         setupDialog(taskDialog, R.layout.dialog_task);
         setupDialog(difDialog, R.layout.dialog_dif);
@@ -181,7 +181,7 @@ public class TaskFragment extends Fragment {
         setupDialog(helpGonogoDialog, R.layout.dialog_help_gonogo);
         setupDialog(helpMemoryDialog, R.layout.dialog_help_memory);
 
-        setupDialog(memoryTaskDialog, R.layout.dialog_memory_switch);
+        setupDialog(memorySwitchDialog, R.layout.dialog_memory_switch);
 
         initActivityBtns();
         initTaskBtns();
@@ -457,12 +457,12 @@ public class TaskFragment extends Fragment {
                     MainActivity.trainingData.setDuration(Integer.parseInt(rbTaskDuration.getRightPinValue()) * 60 * 1000);
 
                     setAvailableWordRow(wordList1);//set default wordlist to list 1
-                    memoryTaskDialog.show();
+                    memorySwitchDialog.show();
                 }else{Toast.makeText(getActivity(), "No memory task available at this moment", Toast.LENGTH_LONG).show();}
             }
         });
 
-        rgMemoryTest = memoryTaskDialog.findViewById(R.id.wordlistradiogroup);
+        rgMemoryTest = memorySwitchDialog.findViewById(R.id.wordlistradiogroup);
         rgMemoryTest.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {//if radiogroup clicked and changed
@@ -482,7 +482,7 @@ public class TaskFragment extends Fragment {
             }
         });
 
-        btnMemoryTestConfirm = memoryTaskDialog.findViewById(R.id.btn_wordListConfirm);
+        btnMemoryTestConfirm = memorySwitchDialog.findViewById(R.id.btn_wordListConfirm);
         btnMemoryTestConfirm.setOnClickListener(new View.OnClickListener() {//verify if a word list were chosen
             @Override
             public void onClick(View v) {
@@ -490,7 +490,7 @@ public class TaskFragment extends Fragment {
                 if (chosenWordSet == 0) {
                     Toast.makeText(getActivity(), "Please chose a word list to proceed", Toast.LENGTH_LONG).show();
                 } else if (chosenWordSet == 1 || chosenWordSet == 2) {
-                    memoryTaskDialog.dismiss();
+                    memorySwitchDialog.dismiss();
                     MainActivity.trainingData.setTask("Memory");
                     taskCommunicator.startMemoryTraining();
                 }
@@ -508,10 +508,10 @@ public class TaskFragment extends Fragment {
     }
 
     private void setAvailableWordRow(ArrayList<String> words) {
-        LinearLayout parentLayout = memoryTaskDialog.findViewById(R.id.wordlistItem);
+        LinearLayout parentLayout = memorySwitchDialog.findViewById(R.id.wordlistItem);
         parentLayout.removeAllViews();
         for (String s : words) {
-            TextView tvItem = new TextView(memoryTaskDialog.getContext());
+            TextView tvItem = new TextView(memorySwitchDialog.getContext());
             tvItem.setText(s.replace("memorytask_", "").substring(0, 1).toUpperCase() + s.substring(12));
             parentLayout.addView(tvItem);
             ;

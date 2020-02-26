@@ -40,32 +40,33 @@ public class MemoryTaskFragment extends Fragment {
     }
 
     private void initUIs() {
-        createtask();
-        memoryCommunicator = (MemoryCommunicator) getActivity();
+        createtask();//create checkbox entry for task
+        memoryCommunicator = (MemoryCommunicator) getActivity();//init
         btn_submit = getActivity().findViewById(R.id.btn_submit);
-        btn_submit.setText("Submit");
-        tv_scoring = getActivity().findViewById(R.id.tv_scoring);
+        btn_submit.setText("Submit");// set to default
+        tv_scoring = getActivity().findViewById(R.id.tv_scoring);//init score tv
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int scoreCount = 0;
+                int scoreCount = 0;//init
                 if (btn_submit.getText().equals("Submit")) {
                     for (CheckBox cb : createdCheckBox) {
-                        if (mainact.getAnnoncedWordList().contains(cb.getText().toString()) && cb.isChecked()) {
+                        if (mainact.getAnnoncedWordList().contains(cb.getText().toString()) && cb.isChecked()) {// if checked and played
                             cb.setButtonTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
-                            scoreCount++;
-                        } else if (mainact.getAnnoncedWordList().contains(cb.getText().toString()) && !(cb.isChecked())) {
+                            scoreCount++;//increment score count
+                        } else if (mainact.getAnnoncedWordList().contains(cb.getText().toString()) && !(cb.isChecked())) {// if not checked but played
                             cb.setButtonTintList(ColorStateList.valueOf(getResources().getColor(R.color.s8)));
-                        } else if (!(mainact.getAnnoncedWordList().contains(cb.getText().toString())) && cb.isChecked()){
+                        } else if (!(mainact.getAnnoncedWordList().contains(cb.getText().toString())) && cb.isChecked()){// if checked and not played
                             cb.setButtonTintList(ColorStateList.valueOf(getResources().getColor(R.color.s8)));
                         }
-                        cb.setEnabled(false);
+                        cb.setEnabled(false);//disable rg listener
                     }
-                    String scoringTvText = "You score " + scoreCount + " / " + mainact.getChosenWordList().size();
-                    tv_scoring.setText(scoringTvText);
-                    btn_submit.setText("Finish");
+                    String scoringTvText = "You score " + scoreCount + " / " + mainact.getChosenWordList().size();//concat string for score count
+                    tv_scoring.setText(scoringTvText);//update score count
+                    btn_submit.setText("Finish");//change text for btn
                 } else if (btn_submit.getText().equals("Finish")) {
-                    memoryCommunicator.finishMemoryTask();
+                    memoryCommunicator.finishMemoryTask();//terminate task
+                    createdCheckBox.clear();//clear past task
                 }
             }
         });
@@ -74,14 +75,13 @@ public class MemoryTaskFragment extends Fragment {
 
     private void createtask() {
         LinearLayout parentLayout = getActivity().findViewById(R.id.linear_layout_selection);
-        parentLayout.removeAllViews();
-        createdCheckBox.clear();
+        parentLayout.removeAllViews();//init
         for (String str : FileHelper.getavailablememorytask()) {
-            CheckBox checBox = new CheckBox(getActivity());
-            String textLabel = str.replace("memorytask_", "").substring(0, 1).toUpperCase() + str.substring(12);
-            checBox.setText(textLabel);
+            CheckBox checBox = new CheckBox(getActivity());// init new checkbox
+            String textLabel = str.replace("memorytask_", "").substring(0, 1).toUpperCase() + str.substring(12);//concat string
+            checBox.setText(textLabel);//set checkbox label
             parentLayout.addView(checBox);
-            createdCheckBox.add(checBox);
+            createdCheckBox.add(checBox);// add to screen
         }
 
     }
