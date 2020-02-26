@@ -656,6 +656,15 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         handler.removeCallbacks(memoryRunnable);
         // show task fragment
 
+        btnProfile.setVisibility(View.VISIBLE);
+        btnFlic.setVisibility(View.VISIBLE);
+        btnDiary.setVisibility(View.VISIBLE);
+        btnMap.setVisibility(View.VISIBLE);
+        btnFeedback.setVisibility(View.VISIBLE);
+        // reset training data
+        // reset task
+        trainingData.reset();
+        task.reset();
         hideMemoryFragment();
     }
 
