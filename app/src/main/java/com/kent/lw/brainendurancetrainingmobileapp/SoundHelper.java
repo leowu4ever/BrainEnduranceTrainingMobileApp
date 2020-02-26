@@ -180,4 +180,14 @@ public class SoundHelper extends Application {
             noiseMP = null;
         }
     }
+
+    public void playMemoryTask(String s, final float leftVolume, final float rightVolume, final int priority, final int loop, final float rate) {
+        final int audio = sp.load(c, (this.c.getResources().getIdentifier(s, "raw", this.c.getPackageName())), 1);
+        sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                sp.play(audio, leftVolume, rightVolume, priority, loop, rate);
+            }
+        });
+    }
 }

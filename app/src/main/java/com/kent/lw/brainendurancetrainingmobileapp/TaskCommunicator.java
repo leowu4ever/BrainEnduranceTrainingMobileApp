@@ -5,4 +5,6 @@ public interface TaskCommunicator {
     void startTraining();
 
     void startVisualTraining();
+
+    void startMemoryTraining();
 }

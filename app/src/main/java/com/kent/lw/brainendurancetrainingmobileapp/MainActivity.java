@@ -57,11 +57,12 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static TaskFragment taskFragment;
     public static TrainingFragment trainingFragment;
     public static VisualFragment visualFragment;
+    public static MemoryFragment memoryFragment;
     // permission
     public static boolean locPermissionEnabled;
     // runnable
     public static Handler handler;
-    public static Runnable countdownRunnbale, stimulusRunnable, durationRunnable, visualDurationRunnable;
+    public static Runnable countdownRunnbale, stimulusRunnable, durationRunnable, visualDurationRunnable, memoryRunnable;
     // data collection
     public static TrainingData trainingData;
     public static OverallData overallData;
@@ -82,6 +83,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public MapHelper mapHelper;
     private ImageButton btnProfile, btnFlic, btnDiary, btnMap, btnFeedback;
 
+    //Memory Task
+    private ArrayList<String> chosenWordList, annoncedWordList;
+
     private int countdown = 4000;
     private float distance, speed, pace;
 
@@ -95,8 +99,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static void resumeTraining() {
         trainingStarted = true;
         soundHelper.playNoiseSound(task.getNoise(), task.getNoise(), 0, -1, 1);
-        handler.postDelayed(durationRunnable, 1000);
-        handler.postDelayed(stimulusRunnable, 0);
+        if ((trainingData.getTask().equals("A-PVT")) || (trainingData.getTask().equals("GO/NO-GO"))) {
+            handler.postDelayed(durationRunnable, 1000);
+            handler.postDelayed(stimulusRunnable, 0);
+        } else if (trainingData.getTask().equals("Memory")) {
+            handler.postDelayed(memoryRunnable, 0);
+            memoryFragment.resumeWordRunnable();
+        }
     }
 
     public static void showTaskFragment() {
@@ -136,6 +145,25 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.remove(visualFragment);
         //mapFragment.getView().setVisibility(View.VISIBLE);
+        transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
+        transaction.commit();
+    }
+
+    public static void showMemoryFragment() {
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.remove(taskFragment);
+        //mapFragment.getView().setVisibility(View.GONE);
+        transaction.add(R.id.container, memoryFragment, "MEMORY_FRAGMENT");
+        transaction.commit();
+    }
+
+    public static void hideMemoryFragment() {
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.remove(memoryFragment);
+        //mapFragment.getView().setVisibility(View.GONE);
+
         transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
         transaction.commit();
     }
@@ -316,26 +344,31 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                         // update distance
                                         distance = distance + newDis;
                                         String distanceString = String.format("%.3f", distance);
-                                        trainingFragment.setTvDistance(distanceString);
+                                        if (trainingData.getTask().equals("Memory")) {
+                                            memoryFragment.setTvDistance(distanceString);
+                                        } else {
+                                            trainingFragment.setTvDistance(distanceString);
+                                        }
                                         trainingData.setDistance(distance);
 
                                         // update speed
                                         speed = (distance / trainingData.getTimeTrained()) * 1000 * 60 * 60;
                                         String speedString = String.format("%.1f", speed);
-                                        trainingFragment.setTvSpeed(speedString);
+                                        if (trainingData.getTask().equals("Memory")) {memoryFragment.setTvAvgSpeed(speedString);} else {trainingFragment.setTvSpeed(speedString);}
                                         trainingData.setAvgSpeed(speed);
 
                                         // update pace
                                         pace = 1 / ((distance / trainingData.getTimeTrained()) * 1000 * 60);
                                         String paceString = String.format("%.1f", pace);
-                                        trainingFragment.setTvPace(paceString);
+                                        if (trainingData.getTask().equals("Memory")) {memoryFragment.setTvPace(speedString);} else {trainingFragment.setTvPace(paceString);}
                                         trainingData.setAvgPace(pace);
 
                                         // update cur speed
                                         float curSpeed = (newDis / locTimeDif) * 1000 * 60 * 60;
                                         String curSpeedString = String.format("%.1f", curSpeed);
-                                        trainingFragment.setTvCurSpeed(curSpeedString);
+                                        if (trainingData.getTask().equals("Memory")) {memoryFragment.setTvCurSpeed(curSpeedString);} else {trainingFragment.setTvCurSpeed(curSpeedString);}
                                         trainingData.setSpeedList(curSpeed);
+
 
                                         // draw route based on speed
                                         mapHelper.drawAPolyline(mapboxMap, lastLoc, curLoc, MainActivity.this, curSpeed);
@@ -451,13 +484,55 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     }
 
+    @Override
+    public void startMemoryTraining() {
+
+        mLocationEngine.getLastLocation(new LocationEngineCallback<LocationEngineResult>() {
+            @Override
+            public void onSuccess(LocationEngineResult locationResult) {
+                //Location locationResult = (Location) task.getResult();
+                if (locationResult != null) {
+                    lastLoc = mapHelper.convertToLatLng(locationResult.getLastLocation());
+                    mapHelper.zoomToLoc(mapboxMap, lastLoc);
+                    mapHelper.addStartMarker(mapboxMap, lastLoc);
+                    trainingData.setLocUpdateMiliList(System.currentTimeMillis());
+                    trainingData.setLatList(lastLoc.getLatitude());
+                    trainingData.setLngList(lastLoc.getLongitude());
+                    //mapView.setVisibility(View.GONE);
+                    showMemoryFragment();
+                    chosenWordList = taskFragment.getChosenWordSet();
+                    annoncedWordList = new ArrayList<String>();
+                    btnProfile.setVisibility(View.GONE);
+                    btnFlic.setVisibility(View.GONE);
+                    btnDiary.setVisibility(View.GONE);
+                    btnMap.setVisibility(View.GONE);
+                    btnFeedback.setVisibility(View.GONE);
+                    resetTempData();
+                    trainingData.setStartTime(System.currentTimeMillis());
+                    memoryFragment.getWordList(chosenWordList);
+                    handler.postDelayed(countdownRunnbale, 0);
+                    handler.postDelayed(memoryRunnable, 4000);
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(MainActivity.this, "Unable to start your task because the location service is unavailable now. Please connect to the internet with your Sim card or WIFI.", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+
     public void pauseTraining() {
         trainingStarted = false;
         soundHelper.stopNoiseSound();
         dialogHelper.showPauseDialog();
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
+        if (trainingData.getTask().equals("Memory")) {
+            handler.removeCallbacks(memoryRunnable);
+        }
     }
+
 
     public void finishTraining() {
 
@@ -567,6 +642,26 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     }
 
+    public void finishMemoryTraining() {
+
+        mapHelper.addEndMarker(mapboxMap, new LatLng(trainingData.getLastLat(), trainingData.getLastLng()));
+        mapView.setVisibility(View.VISIBLE);
+        mapHelper.removePolylines(mapboxMap);
+
+        trainingStarted = false;
+        // play finish sound
+        soundHelper.stopNoiseSound();
+        soundHelper.playFinishSound(1, 1, 0, 0, 1);
+
+        handler.removeCallbacks(memoryRunnable);
+        // show task fragment
+
+        hideMemoryFragment();
+    }
+
+
+
+
     public void resetTempData() {
         distance = 0;
         speed = 0;
@@ -642,6 +737,29 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             }
         };
 
+        memoryRunnable = new Runnable() {
+            @Override
+            public void run() {
+
+                // start count down
+                // check if it finishes
+                int timeLeftInMili = trainingData.getTimeLeftInMili();
+                if (timeLeftInMili > 0) {
+                    int min = (timeLeftInMili / 1000) / 60;
+                    int sec = (timeLeftInMili / 1000) % 60;
+                    String durationString = min + "M " + sec + "S";
+                    memoryFragment.setTvDuration(durationString);
+                    trainingData.setTimeTrained(trainingData.getTimeTrained() + 1000);
+                    memoryFragment.getWordList(taskFragment.getChosenWordSet());
+                    handler.postDelayed(this, 1000);
+                    memoryFragment.getWordList(chosenWordList);
+                } else {
+                    finishMemoryTraining();
+                }
+            }
+        };
+
+
         stimulusRunnable = new Runnable() {
             @Override
             public void run() {
@@ -678,7 +796,8 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     private void initFragments() {
         taskFragment = new TaskFragment();
         trainingFragment = new TrainingFragment();
-        visualFragment =  new VisualFragment();
+        visualFragment = new VisualFragment();
+        memoryFragment = new MemoryFragment();
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
@@ -759,5 +878,13 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         return true;
     }
+
+    public ArrayList <String> getChosenWordList(){
+        return chosenWordList;
+    }
+    public void addAnnoncedWordtoList(String s){
+        annoncedWordList.add(s);
+    }
+    public ArrayList <String> getAnnoncedWordList() {return annoncedWordList;}
 
 }

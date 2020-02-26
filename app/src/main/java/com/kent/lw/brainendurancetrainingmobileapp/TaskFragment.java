@@ -33,7 +33,7 @@ public class TaskFragment extends Fragment {
     private Button btnStart;
     // task dialog
     private Dialog taskDialog;
-    private Button btnTask, btnAPVT, btnGonono, btnLang, btnVisual, btnMemory, btnHelpApvt, btnHelpGonogo, btnTaskBack;
+    private Button btnTask, btnAPVT, btnGonono, btnLang, btnVisual, btnMemory, btnHelpApvt, btnHelpGonogo, btnHelpMemory, btnTaskBack;
     // dif dialog
     private Dialog difDialog;
     private Button btnDif, btnEasy, btnMedium, btnHard, btnAdaptive, btnCustom, btnDifBack;
@@ -447,16 +447,18 @@ public class TaskFragment extends Fragment {
                 chosenWordSet = 1;
 
                 ArrayList<String> wordList = FileHelper.getavailablememorytask();//get workable word list from file helper
-                int randomIndex = rand.nextInt((wordList.size() - 3) + 1) + 2;//get random number of chosen words
-                wordList1 = generateWordSet(wordList, (randomIndex));//generate wordlists
-                wordList2 = generateWordSet(wordList, (randomIndex));
+                if (wordList.size()>=4){
+                    int randomIndex = rand.nextInt((wordList.size() - 3) + 1) + 2;//get random number of chosen words
+                    wordList1 = generateWordSet(wordList, (randomIndex));//generate wordlists
+                    wordList2 = generateWordSet(wordList, (randomIndex));
 
-                btnTask.setText(btnMemory.getText());
-                taskDialog.dismiss();
-                MainActivity.trainingData.setDuration(Integer.parseInt(rbTaskDuration.getRightPinValue()) * 60 * 1000);
+                    btnTask.setText(btnMemory.getText());
+                    taskDialog.dismiss();
+                    MainActivity.trainingData.setDuration(Integer.parseInt(rbTaskDuration.getRightPinValue()) * 60 * 1000);
 
-                setAvailableWordRow(wordList1);//set default wordlist to list 1
-                memoryTaskDialog.show();
+                    setAvailableWordRow(wordList1);//set default wordlist to list 1
+                    memoryTaskDialog.show();
+                }else{Toast.makeText(getActivity(), "No memory task available at this moment", Toast.LENGTH_LONG).show();}
             }
         });
 
@@ -490,7 +492,7 @@ public class TaskFragment extends Fragment {
                 } else if (chosenWordSet == 1 || chosenWordSet == 2) {
                     memoryTaskDialog.dismiss();
                     MainActivity.trainingData.setTask("Memory");
-                    //taskCommunicator.startMemoryTraining();
+                    taskCommunicator.startMemoryTraining();
                 }
             }
         });
@@ -603,6 +605,13 @@ public class TaskFragment extends Fragment {
                 helpGonogoDialog.dismiss();
             }
         });
+        btnHelpMemory = taskDialog.findViewById(R.id.btn_help_memory);
+        btnHelpMemory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                helpMemoryDialog.show();
+            }
+        });
         btnHelpMemoryOK = helpMemoryDialog.findViewById(R.id.btn_help_memorytask_ok);
         btnHelpMemoryOK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -623,5 +632,9 @@ public class TaskFragment extends Fragment {
             tempList.remove(randomIndex);//remove chosen word
         }
         return newList;
+    }
+
+    public ArrayList<String> getChosenWordSet() {
+        return memoryChosenWordList;
     }
 }
