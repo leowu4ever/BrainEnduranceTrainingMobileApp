@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -67,6 +68,13 @@ public class TaskFragment extends Fragment {
     private RadioGroup rgMemoryTest;
     private int chosenWordSet;
     private ArrayList wordList1, wordList2, memoryChosenWordList;
+    //visual stimulus dialog
+    private Dialog visualStimulusDialog;
+    private ImageView ivStimulus;
+    private RadioGroup rgVisualStimulus;
+    private Button btnVisualStimulusConfirm;
+    private String visualChosenStimulus;
+
     Random rand = new Random();
 
     @Override
@@ -168,6 +176,7 @@ public class TaskFragment extends Fragment {
         helpMemoryDialog = new Dialog(getActivity());
         promptDialog = new Dialog(getActivity());
         memorySwitchDialog = new Dialog(getActivity());
+        visualStimulusDialog = new Dialog(getActivity());
 
         setupDialog(taskDialog, R.layout.dialog_task);
         setupDialog(difDialog, R.layout.dialog_dif);
@@ -182,6 +191,7 @@ public class TaskFragment extends Fragment {
         setupDialog(helpMemoryDialog, R.layout.dialog_help_memory);
 
         setupDialog(memorySwitchDialog, R.layout.dialog_memory_switch);
+        setupDialog(visualStimulusDialog, R.layout.dialog_visual_stimulus_switch);
 
         initActivityBtns();
         initTaskBtns();
@@ -428,11 +438,51 @@ public class TaskFragment extends Fragment {
 
                 MainActivity.trainingData.setDuration(Integer.parseInt(rbTaskDuration.getRightPinValue()) * 60 * 1000);
 
-                // start countdown and duration
-                taskCommunicator.startVisualTraining();
 
+                visualStimulusDialog.show();
             }
         });
+
+
+        ivStimulus = visualStimulusDialog.findViewById(R.id.vs_Iv);
+        ivStimulus.setImageResource(R.drawable.sti_bullseye);
+
+
+        rgVisualStimulus = visualStimulusDialog.findViewById(R.id.rg_vs);
+        rgVisualStimulus.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                View radioButton = rgVisualStimulus.findViewById(checkedId);
+                switch (rgVisualStimulus.indexOfChild(radioButton)) {
+                    case 0:
+                        ivStimulus.setImageResource(R.drawable.sti_bullseye);
+                        visualChosenStimulus = "sti_bullseye";
+                        break;
+                    case 1:
+                        ivStimulus.setImageResource(R.drawable.sti_dummy);
+                        visualChosenStimulus = "sti_dummy";
+                        break;
+                }
+            }
+        });
+
+
+        btnVisualStimulusConfirm = visualStimulusDialog.findViewById(R.id.btn_vsConfirm);
+        btnVisualStimulusConfirm.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                if (visualChosenStimulus == null) {
+                    Toast.makeText(getActivity(), "Please chose a target to proceed", Toast.LENGTH_LONG).show();
+                } else {
+                    visualStimulusDialog.dismiss();
+                    MainActivity.trainingData.setTask("Visual");
+                    // start countdown and duration
+                    taskCommunicator.startVisualTraining();
+                }
+            }
+        });
+
+
         //init button listener
         btnMemory = taskDialog.findViewById(R.id.btn_memory);
         btnMemory.setOnClickListener(new View.OnClickListener() {
