@@ -44,7 +44,7 @@ import io.flic.lib.FlicButton;
 import io.flic.lib.FlicManager;
 import io.flic.lib.FlicManagerInitializedCallback;
 
-public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, VisualCommunicator, View.OnClickListener, OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements TaskCommunicator, TrainingCommunicator, VisualCommunicator, MemoryCommunicator, View.OnClickListener, OnMapReadyCallback {
 
     public static final int ADAPTIVE_HIT_STREAK_LIMIT = 5;
     public static final int APDATIVE_LAPSE_STREAK_LIMIT = 2;
@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     public static TrainingFragment trainingFragment;
     public static VisualFragment visualFragment;
     public static MemoryFragment memoryFragment;
+    public static MemoryTaskFragment memoryTaskFragment;
     // permission
     public static boolean locPermissionEnabled;
     // runnable
@@ -163,7 +164,15 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.remove(memoryFragment);
         //mapFragment.getView().setVisibility(View.GONE);
+        transaction.add(R.id.container, memoryTaskFragment, "MemoryTask_FRAGMENT");
+        transaction.commit();
+    }
 
+    public static void hideMemoryTaskFragment() {
+        transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.remove(memoryTaskFragment);
+        //mapFragment.getView().setVisibility(View.GONE);
         transaction.add(R.id.container, taskFragment, "TASK_FRAGMENT");
         transaction.commit();
     }
@@ -643,7 +652,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     }
 
     public void finishMemoryTraining() {
-
         mapHelper.addEndMarker(mapboxMap, new LatLng(trainingData.getLastLat(), trainingData.getLastLng()));
         mapView.setVisibility(View.VISIBLE);
         mapHelper.removePolylines(mapboxMap);
@@ -656,18 +664,23 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         handler.removeCallbacks(memoryRunnable);
         // show task fragment
 
+        hideMemoryFragment();
+    }
+
+    public void finishMemoryTask(){
+        hideMemoryTaskFragment();
         btnProfile.setVisibility(View.VISIBLE);
         btnFlic.setVisibility(View.VISIBLE);
         btnDiary.setVisibility(View.VISIBLE);
         btnMap.setVisibility(View.VISIBLE);
         btnFeedback.setVisibility(View.VISIBLE);
+        dialogHelper.showFinishDialog(trainingData);
         // reset training data
         // reset task
         trainingData.reset();
         task.reset();
-        hideMemoryFragment();
-    }
-
+        zoomToCurLoc();
+    };
 
 
 
@@ -807,6 +820,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         trainingFragment = new TrainingFragment();
         visualFragment = new VisualFragment();
         memoryFragment = new MemoryFragment();
+        memoryTaskFragment = new MemoryTaskFragment();
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom);

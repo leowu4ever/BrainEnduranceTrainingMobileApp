@@ -6,6 +6,4 @@ public interface TrainingCommunicator {
 
     void finishTraining();
 
-    void finishMemoryTraining();
-
 }

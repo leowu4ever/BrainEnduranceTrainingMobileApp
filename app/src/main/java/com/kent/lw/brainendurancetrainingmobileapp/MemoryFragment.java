@@ -47,6 +47,8 @@ public class MemoryFragment extends Fragment {
 
     private TrainingCommunicator trainingCommunicator;
 
+    private MemoryCommunicator memoryCommunicator;
+
     private MainActivity mainact;
 
     @Override
@@ -75,13 +77,14 @@ public class MemoryFragment extends Fragment {
 
     private void initUIs() {
         trainingCommunicator = (TrainingCommunicator) getActivity();
+        memoryCommunicator = (MemoryCommunicator) getActivity();
         dh = new DialogHelper(getActivity());
         btnFinish = getActivity().findViewById(R.id.btn_finish);
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 handler.removeCallbacks(playingWordRunnable);
-                trainingCommunicator.finishMemoryTraining();
+                memoryCommunicator.finishMemoryTraining();
             }
         });
 
