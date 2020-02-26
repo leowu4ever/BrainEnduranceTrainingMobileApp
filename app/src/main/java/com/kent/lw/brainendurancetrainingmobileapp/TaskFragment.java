@@ -15,6 +15,9 @@ import android.widget.TextView;
 
 import com.appyvet.materialrangebar.RangeBar;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -27,7 +30,7 @@ public class TaskFragment extends Fragment {
     private Button btnStart;
     // task dialog
     private Dialog taskDialog;
-    private Button btnTask, btnAPVT, btnGonono, btnLang, btnVisual, btnHelpApvt, btnHelpGonogo, btnTaskBack;
+    private Button btnTask, btnAPVT, btnGonono, btnLang, btnVisual, btnMemory, btnHelpApvt, btnHelpGonogo, btnTaskBack;
     // dif dialog
     private Dialog difDialog;
     private Button btnDif, btnEasy, btnMedium, btnHard, btnAdaptive, btnCustom, btnDifBack;
@@ -55,6 +58,9 @@ public class TaskFragment extends Fragment {
     private Button btnCustomSaveGonogo, btnCustomBackGonogo;
     private RangeBar rbNogo, rbIntervalGonogo, rbVolumeGonogo, rbNoiseGonogo, rbThresholdGonogo, rbMinspeedGonogo;
     private Spinner spNoiseTypeGonogo;
+    //memory dialog
+    private Random rand;
+    private ArrayList wordList1, wordList2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,6 +69,9 @@ public class TaskFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        wordList1 = new ArrayList<String>();
+        wordList2 = new ArrayList<String>();
+        //memoryChosenWordList = new ArrayList<String>();
         super.onActivityCreated(savedInstanceState);
         initFragBtns();
         initDialogs();
@@ -409,6 +418,28 @@ public class TaskFragment extends Fragment {
 
                 // start countdown and duration
                 taskCommunicator.startVisualTraining();
+
+            }
+        });
+
+        btnMemory = taskDialog.findViewById(R.id.btn_memory);
+        btnMemory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rand = new Random();
+                MainActivity.trainingData.setActivity("-");
+                MainActivity.trainingData.setTask("-");
+                MainActivity.trainingData.setDif("-");
+                MainActivity.trainingData.setTaskConfig(MainActivity.task);
+
+                //ArrayList<String> wordList = FileHelper.getavailablememorytask();
+                //int randomIndex = rand.nextInt((wordList.size() - 3) + 1) + 3;
+                //wordList1 = generateWordSet(wordList, (randomIndex));
+                //wordList2 = generateWordSet(wordList, (randomIndex));
+
+                btnTask.setText(btnMemory.getText());
+                taskDialog.dismiss();
+                MainActivity.trainingData.setDuration(Integer.parseInt(rbTaskDuration.getRightPinValue()) * 60 * 1000);
 
             }
         });
