@@ -15,6 +15,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 public class FileHelper {
     public static String PATH_ROOT_FOLDER = Environment.getExternalStorageDirectory() + "/Brain Training Data Folder/";
@@ -168,12 +170,13 @@ public class FileHelper {
             e.printStackTrace();
         }
     }
+
     public static FeedbackData readSurveyDataFromLocal() {
         Gson g = new Gson();
         String path = PATH_SURVEY_DATA + FILENAME_SURVEY_DATA;
         String readings = readJsonFile(path);
         FeedbackData feedbackData = g.fromJson(readings, FeedbackData.class);
-        if(feedbackData == null) {
+        if (feedbackData == null) {
             feedbackData = new FeedbackData();
         }
         return feedbackData;
@@ -267,7 +270,7 @@ public class FileHelper {
         }
 
         File surveyFolder = new File(PATH_SURVEY_DATA);
-        if(!surveyFolder.exists()) {
+        if (!surveyFolder.exists()) {
             surveyFolder.mkdir();
         }
 
@@ -297,7 +300,7 @@ public class FileHelper {
         }
 
         File surveyDataFile = new File(PATH_SURVEY_DATA + FILENAME_SURVEY_DATA);
-        if(!surveyDataFile.exists()) {
+        if (!surveyDataFile.exists()) {
             saveSurveyDataToLocal();
         }
     }
@@ -354,4 +357,16 @@ public class FileHelper {
         }
         return dir.delete();
     }
+
+    public static ArrayList<String> getavailablememorytask() {
+        Field[] fields = R.raw.class.getFields();//retrieve raw directory
+        ArrayList<String> memoryAvailableWordList = new ArrayList<>();//init arraylist of viable words
+        for (Field f : fields) {//loop through directory
+            if (f.getName().startsWith("memorytask_")) {//if filename's prefix equals to memorytask that add to list
+                memoryAvailableWordList.add(f.getName());//add into arraylist
+            }
+        }
+        return memoryAvailableWordList;
+    }
+
 }
