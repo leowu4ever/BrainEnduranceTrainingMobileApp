@@ -459,7 +459,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
     @Override
     public void startVisualTraining() {
         //task fragment disappear
-
+        visualFragment.getChosenTarget(taskFragment.getChosenTarget());
         //map fragment disappear
         mapView.setVisibility(View.GONE);
         showVisualFragment();
@@ -819,6 +819,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         taskFragment = new TaskFragment();
         trainingFragment = new TrainingFragment();
         visualFragment = new VisualFragment();
+        visualFragment.setContext(this);
         memoryFragment = new MemoryFragment();
         memoryTaskFragment = new MemoryTaskFragment();
         fragmentManager = getSupportFragmentManager();

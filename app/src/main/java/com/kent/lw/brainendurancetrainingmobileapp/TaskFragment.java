@@ -687,4 +687,8 @@ public class TaskFragment extends Fragment {
     public ArrayList<String> getChosenWordSet() {
         return memoryChosenWordList;
     }
+
+    public String getChosenTarget(){
+        return visualChosenStimulus;
+    }
 }
