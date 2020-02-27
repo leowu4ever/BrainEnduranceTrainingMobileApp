@@ -795,7 +795,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                         trainingData.incStiCount();
 
                     } else {
-                        soundHelper.playNogoSound(randomVolume, randomVolume, 0, 0, 1);
+                        soundHelper.playNogoSound(taskFragment.getChosenNoGoSound(), randomVolume, randomVolume, 0, 0, 1);
                         trainingData.incNogoCount();
                     }
                     trainingData.setStiMiliList(System.currentTimeMillis());

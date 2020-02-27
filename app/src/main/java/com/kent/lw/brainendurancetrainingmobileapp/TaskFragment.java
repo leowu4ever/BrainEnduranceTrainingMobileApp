@@ -78,7 +78,7 @@ public class TaskFragment extends Fragment {
     private Dialog audioStimulusDialog;
     public RadioGroup rgSoundStimulus;
     public Button btnsoundstimulusconfirm, btnsoundplay1, btnsoundplay2;
-    private String chosenSound;
+    private String chosenSound, chosenNoGoSound;
 
     Random rand = new Random();
 
@@ -91,6 +91,8 @@ public class TaskFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         wordList1 = new ArrayList<String>();
         wordList2 = new ArrayList<String>();
+        chosenSound = ("beep");
+        chosenNoGoSound = ("nogo");
         //memoryChosenWordList = new ArrayList<String>();
         super.onActivityCreated(savedInstanceState);
         initFragBtns();
@@ -448,7 +450,7 @@ public class TaskFragment extends Fragment {
                 rbTaskDuration = durationDialog.findViewById(R.id.rb_task_duration);
 
                 MainActivity.trainingData.setDuration(Integer.parseInt(rbTaskDuration.getRightPinValue()) * 60 * 1000);
-
+                visualChosenStimulus = "sti_bullseye";
                 visualStimulusDialog.show();
             }
         });
@@ -461,9 +463,11 @@ public class TaskFragment extends Fragment {
                 switch (rgSoundStimulus.indexOfChild(radioButton)) {
                     case 0:
                         chosenSound = ("beep");
+                        chosenNoGoSound = ("nogo");
                         break;
                     case 1:
                         chosenSound = ("beep_1");
+                        chosenNoGoSound = ("nogo_1");
                         break;
                 }
             }
@@ -744,4 +748,5 @@ public class TaskFragment extends Fragment {
     }
 
     public String getChosenSound() {return chosenSound;}
+    public String getChosenNoGoSound() {return chosenNoGoSound;}
 }
