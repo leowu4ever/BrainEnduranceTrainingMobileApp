@@ -15,6 +15,7 @@ public class SoundHelper extends Application {
     public int beepSound, beepSoundLanguage, speedupSound, startSound, finishSound;
     public int nogoSound, nogoSoundLangEasy, nogoSoundLangMedium, nogoSoundLangHard;
     public int kidPlayingSound, musicSound;
+    public int beepSound1;
     // noise sound playing ref used when pause and resume
     public int noiseplay;
 
@@ -63,7 +64,7 @@ public class SoundHelper extends Application {
         kidPlayingSound = sp.load(context, R.raw.kidsplaying, 1);
         musicSound = sp.load(context, R.raw.music, 1);
 
-
+        beepSound1 = sp.load(context, R.raw.beep_1, 1);
 
     }
 
@@ -101,12 +102,25 @@ public class SoundHelper extends Application {
         return R.raw.whitenoise_relaxing;
     }
 
-    public void playBeepSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
+    public void playBeepSound(final String s, final float leftVolume, final float rightVolume, final int priority, final int loop, final float rate) {
         if(MainActivity.trainingData.getTask().equals("Language")) {
             sp.play(beepSoundLanguage, leftVolume, rightVolume, priority, loop, rate);
+        } else {
+            final int audio = sp.load(c, (this.c.getResources().getIdentifier(s, "raw", this.c.getPackageName())), 1);
+            sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                @Override
+                public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                    sp.play(audio, leftVolume, rightVolume, priority, loop, rate);
+                }
+            });
         }
-        else { sp.play(beepSound, leftVolume, rightVolume, priority, loop, rate); }
+
     }
+
+    public void playBeepSound1(float leftVolume, float rightVolume, int priority, int loop, float rate) {
+         sp.play(beepSound1, leftVolume, rightVolume, priority, loop, rate);
+    }
+
 
     public void playSpeedupSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
         sp.play(speedupSound, leftVolume, rightVolume, priority, loop, rate);

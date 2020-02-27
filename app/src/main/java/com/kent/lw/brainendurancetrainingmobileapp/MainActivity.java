@@ -791,7 +791,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     float randomVolume = rd.nextFloat() * (task.getVolumeTo() - task.getVolumeFrom()) + task.getVolumeFrom();
                     // get current sti type from stiTypeList
                     if (trainingData.getStiTypeOn(trainingData.getStiCount() + trainingData.getNogoCount()) == 0) {
-                        soundHelper.playBeepSound(randomVolume, randomVolume, 0, 0, 1);
+                        soundHelper.playBeepSound(taskFragment.getChosenSound(), randomVolume, randomVolume, 0, 0, 1);
                         trainingData.incStiCount();
 
                     } else {
@@ -812,7 +812,6 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 }
             }
         };
-
     }
 
     private void initFragments() {

@@ -74,6 +74,11 @@ public class TaskFragment extends Fragment {
     private RadioGroup rgVisualStimulus;
     private Button btnVisualStimulusConfirm;
     private String visualChosenStimulus;
+    //audio switch dialog
+    private Dialog audioStimulusDialog;
+    public RadioGroup rgSoundStimulus;
+    public Button btnsoundstimulusconfirm, btnsoundplay1, btnsoundplay2;
+    private String chosenSound;
 
     Random rand = new Random();
 
@@ -177,6 +182,7 @@ public class TaskFragment extends Fragment {
         promptDialog = new Dialog(getActivity());
         memorySwitchDialog = new Dialog(getActivity());
         visualStimulusDialog = new Dialog(getActivity());
+        audioStimulusDialog = new Dialog(getActivity());
 
         setupDialog(taskDialog, R.layout.dialog_task);
         setupDialog(difDialog, R.layout.dialog_dif);
@@ -192,6 +198,7 @@ public class TaskFragment extends Fragment {
 
         setupDialog(memorySwitchDialog, R.layout.dialog_memory_switch);
         setupDialog(visualStimulusDialog, R.layout.dialog_visual_stimulus_switch);
+        setupDialog(audioStimulusDialog, R.layout.dialog_task_sound_switch);
 
         initActivityBtns();
         initTaskBtns();
@@ -396,7 +403,9 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 btnTask.setText(btnAPVT.getText());
+                MainActivity.trainingData.setTask(btnTask.getText() + "");
                 taskDialog.dismiss();
+                audioStimulusDialog.show();
             }
         });
 
@@ -405,7 +414,9 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 btnTask.setText(btnGonono.getText());
+                MainActivity.trainingData.setTask(btnTask.getText() + "");
                 taskDialog.dismiss();
+                audioStimulusDialog.show();
             }
         });
 
@@ -438,11 +449,51 @@ public class TaskFragment extends Fragment {
 
                 MainActivity.trainingData.setDuration(Integer.parseInt(rbTaskDuration.getRightPinValue()) * 60 * 1000);
 
-
                 visualStimulusDialog.show();
             }
         });
 
+        rgSoundStimulus = audioStimulusDialog.findViewById(R.id.soundlistradiogroup);
+        rgSoundStimulus.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                View radioButton = rgSoundStimulus.findViewById(checkedId);
+                switch (rgSoundStimulus.indexOfChild(radioButton)) {
+                    case 0:
+                        chosenSound = ("beep");
+                        break;
+                    case 1:
+                        chosenSound = ("beep_1");
+                        break;
+                }
+            }
+        });
+
+        btnsoundplay1 = audioStimulusDialog.findViewById(R.id.btn_Sound_Play1);
+        btnsoundplay1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.soundHelper.playBeepSound("beep", 1,1,1,0,1);
+            }
+        });
+
+        btnsoundplay2 = audioStimulusDialog.findViewById(R.id.btn_Sound_Play2);
+        btnsoundplay2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.soundHelper.playBeepSound("beep_1", 1,1,1,0,1);
+            }
+        });
+
+
+        btnsoundstimulusconfirm = audioStimulusDialog.findViewById(R.id.btn_task_soundconfirm);
+        btnsoundstimulusconfirm.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                audioStimulusDialog.dismiss();
+            }
+
+        });
 
         ivStimulus = visualStimulusDialog.findViewById(R.id.vs_Iv);
         ivStimulus.setImageResource(R.drawable.sti_bullseye);
@@ -691,4 +742,6 @@ public class TaskFragment extends Fragment {
     public String getChosenTarget(){
         return visualChosenStimulus;
     }
+
+    public String getChosenSound() {return chosenSound;}
 }
