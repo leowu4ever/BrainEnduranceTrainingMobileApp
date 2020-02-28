@@ -240,6 +240,25 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
         task = new com.kent.lw.brainendurancetrainingmobileapp.Task();
 
+        FlicManager.getInstance(MainActivity.this, new FlicManagerInitializedCallback() {
+            @Override
+            public void onInitialized(FlicManager manager) {
+                if (manager.getKnownButtons().size() < 1) {
+                    Toast.makeText(MainActivity.this, "No Flic Button detected \n Please re-connect your Flic Button", Toast.LENGTH_LONG).show();
+                    try {
+                        FlicManager.getInstance(MainActivity.this, new FlicManagerInitializedCallback() {
+                            @Override
+                            public void onInitialized(FlicManager manager) {
+                                manager.initiateGrabButton(MainActivity.this);
+                            }
+                        });
+                    } catch (FlicAppNotInstalledException err) {
+                        Toast.makeText(MainActivity.this, "Flic App is not installed", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
+
 
         SensorHelper sensorHelper = new SensorHelper(this);
     }
@@ -322,11 +341,12 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     }
 
                     @Override
-                    public void onFailure(@NonNull Exception exception) { }
+                    public void onFailure(@NonNull Exception exception) {
+                    }
                 }, null);
             }
+        } catch (SecurityException e) {
         }
-        catch (SecurityException e) { }
     }
 
     private void createLocationRequest() {
@@ -337,7 +357,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     public void onSuccess(LocationEngineResult locationResult) {
                         if (trainingStarted && !trainingData.getTask().equals("Visual")) {
                             if (locationResult != null) {
-                                for(Location location : locationResult.getLocations()){
+                                for (Location location : locationResult.getLocations()) {
                                     LatLng curLoc = mapHelper.convertToLatLng(location);
                                     mapHelper.zoomToLoc(mapboxMap, new LatLng(trainingData.getMidLat(), trainingData.getMidLng()));
 
@@ -363,19 +383,31 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                         // update speed
                                         speed = (distance / trainingData.getTimeTrained()) * 1000 * 60 * 60;
                                         String speedString = String.format("%.1f", speed);
-                                        if (trainingData.getTask().equals("Memory")) {memoryFragment.setTvAvgSpeed(speedString);} else {trainingFragment.setTvSpeed(speedString);}
+                                        if (trainingData.getTask().equals("Memory")) {
+                                            memoryFragment.setTvAvgSpeed(speedString);
+                                        } else {
+                                            trainingFragment.setTvSpeed(speedString);
+                                        }
                                         trainingData.setAvgSpeed(speed);
 
                                         // update pace
                                         pace = 1 / ((distance / trainingData.getTimeTrained()) * 1000 * 60);
                                         String paceString = String.format("%.1f", pace);
-                                        if (trainingData.getTask().equals("Memory")) {memoryFragment.setTvPace(speedString);} else {trainingFragment.setTvPace(paceString);}
+                                        if (trainingData.getTask().equals("Memory")) {
+                                            memoryFragment.setTvPace(speedString);
+                                        } else {
+                                            trainingFragment.setTvPace(paceString);
+                                        }
                                         trainingData.setAvgPace(pace);
 
                                         // update cur speed
                                         float curSpeed = (newDis / locTimeDif) * 1000 * 60 * 60;
                                         String curSpeedString = String.format("%.1f", curSpeed);
-                                        if (trainingData.getTask().equals("Memory")) {memoryFragment.setTvCurSpeed(curSpeedString);} else {trainingFragment.setTvCurSpeed(curSpeedString);}
+                                        if (trainingData.getTask().equals("Memory")) {
+                                            memoryFragment.setTvCurSpeed(curSpeedString);
+                                        } else {
+                                            trainingFragment.setTvCurSpeed(curSpeedString);
+                                        }
                                         trainingData.setSpeedList(curSpeed);
 
 
@@ -394,8 +426,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                                     }
                                 }
                             }
-                        }
-                        else{
+                        } else {
                             Location location = locationResult.getLastLocation();
                             mapHelper.zoomToLoc(mapboxMap, new LatLng(location.getLatitude(), location.getLongitude()));
                         }
@@ -403,15 +434,15 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     }
 
                     @Override
-                    public void onFailure(@NonNull Exception exception) { }
+                    public void onFailure(@NonNull Exception exception) {
+                    }
                 }, null);
 
-            }
-            else {
+            } else {
                 mapHelper.getLocationPermission(this);
             }
+        } catch (SecurityException e) {
         }
-        catch (SecurityException e) { }
 
     }
 
@@ -451,7 +482,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(MainActivity.this,"Unable to start your task because the location service is unavailable now. Please connect to the internet with your Sim card or WIFI.", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Unable to start your task because the location service is unavailable now. Please connect to the internet with your Sim card or WIFI.", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -523,6 +554,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                     handler.postDelayed(memoryRunnable, 4000);
                 }
             }
+
             @Override
             public void onFailure(@NonNull Exception exception) {
                 Toast.makeText(MainActivity.this, "Unable to start your task because the location service is unavailable now. Please connect to the internet with your Sim card or WIFI.", Toast.LENGTH_LONG).show();
@@ -559,8 +591,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         handler.removeCallbacks(durationRunnable);
         handler.removeCallbacks(stimulusRunnable);
 
-        new Handler().postDelayed(new Runnable()
-        {
+        new Handler().postDelayed(new Runnable() {
             MapboxMap.SnapshotReadyCallback callback = new MapboxMap.SnapshotReadyCallback() {
                 Bitmap bitmap;
 
@@ -603,8 +634,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
             };
 
             @Override
-            public void run()
-            {
+            public void run() {
                 mapboxMap.snapshot(callback);
             }
         }, 2500);
@@ -667,7 +697,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         hideMemoryFragment();
     }
 
-    public void finishMemoryTask(){
+    public void finishMemoryTask() {
         hideMemoryTaskFragment();
         btnProfile.setVisibility(View.VISIBLE);
         btnFlic.setVisibility(View.VISIBLE);
@@ -680,8 +710,9 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         trainingData.reset();
         task.reset();
         zoomToCurLoc();
-    };
+    }
 
+    ;
 
 
     public void resetTempData() {
@@ -872,7 +903,7 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
                 if (button != null) {
                     button.registerListenForBroadcast(FlicBroadcastReceiverFlags.UP_OR_DOWN | FlicBroadcastReceiverFlags.REMOVED);
                     Toast.makeText(MainActivity.this, "Flic button connected", Toast.LENGTH_SHORT).show();
-                } else {
+                } else if(manager.getKnownButtons().size() < 1){
                     Toast.makeText(MainActivity.this, "Flic button not connected", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -881,12 +912,12 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
 
     @Override
     public void onBackPressed() {
-
+        Toast.makeText(MainActivity.this, "evaevaevaevaevaevaeva", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        switch( event.getKeyCode() ) {
+        switch (event.getKeyCode()) {
             case KeyEvent.KEYCODE_VOLUME_UP:
                 // do something
                 break;
@@ -902,12 +933,16 @@ public class MainActivity extends AppCompatActivity implements TaskCommunicator,
         return true;
     }
 
-    public ArrayList <String> getChosenWordList(){
+    public ArrayList<String> getChosenWordList() {
         return chosenWordList;
     }
-    public void addAnnoncedWordtoList(String s){
+
+    public void addAnnoncedWordtoList(String s) {
         annoncedWordList.add(s);
     }
-    public ArrayList <String> getAnnoncedWordList() {return annoncedWordList;}
+
+    public ArrayList<String> getAnnoncedWordList() {
+        return annoncedWordList;
+    }
 
 }
