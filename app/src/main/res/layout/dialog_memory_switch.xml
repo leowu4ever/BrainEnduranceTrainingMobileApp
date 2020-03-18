@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:background="@drawable/fragment_shape"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/wordlistLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Word List "/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:id="@+id/wordlistItem"
+            android:paddingLeft="10dp">
+        </LinearLayout>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/wordlistradiogroup"
+            android:onClick="setOnCheckedChangeListener">
+            <RadioButton
+                android:id="@+id/wordListSwitch1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="List 1"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/wordListSwitch2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="List 2" />
+        </RadioGroup>
+
+
+        <Button
+            android:id="@+id/btn_wordListConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_rounded_corner"
+            android:elevation="0dp"
+            android:text="Confirm"
+            android:textAllCaps="false"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>
+
+
+

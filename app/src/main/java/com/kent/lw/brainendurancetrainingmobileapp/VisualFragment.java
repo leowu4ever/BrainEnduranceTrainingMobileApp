@@ -1,5 +1,6 @@
 package com.kent.lw.brainendurancetrainingmobileapp;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -37,7 +38,9 @@ public class VisualFragment extends Fragment {
 
     private VisualCommunicator visualCommunicator;
 
+    private String chosenTarget;
 
+    public Context c;
 
 
     @Override
@@ -67,6 +70,9 @@ public class VisualFragment extends Fragment {
     private void initUIs() {
 
         visualCommunicator = (VisualCommunicator) getActivity();
+
+        btnImgBullseye = getActivity().findViewById(R.id.btn_img_bullseye);
+        btnImgBullseye.setImageResource(getResources().getIdentifier(chosenTarget, "drawable", c.getPackageName()));
 
         btnImgBullseye = getActivity().findViewById(R.id.btn_img_bullseye);
         btnVisualRes = getActivity().findViewById(R.id.btn_visual_res);
@@ -237,4 +243,8 @@ public class VisualFragment extends Fragment {
     }
 
     public void setTvResTime(String s) {tvResTime.setText(s);}
+
+    public void setContext(Context con){c = con;}
+
+    public void getChosenTarget(String s){chosenTarget =  s;}
 }

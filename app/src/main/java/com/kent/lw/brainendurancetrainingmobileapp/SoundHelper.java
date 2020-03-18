@@ -15,6 +15,7 @@ public class SoundHelper extends Application {
     public int beepSound, beepSoundLanguage, speedupSound, startSound, finishSound;
     public int nogoSound, nogoSoundLangEasy, nogoSoundLangMedium, nogoSoundLangHard;
     public int kidPlayingSound, musicSound;
+    public int beepSound1, nogoSound1;
     // noise sound playing ref used when pause and resume
     public int noiseplay;
 
@@ -31,7 +32,7 @@ public class SoundHelper extends Application {
         AudioManager audioManager =
                 (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)/3, 0);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) / 3, 0);
     }
 
     public void init(Context context) {
@@ -63,12 +64,13 @@ public class SoundHelper extends Application {
         kidPlayingSound = sp.load(context, R.raw.kidsplaying, 1);
         musicSound = sp.load(context, R.raw.music, 1);
 
-
+        beepSound1 = sp.load(context, R.raw.beep_1, 1);
+        nogoSound1 = sp.load(context, R.raw.nogo_1, 1);
 
     }
 
     private int getNoiseRawId(int noiseTypeIndexSelected) {
-        switch (noiseTypeIndexSelected){
+        switch (noiseTypeIndexSelected) {
             case 0:
                 return R.raw.whitenoise_relaxing;
             case 1:
@@ -101,12 +103,21 @@ public class SoundHelper extends Application {
         return R.raw.whitenoise_relaxing;
     }
 
-    public void playBeepSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
-        if(MainActivity.trainingData.getTask().equals("Language")) {
+    public void playBeepSound(final String s, final float leftVolume, final float rightVolume, final int priority, final int loop, final float rate) {
+        if (MainActivity.trainingData.getTask().equals("Language")) {
             sp.play(beepSoundLanguage, leftVolume, rightVolume, priority, loop, rate);
+        } else {
+            final int audio = sp.load(c, (this.c.getResources().getIdentifier(s, "raw", this.c.getPackageName())), 1);
+            sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                @Override
+                public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                    sp.play(audio, leftVolume, rightVolume, priority, loop, rate);
+                }
+            });
         }
-        else { sp.play(beepSound, leftVolume, rightVolume, priority, loop, rate); }
+
     }
+
 
     public void playSpeedupSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
         sp.play(speedupSound, leftVolume, rightVolume, priority, loop, rate);
@@ -132,7 +143,7 @@ public class SoundHelper extends Application {
 
         noiseMP = MediaPlayer.create(c, getNoiseRawId(MainActivity.task.getNoiseType()));
 
-        if(noiseMP != null){
+        if (noiseMP != null) {
             noiseMP.setLooping(true);
             noiseMP.setVolume(leftVolume, rightVolume);
             noiseMP.start();
@@ -141,15 +152,15 @@ public class SoundHelper extends Application {
 
     public void stopNoiseSound() {
 //        sp.stop(noiseplay);
-        if(noiseMP != null) {
+        if (noiseMP != null) {
             noiseMP.release();
             noiseMP = null;
         }
     }
 
-    public void playNogoSound(float leftVolume, float rightVolume, int priority, int loop, float rate) {
-        if(MainActivity.trainingData.getTask().equals("Language")) {
-            switch(MainActivity.task.getCurDif()){
+    public void playNogoSound(final String s, final float leftVolume, final float rightVolume, final int priority, final int loop, final float rate) {
+        if (MainActivity.trainingData.getTask().equals("Language")) {
+            switch (MainActivity.task.getCurDif()) {
                 case "Easy":
                     sp.play(nogoSoundLangEasy, leftVolume, rightVolume, priority, loop, rate);
                     break;
@@ -161,23 +172,41 @@ public class SoundHelper extends Application {
                     sp.play(nogoSoundLangHard, leftVolume, rightVolume, priority, loop, rate);
                     break;
             }
-        }
-        else { sp.play(nogoSound, leftVolume, rightVolume, priority, loop, rate); }
-    }
-
-    public void play(float leftVolume, float rightVolume, int priority, int loop, float rate) {
-
-        if(noiseMP != null){
-            noiseMP.setLooping(true);
-            noiseMP.setVolume(leftVolume, rightVolume);
-            noiseMP.start();
+        } else {
+            final int audio = sp.load(c, (this.c.getResources().getIdentifier(s, "raw", this.c.getPackageName())), 1);
+            sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                @Override
+                public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                    sp.play(audio, leftVolume, rightVolume, priority, loop, rate);
+                }
+            });
         }
     }
 
-    public void stopNoiseMP () {
-        if(noiseMP != null) {
-            noiseMP.release();
-            noiseMP = null;
+        public void play ( float leftVolume, float rightVolume, int priority, int loop, float rate){
+
+            if (noiseMP != null) {
+                noiseMP.setLooping(true);
+                noiseMP.setVolume(leftVolume, rightVolume);
+                noiseMP.start();
+            }
+        }
+
+        public void stopNoiseMP () {
+            if (noiseMP != null) {
+                noiseMP.release();
+                noiseMP = null;
+            }
+        }
+
+        public void playMemoryTask (String s,final float leftVolume, final float rightVolume,
+        final int priority, final int loop, final float rate){
+            final int audio = sp.load(c, (this.c.getResources().getIdentifier(s, "raw", this.c.getPackageName())), 1);
+            sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                @Override
+                public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                    sp.play(audio, leftVolume, rightVolume, priority, loop, rate);
+                }
+            });
         }
     }
-}

@@ -10,10 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appyvet.materialrangebar.RangeBar;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +34,7 @@ public class TaskFragment extends Fragment {
     private Button btnStart;
     // task dialog
     private Dialog taskDialog;
-    private Button btnTask, btnAPVT, btnGonono, btnLang, btnVisual, btnHelpApvt, btnHelpGonogo, btnTaskBack;
+    private Button btnTask, btnAPVT, btnGonono, btnLang, btnVisual, btnMemory, btnHelpApvt, btnHelpGonogo, btnHelpMemory, btnTaskBack;
     // dif dialog
     private Dialog difDialog;
     private Button btnDif, btnEasy, btnMedium, btnHard, btnAdaptive, btnCustom, btnDifBack;
@@ -43,8 +50,8 @@ public class TaskFragment extends Fragment {
     private Button btnDuration, btnDurationSave, btnDurationBack;
     private RangeBar rbTaskDuration;
     // help dialog
-    private Dialog helpApvtDialog, helpGonogoDialog;
-    private Button btnHelpApvtOK, btnHelpGonogoOK;
+    private Dialog helpApvtDialog, helpGonogoDialog, helpMemoryDialog;
+    private Button btnHelpApvtOK, btnHelpGonogoOK, btnHelpMemoryOK;
     // apvt custom dialog
     private Dialog difCustomAPVTDialog;
     private Button btnCustomSaveApvt, btnCustomBackApvt;
@@ -55,6 +62,25 @@ public class TaskFragment extends Fragment {
     private Button btnCustomSaveGonogo, btnCustomBackGonogo;
     private RangeBar rbNogo, rbIntervalGonogo, rbVolumeGonogo, rbNoiseGonogo, rbThresholdGonogo, rbMinspeedGonogo;
     private Spinner spNoiseTypeGonogo;
+    //memory switch dialog
+    private Dialog memorySwitchDialog;
+    private Button btnMemoryTestConfirm;
+    private RadioGroup rgMemoryTest;
+    private int chosenWordSet;
+    private ArrayList wordList1, wordList2, memoryChosenWordList;
+    //visual stimulus dialog
+    private Dialog visualStimulusDialog;
+    private ImageView ivStimulus;
+    private RadioGroup rgVisualStimulus;
+    private Button btnVisualStimulusConfirm;
+    private String visualChosenStimulus;
+    //audio switch dialog
+    private Dialog audioStimulusDialog;
+    public RadioGroup rgSoundStimulus;
+    public Button btnsoundstimulusconfirm, btnsoundplay1, btnsoundplay2;
+    private String chosenSound, chosenNoGoSound;
+
+    Random rand = new Random();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,6 +89,11 @@ public class TaskFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        wordList1 = new ArrayList<String>();
+        wordList2 = new ArrayList<String>();
+        chosenSound = ("beep");
+        chosenNoGoSound = ("nogo");
+        //memoryChosenWordList = new ArrayList<String>();
         super.onActivityCreated(savedInstanceState);
         initFragBtns();
         initDialogs();
@@ -149,7 +180,11 @@ public class TaskFragment extends Fragment {
         durationDialog = new Dialog(getActivity());
         helpApvtDialog = new Dialog(getActivity());
         helpGonogoDialog = new Dialog(getActivity());
+        helpMemoryDialog = new Dialog(getActivity());
         promptDialog = new Dialog(getActivity());
+        memorySwitchDialog = new Dialog(getActivity());
+        visualStimulusDialog = new Dialog(getActivity());
+        audioStimulusDialog = new Dialog(getActivity());
 
         setupDialog(taskDialog, R.layout.dialog_task);
         setupDialog(difDialog, R.layout.dialog_dif);
@@ -161,6 +196,11 @@ public class TaskFragment extends Fragment {
 
         setupDialog(helpApvtDialog, R.layout.dialog_help_apvt);
         setupDialog(helpGonogoDialog, R.layout.dialog_help_gonogo);
+        setupDialog(helpMemoryDialog, R.layout.dialog_help_memory);
+
+        setupDialog(memorySwitchDialog, R.layout.dialog_memory_switch);
+        setupDialog(visualStimulusDialog, R.layout.dialog_visual_stimulus_switch);
+        setupDialog(audioStimulusDialog, R.layout.dialog_task_sound_switch);
 
         initActivityBtns();
         initTaskBtns();
@@ -365,7 +405,9 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 btnTask.setText(btnAPVT.getText());
+                MainActivity.trainingData.setTask(btnTask.getText() + "");
                 taskDialog.dismiss();
+                audioStimulusDialog.show();
             }
         });
 
@@ -374,11 +416,13 @@ public class TaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 btnTask.setText(btnGonono.getText());
+                MainActivity.trainingData.setTask(btnTask.getText() + "");
                 taskDialog.dismiss();
+                audioStimulusDialog.show();
             }
         });
 
-        btnLang =  taskDialog.findViewById(R.id.btn_language);
+        btnLang = taskDialog.findViewById(R.id.btn_language);
         btnLang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -406,12 +450,158 @@ public class TaskFragment extends Fragment {
                 rbTaskDuration = durationDialog.findViewById(R.id.rb_task_duration);
 
                 MainActivity.trainingData.setDuration(Integer.parseInt(rbTaskDuration.getRightPinValue()) * 60 * 1000);
-
-                // start countdown and duration
-                taskCommunicator.startVisualTraining();
-
+                visualChosenStimulus = "sti_bullseye";
+                visualStimulusDialog.show();
             }
         });
+
+        rgSoundStimulus = audioStimulusDialog.findViewById(R.id.soundlistradiogroup);
+        rgSoundStimulus.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                View radioButton = rgSoundStimulus.findViewById(checkedId);
+                switch (rgSoundStimulus.indexOfChild(radioButton)) {
+                    case 0:
+                        chosenSound = ("beep");
+                        chosenNoGoSound = ("nogo");
+                        break;
+                    case 1:
+                        chosenSound = ("beep_1");
+                        chosenNoGoSound = ("nogo_1");
+                        break;
+                }
+            }
+        });
+
+        btnsoundplay1 = audioStimulusDialog.findViewById(R.id.btn_Sound_Play1);
+        btnsoundplay1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.soundHelper.playBeepSound("beep", 1,1,1,0,1);
+            }
+        });
+
+        btnsoundplay2 = audioStimulusDialog.findViewById(R.id.btn_Sound_Play2);
+        btnsoundplay2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.soundHelper.playBeepSound("beep_1", 1,1,1,0,1);
+            }
+        });
+
+
+        btnsoundstimulusconfirm = audioStimulusDialog.findViewById(R.id.btn_task_soundconfirm);
+        btnsoundstimulusconfirm.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                audioStimulusDialog.dismiss();
+            }
+
+        });
+
+        ivStimulus = visualStimulusDialog.findViewById(R.id.vs_Iv);
+        ivStimulus.setImageResource(R.drawable.sti_bullseye);
+
+
+        rgVisualStimulus = visualStimulusDialog.findViewById(R.id.rg_vs);
+        rgVisualStimulus.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                View radioButton = rgVisualStimulus.findViewById(checkedId);
+                switch (rgVisualStimulus.indexOfChild(radioButton)) {
+                    case 0:
+                        ivStimulus.setImageResource(R.drawable.sti_bullseye);
+                        visualChosenStimulus = "sti_bullseye";
+                        break;
+                    case 1:
+                        ivStimulus.setImageResource(R.drawable.sti_dummy);
+                        visualChosenStimulus = "sti_dummy";
+                        break;
+                }
+            }
+        });
+
+
+        btnVisualStimulusConfirm = visualStimulusDialog.findViewById(R.id.btn_vsConfirm);
+        btnVisualStimulusConfirm.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                if (visualChosenStimulus == null) {
+                    Toast.makeText(getActivity(), "Please chose a target to proceed", Toast.LENGTH_LONG).show();
+                } else {
+                    visualStimulusDialog.dismiss();
+                    MainActivity.trainingData.setTask("Visual");
+                    // start countdown and duration
+                    taskCommunicator.startVisualTraining();
+                }
+            }
+        });
+
+
+        //init button listener
+        btnMemory = taskDialog.findViewById(R.id.btn_memory);
+        btnMemory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rand = new Random();
+                MainActivity.trainingData.setActivity("-");
+                MainActivity.trainingData.setTask("-");
+                MainActivity.trainingData.setDif("-");
+                MainActivity.trainingData.setTaskConfig(MainActivity.task);
+
+                chosenWordSet = 1;
+
+                ArrayList<String> wordList = FileHelper.getavailablememorytask();//get workable word list from file helper
+                if (wordList.size()>=4){
+                    int randomIndex = rand.nextInt((wordList.size() - 3) + 1) + 2;//get random number of chosen words
+                    wordList1 = generateWordSet(wordList, (randomIndex));//generate wordlists
+                    wordList2 = generateWordSet(wordList, (randomIndex));
+
+                    btnTask.setText(btnMemory.getText());
+                    taskDialog.dismiss();
+                    MainActivity.trainingData.setDuration(Integer.parseInt(rbTaskDuration.getRightPinValue()) * 60 * 1000);
+
+                    setAvailableWordRow(wordList1);//set default wordlist to list 1
+                    memorySwitchDialog.show();
+                }else{Toast.makeText(getActivity(), "No memory task available at this moment", Toast.LENGTH_LONG).show();}
+            }
+        });
+
+        rgMemoryTest = memorySwitchDialog.findViewById(R.id.wordlistradiogroup);
+        rgMemoryTest.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {//if radiogroup clicked and changed
+                View radioButton = rgMemoryTest.findViewById(checkedId);//get clicked radiobutton
+                switch (rgMemoryTest.indexOfChild(radioButton)) {//get index of clicked radiobutton
+                    case 0:
+                        chosenWordSet = 1;
+                        setAvailableWordRow(wordList1);
+                        memoryChosenWordList = (ArrayList<String>) wordList1.clone();
+                        break;
+                    case 1:
+                        chosenWordSet = 2;
+                        setAvailableWordRow(wordList2);
+                        memoryChosenWordList = (ArrayList<String>) wordList2.clone();
+                        break;
+                }
+            }
+        });
+
+        btnMemoryTestConfirm = memorySwitchDialog.findViewById(R.id.btn_wordListConfirm);
+        btnMemoryTestConfirm.setOnClickListener(new View.OnClickListener() {//verify if a word list were chosen
+            @Override
+            public void onClick(View v) {
+                memoryChosenWordList = (ArrayList<String>) wordList1.clone();
+                if (chosenWordSet == 0) {
+                    Toast.makeText(getActivity(), "Please chose a word list to proceed", Toast.LENGTH_LONG).show();
+                } else if (chosenWordSet == 1 || chosenWordSet == 2) {
+                    memorySwitchDialog.dismiss();
+                    MainActivity.trainingData.setTask("Memory");
+                    taskCommunicator.startMemoryTraining();
+                }
+            }
+        });
+
 
         btnTaskBack = taskDialog.findViewById(R.id.btn_task_back);
         btnTaskBack.setOnClickListener(new View.OnClickListener() {
@@ -420,6 +610,17 @@ public class TaskFragment extends Fragment {
                 taskDialog.dismiss();
             }
         });
+    }
+
+    private void setAvailableWordRow(ArrayList<String> words) {
+        LinearLayout parentLayout = memorySwitchDialog.findViewById(R.id.wordlistItem);
+        parentLayout.removeAllViews();
+        for (String s : words) {
+            TextView tvItem = new TextView(memorySwitchDialog.getContext());
+            tvItem.setText(s.replace("memorytask_", "").substring(0, 1).toUpperCase() + s.substring(12));
+            parentLayout.addView(tvItem);
+            ;
+        }
     }
 
     private void initActivityBtns() {
@@ -509,5 +710,43 @@ public class TaskFragment extends Fragment {
                 helpGonogoDialog.dismiss();
             }
         });
+        btnHelpMemory = taskDialog.findViewById(R.id.btn_help_memory);
+        btnHelpMemory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                helpMemoryDialog.show();
+            }
+        });
+        btnHelpMemoryOK = helpMemoryDialog.findViewById(R.id.btn_help_memorytask_ok);
+        btnHelpMemoryOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                helpMemoryDialog.dismiss();
+            }
+        });
+
     }
+
+    public ArrayList<String> generateWordSet(ArrayList<String> list, int noofItems) {
+        ArrayList<String> tempList = (ArrayList<String>) list.clone();//templist for word reductions avoid duplicates
+        ArrayList<String> newList = new ArrayList<String>();//list for returning generate words
+        for (int i = 0; i < noofItems; i++) {
+
+            int randomIndex = rand.nextInt(tempList.size());//pick random index from size of list
+            newList.add(tempList.get(randomIndex));//add new word to returning list by index
+            tempList.remove(randomIndex);//remove chosen word
+        }
+        return newList;
+    }
+
+    public ArrayList<String> getChosenWordSet() {
+        return memoryChosenWordList;
+    }
+
+    public String getChosenTarget(){
+        return visualChosenStimulus;
+    }
+
+    public String getChosenSound() {return chosenSound;}
+    public String getChosenNoGoSound() {return chosenNoGoSound;}
 }
